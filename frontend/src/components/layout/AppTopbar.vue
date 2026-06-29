@@ -13,12 +13,6 @@
         {{ isDark ? '☀️' : '🌙' }}
       </button>
 
-      <!-- 导入作品 -->
-      <button class="btn btn-primary" @click="$emit('import')" aria-label="导入作品">
-        <span aria-hidden="true">📤</span>
-        导入作品
-      </button>
-
       <!-- 通知面板 -->
       <NotificationPanel />
 
@@ -37,7 +31,7 @@ import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
 import NotificationPanel from '@/components/common/NotificationPanel.vue'
 
-defineEmits(['import', 'toggleMobile'])
+defineEmits(['toggleMobile'])
 
 const route = useRoute()
 const appStore = useAppStore()

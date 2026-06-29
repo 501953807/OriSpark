@@ -22,7 +22,7 @@
       :id="'main-content'"
       :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
     >
-      <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" @show-import="showImportModal = true" />
+      <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <Breadcrumb />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
@@ -257,9 +257,11 @@ async function startBatchUpload() {
       entry.status = 'done'
       entry.progress = 100
       ;(window as any).$toast?.show(`${file.name} 解析完成`, 'success')
-    } catch {
+    } catch (error: unknown) {
       entry.status = 'error'
       entry.progress = 0
+      const msg = error instanceof Error ? error.message : '导入失败'
+      ;(window as any).$toast?.show(`${file.name}: ${msg}`, 'error')
     }
   }
   batchUploading.value = false
@@ -287,9 +289,11 @@ async function startUpload() {
       uf.status = 'done'
       uf.progress = 100
       ;(window as any).$toast?.show(`${file.name} 上传成功`, 'success')
-    } catch {
+    } catch (error: unknown) {
       uf.status = 'error'
       uf.progress = 0
+      const msg = error instanceof Error ? error.message : '上传失败'
+      ;(window as any).$toast?.show(`${file.name}: ${msg}`, 'error')
     }
   }
   uploading.value = false

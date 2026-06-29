@@ -264,8 +264,10 @@ export const systemApi = {
     client.post(`/works/${workId}/process-raw`, null, { params: { output_format: outputFormat } }),
 
   // ─── Culling (P2-3) ───
-  batchCull: (workIds: string[], action: string) =>
-    client.post('/works/cull-batch', { work_ids: workIds, action }),
+  batchCull: (workIds: string[], action: string) => {
+    const cullStatus = action === 'keep' ? 'pass' : 'fail'
+    return client.post('/works/cull-batch', { work_ids: workIds, cull_status: cullStatus })
+  },
 
   cullWork: (workId: string, action: string) =>
     client.patch(`/works/${workId}/cull`, { action }),
