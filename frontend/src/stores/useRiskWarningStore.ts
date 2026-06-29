@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { RiskWarning } from '@/types/risk_warning'
+import type { RiskWarning, RiskCheckRequest } from '@/types/risk_warning'
 import { riskWarningApi } from '@/api/risk_warning'
 
 export const useRiskWarningStore = defineStore('riskWarning', () => {
@@ -10,7 +10,7 @@ export const useRiskWarningStore = defineStore('riskWarning', () => {
   async function check(data: Record<string, unknown>) {
     loading.value = true
     try {
-      const res = await riskWarningApi.check(data as RiskWarning.RiskCheckRequest)
+      const res = await riskWarningApi.check(data as RiskCheckRequest)
       return res.data.data
     } finally {
       loading.value = false

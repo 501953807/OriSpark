@@ -1,5 +1,5 @@
 <template>
-  <aside :class="['sidebar', { collapsed: isCollapsed, 'mobile-visible': mobileVisible }]" role="navigation" aria-label="主导航">
+  <aside :class="['sidebar', { collapsed: isCollapsed, 'mobile-visible': mobileVisible, 'hover-expand': isCollapsed && isHovering }]" role="navigation" aria-label="主导航" @mouseenter="isCollapsed && (isHovering = true)" @mouseleave="isHovering = false">
     <router-link to="/app" class="sb-brand" aria-label="OriStudio 首页">
       <div class="sb-logo" aria-hidden="true">O</div>
       <div v-if="!isCollapsed" class="sb-brand-text-wrap">
@@ -11,79 +11,79 @@
     <nav class="sb-nav">
       <!-- 概览 -->
       <div v-if="!isCollapsed" class="sb-section-title">{{ t('sidebar.overview') }}</div>
-      <router-link to="/app" class="sb-link" exact-active-class="active" :title="isCollapsed ? '工作台' : ''" aria-label="工作台">
+      <router-link to="/app" class="sb-link" exact-active-class="active" title="工作台：系统概览与数据统计" aria-label="工作台">
         <span class="sb-icon" aria-hidden="true">📊</span>
         <span v-if="!isCollapsed">工作台</span>
       </router-link>
 
       <!-- 核心业务链 (按真实IP运营顺序排列) -->
       <div v-if="!isCollapsed" class="sb-section-title">核心业务</div>
-      <router-link to="/app/works" class="sb-link" active-class="active" :title="isCollapsed ? '创意资产' : ''" aria-label="创意资产">
+      <router-link to="/app/works" class="sb-link" active-class="active" title="创意资产：原创作品素材存储仓库，IP运营起始入口" aria-label="创意资产">
         <span class="sb-icon" aria-hidden="true">🎨</span>
         <span v-if="!isCollapsed">创意资产</span>
         <span v-if="!isCollapsed" class="sb-badge">{{ appStore.workCount }}</span>
       </router-link>
-      <router-link to="/app/ipr" class="sb-link" active-class="active" :title="isCollapsed ? 'IP登记' : ''" aria-label="IP登记">
+      <router-link to="/app/ipr" class="sb-link" active-class="active" title="IP登记：版权确权、商标注册、外观设计专利申请" aria-label="IP登记">
         <span class="sb-icon" aria-hidden="true">📋</span>
         <span v-if="!isCollapsed">IP登记</span>
       </router-link>
-      <router-link to="/app/rights" class="sb-link" active-class="active" :title="isCollapsed ? '权利保护' : ''" aria-label="权利保护">
+      <router-link to="/app/rights" class="sb-link" active-class="active" title="权利保护：侵权监测、维权投诉、证据存证" aria-label="权利保护">
         <span class="sb-icon" aria-hidden="true">🛡️</span>
         <span v-if="!isCollapsed">权利保护</span>
         <span v-if="!isCollapsed" class="sb-badge">{{ appStore.notaryCount }}</span>
         <span v-if="!isCollapsed && appStore.alertCount > 0" class="sb-badge new">{{ appStore.alertCount }}</span>
       </router-link>
-      <router-link to="/app/publish" class="sb-link" active-class="active" :title="isCollapsed ? '内容分发' : ''" aria-label="内容分发">
+      <router-link to="/app/publish" class="sb-link" active-class="active" title="内容分发：多平台内容发布与管理" aria-label="内容分发">
         <span class="sb-icon" aria-hidden="true">📱</span>
         <span v-if="!isCollapsed">内容分发</span>
       </router-link>
-      <router-link to="/app/supply" class="sb-link" active-class="active" :title="isCollapsed ? '商业转化' : ''" aria-label="商业转化">
+      <router-link to="/app/supply" class="sb-link" active-class="active" title="商业转化：授权变现、交易撮合、合同管理" aria-label="商业转化">
         <span class="sb-icon" aria-hidden="true">💰</span>
         <span v-if="!isCollapsed">商业转化</span>
       </router-link>
 
       <!-- 经营管理 -->
       <div v-if="!isCollapsed" class="sb-section-title">经营管理</div>
-      <router-link to="/app/business" class="sb-link" active-class="active" :title="isCollapsed ? '经营数据' : ''" aria-label="经营数据">
+      <router-link to="/app/business" class="sb-link" active-class="active" title="经营数据：业务收入统计与数据分析" aria-label="经营数据">
         <span class="sb-icon" aria-hidden="true">📈</span>
         <span v-if="!isCollapsed">经营数据</span>
       </router-link>
-      <router-link to="/app/recycle" class="sb-link" active-class="active" :title="isCollapsed ? '回收站' : ''" aria-label="回收站">
+      <router-link to="/app/recycle" class="sb-link" active-class="active" title="回收站：已删除作品的临时存放区，保留30天" aria-label="回收站">
         <span class="sb-icon" aria-hidden="true">🗑️</span>
         <span v-if="!isCollapsed">回收站</span>
       </router-link>
-      <router-link to="/app/projects" class="sb-link" active-class="active" :title="isCollapsed ? '项目分组' : ''" aria-label="项目分组">
+      <router-link to="/app/projects" class="sb-link" active-class="active" title="项目分组：按系列/客户/年份组织作品" aria-label="项目分组">
         <span class="sb-icon" aria-hidden="true">📂</span>
         <span v-if="!isCollapsed">项目分组</span>
       </router-link>
-      <router-link to="/app/works/cull" class="sb-link" active-class="active" :title="isCollapsed ? '审片视图' : ''" aria-label="审片视图">
+      <router-link to="/app/works/cull" class="sb-link" active-class="active" title="审片视图：作品批量筛选与审核" aria-label="审片视图">
         <span class="sb-icon" aria-hidden="true">🔍</span>
         <span v-if="!isCollapsed">审片视图</span>
       </router-link>
-      <router-link to="/app/business/commissions" class="sb-link" active-class="active" :title="isCollapsed ? '委托看板' : ''" aria-label="委托看板">
+      <router-link to="/app/business/commissions" class="sb-link" active-class="active" title="委托看板：客户委托任务管理" aria-label="委托看板">
         <span class="sb-icon" aria-hidden="true">📋</span>
         <span v-if="!isCollapsed">委托看板</span>
       </router-link>
 
       <!-- 设置 -->
       <div v-if="!isCollapsed" class="sb-section-title">{{ t('sidebar.settings') }}</div>
-      <router-link to="/app/settings" class="sb-link" active-class="active" :title="isCollapsed ? '设置' : ''" aria-label="偏好设置">
+      <router-link to="/app/settings" class="sb-link" active-class="active" title="偏好设置：主题、语言、通知等系统配置" aria-label="偏好设置">
         <span class="sb-icon" aria-hidden="true">⚙️</span>
         <span v-if="!isCollapsed">偏好设置</span>
       </router-link>
-      <router-link to="/app/integrations" class="sb-link" active-class="active" :title="isCollapsed ? '对接' : ''" aria-label="第三方对接">
+      <router-link to="/app/integrations" class="sb-link" active-class="active" title="第三方对接：连接外部平台与服务" aria-label="第三方对接">
         <span class="sb-icon" aria-hidden="true">🔌</span>
         <span v-if="!isCollapsed">第三方对接</span>
       </router-link>
-      <router-link to="/app/settings/watermarks" class="sb-link" active-class="active" :title="isCollapsed ? '水印预设' : ''" aria-label="水印预设">
+      <router-link to="/app/settings/watermarks" class="sb-link" active-class="active" title="水印预设：自定义图片/视频水印样式" aria-label="水印预设">
         <span class="sb-icon" aria-hidden="true">🖊️</span>
         <span v-if="!isCollapsed">水印预设</span>
       </router-link>
-      <router-link to="/app/settings/templates" class="sb-link" active-class="active" :title="isCollapsed ? '模板管理' : ''" aria-label="模板管理">
+      <router-link to="/app/settings/templates" class="sb-link" active-class="active" title="模板管理：合同/协议模板管理" aria-label="模板管理">
         <span class="sb-icon" aria-hidden="true">📄</span>
         <span v-if="!isCollapsed">模板管理</span>
       </router-link>
-      <router-link to="/app/settings/subscriptions" class="sb-link" active-class="active" :title="isCollapsed ? '订阅管理' : ''" aria-label="订阅管理">
+      <router-link to="/app/settings/subscriptions" class="sb-link" active-class="active" title="订阅管理：查看和升级会员订阅" aria-label="订阅管理">
         <span class="sb-icon" aria-hidden="true">💎</span>
         <span v-if="!isCollapsed">订阅管理</span>
       </router-link>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useI18n } from '@/composables/useI18n'
 
@@ -114,6 +114,7 @@ defineProps<{ mobileVisible?: boolean }>()
 
 const appStore = useAppStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
+const isHovering = ref(false)
 const { t } = useI18n()
 </script>
 
@@ -132,6 +133,9 @@ const { t } = useI18n()
 }
 .sidebar.collapsed {
   width: 60px;
+}
+.sidebar.collapsed.hover-expand {
+  width: var(--sidebar-w);
 }
 .dark .sidebar {
   background: oklch(22% 0.01 240);

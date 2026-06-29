@@ -3,6 +3,7 @@
     <div class="chain-steps">
       <template v-for="(step, idx) in steps" :key="step.key">
         <router-link :to="step.route" :class="['chain-step', { active: step.active, done: step.done }]" :aria-current="step.active ? 'step' : undefined">
+          <span class="step-num">{{ idx + 1 }}</span>
           <span class="step-icon">{{ step.done ? '✅' : step.icon }}</span>
           <span class="step-label">{{ step.label }}</span>
         </router-link>
@@ -53,5 +54,26 @@ const steps = computed(() => {
 .chain-step.done { color: var(--fg); }
 .step-icon { font-size: 0.85rem; }
 .chain-arrow { color: var(--border); font-size: 0.75rem; }
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--border);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.chain-step.active .step-num {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+}
+.chain-step.done .step-num {
+  background: var(--accent);
+  color: #fff;
+}
 @media (max-width: 767px) { .chain-bar { overflow-x: auto; } .chain-steps { flex-wrap: nowrap; } }
 </style>

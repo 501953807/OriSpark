@@ -39,6 +39,7 @@ import type { AiSession } from '@/types/ai_session'
 const props = defineProps<{ workId: string }>()
 const emit = defineEmits<{
   delete: [sessionId: string]
+  add: [session: { tool_name: string; prompt: string; model_name?: string }]
 }>()
 
 defineSlots<{

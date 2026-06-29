@@ -18,6 +18,10 @@
           </div>
         </div>
         <div class="disclaimer-footer">
+          <label class="disclaimer-checkbox-label">
+            <input type="checkbox" v-model="dismissDisclaimers" />
+            <span>本次登录不再提示</span>
+          </label>
           <button class="btn btn-primary btn-lg" @click="acceptDisclaimers">我已阅读并同意</button>
         </div>
       </div>
@@ -1032,6 +1036,7 @@ import client from '@/api/client'
 
 // ─── Phase 0.1: 免责声明强制确认 ─────────────
 const disclaimersAccepted = ref(localStorage.getItem('ipr_disclaimer_accepted') === 'true')
+const dismissDisclaimers = ref(false)
 const disclaimerMessages = [
   '1. 不构成律师-客户关系：OriStudio 是软件工具，不是律师事务所。使用本软件不建立律师-客户特权关系。',
   '2. 不构成法律建议：系统提供的IP登记指引、分类推荐、费用估算仅供参考，不构成正式法律意见。做法律决策前应咨询持证律师。',
@@ -1041,6 +1046,7 @@ const disclaimerMessages = [
 function acceptDisclaimers() {
   disclaimersAccepted.value = true
   localStorage.setItem('ipr_disclaimer_accepted', 'true')
+  dismissDisclaimers.value = false
   // Also persist to backend
   try {
     fetch('/api/system/disclaimers/accept', {
@@ -1978,7 +1984,12 @@ onMounted(() => {
   border-radius: 50%; font-size: .78rem; font-weight: 700;
   flex-shrink: 0;
 }
-.disclaimer-footer { margin-top: 8px; }
+.disclaimer-footer { margin-top: 8px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.disclaimer-checkbox-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.82rem; color: var(--muted); cursor: pointer;
+}
+.disclaimer-checkbox-label input { width: 15px; height: 15px; cursor: pointer; }
 
 /* ── Detail & Supplement Modals ─────────────────── */
 .detail-header-card { display: flex; gap: 8px; align-items: center; padding: 12px; background: oklch(96% .003 240); border-radius: var(--radius-sm); margin-bottom: 12px; }
