@@ -1,0 +1,2282 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/app/services/logo_detector.py",
+      "type": "file",
+      "name": "logo_detector.py",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "Logo 检测服务，通过模板匹配识别品牌侵权。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/services/logo_detector.py:LogoMatchResult",
+      "type": "class",
+      "name": "LogoMatchResult",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "LogoMatchResult — 服务类，提供 logomatchresult 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/services/logo_detector.py:LogoScanResult",
+      "type": "class",
+      "name": "LogoScanResult",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "LogoScanResult — 服务类，提供 logoscanresult 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/logo_detector.py:load_image",
+      "type": "function",
+      "name": "load_image",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "load_image — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/logo_detector.py:template_match_ncc",
+      "type": "function",
+      "name": "template_match_ncc",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "template_match_ncc — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/logo_detector.py:multi_scale_template_match",
+      "type": "function",
+      "name": "multi_scale_template_match",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "multi_scale_template_match — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/logo_detector.py:scan_target_for_logos",
+      "type": "function",
+      "name": "scan_target_for_logos",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "scan_target_for_logos — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/logo_detector.py:generate_mock_ecommerce_results",
+      "type": "function",
+      "name": "generate_mock_ecommerce_results",
+      "filePath": "backend/app/services/logo_detector.py",
+      "summary": "generate_mock_ecommerce_results — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/merkle_tree.py",
+      "type": "file",
+      "name": "merkle_tree.py",
+      "filePath": "backend/app/services/merkle_tree.py",
+      "summary": "Merkle 树服务，构建 Merkle 树并计算证明和根哈希。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/services/merkle_tree.py:MerkleTree",
+      "type": "class",
+      "name": "MerkleTree",
+      "filePath": "backend/app/services/merkle_tree.py",
+      "summary": "MerkleTree — 服务类，提供 merkletree 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/merkle_tree.py:build_merkle_tree",
+      "type": "function",
+      "name": "build_merkle_tree",
+      "filePath": "backend/app/services/merkle_tree.py",
+      "summary": "build_merkle_tree — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/merkle_tree.py:get_merkle_root",
+      "type": "function",
+      "name": "get_merkle_root",
+      "filePath": "backend/app/services/merkle_tree.py",
+      "summary": "get_merkle_root — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/merkle_tree.py:get_merkle_proof",
+      "type": "function",
+      "name": "get_merkle_proof",
+      "filePath": "backend/app/services/merkle_tree.py",
+      "summary": "get_merkle_proof — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/search_service.py",
+      "type": "file",
+      "name": "search_service.py",
+      "filePath": "backend/app/services/search_service.py",
+      "summary": "全文搜索服务，管理 SQLite FTS5 索引和作品检索。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/search_service.py:setup_fts5",
+      "type": "function",
+      "name": "setup_fts5",
+      "filePath": "backend/app/services/search_service.py",
+      "summary": "setup_fts5 — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/search_service.py:search_works_fts",
+      "type": "function",
+      "name": "search_works_fts",
+      "filePath": "backend/app/services/search_service.py",
+      "summary": "search_works_fts — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/seed_data.py",
+      "type": "file",
+      "name": "seed_data.py",
+      "filePath": "backend/app/services/seed_data.py",
+      "summary": "种子数据服务，预填充类目、变现路径和初始配置数据。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/app/services/seed_data.py:get_categories_by_material",
+      "type": "function",
+      "name": "get_categories_by_material",
+      "filePath": "backend/app/services/seed_data.py",
+      "summary": "get_categories_by_material — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/seed_data.py:get_category_by_id",
+      "type": "function",
+      "name": "get_category_by_id",
+      "filePath": "backend/app/services/seed_data.py",
+      "summary": "get_category_by_id — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/seed_data.py:get_monetization_path",
+      "type": "function",
+      "name": "get_monetization_path",
+      "filePath": "backend/app/services/seed_data.py",
+      "summary": "get_monetization_path — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/spec_checker.py",
+      "type": "file",
+      "name": "spec_checker.py",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "设计规范检查服务，验证设计稿兼容性和生成修复建议。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/app/services/spec_checker.py:SpecCheckResult",
+      "type": "class",
+      "name": "SpecCheckResult",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "SpecCheckResult — 服务类，提供 speccheckresult 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/services/spec_checker.py:SpecValidationReport",
+      "type": "class",
+      "name": "SpecValidationReport",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "SpecValidationReport — 服务类，提供 specvalidationreport 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/spec_checker.py:validate_design_spec",
+      "type": "function",
+      "name": "validate_design_spec",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "validate_design_spec — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/spec_checker.py:validate_for_multiple_categories",
+      "type": "function",
+      "name": "validate_for_multiple_categories",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "validate_for_multiple_categories — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/services/spec_checker.py:CompatibleTemplateResult",
+      "type": "class",
+      "name": "CompatibleTemplateResult",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "CompatibleTemplateResult — 服务类，提供 compatibletemplateresult 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/spec_checker.py:get_compatible_templates",
+      "type": "function",
+      "name": "get_compatible_templates",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "get_compatible_templates — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/spec_checker.py:compute_remediation_suggestions",
+      "type": "function",
+      "name": "compute_remediation_suggestions",
+      "filePath": "backend/app/services/spec_checker.py",
+      "summary": "compute_remediation_suggestions — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/subscription_service.py",
+      "type": "file",
+      "name": "subscription_service.py",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "订阅管理服务，处理会员等级和订阅业务的逻辑。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:create_tier",
+      "type": "function",
+      "name": "create_tier",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "create_tier — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:list_tiers",
+      "type": "function",
+      "name": "list_tiers",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "list_tiers — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:get_tier",
+      "type": "function",
+      "name": "get_tier",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "get_tier — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:update_tier",
+      "type": "function",
+      "name": "update_tier",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "update_tier — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:delete_tier",
+      "type": "function",
+      "name": "delete_tier",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "delete_tier — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:subscribe",
+      "type": "function",
+      "name": "subscribe",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "subscribe — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:unsubscribe",
+      "type": "function",
+      "name": "unsubscribe",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "unsubscribe — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/subscription_service.py:get_user_subscriptions",
+      "type": "function",
+      "name": "get_user_subscriptions",
+      "filePath": "backend/app/services/subscription_service.py",
+      "summary": "get_user_subscriptions — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/vc_service.py",
+      "type": "file",
+      "name": "vc_service.py",
+      "filePath": "backend/app/services/vc_service.py",
+      "summary": "可验证凭证服务，处理 VC 创建、签名和验证。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/services/vc_service.py:create_work_credential",
+      "type": "function",
+      "name": "create_work_credential",
+      "filePath": "backend/app/services/vc_service.py",
+      "summary": "create_work_credential — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/vc_service.py:verify_credential",
+      "type": "function",
+      "name": "verify_credential",
+      "filePath": "backend/app/services/vc_service.py",
+      "summary": "verify_credential — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/vc_service.py:create_work_credential_full",
+      "type": "function",
+      "name": "create_work_credential_full",
+      "filePath": "backend/app/services/vc_service.py",
+      "summary": "create_work_credential_full — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/verified_badge.py",
+      "type": "file",
+      "name": "verified_badge.py",
+      "filePath": "backend/app/services/verified_badge.py",
+      "summary": "验证徽章服务，管理数字商品的防伪验证标识。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/services/verified_badge.py:VerifiedBadgeService",
+      "type": "class",
+      "name": "VerifiedBadgeService",
+      "filePath": "backend/app/services/verified_badge.py",
+      "summary": "VerifiedBadgeService — 服务类，提供 verifiedbadgeservice 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/watermark_seed.py",
+      "type": "file",
+      "name": "watermark_seed.py",
+      "filePath": "backend/app/services/watermark_seed.py",
+      "summary": "水印种子服务，预填充默认水印预设配置。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/watermark_seed.py:seed_default_presets",
+      "type": "function",
+      "name": "seed_default_presets",
+      "filePath": "backend/app/services/watermark_seed.py",
+      "summary": "seed_default_presets — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/watermark_service.py",
+      "type": "file",
+      "name": "watermark_service.py",
+      "filePath": "backend/app/services/watermark_service.py",
+      "summary": "水印服务，校验配置并合成图片水印。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/watermark_service.py:validate_config",
+      "type": "function",
+      "name": "validate_config",
+      "filePath": "backend/app/services/watermark_service.py",
+      "summary": "validate_config — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/watermark_service.py:generate_watermark_preview",
+      "type": "function",
+      "name": "generate_watermark_preview",
+      "filePath": "backend/app/services/watermark_service.py",
+      "summary": "generate_watermark_preview — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/watermark_service.py:apply_watermark",
+      "type": "function",
+      "name": "apply_watermark",
+      "filePath": "backend/app/services/watermark_service.py",
+      "summary": "apply_watermark — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/websocket_manager.py",
+      "type": "file",
+      "name": "websocket_manager.py",
+      "filePath": "backend/app/services/websocket_manager.py",
+      "summary": "WebSocket 连接管理器，维护连接状态并推送通知。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/services/websocket_manager.py:ConnectionManager",
+      "type": "class",
+      "name": "ConnectionManager",
+      "filePath": "backend/app/services/websocket_manager.py",
+      "summary": "ConnectionManager — 服务类，提供 connectionmanager 的核心业务逻辑。",
+      "tags": [
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/whitelist_learner.py",
+      "type": "file",
+      "name": "whitelist_learner.py",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "白名单学习器，学习域名监控白名单并智能推荐。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/services/whitelist_learner.py:extract_domain_pattern",
+      "type": "function",
+      "name": "extract_domain_pattern",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "extract_domain_pattern — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/whitelist_learner.py:record_whitelist_action",
+      "type": "function",
+      "name": "record_whitelist_action",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "record_whitelist_action — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/whitelist_learner.py:get_pending_suggestions",
+      "type": "function",
+      "name": "get_pending_suggestions",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "get_pending_suggestions — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/whitelist_learner.py:accept_suggestion",
+      "type": "function",
+      "name": "accept_suggestion",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "accept_suggestion — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/whitelist_learner.py:decline_suggestion",
+      "type": "function",
+      "name": "decline_suggestion",
+      "filePath": "backend/app/services/whitelist_learner.py",
+      "summary": "decline_suggestion — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/work_service.py",
+      "type": "file",
+      "name": "work_service.py",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "作品服务，处理图片维度获取、缩略图生成和元数据提取。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:get_image_dimensions",
+      "type": "function",
+      "name": "get_image_dimensions",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "get_image_dimensions — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:detect_file_type",
+      "type": "function",
+      "name": "detect_file_type",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "detect_file_type — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:generate_thumbnail",
+      "type": "function",
+      "name": "generate_thumbnail",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "generate_thumbnail — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:extract_exif",
+      "type": "function",
+      "name": "extract_exif",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "extract_exif — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:extract_audio_metadata",
+      "type": "function",
+      "name": "extract_audio_metadata",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "extract_audio_metadata — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:extract_video_metadata",
+      "type": "function",
+      "name": "extract_video_metadata",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "extract_video_metadata — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:extract_document_metadata",
+      "type": "function",
+      "name": "extract_document_metadata",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "extract_document_metadata — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/services/work_service.py:get_all_metadata",
+      "type": "function",
+      "name": "get_all_metadata",
+      "filePath": "backend/app/services/work_service.py",
+      "summary": "get_all_metadata — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "service",
+        "business-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/app/tasks/__init__.py",
+      "summary": "Celery 异步任务包入口。",
+      "tags": [
+        "barrel",
+        "entry-point",
+        "module"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/backup_tasks.py",
+      "type": "file",
+      "name": "backup_tasks.py",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "备份定时任务，处理自动备份、审计日志清理和提醒检查。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "function",
+      "name": "create_backup_task",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "create_backup_task — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:cleanup_audit_logs",
+      "type": "function",
+      "name": "cleanup_audit_logs",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "cleanup_audit_logs — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "type": "function",
+      "name": "auto_backup",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "auto_backup — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:check_reminders",
+      "type": "function",
+      "name": "check_reminders",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "check_reminders — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/celery_app.py",
+      "type": "file",
+      "name": "celery_app.py",
+      "filePath": "backend/app/tasks/celery_app.py",
+      "summary": "Celery 应用配置，初始化异步任务队列。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/cert_tasks.py",
+      "type": "file",
+      "name": "cert_tasks.py",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "summary": "证书异步任务，批量生成数字证书。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "function",
+      "name": "generate_certificate_async",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "summary": "generate_certificate_async — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "type": "function",
+      "name": "batch_generate_certificates",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "summary": "batch_generate_certificates — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/hash_tasks.py",
+      "type": "file",
+      "name": "hash_tasks.py",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "summary": "哈希异步任务，批量计算文件哈希并更新。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "function",
+      "name": "compute_file_hash",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "summary": "compute_file_hash — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "type": "function",
+      "name": "batch_compute_hashes",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "summary": "batch_compute_hashes — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:update_work_hash",
+      "type": "function",
+      "name": "update_work_hash",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "summary": "update_work_hash — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/monitor_tasks.py",
+      "type": "file",
+      "name": "monitor_tasks.py",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "summary": "监控异步任务，执行计划扫描和定时检测。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/monitor_tasks.py:run_scan_for_task",
+      "type": "function",
+      "name": "run_scan_for_task",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "summary": "run_scan_for_task — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/monitor_tasks.py:run_scheduled_scans",
+      "type": "function",
+      "name": "run_scheduled_scans",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "summary": "run_scheduled_scans — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "async",
+        "celery",
+        "task"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/utils/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/app/utils/__init__.py",
+      "summary": "工具函数包入口。",
+      "tags": [
+        "barrel",
+        "entry-point",
+        "module"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/utils/crypto.py",
+      "type": "file",
+      "name": "crypto.py",
+      "filePath": "backend/app/utils/crypto.py",
+      "summary": "加密工具函数，提供 AES/Fernet 加密解密能力。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/crypto.py:get_fernet",
+      "type": "function",
+      "name": "get_fernet",
+      "filePath": "backend/app/utils/crypto.py",
+      "summary": "get_fernet — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/crypto.py:encrypt",
+      "type": "function",
+      "name": "encrypt",
+      "filePath": "backend/app/utils/crypto.py",
+      "summary": "encrypt — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/crypto.py:decrypt",
+      "type": "function",
+      "name": "decrypt",
+      "filePath": "backend/app/utils/crypto.py",
+      "summary": "decrypt — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/utils/file_utils.py",
+      "type": "file",
+      "name": "file_utils.py",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "文件工具函数，处理安全文件名和路径操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/file_utils.py:safe_filename",
+      "type": "function",
+      "name": "safe_filename",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "safe_filename — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/file_utils.py:get_unique_path",
+      "type": "function",
+      "name": "get_unique_path",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "get_unique_path — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/file_utils.py:copy_file_safe",
+      "type": "function",
+      "name": "copy_file_safe",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "copy_file_safe — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/file_utils.py:delete_file_safe",
+      "type": "function",
+      "name": "delete_file_safe",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "delete_file_safe — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/file_utils.py:get_file_size_formatted",
+      "type": "function",
+      "name": "get_file_size_formatted",
+      "filePath": "backend/app/utils/file_utils.py",
+      "summary": "get_file_size_formatted — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/utils/qrcode_util.py",
+      "type": "file",
+      "name": "qrcode_util.py",
+      "filePath": "backend/app/utils/qrcode_util.py",
+      "summary": "二维码工具，生成支付码和验证码。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/qrcode_util.py:generate_qr",
+      "type": "function",
+      "name": "generate_qr",
+      "filePath": "backend/app/utils/qrcode_util.py",
+      "summary": "generate_qr — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/qrcode_util.py:generate_payment_qr",
+      "type": "function",
+      "name": "generate_payment_qr",
+      "filePath": "backend/app/utils/qrcode_util.py",
+      "summary": "generate_payment_qr — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/utils/qrcode_util.py:generate_verification_qr",
+      "type": "function",
+      "name": "generate_verification_qr",
+      "filePath": "backend/app/utils/qrcode_util.py",
+      "summary": "generate_verification_qr — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "utility",
+        "helper",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/backups/backup_20260612_063437.zip.enc",
+      "type": "file",
+      "name": "backup_20260612_063437.zip.enc",
+      "filePath": "backend/data/backups/backup_20260612_063437.zip.enc",
+      "summary": "加密备份文件，包含系统数据的 AES 加密归档。",
+      "tags": [
+        "data",
+        "storage",
+        "resource"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/backups/db_20260612_063437.bak",
+      "type": "file",
+      "name": "db_20260612_063437.bak",
+      "filePath": "backend/data/backups/db_20260612_063437.bak",
+      "summary": "数据库备份文件，SQLite 数据库的原始备份副本。",
+      "tags": [
+        "data",
+        "storage",
+        "resource"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "class:backend/app/services/logo_detector.py:LogoMatchResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "class:backend/app/services/logo_detector.py:LogoMatchResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "class:backend/app/services/logo_detector.py:LogoScanResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "class:backend/app/services/logo_detector.py:LogoScanResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:load_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:load_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:template_match_ncc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:template_match_ncc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:multi_scale_template_match",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:multi_scale_template_match",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:scan_target_for_logos",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:scan_target_for_logos",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:generate_mock_ecommerce_results",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/logo_detector.py",
+      "target": "function:backend/app/services/logo_detector.py:generate_mock_ecommerce_results",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "class:backend/app/services/merkle_tree.py:MerkleTree",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "class:backend/app/services/merkle_tree.py:MerkleTree",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:build_merkle_tree",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:build_merkle_tree",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:get_merkle_root",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:get_merkle_root",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:get_merkle_proof",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/merkle_tree.py",
+      "target": "function:backend/app/services/merkle_tree.py:get_merkle_proof",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/search_service.py",
+      "target": "function:backend/app/services/search_service.py:setup_fts5",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/search_service.py",
+      "target": "function:backend/app/services/search_service.py:setup_fts5",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/search_service.py",
+      "target": "function:backend/app/services/search_service.py:search_works_fts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/search_service.py",
+      "target": "function:backend/app/services/search_service.py:search_works_fts",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_categories_by_material",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_categories_by_material",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_category_by_id",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_category_by_id",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_monetization_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/seed_data.py",
+      "target": "function:backend/app/services/seed_data.py:get_monetization_path",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:SpecCheckResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:SpecCheckResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:SpecValidationReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:SpecValidationReport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:validate_design_spec",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:validate_design_spec",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:validate_for_multiple_categories",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:validate_for_multiple_categories",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:CompatibleTemplateResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "class:backend/app/services/spec_checker.py:CompatibleTemplateResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:get_compatible_templates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:get_compatible_templates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:compute_remediation_suggestions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/spec_checker.py",
+      "target": "function:backend/app/services/spec_checker.py:compute_remediation_suggestions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:create_tier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:create_tier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:list_tiers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:list_tiers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:get_tier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:get_tier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:update_tier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:update_tier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:delete_tier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:delete_tier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:subscribe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:subscribe",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:unsubscribe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:unsubscribe",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:get_user_subscriptions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/subscription_service.py",
+      "target": "function:backend/app/services/subscription_service.py:get_user_subscriptions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:create_work_credential",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:create_work_credential",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:verify_credential",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:verify_credential",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:create_work_credential_full",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/vc_service.py",
+      "target": "function:backend/app/services/vc_service.py:create_work_credential_full",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/verified_badge.py",
+      "target": "class:backend/app/services/verified_badge.py:VerifiedBadgeService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/verified_badge.py",
+      "target": "class:backend/app/services/verified_badge.py:VerifiedBadgeService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/watermark_seed.py",
+      "target": "function:backend/app/services/watermark_seed.py:seed_default_presets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/watermark_seed.py",
+      "target": "function:backend/app/services/watermark_seed.py:seed_default_presets",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:validate_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:validate_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:generate_watermark_preview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:generate_watermark_preview",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:apply_watermark",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/watermark_service.py",
+      "target": "function:backend/app/services/watermark_service.py:apply_watermark",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/websocket_manager.py",
+      "target": "class:backend/app/services/websocket_manager.py:ConnectionManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/websocket_manager.py",
+      "target": "class:backend/app/services/websocket_manager.py:ConnectionManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:extract_domain_pattern",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:extract_domain_pattern",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:record_whitelist_action",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:record_whitelist_action",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:get_pending_suggestions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:get_pending_suggestions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:accept_suggestion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:accept_suggestion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:decline_suggestion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/whitelist_learner.py",
+      "target": "function:backend/app/services/whitelist_learner.py:decline_suggestion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:get_image_dimensions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:get_image_dimensions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:detect_file_type",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:detect_file_type",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:generate_thumbnail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:generate_thumbnail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_exif",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_exif",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_audio_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_audio_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_video_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_video_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_document_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:extract_document_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:get_all_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/services/work_service.py",
+      "target": "function:backend/app/services/work_service.py:get_all_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:cleanup_audit_logs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:cleanup_audit_logs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:check_reminders",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:check_reminders",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:update_work_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:update_work_hash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scan_for_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scan_for_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scheduled_scans",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scheduled_scans",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:get_fernet",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:get_fernet",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:encrypt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:encrypt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:decrypt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/crypto.py",
+      "target": "function:backend/app/utils/crypto.py:decrypt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:safe_filename",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:safe_filename",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:get_unique_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:get_unique_path",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:copy_file_safe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:copy_file_safe",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:delete_file_safe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:delete_file_safe",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:get_file_size_formatted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/file_utils.py",
+      "target": "function:backend/app/utils/file_utils.py:get_file_size_formatted",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_qr",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_qr",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_payment_qr",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_payment_qr",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_verification_qr",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/utils/qrcode_util.py",
+      "target": "function:backend/app/utils/qrcode_util.py:generate_verification_qr",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

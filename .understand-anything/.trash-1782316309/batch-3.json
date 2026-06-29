@@ -1,0 +1,265 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/alembic/env.py",
+      "type": "file",
+      "name": "env.py",
+      "filePath": "backend/alembic/env.py",
+      "summary": "Alembic migration environment configuration targeting SQLAlchemy metadata and database URL from settings.",
+      "tags": ["migration", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/database.py",
+      "type": "file",
+      "name": "database.py",
+      "filePath": "backend/app/database.py",
+      "summary": "SQLAlchemy engine, SessionLocal factory, and Base declarative mixin with SQLite PRAGMA optimizations for WAL mode and foreign key enforcement.",
+      "tags": ["database", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/database.py:get_db",
+      "type": "function",
+      "name": "get_db",
+      "filePath": "backend/app/database.py",
+      "lineRange": [40, 46],
+      "summary": "FastAPI generator dependency yielding a SQLAlchemy session with guaranteed cleanup.",
+      "tags": ["dependency", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/migrations/migrate_products_to_listings.py",
+      "type": "file",
+      "name": "migrate_products_to_listings.py",
+      "filePath": "backend/app/migrations/migrate_products_to_listings.py",
+      "summary": "Data migration script transforming legacy Product table records into new DesignListing schema.",
+      "tags": ["migration", "data-migration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/app/models/__init__.py",
+      "summary": "Models barrel file re-exporting all 40+ SQLAlchemy model classes and providing target_metadata for Alembic migrations.",
+      "tags": ["barrel", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/base.py",
+      "type": "file",
+      "name": "base.py",
+      "filePath": "backend/app/models/base.py",
+      "summary": "Declarative base mixin with common audit columns (created_at, updated_at, deleted_at) and table name generation, importing all other model modules.",
+      "tags": ["data-model", "base-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/base.py:BaseMixin",
+      "type": "class",
+      "name": "BaseMixin",
+      "filePath": "backend/app/models/base.py",
+      "lineRange": [12, 35],
+      "summary": "SQLAlchemy mixin adding created_at, updated_at, and deleted_at audit timestamp columns with automatic updated_at refresh on commit.",
+      "tags": ["mixin", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/base.py:SoftDeleteMixin",
+      "type": "class",
+      "name": "SoftDeleteMixin",
+      "filePath": "backend/app/models/base.py",
+      "lineRange": [38, 50],
+      "summary": "Mixin enabling soft delete via deleted_at column with undelete functionality.",
+      "tags": ["mixin", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/base.py:TimestampMixin",
+      "type": "class",
+      "name": "TimestampMixin",
+      "filePath": "backend/app/models/base.py",
+      "lineRange": [53, 65],
+      "summary": "Mixin adding only created_at and updated_at columns without deletion semantics.",
+      "tags": ["mixin", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/commission.py",
+      "type": "file",
+      "name": "commission.py",
+      "filePath": "backend/app/models/commission.py",
+      "summary": "Freelance commission models: CommissionProject, CommissionOrder, CommissionMessage with status enums and foreign key links.",
+      "tags": ["data-model", "business-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/factory.py",
+      "type": "file",
+      "name": "factory.py",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "Factory/RFQ models: RFQRequest with product specs, Sample with evaluation tracking, and QualityReport with pass/fail status.",
+      "tags": ["data-model", "supply-chain"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/ipr.py",
+      "type": "file",
+      "name": "ipr.py",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "Intellectual property registration models: IPRegistration, TrademarkClass, CopyrightRegistration, TrademarkRegistration, and TrademarkMonitoring.",
+      "tags": ["data-model", "ipr"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/listings.py",
+      "type": "file",
+      "name": "listings.py",
+      "filePath": "backend/app/models/listings.py",
+      "summary": "Design listing models: DesignListing (multi-platform publishing target) and DesignTemplateCompatibility (template mapping).",
+      "tags": ["data-model", "publishing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/metadata_template.py",
+      "type": "file",
+      "name": "metadata_template.py",
+      "filePath": "backend/app/models/metadata_template.py",
+      "summary": "Metadata template ORM models: MetadataTemplate and TemplateField for IPTC/EXIF field definitions applied to works.",
+      "tags": ["data-model", "metadata"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/monetization.py",
+      "type": "file",
+      "name": "monetization.py",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "Monetization models: ProductTemplate, MonetizationChannel, Campaign, and License with pricing and attribution tracking.",
+      "tags": ["data-model", "monetization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/monitor.py",
+      "type": "file",
+      "name": "monitor.py",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "IP monitoring models: MonitorTask with schedule, MonitorResult with violation detection, EvidencePackage for screenshots, and ScanSchedule for periodic checks.",
+      "tags": ["data-model", "monitoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/notary.py",
+      "type": "file",
+      "name": "notary.py",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "Blockchain notary models: NotaryRecord (work registration with blockchain hash), Certificate (notary certificate data), C2PARecord (C2PA content authenticity), and NotaryAuditTrail.",
+      "tags": ["data-model", "notary"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/publish.py",
+      "type": "file",
+      "name": "publish.py",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "Product and POD publishing models: Product, ProductPublishing, VerifiedMark, RevenueRecord with platform-specific fields.",
+      "tags": ["data-model", "publishing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/quality_inspection.py",
+      "type": "file",
+      "name": "quality_inspection.py",
+      "filePath": "backend/app/models/quality_inspection.py",
+      "summary": "Quality inspection model tracking factory sample inspections with pass/fail criteria and defect codes.",
+      "tags": ["data-model", "quality"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_crafts.py",
+      "type": "file",
+      "name": "reserved_crafts.py",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "Reserved domain models for crafts vertical: PhysicalProduct, MaterialInventory, CraftWorkshop, and CraftOrder.",
+      "tags": ["data-model", "crafts"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_music.py",
+      "type": "file",
+      "name": "reserved_music.py",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "Music vertical models: Album, AlbumTrack, DistributionRelease, MusicLicense, and RoyaltySplit with ISRC/ean metadata.",
+      "tags": ["data-model", "music"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/reserved_photographer.py",
+      "type": "file",
+      "name": "reserved_photographer.py",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "Photography vertical models: RawFormat, StockChannel, PhotoLicense with EXIF metadata tracking.",
+      "tags": ["data-model", "photography"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/models/reserved_video.py",
+      "type": "file",
+      "name": "reserved_video.py",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "Video vertical models: BrandCampaign, BrandTask, PlatformGoal for creator brand deal tracking.",
+      "tags": ["data-model", "video"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {"source": "file:backend/alembic/env.py", "target": "file:backend/app/config.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/alembic/env.py", "target": "file:backend/app/models/__init__.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/alembic/env.py", "target": "file:backend/app/database.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/migrations/migrate_products_to_listings.py", "target": "file:backend/app/models/publish.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/migrations/migrate_products_to_listings.py", "target": "file:backend/app/models/listings.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/migrations/migrate_products_to_listings.py", "target": "file:backend/app/database.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/system.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/work.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/publish.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/commission.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/factory.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/ipr.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/listings.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/metadata_template.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/monetization.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/monitor.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/notary.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/quality_inspection.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/reserved_crafts.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/reserved_music.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/reserved_photographer.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/reserved_video.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/reserved_writing.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/subscription.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/subtitle.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/supply.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/video_fingerprint.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/watermark.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/__init__.py", "target": "file:backend/app/models/work_variant.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/base.py", "target": "class:backend/app/models/base.py:BaseMixin", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:backend/app/models/base.py", "target": "class:backend/app/models/base.py:SoftDeleteMixin", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:backend/app/models/base.py", "target": "class:backend/app/models/base.py:TimestampMixin", "type": "contains", "direction": "forward", "weight": 1.0},
+    {"source": "file:backend/app/models/base.py", "target": "file:backend/app/database.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/commission.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/factory.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/ipr.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/listings.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/metadata_template.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/monetization.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/monitor.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/notary.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/publish.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/quality_inspection.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/reserved_crafts.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/reserved_music.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/reserved_photographer.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:backend/app/models/reserved_video.py", "target": "file:backend/app/models/base.py", "type": "imports", "direction": "forward", "weight": 0.7}
+  ]
+}

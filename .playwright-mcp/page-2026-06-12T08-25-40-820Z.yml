@@ -1,0 +1,134 @@
+- generic [ref=e4]:
+  - link "跳转到主内容" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主导航" [ref=e6]:
+    - link "OriStudio 首页" [ref=e7] [cursor=pointer]:
+      - /url: /app
+      - generic [ref=e8]: O
+      - generic [ref=e9]:
+        - generic [ref=e10]: OriStudio
+        - generic [ref=e11]: 创作者全链路助手
+    - navigation [ref=e12]:
+      - generic [ref=e13]: 概览
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /app
+        - generic [ref=e15]: 📊
+        - generic [ref=e16]: 工作台
+      - generic [ref=e17]: 核心模块
+      - link "作品管理" [ref=e18] [cursor=pointer]:
+        - /url: /app/works
+        - generic [ref=e19]: 🎨
+        - generic [ref=e20]: 作品管理
+        - generic [ref=e21]: "0"
+      - link "存证确权" [ref=e22] [cursor=pointer]:
+        - /url: /app/notary
+        - generic [ref=e23]: 🔒
+        - generic [ref=e24]: 存证确权
+        - generic [ref=e25]: "0"
+      - link "侵权监测" [ref=e26] [cursor=pointer]:
+        - /url: /app/monitor
+        - generic [ref=e27]: 🛡️
+        - generic [ref=e28]: 侵权监测
+      - link "IP 登记" [ref=e29] [cursor=pointer]:
+        - /url: /app/ipr
+        - generic [ref=e30]: 📋
+        - generic [ref=e31]: IP 登记
+      - link "创作变现" [ref=e32] [cursor=pointer]:
+        - /url: /app/supply
+        - generic [ref=e33]: 💰
+        - generic [ref=e34]: 创作变现
+      - link "产品数据" [ref=e35] [cursor=pointer]:
+        - /url: /app/publish
+        - generic [ref=e36]: 📊
+        - generic [ref=e37]: 产品数据
+      - generic [ref=e38]: 设置
+      - link "偏好设置" [ref=e39] [cursor=pointer]:
+        - /url: /app/settings
+        - generic [ref=e40]: ⚙️
+        - generic [ref=e41]: 偏好设置
+      - link "第三方对接" [ref=e42] [cursor=pointer]:
+        - /url: /app/integrations
+        - generic [ref=e43]: 🔌
+        - generic [ref=e44]: 第三方对接
+    - button "◀" [ref=e45] [cursor=pointer]
+    - generic [ref=e46]:
+      - generic [ref=e47]: 创
+      - generic [ref=e48]:
+        - generic [ref=e49]: 创作者
+        - generic [ref=e50]: 本地用户
+  - generic [ref=e51]:
+    - banner [ref=e52]:
+      - heading "偏好设置" [level=1] [ref=e54]
+      - generic [ref=e55]:
+        - button "切换到暗色模式" [ref=e56] [cursor=pointer]: 🌙
+        - button "导入作品" [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]: 📤
+          - text: 导入作品
+        - button "🔔" [ref=e60] [cursor=pointer]
+        - link "偏好设置" [ref=e61] [cursor=pointer]:
+          - /url: /app/settings
+          - text: ⚙️
+        - link "第三方对接" [ref=e62] [cursor=pointer]:
+          - /url: /app/integrations
+          - text: 🔌
+    - main [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 👤
+            - generic [ref=e68]: 个人资料
+          - generic [ref=e69] [cursor=pointer]:
+            - generic [ref=e70]: 🎨
+            - generic [ref=e71]: 外观设置
+          - generic [ref=e72] [cursor=pointer]:
+            - generic [ref=e73]: 🔗
+            - generic [ref=e74]: 关联账号
+          - generic [ref=e75] [cursor=pointer]:
+            - generic [ref=e76]: 📊
+            - generic [ref=e77]: 系统健康
+          - generic [ref=e78] [cursor=pointer]:
+            - generic [ref=e79]: 💾
+            - generic [ref=e80]: 数据管理
+          - generic [ref=e81] [cursor=pointer]:
+            - generic [ref=e82]: 🔔
+            - generic [ref=e83]: 通知渠道
+          - generic [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]: 🧩
+            - generic [ref=e86]: 插件管理
+          - generic [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]: 🔑
+            - generic [ref=e89]: 密码管理
+          - generic [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: 🔌
+            - generic [ref=e92]: MCP 服务
+          - generic [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: 📤
+            - generic [ref=e95]: 数据导出
+          - generic [ref=e96] [cursor=pointer]:
+            - generic [ref=e97]: 📚
+            - generic [ref=e98]: 字典管理
+          - generic [ref=e99] [cursor=pointer]:
+            - generic [ref=e100]: ⚠️
+            - generic [ref=e101]: 危险区
+          - generic [ref=e102] [cursor=pointer]:
+            - generic [ref=e103]: ℹ️
+            - generic [ref=e104]: 关于
+        - generic [ref=e106]:
+          - heading "个人资料" [level=2] [ref=e107]
+          - generic [ref=e108]:
+            - generic [ref=e109]: 显示名称
+            - textbox "创作者" [ref=e110]
+          - generic [ref=e111]:
+            - generic [ref=e112]: 简介
+            - textbox "介绍一下你自己..." [ref=e113]
+          - generic [ref=e114]:
+            - generic [ref=e115]: 头像
+            - generic [ref=e116]:
+              - generic [ref=e117]: 👤
+              - generic [ref=e118] [cursor=pointer]: 上传头像
+          - generic [ref=e119]:
+            - generic [ref=e120]: 邮箱验证
+            - generic [ref=e121]:
+              - generic [ref=e122]: 未验证
+              - button "验证邮箱" [ref=e123] [cursor=pointer]
+          - button "保存" [ref=e124] [cursor=pointer]

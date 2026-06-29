@@ -1,0 +1,462 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/app/tasks/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/app/tasks/__init__.py",
+      "summary": "Task module barrel re-exporting all Celery task functions and the celery_app instance.",
+      "tags": [
+        "barrel",
+        "entry-point",
+        "celery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/tasks/backup_tasks.py",
+      "type": "file",
+      "name": "backup_tasks.py",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "summary": "Background tasks for data backup, audit log cleanup, auto-backup scheduling, and expiration reminders.",
+      "tags": [
+        "utility",
+        "celery",
+        "maintenance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/tasks/celery_app.py",
+      "type": "file",
+      "name": "celery_app.py",
+      "filePath": "backend/app/tasks/celery_app.py",
+      "summary": "Celery application configuration with broker/backend settings, task serializer config, and Beat schedule for periodic tasks.",
+      "tags": [
+        "configuration",
+        "celery",
+        "task-scheduler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/tasks/cert_tasks.py",
+      "type": "file",
+      "name": "cert_tasks.py",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "summary": "Async certificate generation tasks for creating PDF notarization certificates and batch generation support.",
+      "tags": [
+        "utility",
+        "celery",
+        "certificate"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/tasks/hash_tasks.py",
+      "type": "file",
+      "name": "hash_tasks.py",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "summary": "Asynchronous file hashing tasks with WebSocket progress push support for single and batch hash computation.",
+      "tags": [
+        "utility",
+        "celery",
+        "websocket",
+        "fingerprint"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/tasks/monitor_tasks.py",
+      "type": "file",
+      "name": "monitor_tasks.py",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "summary": "Monitoring scan tasks including per-task async scanning and scheduled batch scan execution.",
+      "tags": [
+        "utility",
+        "celery",
+        "monitoring"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "function",
+      "name": "create_backup_task",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "lineRange": [
+        10,
+        42
+      ],
+      "summary": "Creates database and file backups with timestamped naming and BackupRecord persistence.",
+      "tags": [
+        "utility",
+        "backup",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:cleanup_audit_logs",
+      "type": "function",
+      "name": "cleanup_audit_logs",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "lineRange": [
+        45,
+        60
+      ],
+      "summary": "Deletes expired audit logs older than the retention period.",
+      "tags": [
+        "utility",
+        "maintenance",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "type": "function",
+      "name": "auto_backup",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "lineRange": [
+        63,
+        66
+      ],
+      "summary": "Scheduled wrapper triggering create_backup_task with file inclusion.",
+      "tags": [
+        "utility",
+        "backup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/backup_tasks.py:check_reminders",
+      "type": "function",
+      "name": "check_reminders",
+      "filePath": "backend/app/tasks/backup_tasks.py",
+      "lineRange": [
+        69,
+        94
+      ],
+      "summary": "Checks pending reminders within a 24-hour window and marks them as sent.",
+      "tags": [
+        "utility",
+        "reminders"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "function",
+      "name": "generate_certificate_async",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "lineRange": [
+        8,
+        58
+      ],
+      "summary": "Asynchronously generates a notarization PDF certificate and updates the work verification status.",
+      "tags": [
+        "utility",
+        "certificate",
+        "celery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "type": "function",
+      "name": "batch_generate_certificates",
+      "filePath": "backend/app/tasks/cert_tasks.py",
+      "lineRange": [
+        61,
+        68
+      ],
+      "summary": "Dispatches async certificate generation for multiple records returning task IDs.",
+      "tags": [
+        "utility",
+        "batch",
+        "certificate"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "function",
+      "name": "compute_file_hash",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "lineRange": [
+        31,
+        72
+      ],
+      "summary": "Asynchronously computes SHA-256 or MD5 of a file with chunked reading and WebSocket progress reporting.",
+      "tags": [
+        "utility",
+        "hashing",
+        "websocket"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "type": "function",
+      "name": "batch_compute_hashes",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "lineRange": [
+        75,
+        94
+      ],
+      "summary": "Batch-computes file hashes sequentially with per-file progress reporting.",
+      "tags": [
+        "utility",
+        "hashing",
+        "batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:update_work_hash",
+      "type": "function",
+      "name": "update_work_hash",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "lineRange": [
+        97,
+        111
+      ],
+      "summary": "Stores a computed SHA-256 hash into a work record in the database.",
+      "tags": [
+        "utility",
+        "hashing",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/hash_tasks.py:_notify_hash_progress",
+      "type": "function",
+      "name": "_notify_hash_progress",
+      "filePath": "backend/app/tasks/hash_tasks.py",
+      "lineRange": [
+        10,
+        28
+      ],
+      "summary": "Pushes hash computation progress updates to clients via WebSocket in synchronous Celery context.",
+      "tags": [
+        "utility",
+        "websocket"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/monitor_tasks.py:run_scan_for_task",
+      "type": "function",
+      "name": "run_scan_for_task",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "lineRange": [
+        9,
+        51
+      ],
+      "summary": "Asynchronously executes a single monitoring task scan with retry support.",
+      "tags": [
+        "utility",
+        "monitoring",
+        "celery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/tasks/monitor_tasks.py:run_scheduled_scans",
+      "type": "function",
+      "name": "run_scheduled_scans",
+      "filePath": "backend/app/tasks/monitor_tasks.py",
+      "lineRange": [
+        54,
+        113
+      ],
+      "summary": "Scheduled scan executing all enabled scan schedules finding works within configured scope.",
+      "tags": [
+        "utility",
+        "monitoring",
+        "celery",
+        "scheduled"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:cleanup_audit_logs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "function:backend/app/tasks/backup_tasks.py:check_reminders",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:_notify_hash_progress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "function:backend/app/tasks/hash_tasks.py:update_work_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scan_for_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "function:backend/app/tasks/monitor_tasks.py:run_scheduled_scans",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/tasks/__init__.py",
+      "target": "file:backend/app/tasks/backup_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/__init__.py",
+      "target": "file:backend/app/tasks/celery_app.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/__init__.py",
+      "target": "file:backend/app/tasks/cert_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/__init__.py",
+      "target": "file:backend/app/tasks/hash_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/__init__.py",
+      "target": "file:backend/app/tasks/monitor_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/backup_tasks.py",
+      "target": "file:backend/app/tasks/celery_app.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/celery_app.py",
+      "target": "file:backend/app/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/cert_tasks.py",
+      "target": "file:backend/app/tasks/celery_app.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/hash_tasks.py",
+      "target": "file:backend/app/tasks/celery_app.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/app/tasks/monitor_tasks.py",
+      "target": "file:backend/app/tasks/celery_app.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:backend/app/tasks/cert_tasks.py:batch_generate_certificates",
+      "target": "function:backend/app/tasks/cert_tasks.py:generate_certificate_async",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/app/tasks/hash_tasks.py:batch_compute_hashes",
+      "target": "function:backend/app/tasks/hash_tasks.py:compute_file_hash",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/app/tasks/backup_tasks.py:auto_backup",
+      "target": "function:backend/app/tasks/backup_tasks.py:create_backup_task",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

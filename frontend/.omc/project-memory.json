@@ -1,0 +1,465 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1782221067757,
+  "projectRoot": "/Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/frontend",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "vue",
+        "version": "3.4",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "5.2",
+        "category": "build"
+      },
+      {
+        "name": "vitest",
+        "version": "1.4",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npx vue-tsc --noEmit --skipLibCheck 2>&1 | head -30",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "vue-tsc && vite build",
+      "preview": "vite preview",
+      "test": "vitest run",
+      "test:watch": "vitest",
+      "lint": "eslint src/ --ext .vue,.ts,.tsx",
+      "format": "prettier --write src/"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "data": {
+      "path": "data",
+      "purpose": "Data files",
+      "fileCount": 1,
+      "lastAccessed": 1782221067741,
+      "keyFiles": [
+        "oristudio.db"
+      ]
+    },
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 2,
+      "lastAccessed": 1782221067741,
+      "keyFiles": [
+        "favicon.svg",
+        "index.html"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 1,
+      "lastAccessed": 1782221067744,
+      "keyFiles": [
+        "favicon.svg"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 4,
+      "lastAccessed": 1782221067744,
+      "keyFiles": [
+        "App.vue",
+        "env.d.ts",
+        "main.ts",
+        "tsconfig.json"
+      ]
+    },
+    "data/config": {
+      "path": "data/config",
+      "purpose": "Configuration files",
+      "fileCount": 0,
+      "lastAccessed": 1782221067744,
+      "keyFiles": []
+    },
+    "dist/assets": {
+      "path": "dist/assets",
+      "purpose": "Static assets",
+      "fileCount": 62,
+      "lastAccessed": 1782221067745,
+      "keyFiles": [
+        "AppLayout-CjbmbfkV.css",
+        "AppLayout-_O5Z8Y1L.js",
+        "BusinessView-BMegrK0p.css"
+      ]
+    },
+    "src/__tests__": {
+      "path": "src/__tests__",
+      "purpose": "Test files",
+      "fileCount": 1,
+      "lastAccessed": 1782221067745,
+      "keyFiles": [
+        "StatCard.test.ts"
+      ]
+    },
+    "src/api": {
+      "path": "src/api",
+      "purpose": "API routes",
+      "fileCount": 10,
+      "lastAccessed": 1782221067745,
+      "keyFiles": [
+        "business.ts",
+        "client.ts",
+        "dashboard.ts"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 0,
+      "lastAccessed": 1782221067745,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src/views/SupplyView.vue",
+      "accessCount": 32,
+      "lastAccessed": 1782271827465,
+      "type": "file"
+    },
+    {
+      "path": "src/views/WorkDetailView.vue",
+      "accessCount": 28,
+      "lastAccessed": 1782271790623,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/WorkEditPanel.vue",
+      "accessCount": 20,
+      "lastAccessed": 1782271790675,
+      "type": "file"
+    },
+    {
+      "path": "src/views/PublishView.vue",
+      "accessCount": 19,
+      "lastAccessed": 1782271790523,
+      "type": "file"
+    },
+    {
+      "path": "src/views/IprView.vue",
+      "accessCount": 15,
+      "lastAccessed": 1782271790584,
+      "type": "file"
+    },
+    {
+      "path": "src/api/system.ts",
+      "accessCount": 14,
+      "lastAccessed": 1782268529782,
+      "type": "file"
+    },
+    {
+      "path": "src/router/index.ts",
+      "accessCount": 14,
+      "lastAccessed": 1782271767086,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/AppLayout.vue",
+      "accessCount": 13,
+      "lastAccessed": 1782271864458,
+      "type": "file"
+    },
+    {
+      "path": "src/views/IntegrationsView.vue",
+      "accessCount": 9,
+      "lastAccessed": 1782271827133,
+      "type": "file"
+    },
+    {
+      "path": "src/views/DashboardView.vue",
+      "accessCount": 8,
+      "lastAccessed": 1782271827397,
+      "type": "file"
+    },
+    {
+      "path": "src/api/works.ts",
+      "accessCount": 7,
+      "lastAccessed": 1782270459824,
+      "type": "file"
+    },
+    {
+      "path": "src/views/WorksView.vue",
+      "accessCount": 7,
+      "lastAccessed": 1782271790500,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/AppTopbar.vue",
+      "accessCount": 7,
+      "lastAccessed": 1782271903460,
+      "type": "file"
+    },
+    {
+      "path": "src/views/OnboardingView.vue",
+      "accessCount": 7,
+      "lastAccessed": 1782271903568,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/AppSidebar.vue",
+      "accessCount": 7,
+      "lastAccessed": 1782271903622,
+      "type": "file"
+    },
+    {
+      "path": "src/api/client.ts",
+      "accessCount": 6,
+      "lastAccessed": 1782269299656,
+      "type": "file"
+    },
+    {
+      "path": "src/api/supply.ts",
+      "accessCount": 5,
+      "lastAccessed": 1782119400224,
+      "type": "file"
+    },
+    {
+      "path": "src/views/SettingsView.vue",
+      "accessCount": 5,
+      "lastAccessed": 1782271827495,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/BusinessChainBar.vue",
+      "accessCount": 5,
+      "lastAccessed": 1782271903256,
+      "type": "file"
+    },
+    {
+      "path": "src/api/ipr.ts",
+      "accessCount": 4,
+      "lastAccessed": 1782226854272,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/WorkPreview.vue",
+      "accessCount": 3,
+      "lastAccessed": 1782144074386,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/DetailLayout.vue",
+      "accessCount": 3,
+      "lastAccessed": 1782146496236,
+      "type": "file"
+    },
+    {
+      "path": "src/api/notary.ts",
+      "accessCount": 3,
+      "lastAccessed": 1782268596647,
+      "type": "file"
+    },
+    {
+      "path": "src/views/ListingDetailView.vue",
+      "accessCount": 3,
+      "lastAccessed": 1782271827225,
+      "type": "file"
+    },
+    {
+      "path": "src/views/ListingListView.vue",
+      "accessCount": 3,
+      "lastAccessed": 1782271827366,
+      "type": "file"
+    },
+    {
+      "path": "src/api/publish.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782123019281,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/LicensePanel.vue",
+      "accessCount": 2,
+      "lastAccessed": 1782218103931,
+      "type": "file"
+    },
+    {
+      "path": "src/styles/main.css",
+      "accessCount": 2,
+      "lastAccessed": 1782219095303,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/ConfirmModal.vue",
+      "accessCount": 2,
+      "lastAccessed": 1782219126971,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/EmptyState.vue",
+      "accessCount": 2,
+      "lastAccessed": 1782226979141,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/StageTimeline.vue",
+      "accessCount": 2,
+      "lastAccessed": 1782271790565,
+      "type": "file"
+    },
+    {
+      "path": "src/views/TemplateBrowserView.vue",
+      "accessCount": 2,
+      "lastAccessed": 1782271827438,
+      "type": "file"
+    },
+    {
+      "path": "src/types/supply.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782116445010,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/ListingCard.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117338321,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/MonetizationTabs.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117361781,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/PublicationPanel.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117585893,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/CampaignPanel.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117675146,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/RevenuePanel.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117860875,
+      "type": "file"
+    },
+    {
+      "path": "src/components/monetization/OrderPanel.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782117947383,
+      "type": "file"
+    },
+    {
+      "path": "src/composables/useProductDesigner.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782118907247,
+      "type": "file"
+    },
+    {
+      "path": ".claude/tmp-owasp-auth-claims.json",
+      "accessCount": 1,
+      "lastAccessed": 1782122214257,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/NotarizationStrip.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782140044880,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/FileInfoStrip.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782140044931,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/StageSelector.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782142434608,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/WorkCard.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782143745696,
+      "type": "file"
+    },
+    {
+      "path": "src/components/work/WorkList.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782143745745,
+      "type": "file"
+    },
+    {
+      "path": "src/composables/useKeyboard.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782143772457,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/ListLayout.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782146418362,
+      "type": "file"
+    },
+    {
+      "path": "src/components/common/StatusBadge.vue",
+      "accessCount": 1,
+      "lastAccessed": 1782146418426,
+      "type": "file"
+    },
+    {
+      "path": "src/styles/a11y.css",
+      "accessCount": 1,
+      "lastAccessed": 1782146418588,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

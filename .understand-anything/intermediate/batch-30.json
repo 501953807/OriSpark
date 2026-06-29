@@ -1,0 +1,78 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "frontend/index.html",
+      "summary": "前端应用的 HTML 入口文件，定义了 Vue 3 应用的挂载点和标题。",
+      "tags": [
+        "入口点",
+        "html模板",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "frontend/package.json",
+      "summary": "前端项目的包配置文件，依赖 Vue 3 + Vite + Naive UI + Tailwind，包含开发和测试工具链。",
+      "tags": [
+        "依赖配置",
+        "构建系统",
+        "前端"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/package-lock.json",
+      "type": "config",
+      "name": "package-lock.json",
+      "filePath": "frontend/package-lock.json",
+      "summary": "前端依赖锁定文件，确保可重复构建的包版本一致性。",
+      "tags": [
+        "依赖锁定",
+        "构建系统",
+        "前端"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "frontend/tsconfig.json",
+      "summary": "Vue 3 项目的 TypeScript 编译配置，启用严格模式和路径别名 @/*。",
+      "tags": [
+        "配置",
+        "typescript",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/tsconfig.node.json",
+      "type": "config",
+      "name": "tsconfig.node.json",
+      "filePath": "frontend/tsconfig.node.json",
+      "summary": "Node 环境的 TypeScript 配置，用于 Vite 和构建脚本的类型检查。",
+      "tags": [
+        "配置",
+        "typescript",
+        "构建系统"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/tsconfig.json",
+      "target": "file:frontend/tsconfig.node.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

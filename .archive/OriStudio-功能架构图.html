@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio 功能架构图</title>
+<style>
+  :root {
+    --bg: #0a0e1a; --surface: #111827; --surface2: #1a2332;
+    --border: #1e293b; --text: #e2e8f0; --text2: #94a3b8;
+    --accent: #8b5cf6; --accent2: #f59e0b;
+    --green: #10b981; --blue: #3b82f6; --red: #ef4444; --orange: #f97316;
+    --pink: #ec4899; --cyan: #06b6d4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+    background: var(--bg); color: var(--text);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 2rem;
+  }
+  .container {
+    max-width: 1280px; width: 100%;
+    background: var(--surface); border-radius: 16px;
+    border: 1px solid var(--border); padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  h1 {
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 0.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  h1 .badge {
+    font-size: 0.65rem; background: rgba(139,92,246,0.15);
+    color: var(--accent); padding: 2px 8px; border-radius: 4px;
+    font-weight: 500;
+  }
+  .subtitle {
+    color: var(--text2); font-size: 0.85rem;
+    margin-bottom: 1.5rem; padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  svg { width: 100%; height: auto; display: block; }
+  .legend {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem; color: var(--text2);
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+  }
+  @media (max-width: 900px) {
+    body { padding: 0.5rem; }
+    .container { padding: 1rem; }
+    h1 { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>OriStudio 功能架构图 <span class="badge">v3.1</span></h1>
+  <div class="subtitle">个人创作者助手系统 — 七大功能模块全景视图 · v1聚焦插画师</div>
+
+<svg viewBox="0 0 1200 1600" xmlns="http://www.w3.org/2000/svg" style="max-width:1200px;margin:0 auto;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="header1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="header2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="header3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="header4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="header5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="header6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1600" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Title area -->
+  <text x="600" y="45" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="2">OriStudio 功能架构总览</text>
+  <text x="600" y="68" text-anchor="middle" fill="#94a3b8" font-size="13">个体创作者全链路管理工具 · 七大模块 · v1聚焦插画师</text>
+  <line x1="200" y1="85" x2="1000" y2="85" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ==================== MODULE 1: 作品管理 ==================== -->
+  <g transform="translate(30, 110)" filter="url(#shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header1)"/>
+    <rect width="555" height="10" y="30" fill="url(#header1)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">01 · 作品管理模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Work Management</text>
+
+    <!-- Sub-cards row 1 -->
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">批量导入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 拖拽上传</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文件夹批量</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 格式自动转换</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 去重检测</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">自动分类</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 按文件类型</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 按项目归类</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 按标签聚合</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· AI 自动打标</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 自定义规则</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">元数据管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· EXIF 提取</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-256 哈希</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 创建/修改时间</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义字段</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量编辑</text>
+    </g>
+
+    <!-- Sub-cards row 2 -->
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">版本管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版本快照</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 版本对比</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 版本回滚</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 标签标记</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文件差异</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">本地预览</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片预览</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 音频播放</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 视频播放</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 代码高亮</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文档渲染</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">搜索检索</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· FTS5 全文搜索</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 标签筛选</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 日期范围</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 智能联想</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 2: 存证确权 ==================== -->
+  <g transform="translate(615, 110)" filter="url(#shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header2)"/>
+    <rect width="555" height="10" y="30" fill="url(#header2)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">02 · 存证确权模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Notary &amp; Rights</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">哈希计算</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· SHA-256 计算</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-512 可选</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 批量哈希</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 异步非阻塞</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 哈希校验</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">多平台存证</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版权家 (¥1-5)</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 蚂蚁链 (¥0.5)</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 至信链 (¥1-1.5)</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 效力级别标注</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 扫码自助付费</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">证书生成</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· PDF 证书</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 验证二维码</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 时间戳认证</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义模板</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量导出</text>
+    </g>
+
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">C2PA 元数据嵌入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片内容凭证</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文档内容凭证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 签名校验</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 开源 c2patool</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">存证记录管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 已存证列表</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 待存证队列</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 过期提醒</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 状态追踪</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 审计日志</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">验证入口</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· OriStudio 验证页</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 扫码验证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 平台 API 查询</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· "已验证"标识</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 3: 侵权监测 ==================== -->
+  <g transform="translate(30, 530)" filter="url(#shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header3)"/>
+    <rect width="555" height="10" y="30" fill="url(#header3)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">03 · 侵权监测模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Infringement Monitoring</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">以图搜图</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 百度识图 API（100次/天免费）</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google Vision（1000次/月免费）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度评分</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 结果标注/忽略</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">文本检测</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Copyscape 检测</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google 搜索对比</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度报告</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 代码查重（GitHub API）</text>
+    </g>
+    <g transform="translate(12, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">定时扫描</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Celery Beat 定时任务</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 每日/每周/自定义</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 邮箱通知</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 系统通知推送</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 用量限额预警</text>
+    </g>
+    <g transform="translate(283, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">维权闭环</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 投诉材料自动生成</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 证据包导出（ZIP）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 律师函模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 侵权时间线</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 关闭动作记录</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 4: 知识产权登记 ==================== -->
+  <g transform="translate(615, 530)" filter="url(#shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header4)"/>
+    <rect width="555" height="10" y="30" fill="url(#header4)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">04 · 知识产权登记模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">IP Registration · 指导性</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(234,179,8,0.12)" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#f59e0b" font-size="10">⚠ 本模块仅提供指导，不代办申请，不评估成功率（法律规定）</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">版权指导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 登记材料清单</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 按作品类型分类</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 链接至国家平台</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 费用参考（¥0-300）</text>
+    </g>
+    <g transform="translate(283, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">商标查询引导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 链接至 sbj.cnipa.gov.cn</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 类别推荐（非约束性）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 文创常用类（16/25/28/35）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 相似商标预警</text>
+    </g>
+    <g transform="translate(12, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">进度追踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 手动录入记录</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 申请号/日期/状态</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 续展日历提醒</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 时间线展示</text>
+    </g>
+    <g transform="translate(283, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">多类规划</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 类别交叉参考</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 防御性注册建议</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 费用估算</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· (注：不评估成功率)</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 5: 供应链协作 ==================== -->
+  <g transform="translate(30, 930)" filter="url(#shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#ec4899" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header5)"/>
+    <rect width="555" height="10" y="30" fill="url(#header5)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">05 · 供应链协作模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Supply Chain · 轻量级</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#8b5cf6" font-size="10">ℹ 本模块为"创作者协作笔记本"，非 ERP，工厂端数据由工厂自行管理</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">工厂联系人</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 名称/电话(加密)</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 地址/擅长领域</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 评分/备注</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 历史合作记录</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 联系人分组</text>
+    </g>
+    <g transform="translate(193, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">订单管理</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 关联作品ID</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 数量/单价/总价</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 定金/尾款</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 订单状态</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付日期</text>
+    </g>
+    <g transform="translate(374, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">沟通时间线</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 手动条目录入</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 附件上传</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 支付记录</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 提醒设置</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付/付款提醒</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 6: 发布与变现 ==================== -->
+  <g transform="translate(615, 930)" filter="url(#shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#06b6d4" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header6)"/>
+    <rect width="555" height="10" y="30" fill="url(#header6)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">06 · 发布与变现模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Publishing &amp; Monetization</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">AI 产品描述</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· LLM 生成标题/描述</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 规格/定价生成</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 本地模型（Ollama）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 多语言支持</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">CSV 导出</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 淘宝 CSV 模板</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 小红书 CSV 模板</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 抖音 CSV 模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· Shopify CSV 模板</text>
+    </g>
+    <g transform="translate(12, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">OriStudio 已验证标识</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· QR 码嵌入产品页</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 指向存证验证地址</text>
+    </g>
+    <g transform="translate(283, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">收入跟踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 多平台手动录入</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 报表与趋势分析</text>
+    </g>
+  </g>
+
+  <!-- ==================== SYSTEM MANAGEMENT (Cross-cut) ==================== -->
+  <g transform="translate(30, 1260)" filter="url(#shadow)">
+    <rect width="1140" height="100" rx="10" fill="#1a2332" stroke="#64748b" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="1140" height="36" rx="10" fill="#334155"/>
+    <rect width="1140" height="10" y="26" fill="#334155"/>
+    <text x="570" y="25" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700">系统管理 · 横切关注点</text>
+
+    <g transform="translate(20, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">本地备份</text>
+    </g>
+    <g transform="translate(168, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">主题切换</text>
+    </g>
+    <g transform="translate(316, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">插件系统</text>
+    </g>
+    <g transform="translate(464, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">审计日志</text>
+    </g>
+    <g transform="translate(612, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">快捷键系统</text>
+    </g>
+    <g transform="translate(760, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">设置中心</text>
+    </g>
+    <g transform="translate(908, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">用量监控</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1410" text-anchor="middle" fill="#475569" font-size="10">OriStudio 个人创作者助手系统 · 功能架构图 · 七大模块 + 系统管理 · v3.1 · v1聚焦插画师</text>
+  <text x="600" y="1428" text-anchor="middle" fill="#334155" font-size="9">Designed with ❤️ for individual creators · 2026</text>
+
+  <!-- Flow arrows between modules -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" opacity="0.4">
+    <!-- From module 1 to 2 -->
+    <path d="M 307,500 L 307,510 L 892,510 L 892,520"/>
+    <polygon points="888,520 892,528 896,520" fill="#475569"/>
+    <!-- From module 2 to 3 -->
+    <path d="M 892,500 L 892,530" opacity="0"/>
+    <!-- From module 3 to 4 -->
+    <path d="M 307,900 L 307,910 L 892,910 L 892,920"/>
+    <polygon points="888,920 892,928 896,920" fill="#475569"/>
+    <!-- From module 1 direct to 5 -->
+    <path d="M 307,500 L 307,920" stroke-dasharray="4,4"/>
+    <!-- From module 2 direct to 6 -->
+    <path d="M 892,500 L 892,920" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Flow labels -->
+  <g fill="#64748b" font-size="9">
+    <text x="600" y="508" text-anchor="middle">作品 → 存证</text>
+    <text x="600" y="918" text-anchor="middle">存证 → 侵权监测</text>
+    <text x="140" y="910" text-anchor="middle" transform="rotate(-90,140,910)">作品直通供应链</text>
+    <text x="1060" y="910" text-anchor="middle" transform="rotate(90,1060,910)">存证直通发布</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(360, 1445)">
+    <rect x="0" y="0" width="16" height="16" rx="3" fill="#8b5cf6"/>
+    <text x="20" y="12" fill="#94a3b8" font-size="10">作品管理</text>
+    <rect x="100" y="0" width="16" height="16" rx="3" fill="#10b981"/>
+    <text x="120" y="12" fill="#94a3b8" font-size="10">存证确权</text>
+    <rect x="200" y="0" width="16" height="16" rx="3" fill="#f97316"/>
+    <text x="220" y="12" fill="#94a3b8" font-size="10">侵权监测</text>
+    <rect x="310" y="0" width="16" height="16" rx="3" fill="#3b82f6"/>
+    <text x="330" y="12" fill="#94a3b8" font-size="10">IP 登记</text>
+    <rect x="400" y="0" width="16" height="16" rx="3" fill="#ec4899"/>
+    <text x="420" y="12" fill="#94a3b8" font-size="10">供应链</text>
+    <rect x="500" y="0" width="16" height="16" rx="3" fill="#06b6d4"/>
+    <text x="520" y="12" fill="#94a3b8" font-size="10">发布变现</text>
+  </g>
+</svg>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span> 作品管理</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span> 存证确权</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#f97316"></span> 侵权监测</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> 知识产权登记</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#ec4899"></span> 供应链协作</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#06b6d4"></span> 发布与变现</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#64748b"></span> 系统管理</span>
+  </div>
+</div>
+</body>
+</html>

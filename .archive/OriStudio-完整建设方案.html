@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio 个人创作者助手 — 完整建设方案 V3.1</title>
+<style>
+:root{--bg:#0a0e1a;--surface:#111827;--surface2:#1a2332;--border:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--accent:#8b5cf6;--accent2:#f59e0b;--green:#10b981;--blue:#3b82f6;--red:#ef4444;--orange:#f97316;--pink:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+#sidebar-toggle{position:fixed;top:12px;left:270px;z-index:200;width:28px;height:28px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:left 0.3s ease}
+#sidebar-toggle:hover{background:var(--surface2);color:var(--text)}
+body.sidebar-hidden #sidebar-toggle{left:12px}
+body.sidebar-hidden #sidebar{transform:translateX(-100%)}
+body.sidebar-hidden #main{margin-left:0}
+#sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;display:none}
+#sidebar-overlay.show{display:block}
+#sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:0.8rem 0;transform:translateX(0);transition:transform 0.3s ease}
+#sidebar::-webkit-scrollbar{width:3px}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sidebar-brand{padding:0.8rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.4rem}
+.sidebar-brand h2{font-size:0.9rem;color:var(--accent);font-weight:700}
+.sidebar-brand .tag{display:inline-block;font-size:0.55rem;background:rgba(139,92,246,0.15);color:var(--accent);padding:1px 5px;border-radius:4px}
+.sidebar-brand span{font-size:0.65rem;color:var(--text2);display:block;margin-top:1px}
+.nav-group-title{padding:0.3rem 1rem;font-size:0.65rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em}
+.nav-item{display:block;padding:0.25rem 1rem 0.25rem 1.5rem;font-size:0.75rem;color:var(--text2);text-decoration:none;border-left:2px solid transparent;transition:all 0.15s}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(139,92,246,0.05)}
+.nav-item.sub{padding-left:2.2rem;font-size:0.7rem}
+#main{margin-left:260px;padding:1.5rem 2rem;max-width:100%;min-width:0;transition:margin-left 0.3s ease}
+@media(min-width:1400px){#main{max-width:1100px;margin:0 auto 0 260px}}
+@media(max-width:1100px){#sidebar{width:220px}#main{margin-left:220px;padding:1.2rem 1.2rem}.nav-item{font-size:0.7rem;padding:0.2rem 0.8rem 0.2rem 1.2rem}}
+@media(max-width:860px){#sidebar{transform:translateX(-100%);width:260px}#sidebar.open{transform:translateX(0)}#main{margin-left:0;padding:1rem}#sidebar-toggle{display:flex}}
+.svg-container{max-width:100%;overflow-x:auto;background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:0.5rem;margin:1rem 0}
+.svg-container svg{max-width:100%;height:auto;display:block}
+.arch-box{overflow-x:auto;white-space:pre;word-wrap:normal;font-size:0.7rem;background:#1e1e2e;border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0;font-family:'SF Mono','Menlo',monospace;line-height:1.5;color:var(--text2)}
+.arch-box .hl{color:var(--accent)}.arch-box .hl2{color:var(--blue)}.arch-box .hl3{color:var(--accent2)}
+h1{font-size:1.8rem;font-weight:800;color:var(--accent);margin:2rem 0 0.5rem}
+h1:first-child{margin-top:0}
+h1 .badge{font-size:0.7rem;background:rgba(139,92,246,0.15);color:var(--accent);padding:2px 8px;border-radius:4px}
+h2{font-size:1.3rem;font-weight:700;color:var(--text);margin:2rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid var(--accent)}
+h3{font-size:1.05rem;font-weight:600;color:var(--accent2);margin:1.5rem 0 0.75rem}
+h4{font-size:0.92rem;font-weight:600;color:var(--pink);margin:1rem 0 0.5rem}
+p{margin:0.5rem 0}
+strong{color:var(--accent)}
+.table-wrap{overflow-x:auto;margin:1rem 0}
+table{width:100%;border-collapse:collapse;font-size:0.8rem;background:var(--surface2);border-radius:8px;overflow:hidden}
+th{background:var(--surface);color:var(--accent);font-weight:600;padding:0.45rem 0.65rem;text-align:left;font-size:0.76rem;border-bottom:2px solid var(--border)}
+td{padding:0.4rem 0.65rem;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(139,92,246,0.03)}
+blockquote{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.05));border-left:3px solid var(--accent);padding:0.7rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0;font-size:0.88rem;color:var(--text2)}
+.warn-box{background:rgba(245,158,11,0.08);border-left:3px solid var(--orange);padding:0.75rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.error-box{background:rgba(239,68,68,0.08);border-left:3px solid var(--red);padding:0.75rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.success-box{background:rgba(16,185,129,0.08);border-left:3px solid var(--green);padding:0.75rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.review-box{background:rgba(139,92,246,0.06);border-left:3px solid var(--accent);padding:0.75rem 1rem;margin:0.8rem 0;border-radius:0 8px 8px 0;font-size:0.85rem}
+.review-box .rl{color:var(--accent2);font-weight:600}
+.tag-green{display:inline-block;background:rgba(16,185,129,0.12);color:var(--green);padding:1px 6px;border-radius:4px;font-size:0.68rem}
+.tag-red{display:inline-block;background:rgba(239,68,68,0.12);color:var(--red);padding:1px 6px;border-radius:4px;font-size:0.68rem}
+.tag-yellow{display:inline-block;background:rgba(245,158,11,0.12);color:var(--accent2);padding:1px 6px;border-radius:4px;font-size:0.68rem}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+.func-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:1rem 0}
+.func-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem}
+.func-card h4{margin:0 0 6px 0;font-size:0.88rem;color:var(--green)}
+.func-card p{font-size:0.76rem;color:var(--text2);margin:0}
+code{background:rgba(139,92,246,0.1);color:var(--accent);padding:1px 6px;border-radius:3px;font-size:0.82em}
+</style>
+</head>
+<body>
+<button id="sidebar-toggle" onclick="document.body.classList.toggle('sidebar-hidden');document.getElementById('sidebar-overlay').classList.toggle('show')" title="显示/隐藏菜单">☰</button>
+<div id="sidebar-overlay" onclick="document.body.classList.remove('sidebar-hidden');this.classList.remove('show')"></div>
+<div id="sidebar">
+  <div class="sidebar-brand">
+    <h2>OriStudio 个人创作者助手</h2>
+    <span class="tag">系统设计 V3.1</span>
+    <span>本地运行 · 全链路闭环 · v1聚焦插画师</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">概览</div>
+    <a href="#intro" class="nav-item">1. 设计理念</a>
+    <a href="#arch-func" class="nav-item">2. 功能架构总览</a>
+    <a href="#arch-tech" class="nav-item">3. 技术架构</a>
+    <a href="#data-flow" class="nav-item">4. 模块间数据流</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">功能模块</div>
+    <a href="#mod-works" class="nav-item">5. 作品管理模块</a>
+    <a href="#mod-notary" class="nav-item">6. 存证确权模块</a>
+    <a href="#mod-monitor" class="nav-item">7. 侵权监测模块</a>
+    <a href="#mod-ipr" class="nav-item">8. 知识产权登记模块</a>
+    <a href="#mod-supply" class="nav-item">9. 创作变现引擎</a>
+    <a href="#mod-pdh" class="nav-item">10. 产品数据标准化中心</a>
+    <a href="#mod-system" class="nav-item">11. 系统管理模块</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">实现</div>
+    <a href="#db" class="nav-item">12. 数据库设计</a>
+    <a href="#api" class="nav-item">13. API端点清单</a>
+    <a href="#roadmap" class="nav-item">14. 实施计划</a>
+    <a href="#mvp" class="nav-item">15. MVP 定义</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">参考</div>
+    <a href="#external-docs" class="nav-item">16. 详细设计文档索引</a>
+  </div>
+</div>
+
+<div id="main">
+<h1>OriStudio 个人创作者助手 <span class="badge">完整建设方案 V3.1</span></h1>
+<p style="color:var(--text2);margin-top:-0.3rem">系统设计说明书 · 7模块深度设计完成 · 191 API端点 · 47数据表 · 177实施任务 · 2026-06-12</p>
+
+<!-- ========== 1. 设计理念 ========== -->
+<h2 id="intro">1. 设计理念</h2>
+<p><strong>一句话定义：</strong>一个在个人电脑上运行的创作者全链路助手工具，帮助独立创作者快速完成作品管理、存证确权、侵权监测、知识产权登记、产品变现和标准化输出的完整业务闭环。<strong>v1 聚焦插画师/AIGC 艺术家，其他创作者类型标注"规划中"。</strong></p>
+
+<h3>核心原则</h3>
+<div class="table-wrap"><table>
+<tr><th>原则</th><th>说明</th><th>设计体现</th></tr>
+<tr><td><strong>创作者主权</strong></td><td>数据永远在创作者的电脑上</td><td>本地SQLite + 本地存储，不上传创作者原始文件</td></tr>
+<tr><td><strong>不重复造轮子</strong></td><td>存证/商标/搜索通过API接入现有平台，电商通过标准协议对接ERP</td><td>MCP Server + JSON Feed 标准输出，不做重复的电商发布工程</td></tr>
+<tr><td><strong>渐进式复杂度</strong></td><td>新手只看基础功能，高级功能可展开</td><td>默认界面核心流程，高级设置在设置页</td></tr>
+<tr><td><strong>离线优先</strong></td><td>无网络时仍可使用核心功能</td><td>本地哈希+本地数据库完全离线可用</td></tr>
+<tr><td><strong>全球化</strong></td><td>创作者的事业无国界 (v1聚焦插画师)</td><td>WIPO/EUIPO/USPTO/CNIPA 全路径覆盖</td></tr>
+<tr><td><strong>AI原生</strong></td><td>AI代劳创作者不擅长的商业/法律/运营事务</td><td>自动标签、AI描述、智能类别推荐、自动表单预填</td></tr>
+</table></div>
+
+<div class="review-box"><span class="rl">📋 设计迭代历程</span><br>
+1️⃣ <strong>01作品管理 (v1→v3)</strong>: 新增3级导入模式(hash-only/lowres/full)、5种文件过程阶段、完整权利信息(著作权法)、版本链+分叉迭代<br>
+2️⃣ <strong>02存证确权 (v1→v3)</strong>: 全面重构四层存证体系(L1本地→L2区块链→L3司法→L4 C2PA/W3C DID)，竞品分析8家<br>
+3️⃣ <strong>03侵权监测 (v1→v2)</strong>: 新增五维监测+四层成本优化引擎(Tier0-Tier3)，品牌/Logo监测，DMCA通知<br>
+4️⃣ <strong>04知识产权 (v1→v2)</strong>: 从"纯指引"升级为"全球自助IP工作站(TurboTax模式)"，4种IP×6个辖区<br>
+5️⃣ <strong>05变现引擎 (v1→v2)</strong>: 从"供应链协作"重构为"创作变现引擎"，5条路径×10材质×60+品类<br>
+6️⃣ <strong>06产品数据中心 (v1→v2)</strong>: 从"一键发布"重构为"MCP Server + JSON Product Feed"标准通道<br>
+7️⃣ <strong>07系统管理 (v1→v2)</strong>: 新增字典数据中心(60+分组)、多平台联合认证(Google/微信/抖音)、通知中心</div>
+</div>
+
+<!-- ========== 2. 功能架构总览 ========== -->
+<h2 id="arch-func">2. 功能架构总览</h2>
+
+<div class="arch-box">
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                    OriStudio 全链路闭环 (v3.1 · v1聚焦插画师)                   │
+│                                                                              │
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐              │
+│   │ 01 作品   │───→│ 02 存证   │───→│ 03 监测   │───→│ 04 知产   │              │
+│   │ 管理      │    │ 确权      │    │ 侵权      │    │ 登记      │              │
+│   └────┬──────┘    └────┬──────┘    └────┬──────┘    └────┬──────┘              │
+│        │                │               │               │                      │
+│        │ SHA-256        │ 证书          │ 证据包        │ 商标/版权             │
+│        │ 文件/缩略图    │ 哈希          │ 投诉函        │ 注册号               │
+│        │ 权利信息       │ 时间戳        │ 律师函        │ 类别                 │
+│        │                │               │               │                      │
+│        └────────────────┴───────────────┴───────────────┘                      │
+│                                 │                                              │
+│                    ┌────────────┴─────────────┐                                │
+│                    ▼                          ▼                                │
+│            ┌──────────┐              ┌──────────────┐                          │
+│            │ 05 创作   │──────────────→│ 06 产品数据   │                          │
+│            │ 变现引擎   │              │ 标准化中心    │                          │
+│            └──────────┘              └──────┬───────┘                          │
+│              5条变现路径                      │                                  │
+│              ×10材质                         ├── MCP Server (AI Agent)          │
+│              ×60+品类                        ├── JSON Feed (ERP/PIM)            │
+│                                             └── REST API (Web/第三方)          │
+│                                                                              │
+│   ┌──────────────────────────────────────────────────────────────────────┐   │
+│   │                      07 系统管理 (基础设施层)                           │   │
+│   │  字典中心(60+分组) │ 多平台认证(Google/微信/抖音) │ 通知中心 │ 备份/监控   │   │
+│   └──────────────────────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────────────────────────┘</div>
+
+<!-- ========== 3. 技术架构 ========== -->
+<h2 id="arch-tech">3. 技术架构</h2>
+<div class="table-wrap"><table>
+<tr><th>层级</th><th>技术</th><th>说明</th></tr>
+<tr><td>前端框架</td><td>Vue 3 + Composition API + TypeScript</td><td>SFC对1-2人团队轻量</td></tr>
+<tr><td>构建工具</td><td>Vite</td><td>快速HMR，Vue生态一等支持</td></tr>
+<tr><td>UI组件</td><td>自研组件 + Tailwind CSS</td><td>OKLCH设计令牌，暗色/亮色双主题</td></tr>
+<tr><td>后端框架</td><td>FastAPI + Uvicorn</td><td>异步支持，自动OpenAPI文档</td></tr>
+<tr><td>ORM</td><td>SQLAlchemy 2.0</td><td>SQLite WAL模式完美支持</td></tr>
+<tr><td>数据库</td><td>SQLite (WAL) + FTS5 全文搜索</td><td>零配置，满足单用户本地场景</td></tr>
+<tr><td>异步任务</td><td>Celery + Redis</td><td>哈希计算、定时扫描、证书生成</td></tr>
+<tr><td>WebSocket</td><td>FastAPI WebSocket</td><td>实时通知推送</td></tr>
+<tr><td>MCP Server</td><td>Python mcp 包</td><td>标准AI协议，stdio + HTTP双传输</td></tr>
+<tr><td>AI引擎</td><td>Ollama 本地LLM</td><td>商品描述、标签推荐、类别推荐</td></tr>
+<tr><td>认证</td><td>JWT (HMAC-SHA256) + OAuth 2.0</td><td>Google/微信/抖音 + 邮箱 + 本地</td></tr>
+<tr><td>分发</td><td>PyInstaller + Docker</td><td>桌面应用 + 容器化部署</td></tr>
+</table></div>
+
+<!-- ========== 4. 模块间数据流 ========== -->
+<h2 id="data-flow">4. 模块间数据流</h2>
+<h3>4.1 数据流矩阵</h3>
+<div class="table-wrap"><table>
+<tr><th>上游 → 下游</th><th>传输数据字段</th><th>用途</th></tr>
+<tr><td>01→02</td><td>work.id, sha256, title, synopsis, rights, attribution_text, license_type, thumbnail</td><td>存证对象 + 权利信息 + 证书展示</td></tr>
+<tr><td>01→03</td><td>work.id, sha256, file_path, thumbnail_path, file_type, rights, import_mode</td><td>扫描对象 + 本地指纹 + 预筛策略</td></tr>
+<tr><td>01→04</td><td>work.id, title, synopsis, tags, rights, completion_date, file_path</td><td>申请表单预填(80%) + 类别推荐</td></tr>
+<tr><td>01→05</td><td>work.id, title, file_path, thumbnail, synopsis, rights, current_stage, parent_work_id</td><td>设计来源 + 产品预览 + 变体溯源</td></tr>
+<tr><td>01→06</td><td>work.id, title, synopsis, media, rights</td><td>AI描述输入 + Verified信息</td></tr>
+<tr><td>02→03</td><td>notary_record (id, platform, evidence_hash, transaction_hash, confirmed_at)</td><td>权属证明加入证据包</td></tr>
+<tr><td>02→04</td><td>notary_record (hash, timestamp, certificate)</td><td>补充证明材料</td></tr>
+<tr><td>02→06</td><td>certificate.id, qr_code, SHA-256, c2pa_manifest, notary_record</td><td>Verified徽章 + 公开验证页</td></tr>
+<tr><td>03→06</td><td>evidence_package.id, monitor_results</td><td>维权记录 + 品牌保护状态</td></tr>
+<tr><td>04→03</td><td>trademark_registration (no, logo_work_id, categories)</td><td>品牌监测输入 + 监测范围</td></tr>
+<tr><td>04→05</td><td>trademark_registration, copyright_registration</td><td>IP授权基础</td></tr>
+<tr><td>04→06</td><td>trademark_no, copyright_no, registration info</td><td>Verified权属信息</td></tr>
+<tr><td>05→06</td><td>products (含完整 media/pricing/specs/variants), campaigns, licenses, channels</td><td>PDH核心数据源</td></tr>
+<tr><td>07→ALL</td><td>字典数据(60+分组)、JWT认证、通知推送、系统配置</td><td>全模块基础设施</td></tr>
+</table></div>
+
+<h3>4.2 完整创作者工作流</h3>
+<div class="arch-box">
+1️⃣ 导入作品 (01)
+   拖拽文件 → SHA-256计算 → 元数据提取 → 缩略图 → 自动标签 → 入库
+
+2️⃣ 存证确权 (02)
+   选中作品 → L1本地时间戳+ECDSA签名 → (可选)L2区块链Merkle树锚定
+   → (可选)L3司法平台 → PDF证书生成 → (可选)L4 C2PA内容凭证
+
+3️⃣ 侵权监测 (03)
+   创建监测任务 → Tier0本地pHash预筛(80%过滤) → Tier1免费API搜索
+   → 审核结果 → 确认侵权 → 一键证据包ZIP + 投诉函 + 律师函 + DMCA
+
+4️⃣ 知识产权 (04)
+   选择IP类型+辖区 → 智能预填80%申请字段 → 格式校验+完整性评分
+   → 导出申请材料包 → 用户自行官方平台提交 → 进度追踪 → 续展提醒
+
+5️⃣ 产品变现 (05)
+   选设计稿 → 选变现路径(POD渠道管理/众筹/授权/制造/数字) → 选产品品类(60+)
+   → 效果预览(Canvas三层:扁平叠加/Printful API/PSD模板) → 规格校验 → 定价计算 → 创建产品
+
+6️⃣ 标准化输出 (06)
+   汇聚01+02+04+05数据 → AI多风格描述(6种) → JSON Product Feed
+   → MCP Server供ERP/AI Agent调用 → Verified徽章嵌入 → 收入追踪
+
+全程支撑 (07):
+   字典中心(60+分组) · 多平台认证(Google/微信/抖音) · 实时通知
+   · 数据备份恢复 · 审计日志 · 运行监控</div>
+
+<!-- ========== 5-11 功能模块详细设计 ========== -->
+<hr>
+
+<!-- ====== 05 ====== -->
+<h2 id="mod-works">5. 作品管理模块 <span class="tag-green">v3</span></h2>
+<p><strong>模块定位：</strong>创作者所有数字资产的统一管理中心。面向 AI 新时代创意爆发时代，为个人创作者提供从资产保护到价值变现的全链路管理能力。</p>
+
+<h3>5.1 核心功能</h3>
+
+<h4>三级导入模式（隐私保护）</h4>
+<div class="table-wrap"><table>
+<tr><th>模式</th><th>信任等级</th><th>说明</th><th>适用场景</th></tr>
+<tr><td><strong>🛡️ 仅哈希 (Hash-Only)</strong></td><td>★☆☆☆</td><td>不上传文件，仅在本地内存中计算SHA-256后丢弃文件。可存证，不可预览，文件自管</td><td>高价值商业作品、未公开独家作品</td></tr>
+<tr><td><strong>📷 低清预览 (Low-Res)</strong></td><td>★★☆☆</td><td>上传缩略图(≤400px)+完整元数据；不保存原始文件。可存证，可低清预览</td><td>半公开作品、需分类但不想暴露原始分辨率</td></tr>
+<tr><td><strong>📦 完整导入 (Full)</strong></td><td>★★★★</td><td>上传完整文件，全套功能：预览/编辑/版本管理/批量操作/自动备份</td><td>信任本地系统，需要完整的全链路功能</td></tr>
+</table></div>
+
+<h4>过程阶段管理（按文件类型）</h4>
+<div class="table-wrap"><table>
+<tr><th>文件类型</th><th>创作生命周期阶段</th></tr>
+<tr><td>🖼️ 图片/插画/设计</td><td>灵感收集(Inspiration) → 草图(Sketch) → 线稿(LineArt) → 上色(Coloring) → 细节(Detail) → 终稿(Final) → 导出变体(Exports)</td></tr>
+<tr><td>🎵 音频/音乐</td><td>灵感片段(Idea) → 编曲(Arrangement) → 录音(Recording) → 混音(Mixing) → 母带(Mastering) → 发行(Release)</td></tr>
+<tr><td>🎬 视频/动画</td><td>脚本(Script) → 分镜(Storyboard) → 粗剪(RoughCut) → 精剪(FineCut) → 调色(ColorGrade) → 成片(Final)</td></tr>
+<tr><td>📝 文档/文字</td><td>大纲(Outline) → 初稿(Draft) → 修订(Revision) → 终稿(Final) → 排版(Formatting) → 发布(Publish)</td></tr>
+<tr><td>💻 代码</td><td>原型(Prototype) → 开发(Dev) → 测试(Test) → 审查(Review) → 发布(Release) → 热修(Hotfix)</td></tr>
+</table></div>
+
+<h4>版本管理</h4>
+<p><strong>三种版本迭代模式</strong>：<strong>原地替换</strong>(上传新文件→自动创建快照→更新SHA-256)、<strong>分叉迭代</strong>(创建变体→parent_work_id溯源)、<strong>外部同步</strong>(监控文件夹→watchdog检测变更→自动创建版本)。每个版本可标记过程阶段(stage)和描述(stage_description)。</p>
+
+<h4>权利信息管理（著作权法合规）</h4>
+<div class="table-wrap"><table>
+<tr><th>类别</th><th>字段</th><th>说明</th></tr>
+<tr><td>人身权</td><td>发表权、署名权、修改权、保护作品完整权</td><td><code>rights.author_name</code>, <code>rights.attribution_text</code>, <code>rights.protect_integrity</code></td></tr>
+<tr><td>财产权</td><td>复制权、发行权、信息网络传播权、改编权、翻译权</td><td><code>rights.allow_reproduction</code>, <code>rights.allow_distribution</code>, <code>rights.allow_online</code></td></tr>
+<tr><td>许可证</td><td>All Rights Reserved / CC BY 4.0 / CC BY-SA 4.0 / CC BY-NC 4.0 / CC BY-NC-ND 4.0 / CC0 / 自定义</td><td><code>license_type</code>, <code>custom_license_text</code></td></tr>
+</table></div>
+
+<h3>5.2 核心数据模型</h3>
+<div class="arch-box">works (
+    id TEXT PK, title TEXT, work_title_alt TEXT, synopsis TEXT,
+    category_detail TEXT, completion_date DATE, first_publication_date DATE,
+    first_publication_platform TEXT, creation_location TEXT,
+    file_path TEXT, file_name TEXT, file_size INTEGER, file_type TEXT,
+    file_extension TEXT, mime_type TEXT, sha256 TEXT, md5 TEXT,
+    description TEXT, project_id TEXT FK, status TEXT, is_verified INT,
+    import_mode TEXT DEFAULT 'full',  -- hash-only/lowres/full
+    parent_work_id TEXT FK, current_stage TEXT, watch_directory TEXT,
+    rights JSON, license_type TEXT, custom_license_text TEXT,
+    attribution_text TEXT, rights_document_path TEXT,
+    thumbnail_path TEXT, width INT, height INT, duration REAL,
+    custom_metadata JSON, exif_data JSON,
+    created_at DATETIME, imported_at DATETIME, updated_at DATETIME, deleted_at DATETIME
+)
+
+work_versions (
+    id TEXT PK, work_id TEXT FK, version_num INT,
+    stage TEXT, stage_description TEXT,  -- 过程阶段
+    file_hash TEXT, file_path TEXT, file_size INT,
+    notes TEXT, created_at DATETIME, UNIQUE(work_id, version_num)
+)</div>
+
+<h3>5.3 API端点</h3>
+<div class="table-wrap"><table>
+<tr><th>方法</th><th>路径</th><th>说明</th></tr>
+<tr><td>POST</td><td>/api/works</td><td>上传/创建作品(完整导入)</td></tr>
+<tr><td>POST</td><td>/api/works/hash-only</td><td>仅哈希注册(不上传文件)</td></tr>
+<tr><td>POST</td><td>/api/works/lowres</td><td>低清预览模式</td></tr>
+<tr><td>GET</td><td>/api/works</td><td>作品列表(分页/筛选/排序/搜索)</td></tr>
+<tr><td>GET</td><td>/api/works/{id}</td><td>作品详情</td></tr>
+<tr><td>PATCH</td><td>/api/works/{id}</td><td>更新作品信息</td></tr>
+<tr><td>DELETE</td><td>/api/works/{id}</td><td>软删除作品(回收站)</td></tr>
+<tr><td>POST</td><td>/api/works/{id}/replace</td><td>替换文件(自动创建版本快照)</td></tr>
+<tr><td>POST</td><td>/api/works/{id}/fork</td><td>分叉迭代(创建变体)</td></tr>
+<tr><td>PATCH</td><td>/api/works/{id}/stage</td><td>更新过程阶段</td></tr>
+<tr><td>GET/PATCH</td><td>/api/works/{id}/rights</td><td>获取/更新权利信息</td></tr>
+<tr><td>POST</td><td>/api/works/{id}/rights-document</td><td>生成权利声明书PDF</td></tr>
+<tr><td>GET/POST/DELETE</td><td>/api/tags</td><td>标签管理</td></tr>
+<tr><td>POST</td><td>/api/works/batch-tags</td><td>批量标签操作(add/replace/remove)</td></tr>
+<tr><td>POST</td><td>/api/tags/rename</td><td>标签重命名</td></tr>
+</table></div>
+
+<h3>5.4 前端组件</h3>
+<p>WorksView (网格/列表切换 + 类型筛选) · WorkCard + WorkList · FileDropZone 上传组件 · WorkDetailView (文件类型专属预览: 图像/视频/音频/代码/文档) · WorkEditPanel (右侧滑出，标签+权利+阶段编辑) · WorkPreview · DashboardView (统计+快速入口+最近作品)</p>
+
+<hr>
+
+<!-- ====== 06 ====== -->
+<h2 id="mod-notary">6. 存证确权模块 <span class="tag-green">v3</span></h2>
+<p><strong>模块定位：</strong>为个人创作者的数字化作品提供<strong>可信、可追溯、可验证、可举证</strong>的版权证据固化服务。基于竞品研究(OriginStamp/CZone/至信链/蚂蚁链/Creator Credentials/Liccium)，融合国际标准(W3C DID/VC、C2PA 1.3+、RFC 3161、伯尔尼公约)，构建四层递进式存证体系。</p>
+
+<h3>6.1 竞品分析</h3>
+<div class="table-wrap"><table>
+<tr><th>竞品</th><th>核心能力</th><th>启示</th></tr>
+<tr><td><strong>OriginStamp</strong></td><td>Merkle树批量聚合→哈希锚定BTC/ETH；多区块链支持；免费层</td><td>批量锚定降低费用；独立Merkle Proof验证</td></tr>
+<tr><td><strong>CZone (LutinX)</strong></td><td>即时区块链公证+KYC身份绑定+175国法律认可</td><td>身份绑定增加证书可信度</td></tr>
+<tr><td><strong>至信链 (腾讯)</strong></td><td>互联网法院直连；多地法院采信；企业级SLA</td><td>司法直连是最强背书</td></tr>
+<tr><td><strong>Creator Credentials (EU)</strong></td><td>W3C DIDs + VCs；符合eIDAS法规；隐私保护</td><td>国际标准可验证凭证</td></tr>
+<tr><td><strong>Liccium</strong></td><td>ISCC内容标识+Verifiable Creator Credentials</td><td>内容标识标准化方向</td></tr>
+<tr><td><strong>蚂蚁链</strong></td><td>阿里生态；市场份额~26.5%；长三角司法链</td><td>商业生态整合</td></tr>
+<tr><td><strong>保全网/数秦科技</strong></td><td>杭州互联网法院首例区块链采信案例</td><td>司法先例参考</td></tr>
+</table></div>
+
+<h3>6.2 四层存证体系</h3>
+<div class="arch-box">
+L1 · 本地时间戳层 (Local Timestamp)
+  技术: SHA-256分块哈希 + RFC 3161可信时间戳 + ECDSA本地自签名
+  可信度: ★☆☆☆☆ (个人声明级)
+  成本: ¥0 · 时间: 秒级 · 离线可用
+
+L2 · 区块链锚定层 (Blockchain Anchoring)
+  技术: Merkle树批量聚合(OriginStamp模式) → 根哈希锚定ETH/SOL/FIL多链
+  可信度: ★★★☆☆ (技术可信级)
+  成本: ¥0.05-0.5/批次 · 时间: 分钟级
+  特色: 独立Merkle Proof验证(不依赖平台)
+
+L3 · 司法平台层 (Judicial Notarization)
+  平台: 版权家(DCI国家版权局) / 至信链(司法链) / 蚂蚁链(商业链)
+  可信度: ★★★★★ (司法采信级)
+  成本: ¥0.5-5/次 · 时间: 分钟到小时级
+  特点: 互联网法院采信率98%+
+
+L4 · 内容凭证层 (Content Credentials)
+  技术: C2PA 1.3+ Manifest嵌入 + W3C DID Creator Identity + Verifiable Credentials
+  可信度: ★★★★☆ (国际标准级)
+  成本: ¥0 · 时间: 秒级
+  特点: 纯Python实现(零c2patool依赖) · 符合eIDAS法规</div>
+
+<h3>6.3 存证流程</h3>
+<p>选择作品 → 本地SHA-256哈希 → L1本地时间戳+签名(必选) → L2 Merkle树批量锚定(可选) → L3选择司法平台(版权家/至信链/蚂蚁链)→用户扫码付费→平台确认→生成PDF 2.0证书(含各层证据记录+QR码) → L4 C2PA嵌入(可选)</p>
+
+<h3>6.4 AI存证推荐</h3>
+<p>根据作品价值/类型/预算，自动推荐最佳存证组合方案。高价值商业作品 → L1+L2+L3+L4四层全栈保护；个人练习作品 → L1本地存证即可。</p>
+
+<h3>6.5 证据包结构</h3>
+<div class="arch-box">evidence_{work_id}_{timestamp}.zip
+├── work_info.json          # 原创作品信息
+├── notary_record.json      # L1-L4 各层存证记录
+├── audit_trail.json        # 完整审计追踪链
+├── certificate.pdf         # PDF 2.0 证书
+├── infringement_list.json  # 侵权匹配(来自03监测)
+├── screenshots/            # 侵权截图
+├── complaint_letter.txt    # 平台投诉函
+├── lawyer_letter.txt       # 律师函
+├── dmca_notice.txt         # DMCA下架通知
+└── README.txt              # 使用说明</div>
+
+<h3>6.6 公开验证</h3>
+<p><code>GET /verify?cert_id={cert_id}</code> — 任何第三方可通过证书ID或扫描QR码，在公开验证页面查看作品的存证信息(SHA-256/平台/时间戳/区块链TX)，但不暴露原始文件和联系方式。</p>
+
+<h3>6.7 核心数据模型</h3>
+<div class="arch-box">notary_records (id PK, work_id FK, layers JSON,  -- L1/L2/L3/L4每层状态
+    platform TEXT, evidence_hash TEXT, transaction_hash TEXT,
+    block_height TEXT, certificate_id TEXT FK, status TEXT,
+    fee REAL, confirmed_at DATETIME, expires_at DATETIME, ...)
+notary_audit_trail (id PK, notary_record_id FK, layer TEXT, action TEXT,
+    detail JSON, timestamp DATETIME, ...)
+certificates (id PK, notary_record_id FK, cert_path TEXT, qr_code TEXT,
+    cert_format TEXT, issued_at DATETIME, ...)
+c2pa_records (id PK, work_id FK, manifest_json JSON, embedded_at DATETIME,
+    is_active INT, validator_url TEXT, ...)</div>
+
+<h3>6.8 API端点 (18个)</h3>
+<div class="table-wrap"><table>
+<tr><th>方法</th><th>路径</th><th>说明</th></tr>
+<tr><td>POST</td><td>/api/notary/local/{work_id}</td><td>L1 本地时间戳存证</td></tr>
+<tr><td>POST</td><td>/api/notary/blockchain-anchor</td><td>L2 区块链批量锚定</td></tr>
+<tr><td>GET</td><td>/api/notary/merkle-proof/{work_id}</td><td>获取Merkle Proof</td></tr>
+<tr><td>POST</td><td>/api/notary/judicial/{work_id}</td><td>L3 司法平台存证</td></tr>
+<tr><td>GET</td><td>/api/notary/platforms</td><td>存证平台列表+费用+效力级别</td></tr>
+<tr><td>GET</td><td>/api/notary/records</td><td>存证记录列表</td></tr>
+<tr><td>POST</td><td>/api/notary/records/{id}/certificate</td><td>生成PDF证书</td></tr>
+<tr><td>POST</td><td>/api/notary/batch</td><td>批量存证</td></tr>
+<tr><td>GET</td><td>/api/notary/verify/{cert_id}</td><td>公开验证</td></tr>
+<tr><td>GET</td><td>/api/notary/recommend/{work_id}</td><td>AI存证推荐</td></tr>
+<tr><td>GET</td><td>/api/notary/evidence-package/{id}</td><td>获取证据包</td></tr>
+<tr><td>GET</td><td>/api/notary/dmca-template/{id}</td><td>DMCA模板</td></tr>
+<tr><td>GET/POST</td><td>/api/c2pa/manifest/{work_id}</td><td>C2PA清单生成</td></tr>
+<tr><td>GET</td><td>/api/c2pa/status</td><td>C2PA嵌入状态</td></tr>
+</table></div>
+
+<hr>
+
+<!-- ====== 07 ====== -->
+<h2 id="mod-monitor">7. 侵权监测模块 <span class="tag-green">v2</span></h2>
+<p><strong>模块定位：</strong>主动发现互联网上的作品侵权行为，覆盖图像/文本/代码/商标/品牌多维度监测，通过多层成本优化策略实现最低成本的持续保护，形成从"发现→取证→维权"的完整闭环。</p>
+
+<h3>7.1 五维监测体系</h3>
+<div class="func-grid">
+<div class="func-card"><h4>🖼️ 图像监测</h4><p>以图搜图(百度/Google/Bing/Yandex) · 电商产品扫描(淘宝/拼多多/1688) · 社媒转发检测</p></div>
+<div class="func-card"><h4>📝 文本监测</h4><p>Google Custom Search精确搜索 · Jaccard相似度计算 · Copyscape付费API(5¢/次) · 本地MinHash指纹预筛</p></div>
+<div class="func-card"><h4>💻 代码监测</h4><p>GitHub Code Search(5000次/小时) · AST指纹(抽象语法树) · 语言过滤 · 开源协议合规检查</p></div>
+<div class="func-card"><h4>🏷️ 商标监测</h4><p>Logo SIFT/ORB特征点匹配(缩放/旋转/变色/遮挡鲁棒) · 电商Logo搜索 · 域名抢注检测(WHOIS)</p></div>
+<div class="func-card"><h4>🔤 品牌监测</h4><p>电商标题关键词搜索 · 社媒品牌提及 · 新注册域名检测 · 商标数据库检索(商标网)</p></div>
+</div>
+
+<h3>7.2 四层成本优化引擎</h3>
+<div class="arch-box">
+Tier 0 · 本地预筛层 (ZERO COST)
+  技术: pHash/dHash/whash感知哈希 + ONNX视觉嵌入(MobileNetV3) + MinHash文本指纹 + 变化检测
+  效果: 过滤80%无效扫描 → 200个作品仅40个需要API扫描
+  成本: ¥0 · 毫秒级 · 离线可用
+
+Tier 1 · 免费API层
+  百度识图 100次/天 + Google Vision 33次/天 + Bing 33次/天 + Yandex 不限
+  智能分配: 优先百度(中文最好)→Google→Bing→Yandex
+  配额预测: 实时追踪消耗 + "百度配额预计14:30耗尽"预警
+  成本: ¥0/月
+
+Tier 2 · 开源自建层 (配额耗尽时)
+  自建Qdrant/Milvus Lite向量库 + Playwright模拟搜索引擎搜图
+  RSS/Sitemap监控竞品站点
+  成本: ¥0 (一次性部署, ~100MB内存 + ~200MB磁盘)
+
+Tier 3 · 按需付费层 (高价值确认)
+  Copyscape 5¢/次 + TinEye 4¢/次
+  触发条件: Tier0发现>70%相似 + 作品已有存证/IP注册
+  预估: $2-5/月</div>
+
+<h3>7.3 扫描优先级排序</h3>
+<div class="arch-box">优先级 = 作品新鲜度 + 作品价值 + 历史侵权风险
+
+新鲜度: 新导入(<24h):+30 | 一周内:+20 | 一月内:+10
+价值: L3司法存证:+40 | L2区块链:+25 | IP注册:+25 | L1本地:+10
+风险: 历史>90%侵权:+30 | 70-90%可疑:+15 | 从未发现:+5 | 白名单:-50
+
+≥60分 → 每天Tier1扫描 | 30-60分 → 每周扫描+Tier0预筛 | <30分 → 每月扫描</div>
+
+<h3>7.4 维权闭环</h3>
+<p><strong>证据包ZIP</strong> (8文件)：work_info.json + infringement_results.json + notary_record.json + screenshots/ + complaint_letter.txt + lawyer_letter.txt + dmca_notice.txt + README.txt</p>
+<p><strong>多渠道投诉模板</strong>：淘宝(阿里IPP)/拼多多(知识产权保护平台)/小红书(薯管家)/抖音(知识产权保护平台)/Google(DMCA Dashboard) — 每种平台定制投诉函模板。</p>
+
+<h3>7.5 核心数据模型</h3>
+<div class="arch-box">monitor_tasks (id PK, work_id FK, search_type TEXT, platform TEXT,
+    priority INT, cron_expression TEXT, consecutive_dry_runs INT, ...)
+monitor_results (id PK, task_id FK, matched_url TEXT, matched_domain TEXT,
+    similarity REAL, similarity_tier TEXT, source_platform TEXT,
+    screenshot_path TEXT, status TEXT, ...)
+local_fingerprints (id PK, work_id FK, phash TEXT, dhash TEXT, whash TEXT,
+    embedding BLOB, text_minhash JSON, file_hash_at_scan TEXT, ...)
+brand_watches (id PK, name TEXT, keywords JSON, logo_work_id FK,
+    monitor_ecommerce INT, monitor_social INT, monitor_domains INT, ...)
+whitelist_urls (id PK, url_pattern TEXT, domain TEXT, reason TEXT, ...)
+scan_quota_log (id PK, platform TEXT, quota_type TEXT, total_quota INT,
+    used_count INT, remaining INT, recorded_at DATETIME, ...)</div>
+
+<h3>7.6 API端点 (33个)</h3>
+<p>监测任务 CRUD + 扫描触发/暂停/恢复 · 批量扫描/电商扫描/Logo扫描 · 结果列表+状态更新 · 证据包生成 · 配额+历史+预测+成本 · 指纹计算/比较/相似查询 · 品牌监测 CRUD+扫描 · URL白名单管理 · 扫描计划 CRUD+执行</p>
+
+<hr>
+
+<!-- ====== 08 ====== -->
+<h2 id="mod-ipr">8. 知识产权登记模块 <span class="tag-green">v2</span></h2>
+<p><strong>模块定位：</strong>「全球化自助IP工作站」— 不是代办，而是全程引导创作者以自身名义完成知识产权注册的智能助手。遵循 TurboTax/LegalZoom 引导式自助模式，覆盖版权/商标/外观设计/专利4种IP类型，支持中国/美国/欧盟/WIPO/日本/韩国6个司法管辖区。</p>
+
+<h3>8.1 法律边界：TurboTax 模式</h3>
+<div class="table-wrap"><table>
+<tr><th>行为</th><th>是否允许</th><th>法律依据</th></tr>
+<tr><td>提供空白表单让用户自填</td><td>✅ 合法</td><td>类比TurboTax — 提供工具不构成代办</td></tr>
+<tr><td>从作品数据自动填充表单字段</td><td>✅ 合法</td><td>系统仅整理已有数据，不创造法律内容</td></tr>
+<tr><td>提供申请材料清单+填写说明</td><td>✅ 合法</td><td>通用知识共享</td></tr>
+<tr><td>校验表单格式完整性+合规性</td><td>✅ 合法</td><td>格式验证不涉及法律判断</td></tr>
+<tr><td>生成提交用PDF由用户自行提交</td><td>✅ 合法</td><td>用户是申请人，系统是工具</td></tr>
+<tr><td>提供注册成功率评估</td><td>❌ 越界</td><td>构成法律判断</td></tr>
+<tr><td>以系统名义提交申请</td><td>❌ 违法</td><td>须由创作者本人或授权代理提交</td></tr>
+</table></div>
+
+<h3>8.2 4种IP × 6个辖区矩阵</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>🇨🇳中国</th><th>🇺🇸美国</th><th>🇪🇺欧盟</th><th>🇯🇵日本</th><th>🇰🇷韩国</th><th>🌐WIPO</th></tr>
+<tr><td><strong>©️版权</strong></td><td>版权保护中心 ¥0-300</td><td>eCO $45-65</td><td>—</td><td>—</td><td>著作权委 ₩30K-50K</td><td>—</td></tr>
+<tr><td><strong>®️商标</strong></td><td>CNIPA ¥300/类</td><td>USPTO $250-350</td><td>EUIPO €850/27国</td><td>JPO ¥12K起</td><td>KIPO ₩62K起</td><td>马德里 CHF653起</td></tr>
+<tr><td><strong>🎨外观设计</strong></td><td>CNIPA ¥500+年费</td><td>Design Patent $640-1280</td><td>RCD €350</td><td>意匠 ¥16K(电子)</td><td>KIPO</td><td>海牙 CHF397起</td></tr>
+<tr><td><strong>💡专利</strong></td><td>CNIPA 发明/实用新型</td><td>USPTO Utility</td><td>—</td><td>JPO</td><td>KIPO</td><td>PCT 30月优先权</td></tr>
+</table></div>
+
+<h3>8.3 WIPO 三大国际体系</h3>
+<p><strong>马德里体系(商标)</strong>：在本国基础注册后→eMadrid单一申请→指定130+成员国→CHF统一货币。 <strong>海牙体系(外观)</strong>：一次申请最多100项设计→覆盖79国。 <strong>PCT体系(专利)</strong>：获得30-31个月决策缓冲期→覆盖157国。</p>
+
+<h3>8.4 智能申请助手 (5步向导)</h3>
+<div class="arch-box">
+Step 1: 选择IP类型 (版权/商标/外观设计/专利 — 4张大卡片)
+Step 2: 选择辖区/路径 (对比表: 费用/处理时间/保护期/在线申请)
+Step 3: 关联作品 (从01-作品管理选择 → 自动预填80%的申请字段)
+Step 4: 数据预填 + 格式校验 (标注数据来源+完整性评分 0-100)
+Step 5: 导出申请材料包 (申请表PDF + 材料清单 + 费用计算 + 提交指引)</div>
+
+<h3>8.5 文创类别智能推荐</h3>
+<div class="table-wrap"><table>
+<tr><th>创作者类型</th><th>推荐商标类别组合</th><th>中国总官费</th></tr>
+<tr><td>插画师(平面)</td><td>16(印刷品) + 35(零售) + 41(在线内容)</td><td>¥900</td></tr>
+<tr><td>插画师(产品化)</td><td>16 + 25(服装) + 28(玩具) + 35</td><td>¥1,200</td></tr>
+<tr><td>独立游戏</td><td>9(软件) + 28(游戏) + 41(在线) + 42(技术)</td><td>¥1,200</td></tr>
+<tr><td>Vtuber/虚拟偶像</td><td>9 + 28 + 35 + 38(通讯) + 41</td><td>¥1,500</td></tr>
+<tr><td>手工艺人</td><td>14(珠宝) + 20(家具) + 21(厨具) + 25 + 35</td><td>¥1,500</td></tr>
+<tr><td>音乐人</td><td>9 + 15(乐器) + 35 + 41</td><td>¥1,200</td></tr>
+</table></div>
+
+<h3>8.6 EUIPO SME Fund 资助</h3>
+<p>欧盟中小企业资助计划：商标/外观设计申请费<strong>75%返还</strong>(最高€700)，国际注册(马德里/海牙)<strong>50%返还</strong>。2026年申请窗口：2月-12月(先到先得)。系统提供资格判断+申请引导。</p>
+
+<h3>8.7 核心数据模型</h3>
+<div class="arch-box">ip_registrations (id PK, work_id FK, ip_type TEXT, jurisdiction TEXT,
+    application_no TEXT, registration_no TEXT, filing_date DATE,
+    expiration_date DATE, next_action_date DATE, next_action_type TEXT,
+    status TEXT, category_info JSON, official_fee REAL, total_cost REAL,
+    application_package_path TEXT, official_url TEXT, ...)
+application_templates (id PK, ip_type TEXT, jurisdiction TEXT,
+    form_schema JSON, field_mappings JSON, validation_rules JSON,
+    fee_schedule JSON, required_documents JSON, ...)
+category_recommendations (id PK, creator_type TEXT, keyword_triggers JSON,
+    recommended_classes JSON, strategy_notes TEXT, ...)
+nice_classification (id PK, class_no INT, class_name_zh TEXT,
+    class_name_en TEXT, goods_services JSON, ...)</div>
+
+<h3>8.8 API端点 (26个)</h3>
+<p>登记记录 CRUD · 智能申请助手(prefill/validate/generate/export) · 类别推荐+尼斯分类查询 · 全球路径+费用计算 · 表单模板管理 · EUIPO资助判断 · IP资产仪表盘+时间线 · 续展提醒 · 商标公告监测</p>
+
+<hr>
+
+<!-- ====== 09 ====== -->
+<h2 id="mod-supply">9. 创作变现引擎 <span class="tag-green">v2</span></h2>
+<p><strong>模块定位：</strong>「创作变现引擎」— 连接创作者与全球变现通道的核心枢纽。覆盖10种材质×60+产品品类、POD渠道管理(手动上架+URL追踪)、IP授权市场、众筹通道、按需制造5条变现路径。<strong>v1聚焦插画师</strong>。原则：<strong>有多少知识产权保护的品类，就有多少可触达的变现产品</strong>。</p>
+
+<h3>9.1 五条变现路径</h3>
+<div class="func-grid">
+<div class="func-card"><h4>🖨️ POD渠道管理</h4><p>零库存·手动上架+URL追踪。8大平台(Printful/Printify/Redbubble/Society6/Gelato/Fourthwall/印鸽等)，产品规格适配+设计校验+一键跳转平台上架。诚实声明能力边界。</p></div>
+<div class="func-card"><h4>🎯 众筹验证</h4><p>创意验证·低风险MVP。6平台(摩点/造点新货/Kickstarter/Indiegogo/Patreon/爱发电)，档位设计+AI内容生成+进度追踪</p></div>
+<div class="func-card"><h4>📜 IP授权</h4><p>持续收益·按使用计费。5市场(Creative Fabrica/Envato/Creative Market/Gumroad/Etsy)，多种授权模式(single/multi/commercial/buyout)</p></div>
+<div class="func-card"><h4>🏭 按需制造</h4><p>高利润·品牌控制。工厂资源库(定制制造/批量生产)，询价生成+报价对比+样品管理+订单追踪</p></div>
+<div class="func-card"><h4>💾 数字产品</h4><p>零物流·零边际成本。素材/模板/笔刷/字体/3D模型/教程/Stock Footage，多平台(Gumroad/Etsy/Pond5)</p></div>
+</div>
+
+<h3>9.2 全品类产品变现矩阵 (10材质 × 60+品类)</h3>
+<div class="table-wrap"><table>
+<tr><th>材质</th><th>典型品类</th><th>最佳渠道</th><th>毛利率</th></tr>
+<tr><td><strong>📄 纸质/印刷</strong></td><td>海报/明信片/贴纸/笔记本/手机壳/日历/书签</td><td>Redbubble/印鸽</td><td>40-70%</td></tr>
+<tr><td><strong>👕 纺织/服装</strong></td><td>T恤/卫衣/帆布袋/棒球帽/围巾/抱枕/浴巾</td><td>Printful/Printify</td><td>35-55%</td></tr>
+<tr><td><strong>🪨 硬质家居</strong></td><td>马克杯/杯垫/盘子/挂毯/时钟/拼图/地毯</td><td>Printful/Society6</td><td>35-60%</td></tr>
+<tr><td><strong>💿 塑胶3C</strong></td><td>手机壳/AirPods壳/鼠标垫/亚克力立牌/徽章/冰箱贴</td><td>1688/定制</td><td>40-65%</td></tr>
+<tr><td><strong>🔩 金属珠宝</strong></td><td>金属书签/徽章/钥匙扣/项链/耳环/摆件</td><td>1688/工厂</td><td>40-70%</td></tr>
+<tr><td><strong>🪵 木材/竹材</strong></td><td>木质拼图/书签/杯垫/竹制餐具</td><td>1688/工厂</td><td>40-60%</td></tr>
+<tr><td><strong>👜 皮革</strong></td><td>笔记本套/钥匙扣/卡包/钱包/行李牌</td><td>定制制造</td><td>45-60%</td></tr>
+<tr><td><strong>🧸 儿童玩具</strong></td><td>毛绒玩偶/拼图/积木/儿童服饰/涂色本</td><td>1688/Etsy</td><td>40-55%</td></tr>
+<tr><td><strong>💻 数字产品</strong></td><td>笔刷/模板/3D模型/字体/PNG素材/教程/音乐/插件</td><td>Gumroad/Etsy</td><td>85-100%</td></tr>
+<tr><td><strong>✨ 特殊品类</strong></td><td>AR交互/环保材质/DIY材料包/香薰/滑板板面</td><td>众筹/定制</td><td>40-60%</td></tr>
+</table></div>
+
+<h3>9.3 设计→产品转化器 (6步向导)</h3>
+<div class="arch-box">
+Step 1: 选择设计稿 (从01-作品管理)
+Step 2: 选择变现路径 (POD渠道管理/众筹/授权/制造/数字 — 5卡片)
+Step 3: 选择产品品类 (按材质分组的60+产品网格，含建议售价+毛利率)
+Step 4: 效果预览 (Canvas三层方案: 扁平叠加 / Printful Mockup API / PSD模板)
+Step 5: 规格适配 (DPI/尺寸/色彩校验 + 安全区域标注 + 产品效果图预览)
+Step 6: 定价发布 (成本明细+利润计算+竞品参考 → 一键发布/导出)</div>
+
+<h3>9.4 核心数据模型</h3>
+<div class="arch-box">products (id PK, work_id FK, monetization_path TEXT, platform TEXT,
+    product_category TEXT, material_category TEXT, specifications JSON,
+    design_variant_path TEXT, mockup_image_path TEXT,
+    price REAL, cost REAL, platform_product_id TEXT, ...)
+campaigns (id PK, platform TEXT, goal_amount REAL, raised_amount REAL,
+    backer_count INT, reward_tiers JSON, launch_date DATE, end_date DATE, ...)
+licenses (id PK, work_id FK, license_type TEXT, platform TEXT,
+    allowed_uses JSON, restrictions JSON, price REAL, ...)
+monetization_channels (id PK, channel_type TEXT, platform TEXT,
+    platform_store_id TEXT, credentials_encrypted TEXT, last_sync_at DATETIME, ...)
+partners (id PK, type TEXT, product_categories JSON, material_capabilities JSON,
+    moq_per_category JSON, price_range JSON, phone TEXT(AES), ...)
+orders (id PK, order_type TEXT, partner_id FK, campaign_id FK,
+    product_category TEXT, specifications JSON, design_file_path TEXT,
+    sample_requested INT, sample_received INT, sample_approved INT, ...)
+product_templates (id PK, platform TEXT, product_category TEXT,
+    print_area_width_mm REAL, dpi_required INT, file_format TEXT,
+    bleed_mm REAL, base_cost REAL, ...)</div>
+
+<h3>9.5 API端点 (35个)</h3>
+<p>产品CRUD+适配+mockup · 品类查询+规格模板+设计校验 · 变现渠道管理+平台查询 · 众筹CRUD+支持者 · IP授权CRUD+条款模板 · 合作伙伴CRUD+询价+比价 · 订单CRUD+状态流转+样品管理 · 收入CRUD+汇总+趋势+成本分析 · 变现仪表盘 · 提醒管理</p>
+
+<hr>
+
+<!-- ====== 10 ====== -->
+<h2 id="mod-pdh">10. 产品数据标准化与集成中心 <span class="tag-green">v2</span></h2>
+<p><strong>模块定位：</strong>「Product Data Hub (PDH)」— 不重复造轮子去做电商ERP已做得很好的事情。将OriStudio中的作品/商品数据转化为标准化的、电商系统和AI Agent可直接消费的格式，通过<strong>JSON Product Feed</strong>和<strong>MCP Server</strong>两种标准通道对外输出。</p>
+
+<h3>10.1 边界定义</h3>
+<div class="table-wrap"><table>
+<tr><th>✅ 做什么</th><th>❌ 不做什么</th></tr>
+<tr><td>AI商品描述生成(6种平台风格)</td><td>不直接发布到电商平台(交给ERP/PIM)</td></tr>
+<tr><td>JSON Product Feed (替代CSV，支持富媒体)</td><td>不做Playwright自动化(太重/太脆)</td></tr>
+<tr><td>MCP Server (7个Tools，标准AI协议)</td><td>不管理库存/订单履约/物流(ERP的职责)</td></tr>
+<tr><td>OriStudio Verified徽章(多格式)</td><td>不替代电商ERP(互补而非替代)</td></tr>
+<tr><td>收入追踪+多维度分析</td><td></td></tr>
+</table></div>
+
+<h3>10.2 三条数据通道</h3>
+<div class="table-wrap"><table>
+<tr><th>通道</th><th>协议</th><th>目标</th><th>场景</th></tr>
+<tr><td><strong>A: MCP Server</strong></td><td>MCP (stdio + HTTP+SSE)</td><td>AI Agent (Claude) / ERP拉取</td><td>实时查询、Agent驱动</td></tr>
+<tr><td><strong>B: JSON Product Feed</strong></td><td>JSON Schema 1.0 文件</td><td>ERP/PIM / Google Merchant / Shopify</td><td>批量导入、定期同步</td></tr>
+<tr><td><strong>C: REST API</strong></td><td>HTTP REST</td><td>Web前端 / 第三方应用</td><td>前端交互</td></tr>
+</table></div>
+
+<h3>10.3 MCP Server (7 Tools)</h3>
+<div class="arch-box">
+MCP Server: oristudio-pdh
+
+Tools:
+  list_products      — 产品列表(支持category/status/has_certificate/has_trademark筛选)
+  get_product         — 单产品完整信息(含作品+存证+商标+版权)
+  search_products     — 全文搜索产品
+  get_product_certificate — 存证证明/验证信息/Verified徽章
+  get_revenue_summary — 收入汇总(period + group_by)
+  get_product_feed    — 标准化Product Feed导出(支持多目标平台)
+  get_verified_mark   — Verified徽章(PNG/SVG/URL)</div>
+
+<h3>10.4 JSON Product Feed (Schema 1.0)</h3>
+<p>替代CSV的标准产品数据格式。原生支持：多图(<code>additional_images[]</code>)、视频(<code>videos[]</code>)、设计稿(<code>design_file</code>)、规格变体(<code>variants[]</code>)、存证信息(<code>certification</code>含SHA-256+区块链TX+证书URL)、商标信息(<code>trademark</code>)、版权信息(<code>copyright</code>)、发货信息(<code>shipping</code>)、授权信息(<code>licensing</code>)。内置多平台转换器：Google Merchant Center / Shopify / 旺店通 / 聚水潭 / 万里牛。</p>
+
+<h3>10.5 AI商品描述 (6种风格)</h3>
+<div class="table-wrap"><table>
+<tr><th>风格</th><th>适用平台</th><th>特点</th></tr>
+<tr><td>小红书风</td><td>种草/社媒</td><td>口语化、emoji丰富、种草文案</td></tr>
+<tr><td>淘宝风</td><td>电商详情</td><td>促销导向、卖点突出、功能罗列</td></tr>
+<tr><td>抖音风</td><td>短视频描述</td><td>短平快、口语、钩子开头</td></tr>
+<tr><td>Shopify风</td><td>独立站</td><td>专业产品描述、英文</td></tr>
+<tr><td>Etsy风</td><td>手工/艺术</td><td>手工感、故事化、温暖personal</td></tr>
+<tr><td>Kickstarter风</td><td>众筹</td><td>故事驱动、愿景感、300-500字</td></tr>
+</table></div>
+
+<h3>10.6 OriStudio Verified 徽章</h3>
+<p>消费者扫码验证原创：PNG(透明背景可叠加商品图) + SVG(矢量可缩放) + Embed HTML/JS代码 + 公开验证URL。内容：作品缩略图 + SHA-256 + 存证平台+时间 + 区块链TX + 创作者署名 + 许可证。不展示原始文件和联系方式。</p>
+
+<h3>10.7 核心数据模型</h3>
+<div class="arch-box">products (id PK, work_id FK, title TEXT, subtitle TEXT,
+    media JSON,  -- {main_image, additional_images[], videos[], design_file}
+    variants JSON, pricing JSON, shipping JSON,
+    certification JSON,  -- {sha256, notary_platform, transaction_hash, verified_mark_url, ...}
+    trademark JSON, copyright JSON, licensing JSON,
+    ai_description TEXT, ai_desc_platform TEXT,
+    published_platforms JSON, last_feed_export_at DATETIME, ...)
+verified_marks (id PK, product_id FK, qr_code_path TEXT,
+    badge_png_path TEXT, badge_svg TEXT,
+    verification_url TEXT, embed_code TEXT, ...)
+revenue_records (id PK, product_id FK, platform TEXT, amount REAL,
+    currency TEXT, order_count INT, source TEXT,
+    refund_amount REAL, platform_fee REAL, shipping_fee REAL, ...)
+feed_exports (id PK, format TEXT, target_platform TEXT,
+    product_count INT, file_path TEXT, file_size INT, ...)</div>
+
+<h3>10.8 API端点 (25 + 1 MCP)</h3>
+<p>产品CRUD+媒体管理 · AI描述(单/批量/多风格) · Verified徽章(PNG/SVG/Embed) · Feed导出(Schema/平台转换/历史) · 收入CRUD+汇总+趋势+导入 · MCP Server端点</p>
+
+<hr>
+
+<!-- ====== 11 ====== -->
+<h2 id="mod-system">11. 系统管理模块 <span class="tag-green">v2</span></h2>
+<p><strong>模块定位：</strong>OriStudio的"基础设施层"。包含四个核心子系统：<strong>统一字典数据中心</strong>（全模块共享的枚举/配置/常量）、<strong>多平台联合认证</strong>（Google/微信/抖音 OAuth + 本地账号）、<strong>用户中心</strong>（多平台身份绑定 + 通知偏好 + 数据主权）、<strong>系统管理</strong>（设置/备份恢复/审计/存储/运行监控）。</p>
+
+<h3>11.1 统一字典数据中心</h3>
+<p><strong>覆盖范围</strong>：60+个字典分组，涵盖全模块的枚举/分类/常量。从文件类型/作品状态/过程阶段/存证平台/许可证，到IP类型/司法管辖区/尼斯分类/洛迦诺分类，到材质分类/产品品类/POD平台/变现路径，到国家/货币/语言/时区。</p>
+<div class="arch-box">dictionary_groups (group_key PK, group_name TEXT, module TEXT,
+    is_extensible INT, sort_order INT, ...)
+dictionary_items (id PK, group_key TEXT FK, item_key TEXT,
+    item_value TEXT, item_value_en TEXT, extra JSON,
+    is_active INT, sort_order INT, UNIQUE(group_key, item_key))</div>
+<p><strong>前端使用</strong>：<code>useDictStore</code> 全局缓存，应用启动时一次性加载。组件中 <code>dictStore.getLabel('file_types', work.file_type)</code> 替代 hardcoded 的状态标签映射。</p>
+
+<h3>11.2 多平台联合认证</h3>
+<div class="table-wrap"><table>
+<tr><th>方式</th><th>技术</th><th>适用场景</th><th>配置要求</th></tr>
+<tr><td><strong>Google</strong></td><td>Google Identity Services (One Tap + 标准OAuth)</td><td>全球用户</td><td>Google Cloud Console OAuth Client ID</td></tr>
+<tr><td><strong>微信</strong></td><td>微信开放平台 OAuth 2.0 扫码登录</td><td>中国用户</td><td>微信开放平台 AppID (需企业资质)</td></tr>
+<tr><td><strong>抖音</strong></td><td>抖音开放平台 OAuth 2.0 授权登录</td><td>中国用户</td><td>抖音开放平台 client_key</td></tr>
+<tr><td><strong>邮箱</strong></td><td>邮箱+密码 + JWT</td><td>通用</td><td>无</td></tr>
+<tr><td><strong>本地</strong></td><td>自动生成 local token，免登录</td><td>默认/单用户</td><td>无</td></tr>
+</table></div>
+<p><strong>身份聚合</strong>：一个用户账号可绑定多个平台身份(Google + 微信 + 抖音 + 邮箱)。<code>users</code>表替代原<code>users.json</code>，支持多平台字段(google_id/wechat_unionid/douyin_openid)。</p>
+
+<h3>11.3 通知中心</h3>
+<p><strong>8种通知类型</strong>：存证完成/扫描结果/到期提醒/续展提醒/订单状态/配额预警/备份完成/系统更新。<strong>4种通知渠道</strong>：WebSocket实时推送 + 系统内消息 + 邮件(SMTP) + 微信模板消息(需绑定微信)。通知偏好可逐类型×渠道开关。</p>
+
+<h3>11.4 系统管理功能</h3>
+<div class="func-grid">
+<div class="func-card"><h4>⚙️ 系统设置</h4><p>24+设置项：主题/语言/时区/工作区路径/上传限制/缩略图大小/会话过期/本地模式开关/OAuth密钥/API Keys/备份策略</p></div>
+<div class="func-card"><h4>💾 数据备份</h4><p>全量/增量备份 + AES-256加密 + 备份列表管理 + 恢复预览 + Celery Beat自动备份(每周) + 90天保留</p></div>
+<div class="func-card"><h4>📋 审计日志</h4><p>所有写操作+登录事件+敏感读操作。全文搜索+导出CSV + 90天自动清理</p></div>
+<div class="func-card"><h4>📊 运行监控</h4><p>CPU/内存/磁盘仪表盘 + 服务状态(SQLite/Redis/Celery/Ollama/MCP) + API调用统计(请求数/延迟/错误率)</p></div>
+</div>
+
+<h3>11.5 核心数据模型</h3>
+<div class="arch-box">users (id PK, username TEXT, email TEXT UNIQUE, email_verified INT,
+    password_hash TEXT,
+    google_id TEXT UNIQUE, google_email TEXT, google_name TEXT, google_picture TEXT,
+    wechat_openid TEXT, wechat_unionid TEXT, wechat_nickname TEXT, wechat_avatar TEXT,
+    douyin_openid TEXT, douyin_unionid TEXT, douyin_nickname TEXT, douyin_avatar TEXT,
+    phone TEXT(AES), phone_verified INT,
+    notification_prefs JSON, role TEXT, status TEXT,
+    last_login_at DATETIME, last_login_provider TEXT, login_count INT, ...)
+user_login_history (id PK, user_id FK, provider TEXT, ip TEXT, user_agent TEXT, ...)
+notifications (id PK, user_id TEXT, type TEXT, title TEXT, content TEXT,
+    related_module TEXT, related_id TEXT, channel TEXT, is_read INT, ...)
+system_settings (key PK, value TEXT, category TEXT, description TEXT, is_public INT, ...)
+plugins (id PK, name TEXT, plugin_type TEXT, version TEXT, enabled INT,
+    config JSON, entry_point TEXT, ...)</div>
+
+<h3>11.6 API端点 (39个)</h3>
+<p>认证(注册/登录/Email验证/密码重置/Google回调/微信二维码+回调/抖音授权+回调/绑定+解绑/会话管理/注销) · 字典(分组+条目CRUD+批量+导入导出) · 通知(列表+已读+偏好) · 系统设置(全局+按分类) · 备份(创建+列表+恢复+删除) · 审计日志(列表+导出) · 存储(空间+大文件扫描) · 运行监控(健康检查+API统计) · WebSocket</p>
+
+<hr>
+
+<!-- ========== 12. 数据库设计 ========== -->
+<h2 id="db">12. 数据库设计 (SQLite WAL + FTS5)</h2>
+<p><strong>总计 47 张表</strong> (原29张 + 新增18张)</p>
+
+<h3>12.1 核心业务表</h3>
+<div class="table-wrap"><table>
+<tr><th>模块</th><th>表名</th><th>状态</th></tr>
+<tr><td rowspan="4">01-作品</td><td>works</td><td>增强 (含rights/import_mode/stage等)</td></tr>
+<tr><td>work_versions</td><td>增强 (含stage/stage_description)</td></tr>
+<tr><td>work_tags</td><td>保留</td></tr>
+<tr><td>projects</td><td>保留</td></tr>
+<tr><td rowspan="4">02-存证</td><td>notary_records</td><td>增强 (含layers JSON)</td></tr>
+<tr><td>notary_audit_trail</td><td>🆕 存证审计追踪</td></tr>
+<tr><td>certificates</td><td>增强 (含cert_format)</td></tr>
+<tr><td>c2pa_records</td><td>保留</td></tr>
+<tr><td rowspan="8">03-监测</td><td>monitor_tasks</td><td>增强 (含priority/cron_expression)</td></tr>
+<tr><td>monitor_results</td><td>增强 (含domain/source_platform)</td></tr>
+<tr><td>evidence_packages</td><td>增强 (含dmca_notice_path)</td></tr>
+<tr><td>scan_schedules</td><td>增强 (含priority_threshold)</td></tr>
+<tr><td>local_fingerprints</td><td>🆕 本地感知哈希指纹库</td></tr>
+<tr><td>brand_watches</td><td>🆕 品牌监测配置</td></tr>
+<tr><td>whitelist_urls</td><td>🆕 URL白名单</td></tr>
+<tr><td>scan_quota_log</td><td>🆕 配额消耗日志</td></tr>
+<tr><td rowspan="8">04-知产</td><td>ip_registrations</td><td>增强 (含jurisdiction/expiration)</td></tr>
+<tr><td>application_templates</td><td>🆕 申请表单模板</td></tr>
+<tr><td>category_recommendations</td><td>🆕 类别推荐引擎</td></tr>
+<tr><td>nice_classification</td><td>🆕 尼斯分类数据库</td></tr>
+<tr><td>trademark_classes</td><td>保留</td></tr>
+<tr><td>copyright_registrations</td><td>保留</td></tr>
+<tr><td>trademark_registrations</td><td>保留</td></tr>
+<tr><td>trademark_monitoring</td><td>保留</td></tr>
+<tr><td rowspan="9">05-变现</td><td>products</td><td>增强 (含monetization_path/media等)</td></tr>
+<tr><td>campaigns</td><td>🆕 众筹项目</td></tr>
+<tr><td>licenses</td><td>🆕 IP授权</td></tr>
+<tr><td>monetization_channels</td><td>🆕 变现渠道</td></tr>
+<tr><td>product_templates</td><td>🆕 产品规格模板</td></tr>
+<tr><td>partners</td><td>增强 (含制造能力/价格参考)</td></tr>
+<tr><td>partner_qualifications</td><td>保留</td></tr>
+<tr><td>orders</td><td>增强 (含order_type/样品管理)</td></tr>
+<tr><td>order_payments</td><td>保留</td></tr>
+<tr><td>05</td><td>order_communications</td><td>保留</td></tr>
+<tr><td rowspan="4">06-PDH</td><td>products</td><td>增强 (含certification/media等)</td></tr>
+<tr><td>verified_marks</td><td>增强 (含SVG/Embed)</td></tr>
+<tr><td>revenue_records</td><td>增强 (含source/refund/fee)</td></tr>
+<tr><td>feed_exports</td><td>🆕 Feed导出记录</td></tr>
+<tr><td rowspan="10">07-系统</td><td>users</td><td>🆕 用户(替代users.json)</td></tr>
+<tr><td>user_login_history</td><td>🆕 登录历史</td></tr>
+<tr><td>dictionary_groups</td><td>🆕 字典分组</td></tr>
+<tr><td>dictionary_items</td><td>🆕 字典条目</td></tr>
+<tr><td>notifications</td><td>🆕 通知消息</td></tr>
+<tr><td>system_settings</td><td>增强 (含category)</td></tr>
+<tr><td>audit_logs</td><td>增强 (含user_id/module)</td></tr>
+<tr><td>backup_records</td><td>增强</td></tr>
+<tr><td>reminders</td><td>保留</td></tr>
+<tr><td>plugins</td><td>🆕 插件管理</td></tr>
+</table></div>
+
+<h3>12.2 核心索引</h3>
+<div class="arch-box">
+-- FTS5 全文搜索
+CREATE VIRTUAL TABLE works_fts USING fts5(title, description, tags, content=works, content_rowid=id);
+
+-- 关键复合索引
+CREATE INDEX idx_works_type_status ON works(file_type, status);
+CREATE INDEX idx_notary_work_platform ON notary_records(work_id, platform);
+CREATE INDEX idx_monitor_task_status ON monitor_tasks(work_id, status);
+CREATE INDEX idx_monitor_result_similarity ON monitor_results(similarity);
+CREATE INDEX idx_ipr_expiration ON ip_registrations(expiration_date);
+CREATE INDEX idx_product_category ON products(product_category);
+CREATE INDEX idx_revenue_date ON revenue_records(date);
+CREATE INDEX idx_notif_user ON notifications(user_id, is_read, created_at);
+CREATE INDEX idx_audit_logs_created ON audit_logs(created_at);</div>
+
+<!-- ========== 13. API端点清单 ========== -->
+<h2 id="api">13. API端点清单 (总计 191 端点)</h2>
+<div class="table-wrap"><table>
+<tr><th>模块</th><th>端点数</th><th>路由前缀</th></tr>
+<tr><td>01-作品管理</td><td>15</td><td>/api/works, /api/tags</td></tr>
+<tr><td>02-存证确权</td><td>18</td><td>/api/notary, /api/c2pa, /api/did</td></tr>
+<tr><td>03-侵权监测</td><td>33</td><td>/api/monitor</td></tr>
+<tr><td>04-知识产权</td><td>26</td><td>/api/ipr</td></tr>
+<tr><td>05-变现引擎</td><td>35</td><td>/api/supply</td></tr>
+<tr><td>06-PDH</td><td>25</td><td>/api/pdh, /mcp</td></tr>
+<tr><td>07-系统管理</td><td>39</td><td>/api/auth, /api/system, /api/notifications, /ws</td></tr>
+<tr><td><strong>总计</strong></td><td><strong>191</strong></td><td></td></tr>
+</table></div>
+
+<h3>13.1 第三方 API 接入清单</h3>
+<div class="table-wrap"><table>
+<tr><th>分类</th><th>API/平台</th><th>费用</th></tr>
+<tr><td>存证平台(3)</td><td>版权家(DCI)、至信链(司法链，Github开源)、蚂蚁链</td><td>免费-5元/次</td></tr>
+<tr><td>C2PA</td><td>纯Python实现(零依赖)</td><td>免费</td></tr>
+<tr><td>图像搜索(4)</td><td>百度识图(免费100次/天)、Google Vision(免费1000次/月)、Bing Image Search、Yandex</td><td>免费</td></tr>
+<tr><td>文本查重(1)</td><td>Google Custom Search(免费100次/天)、Copyscape(5¢/次，按需)</td><td>免费+按需</td></tr>
+<tr><td>代码查重(1)</td><td>GitHub Code Search(免费5000次/小时)</td><td>免费</td></tr>
+<tr><td>AI引擎</td><td>Ollama本地LLM(qwen2.5/llama3) / 云端API(OpenAI/Claude，可选)</td><td>免费/按需</td></tr>
+<tr><td>多媒体</td><td>FFmpeg(视频处理)、Pillow(图像处理)</td><td>免费开源</td></tr>
+<tr><td>商标/版权</td><td>商标局官网(sbj.cnipa.gov.cn)、中国版权保护中心(ccopyright.com.cn)、USPTO、EUIPO、WIPO eMadrid/eHague/ePCT</td><td>注册费自付</td></tr>
+<tr><td>认证(OAuth)</td><td>Google Identity Services、微信开放平台、抖音开放平台</td><td>免费</td></tr>
+</table></div>
+
+<!-- ========== 14. 实施计划 ========== -->
+<h2 id="roadmap">14. 全量实施计划 (177 任务)</h2>
+
+<div class="table-wrap"><table>
+<tr><th>阶段</th><th>任务数</th><th>周期</th><th>目标</th></tr>
+<tr><td>🔴 P0 基础骨架+核心闭环</td><td>47</td><td>4-6周</td><td>MVP可发布：作品导入→SHA-256→PDF证书→手动扫描→标记结果</td></tr>
+<tr><td>🟠 P1 核心功能完善</td><td>89</td><td>6-8周</td><td>可用产品：三级导入+四层存证+四层监测+自助IP+变现路径+PDH+MCP认证</td></tr>
+<tr><td>🟡 P2 深度功能+全球覆盖</td><td>62</td><td>5-6周</td><td>完整产品：L4存证+Tier2监测+6辖区IP+深度变现+7Tools MCP+系统监控</td></tr>
+<tr><td>🟢 P3 打磨优化</td><td>31</td><td>3-4周</td><td>高质量产品：性能优化+测试覆盖+安全加固+国际化+打包分发</td></tr>
+<tr><td><strong>总计</strong></td><td><strong>177</strong></td><td><strong>~35周×1人</strong></td><td>2人全职约4-5个月 / AI辅助开发可缩短30-40%</td></tr>
+</table></div>
+
+<h3>14.1 P0 关键任务 (47 tasks)</h3>
+<div class="table-wrap"><table>
+<tr><th>Phase</th><th>任务组</th><th>核心交付</th></tr>
+<tr><td>P0.1 项目基础(第1周)</td><td>11 tasks</td><td>Monorepo目录 + FastAPI骨架 + SQLite 8张表 + Vite+Vue3+TS + Tailwind+Design Tokens + Axios + Layout组件 + Router + Toast/Skeleton/Empty</td></tr>
+<tr><td>P0.2 作品管理(第1-2周)</td><td>16 tasks</td><td>works CRUD + 文件上传(拖拽/格式校验) + SHA-256哈希 + 重复检测 + 缩略图(Pillow) + StaticFiles + 元数据提取(EXIF/mutagen/ffprobe) + 类型检测 + Tags CRUD + FTS5搜索 + WorksView + FileDropZone + WorkCard/List + WorkPreview + DashboardView + WorkEditPanel</td></tr>
+<tr><td>P0.3 存证确权(第2-3周)</td><td>8 tasks</td><td>L1本地时间戳+ECDSA签名 + notary_records CRUD + 版权家Gateway + PDF证书(reportlab+QR) + 证书下载 + 批量存证 + NotaryView + 存证流程UI</td></tr>
+<tr><td>P0.4 侵权监测(第3-4周)</td><td>6 tasks</td><td>BaiduVisionGateway + GoogleVisionGateway + monitor_tasks CRUD + results API + MonitorView + 结果标注UI</td></tr>
+<tr><td>P0.5 系统管理(第4-5周)</td><td>9 tasks</td><td>JWT认证(register/login/me) + 路由守卫 + LoginView + system_settings + 备份/恢复 + 审计日志 + 存储信息 + SettingsView + 暗色主题</td></tr>
+<tr><td>P0.6 收尾(第5-6周)</td><td>5 tasks</td><td>LandingView + OnboardingView + 端到端验证 + Bug修复 + PyInstaller打包</td></tr>
+</table></div>
+
+<h3>14.2 P1 关键任务 (89 tasks)</h3>
+<div class="table-wrap"><table>
+<tr><th>Phase</th><th>任务数</th><th>核心交付</th></tr>
+<tr><td>P1.1 作品管理增强</td><td>18</td><td>三级导入模式 + 版本管理(快照/回滚/替换/分叉) + 过程阶段管理 + 权利信息(JSON rights+license) + 权利声明书PDF + 回收站 + WorkDetailView重写(图像/视频/音频/代码/文档预览) + 自动标签 + 批量编辑</td></tr>
+<tr><td>P1.2 存证增强</td><td>11</td><td>L2 Merkle树批量锚定(ETH/SOL/FIL) + AntChain/ZhixinChain Gateway + L3司法存证流程 + 平台费用对比+AI推荐 + 审计追踪 + 到期提醒 + 证书模板+批量导出 + 公开验证页</td></tr>
+<tr><td>P1.3 监测增强</td><td>12</td><td>Tier0本地pHash/dHash + 预筛过滤器 + 变化检测 + 配额管理系统 + 智能轮转 + Celery Beat定时扫描 + 优先级排序 + 证据包ZIP + 投诉函/律师函模板 + WebSocket推送 + scan_schedules</td></tr>
+<tr><td>P1.4 知产登记</td><td>12</td><td>ip_registrations CRUD(增强) + 中国版权+商标指引 + 文创类别数据库 + 智能申请助手5步向导 + 数据预填引擎(80%自动) + 材料包导出 + IP资产仪表盘 + 续展提醒 + IprView重构</td></tr>
+<tr><td>P1.5 变现引擎</td><td>11</td><td>60+品类种子数据 + 产品创建API + POD渠道管理(手动上架+URL追踪) + Printful Mockup API + 三层Canvas预览 + 设计规格校验引擎 + 设计→产品转化器7步向导 + 变现路径选择器 + partners+orders CRUD + 变现仪表盘</td></tr>
+<tr><td>P1.6 PDH</td><td>11</td><td>AI描述引擎(Ollama+6风格) + Verified徽章生成(PNG/SVG/Embed) + JSON Feed Schema 1.0 + Feed通用导出 + Google/Shopify格式转换 + Feed导出面板 + 收入增强(含source/refund) + 收入仪表盘 + CSV对账单导入</td></tr>
+<tr><td>P1.7 系统增强</td><td>14</td><td>字典数据中心(60+分组+seed数据) + 字典API+useDictStore + Users表迁移 + Google/微信/抖音OAuth + 关联账号面板 + 登录页增强 + 通知中心(WebSocket+系统内) + 通知面板+偏好 + 全模块字典+通知接入</td></tr>
+</table></div>
+
+<h3>14.3 P2-P3 关键任务 (93 tasks)</h3>
+<div class="table-wrap"><table>
+<tr><th>Phase</th><th>任务数</th><th>核心交付</th></tr>
+<tr><td>P2.1 作品深度</td><td>5</td><td>FTS5中文分词优化 + 大文件分块哈希+Celery异步 + 项目分组管理+ProjectsView</td></tr>
+<tr><td>P2.2 存证L4</td><td>4</td><td>纯Python C2PA Manifest + W3C DID + Verifiable Credential + C2PA验证</td></tr>
+<tr><td>P2.3 监测Tier2</td><td>9</td><td>ONNX视觉嵌入 + Qdrant本地向量库 + Playwright电商扫描 + Logo SIFT/ORB + 品牌监测 + 域名抢注 + DMCA通知 + 配额预测 + BrandWatchPanel</td></tr>
+<tr><td>P2.4 知产全球</td><td>12</td><td>美国版权eCO + 欧盟EUTM + 马德里国际注册 + 外观设计4路径 + 日本/韩国 + EUIPO SME Fund + 尼斯分类数据库 + 表单模板系统 + 6辖区模板 + 全球指南UI + 商标公告监测 + IP费用计算器</td></tr>
+<tr><td>P2.5 变现深度</td><td>12</td><td>Printful API + Redbubble适配 + 众筹CRUD+档位+追踪 + IP授权CRUD+平台对接 + 工厂比价 + AI产品效果图 + CrowdfundingPanel + LicensingPanel + 多平台收入聚合 + 变现策略AI顾问</td></tr>
+<tr><td>P2.6 PDH深度</td><td>10</td><td>MCP Server(7 Tools+stdio+HTTP) + 3个ERP格式转换 + MCP认证+限速 + MCP配置面板 + Verified嵌入代码 + 产品版本管理 + Feed历史</td></tr>
+<tr><td>P2.7 系统深度</td><td>10</td><td>运行监控仪表盘+面板 + 增量备份+AES + 备份管理UI + 邮件通知 + 微信模板消息 + 字典管理UI + 插件框架 + 登录历史 + 账号注销</td></tr>
+<tr><td>P3.1 性能</td><td>5</td><td>虚拟滚动 + 图片懒加载 + API缓存 + DB查询优化 + Bundle优化</td></tr>
+<tr><td>P3.2 测试</td><td>5</td><td>后端单元测试(>80%) + API集成测试 + 前端组件测试 + E2E Playwright + 边界条件</td></tr>
+<tr><td>P3.3 无障碍+i18n</td><td>5</td><td>键盘导航 + 屏幕阅读器 + 焦点管理 + vue-i18n + 英文翻译</td></tr>
+<tr><td>P3.4 移动端</td><td>4</td><td>响应式Layout + WorksView适配 + 全模块适配 + 拍照上传</td></tr>
+<tr><td>P3.5 安全</td><td>5</td><td>AES敏感字段 + API限速 + CORS + 输入校验 + Session管理</td></tr>
+<tr><td>P3.6 发布+文档</td><td>7</td><td>PyInstaller优化 + Docker + Auto-update + README + API文档 + 用户手册 + GitHub Release</td></tr>
+</table></div>
+
+<!-- ========== 15. MVP ========== -->
+<h2 id="mvp">15. MVP 定义 (Phase 0)</h2>
+<p><strong>目标</strong>：4-6周构建可用作品管理+本地存证工具，发布到创作者社区验证需求。</p>
+
+<h3>15.1 MVP 范围</h3>
+<div class="table-wrap"><table>
+<tr><th>模块</th><th>包含</th><th>不包含</th></tr>
+<tr><td>作品管理</td><td>导入(拖拽)+缩略图+标签+搜索+预览(图像/音频)</td><td>版本控制/视频预览/代码高亮/项目分组</td></tr>
+<tr><td>存证确权</td><td>SHA-256哈希+PDF证书(含QR码)</td><td>多平台存证/C2PA元数据/L2-L4</td></tr>
+<tr><td>侵权监测</td><td>手动以图搜图(百度)+结果标记</td><td>定时扫描/文本代码查重/投诉材料/品牌监测</td></tr>
+<tr><td>知产登记</td><td>(无)</td><td>全部</td></tr>
+<tr><td>变现引擎</td><td>(无)</td><td>全部</td></tr>
+<tr><td>产品数据中心</td><td>(无)</td><td>全部</td></tr>
+<tr><td>系统管理</td><td>JWT本地认证+暗色主题+备份+设置</td><td>OAuth/字典中心/通知中心/监控</td></tr>
+</table></div>
+
+<h3>15.2 MVP验收标准</h3>
+<div class="table-wrap"><table>
+<tr><th>验收项</th><th>标准</th></tr>
+<tr><td>作品导入</td><td>拖拽/点击上传 JPG/PNG/WebP/GIF/MP3/MP4/PDF</td></tr>
+<tr><td>作品管理</td><td>列表+网格视图+标签筛选+全文搜索+编辑面板</td></tr>
+<tr><td>SHA-256哈希</td><td>上传后自动计算+显示</td></tr>
+<tr><td>存证证书</td><td>创建存证记录+显示状态+生成PDF证书</td></tr>
+<tr><td>手动扫描</td><td>选择作品→百度识图搜索→显示结果→标记状态</td></tr>
+<tr><td>基础UI</td><td>侧边栏导航+暗色主题+响应式</td></tr>
+<tr><td>本地运行</td><td>PyInstaller打包 .app/.exe 双击运行</td></tr>
+</table></div>
+
+<h3>15.3 Go/No-Go 指标</h3>
+<div class="table-wrap"><table>
+<tr><th>指标</th><th>Go标准</th><th>No-Go</th></tr>
+<tr><td>下载量(首月)</td><td>≥500</td><td>&lt;50</td></tr>
+<tr><td>活跃用户(次月留存)</td><td>≥30%</td><td>&lt;10%</td></tr>
+<tr><td>创作者NPS</td><td>NPS &gt; 0</td><td>NPS &lt; -30</td></tr>
+</table></div>
+
+<!-- ========== 16. 参考 ========== -->
+<h2 id="external-docs">16. 详细设计文档索引</h2>
+<div class="table-wrap"><table>
+<tr><th>文档</th><th>路径</th><th>行数</th></tr>
+<tr><td>模块设计索引</td><td><a href="modules/README.md">docs/modules/README.md</a></td><td>239行 · 跨模块数据流+全局统计</td></tr>
+<tr><td>01-作品管理 v3</td><td><a href="modules/01-works/README.md">docs/modules/01-works/README.md</a></td><td>606行</td></tr>
+<tr><td>02-存证确权 v3</td><td><a href="modules/02-notary/README.md">docs/modules/02-notary/README.md</a></td><td>608行</td></tr>
+<tr><td>03-侵权监测 v2</td><td><a href="modules/03-monitor/README.md">docs/modules/03-monitor/README.md</a></td><td>~670行</td></tr>
+<tr><td>04-知识产权 v2</td><td><a href="modules/04-ipr/README.md">docs/modules/04-ipr/README.md</a></td><td>~750行</td></tr>
+<tr><td>05-变现引擎 v2</td><td><a href="modules/05-supply/README.md">docs/modules/05-supply/README.md</a></td><td>~800行</td></tr>
+<tr><td>06-产品数据中心 v2</td><td><a href="modules/06-publish/README.md">docs/modules/06-publish/README.md</a></td><td>~720行</td></tr>
+<tr><td>07-系统管理 v2</td><td><a href="modules/07-system/README.md">docs/modules/07-system/README.md</a></td><td>~780行</td></tr>
+<tr><td>完整实施计划</td><td><a href="OriStudio-完整实施计划.md">docs/OriStudio-完整实施计划.md</a></td><td>177条任务+4阶段+依赖+验收标准</td></tr>
+</table></div>
+
+<div class="success-box">
+<strong>📋 全方案完成</strong> — 7个模块深度设计 + 跨模块数据流 + 47张数据表 + 191 API端点 + 177实施任务。<br>
+详细业务设计、数据模型、API规格、前端组件树，参见各模块独立设计文档 (docs/modules/0*-*/)
+</div>
+
+</div>
+</body>
+</html>

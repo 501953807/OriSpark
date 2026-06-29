@@ -1,0 +1,172 @@
+- generic [ref=e4]:
+  - link "跳转到主内容" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主导航" [ref=e6]:
+    - link "OriStudio 首页" [ref=e7] [cursor=pointer]:
+      - /url: /app
+      - generic [ref=e8]: O
+      - generic [ref=e9]:
+        - generic [ref=e10]: OriStudio
+        - generic [ref=e11]: 创作者全链路助手
+    - navigation [ref=e12]:
+      - generic [ref=e13]: 概览
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /app
+        - generic [ref=e15]: 📊
+        - generic [ref=e16]: 工作台
+      - generic [ref=e17]: 核心模块
+      - link "作品管理" [ref=e18] [cursor=pointer]:
+        - /url: /app/works
+        - generic [ref=e19]: 🎨
+        - generic [ref=e20]: 作品管理
+        - generic [ref=e21]: "0"
+      - link "项目分组" [ref=e22] [cursor=pointer]:
+        - /url: /app/projects
+        - generic [ref=e23]: 📁
+        - generic [ref=e24]: 项目分组
+      - link "存证确权" [ref=e25] [cursor=pointer]:
+        - /url: /app/notary
+        - generic [ref=e26]: 🔒
+        - generic [ref=e27]: 存证确权
+        - generic [ref=e28]: "0"
+      - link "侵权监测" [ref=e29] [cursor=pointer]:
+        - /url: /app/monitor
+        - generic [ref=e30]: 🛡️
+        - generic [ref=e31]: 侵权监测
+      - link "IP 登记" [ref=e32] [cursor=pointer]:
+        - /url: /app/ipr
+        - generic [ref=e33]: 📋
+        - generic [ref=e34]: IP 登记
+      - link "供应链" [ref=e35] [cursor=pointer]:
+        - /url: /app/supply
+        - generic [ref=e36]: 🏭
+        - generic [ref=e37]: 供应链
+      - link "发布变现" [ref=e38] [cursor=pointer]:
+        - /url: /app/publish
+        - generic [ref=e39]: 🚀
+        - generic [ref=e40]: 发布变现
+      - generic [ref=e41]: 设置
+      - link "偏好设置" [ref=e42] [cursor=pointer]:
+        - /url: /app/settings
+        - generic [ref=e43]: ⚙️
+        - generic [ref=e44]: 偏好设置
+      - link "第三方对接" [ref=e45] [cursor=pointer]:
+        - /url: /app/integrations
+        - generic [ref=e46]: 🔌
+        - generic [ref=e47]: 第三方对接
+    - button "◀" [ref=e48] [cursor=pointer]
+    - generic [ref=e49]:
+      - generic [ref=e50]: 创
+      - generic [ref=e51]:
+        - generic [ref=e52]: 创作者
+        - generic [ref=e53]: 本地用户
+  - generic [ref=e54]:
+    - banner [ref=e55]:
+      - heading "存证确权" [level=1] [ref=e57]
+      - generic [ref=e58]:
+        - button "切换到暗色模式" [ref=e59] [cursor=pointer]: 🌙
+        - button "导入作品" [ref=e60] [cursor=pointer]:
+          - generic [ref=e61]: 📤
+          - text: 导入作品
+        - button "🔔" [ref=e63] [cursor=pointer]
+        - link "偏好设置" [ref=e64] [cursor=pointer]:
+          - /url: /app/settings
+          - text: ⚙️
+        - link "第三方对接" [ref=e65] [cursor=pointer]:
+          - /url: /app/integrations
+          - text: 🔌
+    - main [ref=e66]:
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - generic [ref=e70]: 📊
+            - generic [ref=e71]:
+              - generic [ref=e72]: 存证记录
+              - generic [ref=e73]: "4"
+          - generic [ref=e74]:
+            - generic [ref=e75]: ✅
+            - generic [ref=e76]:
+              - generic [ref=e77]: 已确认
+              - generic [ref=e78]: "2"
+          - generic [ref=e79]:
+            - generic [ref=e80]: ⏳
+            - generic [ref=e81]:
+              - generic [ref=e82]: 待处理
+              - generic [ref=e83]: "2"
+        - generic [ref=e84]: 存证平台
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]: 🏛️
+              - generic [ref=e89]:
+                - generic [ref=e90]: 版权家
+                - generic [ref=e91]: 国家级 · 法律效力最高
+            - generic [ref=e92]: 国家版权局 DCI 体系，法律效力最高
+            - generic [ref=e93]:
+              - generic [ref=e94]: ¥3/次
+              - generic [ref=e95]: 可用
+            - button "选择此平台存证" [ref=e97] [cursor=pointer]
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e100]: 🐜
+              - generic [ref=e101]:
+                - generic [ref=e102]: 蚂蚁链
+                - generic [ref=e103]: 商用级 · 区块链存证
+            - generic [ref=e104]: 支付宝蚂蚁区块链存证，商用级
+            - generic [ref=e105]:
+              - generic [ref=e106]: ¥0.5/次
+              - generic [ref=e107]: 可用
+            - button "选择此平台存证" [ref=e109] [cursor=pointer]
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e112]: ⚖️
+              - generic [ref=e113]:
+                - generic [ref=e114]: 至信链
+                - generic [ref=e115]: 司法级 · 互联网法院认可
+            - generic [ref=e116]: 腾讯/互联网法院司法链，司法级
+            - generic [ref=e117]:
+              - generic [ref=e118]: ¥1/次
+              - generic [ref=e119]: 可用
+            - button "选择此平台存证" [ref=e121] [cursor=pointer]
+        - generic [ref=e122]: 存证记录
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e125]: 作品
+            - generic [ref=e126]: 平台
+            - generic [ref=e127]: 存证哈希
+            - generic [ref=e128]: 状态
+            - generic [ref=e129]: 费用
+            - generic [ref=e130]: 日期
+            - generic [ref=e131]: 操作
+          - generic [ref=e132]:
+            - generic "d6714dd3169245f2b78626a9d4fac2b6" [ref=e133]: d6714dd31692
+            - generic [ref=e134]: 版权家
+            - generic [ref=e135]: 14424daf1ea9
+            - generic [ref=e137]: 待确认
+            - generic [ref=e139]: ¥3
+            - generic [ref=e140]: 2026-06-12
+            - button "确认存证" [ref=e142] [cursor=pointer]
+          - generic [ref=e143]:
+            - generic "d6714dd3169245f2b78626a9d4fac2b6" [ref=e144]: d6714dd31692
+            - generic [ref=e145]: 版权家
+            - generic [ref=e146]: 14424daf1ea9
+            - generic [ref=e148]: 待确认
+            - generic [ref=e150]: ¥3
+            - generic [ref=e151]: 2026-06-10
+            - button "确认存证" [ref=e153] [cursor=pointer]
+          - generic [ref=e154]:
+            - generic "d897f73866984361adae8206bdbe6169" [ref=e155]: d897f7386698
+            - generic [ref=e156]: 版权家
+            - generic [ref=e157]: 03b074fa351e
+            - generic [ref=e159]: 已确认
+            - generic [ref=e161]: ¥3
+            - generic [ref=e162]: 2026-06-10
+            - button "查看证书" [ref=e164] [cursor=pointer]
+          - generic [ref=e165]:
+            - generic "ba646ea76b2649f39a82328bb383cfa9" [ref=e166]: ba646ea76b26
+            - generic [ref=e167]: 版权家
+            - generic [ref=e168]: 03b074fa351e
+            - generic [ref=e170]: 已确认
+            - generic [ref=e172]: ¥3
+            - generic [ref=e173]: 2026-06-10
+            - button "查看证书" [ref=e175] [cursor=pointer]

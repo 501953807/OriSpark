@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/data/certificates/cert_829cb0edf177407c91cf1a72acf131bf.pdf",
+      "type": "file",
+      "name": "cert_829cb0edf177407c91cf1a72acf131bf.pdf",
+      "filePath": "frontend/data/certificates/cert_829cb0edf177407c91cf1a72acf131bf.pdf",
+      "summary": "版权证书 PDF 文件存档。",
+      "tags": [
+        "certificate",
+        "pdf",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/data/certificates/cert_ecc27ca506e94eb2a6435f000af919df.pdf",
+      "type": "file",
+      "name": "cert_ecc27ca506e94eb2a6435f000af919df.pdf",
+      "filePath": "frontend/data/certificates/cert_ecc27ca506e94eb2a6435f000af919df.pdf",
+      "summary": "版权证书 PDF 文件存档。",
+      "tags": [
+        "certificate",
+        "pdf",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/data/certificates/cert_efd33a17fa9a4d2995c26a48cba52296.pdf",
+      "type": "file",
+      "name": "cert_efd33a17fa9a4d2995c26a48cba52296.pdf",
+      "filePath": "frontend/data/certificates/cert_efd33a17fa9a4d2995c26a48cba52296.pdf",
+      "summary": "版权证书 PDF 文件存档。",
+      "tags": [
+        "certificate",
+        "pdf",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/data/oristudio.db",
+      "type": "file",
+      "name": "oristudio.db",
+      "filePath": "frontend/data/oristudio.db",
+      "summary": "OriStudio 前端 SQLite 数据库文件。",
+      "tags": [
+        "database",
+        "sqlite",
+        "storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/postcss.config.js",
+      "type": "file",
+      "name": "postcss.config.js",
+      "filePath": "frontend/postcss.config.js",
+      "summary": "PostCSS 构建配置文件。",
+      "tags": [
+        "configuration",
+        "build-system",
+        "css"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/__tests__/StatCard.test.ts",
+      "type": "file",
+      "name": "StatCard.test.ts",
+      "filePath": "frontend/src/__tests__/StatCard.test.ts",
+      "summary": "前端 TypeScript 测试文件 (StatCard.test.ts)。",
+      "tags": [
+        "test",
+        "frontend",
+        "typescript",
+        "component-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/components/__tests__/components.test.ts",
+      "type": "file",
+      "name": "components.test.ts",
+      "filePath": "frontend/src/components/__tests__/components.test.ts",
+      "summary": "前端 TypeScript 测试文件 (components.test.ts)。",
+      "tags": [
+        "test",
+        "frontend",
+        "typescript",
+        "component-test"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/components/common/StatCard.vue",
+      "target": "file:frontend/src/__tests__/StatCard.test.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/src/components/common/*.vue",
+      "target": "file:frontend/src/components/__tests__/components.test.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

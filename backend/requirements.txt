@@ -1,0 +1,17 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+sqlalchemy>=2.0
+alembic>=1.13
+pydantic>=2.5
+pydantic-settings>=2.1
+python-multipart>=0.0.6
+aiofiles>=23.2
+httpx>=0.25
+Pillow>=10.0
+reportlab>=4.0
+qrcode>=7.4
+celery>=5.3
+redis>=5.0
+python-dotenv>=1.0
+cryptography>=41.0
+apscheduler>=3.10

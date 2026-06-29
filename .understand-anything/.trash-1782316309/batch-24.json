@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/last-tool-error-state.json",
+      "type": "config",
+      "name": "last-tool-error-state.json",
+      "filePath": "backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/last-tool-error-state.json",
+      "summary": "Last tool error state recording a failed Bash command listing a frontend charts directory, with 1 retry.",
+      "tags": ["omc-state", "error-log", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/mission-state.json",
+      "type": "config",
+      "name": "mission-state.json",
+      "filePath": "backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/mission-state.json",
+      "summary": "Mission state for session c8e99c09 tracking a running session mission with 24 workers, 8 in progress, 16 completed, and a mix of executor, security-reviewer, and Explore agent statuses.",
+      "tags": ["omc-state", "mission", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/pre-tool-advisory-throttle.json",
+      "type": "config",
+      "name": "pre-tool-advisory-throttle.json",
+      "filePath": "backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/pre-tool-advisory-throttle.json",
+      "summary": "Pre-tool advisory throttle entries for session c8e99c09, deduplicating repeated agent spawn messages and execution tips.",
+      "tags": ["omc-state", "throttle", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/subagent-tracking-state.json",
+      "type": "config",
+      "name": "subagent-tracking-state.json",
+      "filePath": "backend/.omc/state/sessions/c8e99c09-fa40-4935-bd10-2b0b320cd15c/subagent-tracking-state.json",
+      "summary": "Subagent tracking state for session c8e99c09 recording 24 spawned agents (15 completed, 9 still running), including executor, security-reviewer, and Explore agent types.",
+      "tags": ["omc-state", "subagent-tracking", "session-data"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

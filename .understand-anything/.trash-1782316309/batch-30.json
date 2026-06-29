@@ -1,0 +1,122 @@
+{
+  "nodes": [
+    {
+      "id": "config:backend/data/certificates/signatures/27ea0c0540394b7981ff7217f3a9cd94.json",
+      "type": "config",
+      "name": "27ea0c0540394b7981ff7217f3a9cd94.json",
+      "filePath": "backend/data/certificates/signatures/27ea0c0540394b7981ff7217f3a9cd94.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/513a0901da7a437ba3edf6d7da6c87a6.json",
+      "type": "config",
+      "name": "513a0901da7a437ba3edf6d7da6c87a6.json",
+      "filePath": "backend/data/certificates/signatures/513a0901da7a437ba3edf6d7da6c87a6.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/63cc546203e24810818d941da00f3dbf.json",
+      "type": "config",
+      "name": "63cc546203e24810818d941da00f3dbf.json",
+      "filePath": "backend/data/certificates/signatures/63cc546203e24810818d941da00f3dbf.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "type": "config",
+      "name": "70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "filePath": "backend/data/certificates/signatures/70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "summary": "Verifiable Credential cryptographic key pair (private/public PEM) used for DID-based content attestation and digital signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "type": "config",
+      "name": "914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "filePath": "backend/data/certificates/signatures/914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "summary": "Verifiable Credential cryptographic key pair (private/public PEM) used for DID-based content attestation and digital signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/a9d891183b154258b098be5e0f08315b.json",
+      "type": "config",
+      "name": "a9d891183b154258b098be5e0f08315b.json",
+      "filePath": "backend/data/certificates/signatures/a9d891183b154258b098be5e0f08315b.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "type": "config",
+      "name": "dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "filePath": "backend/data/certificates/signatures/dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "summary": "C2PA signing key pair storing ECDSA private and public PEM certificates with algorithm metadata and creation timestamp.",
+      "tags": [
+        "configuration",
+        "security",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "type": "config",
+      "name": "ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "filePath": "backend/data/certificates/signatures/ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/certificates/signatures/f1ab22dea16f4e97865302ce6cd29750.json",
+      "type": "config",
+      "name": "f1ab22dea16f4e97865302ce6cd29750.json",
+      "filePath": "backend/data/certificates/signatures/f1ab22dea16f4e97865302ce6cd29750.json",
+      "summary": "Static JSON certificate or signature data file storing cryptographic key material or attestation records.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "security"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

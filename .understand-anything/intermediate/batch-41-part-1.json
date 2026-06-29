@@ -1,0 +1,2158 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/tests/test_c2pa_did_vc.py",
+      "type": "file",
+      "name": "test_c2pa_did_vc.py",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "summary": "后端 test_c2pa_did_vc.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_e2e_workflow.py",
+      "type": "file",
+      "name": "test_e2e_workflow.py",
+      "filePath": "backend/tests/test_e2e_workflow.py",
+      "summary": "后端 test_e2e_workflow.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/tests/test_ipr_p24.py",
+      "type": "file",
+      "name": "test_ipr_p24.py",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "summary": "后端 test_ipr_p24.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_monitor.py",
+      "type": "file",
+      "name": "test_monitor.py",
+      "filePath": "backend/tests/test_monitor.py",
+      "summary": "后端 test_monitor.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/tests/test_monitor_p23.py",
+      "type": "file",
+      "name": "test_monitor_p23.py",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "summary": "后端 test_monitor_p23.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_notary.py",
+      "type": "file",
+      "name": "test_notary.py",
+      "filePath": "backend/tests/test_notary.py",
+      "summary": "后端 test_notary.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/tests/test_p3_boundary.py",
+      "type": "file",
+      "name": "test_p3_boundary.py",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "summary": "后端 test_p3_boundary.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestC2PAService",
+      "type": "class",
+      "name": "TestC2PAService",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        8,
+        120
+      ],
+      "summary": "TestC2PAService 测试类，包含 6 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestDIDService",
+      "type": "class",
+      "name": "TestDIDService",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        123,
+        202
+      ],
+      "summary": "TestDIDService 测试类，包含 6 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestVCService",
+      "type": "class",
+      "name": "TestVCService",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        205,
+        320
+      ],
+      "summary": "TestVCService 测试类，包含 5 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryC2PAEndpoints",
+      "type": "class",
+      "name": "TestNotaryC2PAEndpoints",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        323,
+        371
+      ],
+      "summary": "TestNotaryC2PAEndpoints 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryDIDEndpoints",
+      "type": "class",
+      "name": "TestNotaryDIDEndpoints",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        374,
+        404
+      ],
+      "summary": "TestNotaryDIDEndpoints 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryVCEndpoints",
+      "type": "class",
+      "name": "TestNotaryVCEndpoints",
+      "filePath": "backend/tests/test_c2pa_did_vc.py",
+      "lineRange": [
+        407,
+        475
+      ],
+      "summary": "TestNotaryVCEndpoints 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/tests/test_e2e_workflow.py:test_full_creator_workflow",
+      "type": "function",
+      "name": "test_full_creator_workflow",
+      "filePath": "backend/tests/test_e2e_workflow.py",
+      "lineRange": [
+        10,
+        196
+      ],
+      "summary": "测试用例：test_full_creator_workflow。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_e2e_workflow.py:test_e2e_batch_workflow",
+      "type": "function",
+      "name": "test_e2e_batch_workflow",
+      "filePath": "backend/tests/test_e2e_workflow.py",
+      "lineRange": [
+        199,
+        262
+      ],
+      "summary": "测试用例：test_e2e_batch_workflow。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_e2e_workflow.py:test_e2e_health_and_info",
+      "type": "function",
+      "name": "test_e2e_health_and_info",
+      "filePath": "backend/tests/test_e2e_workflow.py",
+      "lineRange": [
+        265,
+        274
+      ],
+      "summary": "测试用例：test_e2e_health_and_info。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_all",
+      "type": "function",
+      "name": "test_get_guidelines_all",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        6,
+        20
+      ],
+      "summary": "测试用例：test_get_guidelines_all。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_cn",
+      "type": "function",
+      "name": "test_get_guidelines_cn",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        23,
+        32
+      ],
+      "summary": "测试用例：test_get_guidelines_cn。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_us",
+      "type": "function",
+      "name": "test_get_guidelines_us",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        35,
+        49
+      ],
+      "summary": "测试用例：test_get_guidelines_us。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_eu",
+      "type": "function",
+      "name": "test_get_guidelines_eu",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        52,
+        70
+      ],
+      "summary": "测试用例：test_get_guidelines_eu。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_wipo",
+      "type": "function",
+      "name": "test_get_guidelines_wipo",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        73,
+        91
+      ],
+      "summary": "测试用例：test_get_guidelines_wipo。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_jp",
+      "type": "function",
+      "name": "test_get_guidelines_jp",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        94,
+        105
+      ],
+      "summary": "测试用例：test_get_guidelines_jp。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_kr",
+      "type": "function",
+      "name": "test_get_guidelines_kr",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        108,
+        117
+      ],
+      "summary": "测试用例：test_get_guidelines_kr。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_by_type_cn",
+      "type": "function",
+      "name": "test_get_guidelines_by_type_cn",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        120,
+        128
+      ],
+      "summary": "测试用例：test_get_guidelines_by_type_cn。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_get_paths_global",
+      "type": "function",
+      "name": "test_get_paths_global",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        144,
+        154
+      ],
+      "summary": "测试用例：test_get_paths_global。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_nice_classes_full",
+      "type": "function",
+      "name": "test_nice_classes_full",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        157,
+        170
+      ],
+      "summary": "测试用例：test_nice_classes_full。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_nice_class_detail",
+      "type": "function",
+      "name": "test_nice_class_detail",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        173,
+        179
+      ],
+      "summary": "测试用例：test_nice_class_detail。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_cn",
+      "type": "function",
+      "name": "test_fee_calculator_trademark_cn",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        182,
+        197
+      ],
+      "summary": "测试用例：test_fee_calculator_trademark_cn。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_eu",
+      "type": "function",
+      "name": "test_fee_calculator_trademark_eu",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        200,
+        220
+      ],
+      "summary": "测试用例：test_fee_calculator_trademark_eu。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_wipo",
+      "type": "function",
+      "name": "test_fee_calculator_trademark_wipo",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        223,
+        239
+      ],
+      "summary": "测试用例：test_fee_calculator_trademark_wipo。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_multijurisdiction",
+      "type": "function",
+      "name": "test_fee_calculator_multijurisdiction",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        242,
+        258
+      ],
+      "summary": "测试用例：test_fee_calculator_multijurisdiction。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_copyright",
+      "type": "function",
+      "name": "test_fee_calculator_copyright",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        261,
+        271
+      ],
+      "summary": "测试用例：test_fee_calculator_copyright。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_design",
+      "type": "function",
+      "name": "test_fee_calculator_design",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        274,
+        290
+      ],
+      "summary": "测试用例：test_fee_calculator_design。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_wipo_hague",
+      "type": "function",
+      "name": "test_fee_calculator_wipo_hague",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        293,
+        305
+      ],
+      "summary": "测试用例：test_fee_calculator_wipo_hague。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_disclaimer",
+      "type": "function",
+      "name": "test_fee_calculator_disclaimer",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        308,
+        317
+      ],
+      "summary": "测试用例：test_fee_calculator_disclaimer。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_empty_jurisdictions",
+      "type": "function",
+      "name": "test_fee_calculator_empty_jurisdictions",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        320,
+        326
+      ],
+      "summary": "测试用例：test_fee_calculator_empty_jurisdictions。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_templates_list",
+      "type": "function",
+      "name": "test_templates_list",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        329,
+        339
+      ],
+      "summary": "测试用例：test_templates_list。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_templates_filter_by_type",
+      "type": "function",
+      "name": "test_templates_filter_by_type",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        342,
+        349
+      ],
+      "summary": "测试用例：test_templates_filter_by_type。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_templates_filter_by_jurisdiction",
+      "type": "function",
+      "name": "test_templates_filter_by_jurisdiction",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        352,
+        358
+      ],
+      "summary": "测试用例：test_templates_filter_by_jurisdiction。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_template_detail",
+      "type": "function",
+      "name": "test_template_detail",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        361,
+        375
+      ],
+      "summary": "测试用例：test_template_detail。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_registration_crud",
+      "type": "function",
+      "name": "test_registration_crud",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        384,
+        435
+      ],
+      "summary": "测试用例：test_registration_crud。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_recommend_classes",
+      "type": "function",
+      "name": "test_recommend_classes",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        438,
+        447
+      ],
+      "summary": "测试用例：test_recommend_classes。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_prefill_copyright",
+      "type": "function",
+      "name": "test_prefill_copyright",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        450,
+        476
+      ],
+      "summary": "测试用例：test_prefill_copyright。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_portfolio",
+      "type": "function",
+      "name": "test_portfolio",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        479,
+        486
+      ],
+      "summary": "测试用例：test_portfolio。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_dashboard",
+      "type": "function",
+      "name": "test_dashboard",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        489,
+        495
+      ],
+      "summary": "测试用例：test_dashboard。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_reminders",
+      "type": "function",
+      "name": "test_reminders",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        498,
+        505
+      ],
+      "summary": "测试用例：test_reminders。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_ipr_p24.py:test_ipr_disclaimers_in_all_guidelines",
+      "type": "function",
+      "name": "test_ipr_disclaimers_in_all_guidelines",
+      "filePath": "backend/tests/test_ipr_p24.py",
+      "lineRange": [
+        508,
+        515
+      ],
+      "summary": "测试用例：test_ipr_disclaimers_in_all_guidelines。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:_upload_random_image",
+      "type": "function",
+      "name": "_upload_random_image",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        20,
+        33
+      ],
+      "summary": "辅助函数：_upload_random_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:_create_test_image",
+      "type": "function",
+      "name": "_create_test_image",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        36,
+        41
+      ],
+      "summary": "辅助函数：_create_test_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_compute_fingerprints_raw",
+      "type": "function",
+      "name": "test_compute_fingerprints_raw",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        48,
+        77
+      ],
+      "summary": "测试用例：test_compute_fingerprints_raw。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_different_images_different_hash",
+      "type": "function",
+      "name": "test_different_images_different_hash",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        80,
+        120
+      ],
+      "summary": "测试用例：test_different_images_different_hash。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_fingerprint_endpoint",
+      "type": "function",
+      "name": "test_fingerprint_endpoint",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        123,
+        142
+      ],
+      "summary": "测试用例：test_fingerprint_endpoint。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_fingerprint_compare",
+      "type": "function",
+      "name": "test_fingerprint_compare",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        145,
+        172
+      ],
+      "summary": "测试用例：test_fingerprint_compare。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_brand_watch_crud",
+      "type": "function",
+      "name": "test_brand_watch_crud",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        179,
+        215
+      ],
+      "summary": "测试用例：test_brand_watch_crud。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_brand_watch_invalid",
+      "type": "function",
+      "name": "test_brand_watch_invalid",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        218,
+        228
+      ],
+      "summary": "测试用例：test_brand_watch_invalid。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_brand_scan",
+      "type": "function",
+      "name": "test_brand_scan",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        235,
+        260
+      ],
+      "summary": "测试用例：test_brand_scan。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_domain_watch_register",
+      "type": "function",
+      "name": "test_domain_watch_register",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        269,
+        295
+      ],
+      "summary": "测试用例：test_domain_watch_register。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_domain_watch_invalid",
+      "type": "function",
+      "name": "test_domain_watch_invalid",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        298,
+        303
+      ],
+      "summary": "测试用例：test_domain_watch_invalid。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_dmca_template",
+      "type": "function",
+      "name": "test_dmca_template",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        310,
+        323
+      ],
+      "summary": "测试用例：test_dmca_template。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_code_similarity_identical",
+      "type": "function",
+      "name": "test_code_similarity_identical",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        336,
+        345
+      ],
+      "summary": "测试用例：test_code_similarity_identical。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_code_similarity_different",
+      "type": "function",
+      "name": "test_code_similarity_different",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        348,
+        363
+      ],
+      "summary": "测试用例：test_code_similarity_different。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_code_similarity_renamed",
+      "type": "function",
+      "name": "test_code_similarity_renamed",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        366,
+        383
+      ],
+      "summary": "测试用例：test_code_similarity_renamed。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_code_similarity_endpoint",
+      "type": "function",
+      "name": "test_code_similarity_endpoint",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        386,
+        398
+      ],
+      "summary": "测试用例：test_code_similarity_endpoint。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_code_similarity_endpoint_empty",
+      "type": "function",
+      "name": "test_code_similarity_endpoint_empty",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        401,
+        410
+      ],
+      "summary": "测试用例：test_code_similarity_endpoint_empty。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_result_deduplication",
+      "type": "function",
+      "name": "test_result_deduplication",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        417,
+        439
+      ],
+      "summary": "测试用例：test_result_deduplication。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_whitelist_learning",
+      "type": "function",
+      "name": "test_whitelist_learning",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        446,
+        484
+      ],
+      "summary": "测试用例：test_whitelist_learning。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_whitelist_action_invalid",
+      "type": "function",
+      "name": "test_whitelist_action_invalid",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        487,
+        493
+      ],
+      "summary": "测试用例：test_whitelist_action_invalid。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_logo_detector_template_match",
+      "type": "function",
+      "name": "test_logo_detector_template_match",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        500,
+        526
+      ],
+      "summary": "测试用例：test_logo_detector_template_match。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_logo_detector_no_match",
+      "type": "function",
+      "name": "test_logo_detector_no_match",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        529,
+        543
+      ],
+      "summary": "测试用例：test_logo_detector_no_match。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_mock_ecommerce_results",
+      "type": "function",
+      "name": "test_mock_ecommerce_results",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        546,
+        556
+      ],
+      "summary": "测试用例：test_mock_ecommerce_results。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor_p23.py:test_dmca_template_fill",
+      "type": "function",
+      "name": "test_dmca_template_fill",
+      "filePath": "backend/tests/test_monitor_p23.py",
+      "lineRange": [
+        563,
+        584
+      ],
+      "summary": "测试用例：test_dmca_template_fill。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor.py:_upload_random_image",
+      "type": "function",
+      "name": "_upload_random_image",
+      "filePath": "backend/tests/test_monitor.py",
+      "lineRange": [
+        7,
+        20
+      ],
+      "summary": "辅助函数：_upload_random_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor.py:test_get_quota",
+      "type": "function",
+      "name": "test_get_quota",
+      "filePath": "backend/tests/test_monitor.py",
+      "lineRange": [
+        23,
+        29
+      ],
+      "summary": "测试用例：test_get_quota。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor.py:test_monitor_scan_flow",
+      "type": "function",
+      "name": "test_monitor_scan_flow",
+      "filePath": "backend/tests/test_monitor.py",
+      "lineRange": [
+        32,
+        60
+      ],
+      "summary": "测试用例：test_monitor_scan_flow。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_monitor.py:test_batch_scan",
+      "type": "function",
+      "name": "test_batch_scan",
+      "filePath": "backend/tests/test_monitor.py",
+      "lineRange": [
+        63,
+        78
+      ],
+      "summary": "测试用例：test_batch_scan。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_notary.py:test_get_platforms",
+      "type": "function",
+      "name": "test_get_platforms",
+      "filePath": "backend/tests/test_notary.py",
+      "lineRange": [
+        6,
+        11
+      ],
+      "summary": "测试用例：test_get_platforms。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_notary.py:test_notary_record_flow",
+      "type": "function",
+      "name": "test_notary_record_flow",
+      "filePath": "backend/tests/test_notary.py",
+      "lineRange": [
+        14,
+        50
+      ],
+      "summary": "测试用例：test_notary_record_flow。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_notary.py:test_batch_notarize",
+      "type": "function",
+      "name": "test_batch_notarize",
+      "filePath": "backend/tests/test_notary.py",
+      "lineRange": [
+        53,
+        82
+      ],
+      "summary": "测试用例：test_batch_notarize。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:_random_image",
+      "type": "function",
+      "name": "_random_image",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        7,
+        20
+      ],
+      "summary": "辅助函数：_random_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_empty_works_list",
+      "type": "function",
+      "name": "test_empty_works_list",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        26,
+        34
+      ],
+      "summary": "测试用例：test_empty_works_list。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_empty_notary_records",
+      "type": "function",
+      "name": "test_empty_notary_records",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        37,
+        42
+      ],
+      "summary": "测试用例：test_empty_notary_records。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_empty_monitor_tasks",
+      "type": "function",
+      "name": "test_empty_monitor_tasks",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        45,
+        50
+      ],
+      "summary": "测试用例：test_empty_monitor_tasks。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_empty_monitor_results",
+      "type": "function",
+      "name": "test_empty_monitor_results",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        53,
+        58
+      ],
+      "summary": "测试用例：test_empty_monitor_results。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_dashboard_stats_empty",
+      "type": "function",
+      "name": "test_dashboard_stats_empty",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        61,
+        68
+      ],
+      "summary": "测试用例：test_dashboard_stats_empty。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_notary_nonexistent_work",
+      "type": "function",
+      "name": "test_notary_nonexistent_work",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        87,
+        93
+      ],
+      "summary": "测试用例：test_notary_nonexistent_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_notary_invalid_platform",
+      "type": "function",
+      "name": "test_notary_invalid_platform",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        96,
+        105
+      ],
+      "summary": "测试用例：test_notary_invalid_platform。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_monitor_without_work",
+      "type": "function",
+      "name": "test_monitor_without_work",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        108,
+        115
+      ],
+      "summary": "测试用例：test_monitor_without_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_invalid_json_body",
+      "type": "function",
+      "name": "test_invalid_json_body",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        118,
+        125
+      ],
+      "summary": "测试用例：test_invalid_json_body。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_very_long_filename",
+      "type": "function",
+      "name": "test_very_long_filename",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        131,
+        136
+      ],
+      "summary": "测试用例：test_very_long_filename。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_filename_with_special_characters",
+      "type": "function",
+      "name": "test_filename_with_special_characters",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        139,
+        151
+      ],
+      "summary": "测试用例：test_filename_with_special_characters。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_filename_with_unicode",
+      "type": "function",
+      "name": "test_filename_with_unicode",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        154,
+        167
+      ],
+      "summary": "测试用例：test_filename_with_unicode。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_duplicate_title",
+      "type": "function",
+      "name": "test_duplicate_title",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        170,
+        180
+      ],
+      "summary": "测试用例：test_duplicate_title。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_zero_size_image",
+      "type": "function",
+      "name": "test_zero_size_image",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        183,
+        201
+      ],
+      "summary": "测试用例：test_zero_size_image。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_boundary.py:test_large_image_upload",
+      "type": "function",
+      "name": "test_large_image_upload",
+      "filePath": "backend/tests/test_p3_boundary.py",
+      "lineRange": [
+        204,
+        222
+      ],
+      "summary": "测试用例：test_large_image_upload。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/app/routers/notary.py",
+      "target": "file:backend/tests/test_c2pa_did_vc.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestC2PAService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestDIDService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestVCService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryC2PAEndpoints",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryDIDEndpoints",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_c2pa_did_vc.py",
+      "target": "class:backend/tests/test_c2pa_did_vc.py:TestNotaryVCEndpoints",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/works.py",
+      "target": "file:backend/tests/test_e2e_workflow.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_e2e_workflow.py",
+      "target": "function:backend/tests/test_e2e_workflow.py:test_full_creator_workflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_e2e_workflow.py",
+      "target": "function:backend/tests/test_e2e_workflow.py:test_e2e_batch_workflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_e2e_workflow.py",
+      "target": "function:backend/tests/test_e2e_workflow.py:test_e2e_health_and_info",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/ipr.py",
+      "target": "file:backend/tests/test_ipr_p24.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_all",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_cn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_us",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_eu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_wipo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_jp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_kr",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_guidelines_by_type_cn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_get_paths_global",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_nice_classes_full",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_nice_class_detail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_cn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_eu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_trademark_wipo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_multijurisdiction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_copyright",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_design",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_wipo_hague",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_disclaimer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_fee_calculator_empty_jurisdictions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_templates_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_templates_filter_by_type",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_templates_filter_by_jurisdiction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_template_detail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_registration_crud",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_recommend_classes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_prefill_copyright",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_portfolio",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_reminders",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_ipr_p24.py",
+      "target": "function:backend/tests/test_ipr_p24.py:test_ipr_disclaimers_in_all_guidelines",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/monitor.py",
+      "target": "file:backend/tests/test_monitor_p23.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:_upload_random_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:_create_test_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_compute_fingerprints_raw",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_different_images_different_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_fingerprint_endpoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_fingerprint_compare",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_brand_watch_crud",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_brand_watch_invalid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_brand_scan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_domain_watch_register",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_domain_watch_invalid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_dmca_template",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_code_similarity_identical",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_code_similarity_different",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_code_similarity_renamed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_code_similarity_endpoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_code_similarity_endpoint_empty",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_result_deduplication",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_whitelist_learning",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_whitelist_action_invalid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_logo_detector_template_match",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_logo_detector_no_match",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_mock_ecommerce_results",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor_p23.py",
+      "target": "function:backend/tests/test_monitor_p23.py:test_dmca_template_fill",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/monitor.py",
+      "target": "file:backend/tests/test_monitor.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_monitor.py",
+      "target": "function:backend/tests/test_monitor.py:_upload_random_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor.py",
+      "target": "function:backend/tests/test_monitor.py:test_get_quota",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor.py",
+      "target": "function:backend/tests/test_monitor.py:test_monitor_scan_flow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_monitor.py",
+      "target": "function:backend/tests/test_monitor.py:test_batch_scan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/notary.py",
+      "target": "file:backend/tests/test_notary.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_notary.py",
+      "target": "function:backend/tests/test_notary.py:test_get_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_notary.py",
+      "target": "function:backend/tests/test_notary.py:test_notary_record_flow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_notary.py",
+      "target": "function:backend/tests/test_notary.py:test_batch_notarize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/works.py",
+      "target": "file:backend/tests/test_p3_boundary.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:_random_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_empty_works_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_empty_notary_records",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_empty_monitor_tasks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_empty_monitor_results",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_dashboard_stats_empty",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_notary_nonexistent_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_notary_invalid_platform",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_monitor_without_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_invalid_json_body",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_very_long_filename",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_filename_with_special_characters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_filename_with_unicode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_duplicate_title",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_zero_size_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_boundary.py",
+      "target": "function:backend/tests/test_p3_boundary.py:test_large_image_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

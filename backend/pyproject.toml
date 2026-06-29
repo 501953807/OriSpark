@@ -1,0 +1,36 @@
+[project]
+name = "oristudio"
+version = "0.1.0"
+description = "个人创作者全链路助手工具"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "pydantic>=2.5",
+    "pydantic-settings>=2.1",
+    "python-multipart>=0.0.6",
+    "aiofiles>=23.2",
+    "httpx>=0.25",
+    "Pillow>=10.0",
+    "reportlab>=4.0",
+    "qrcode>=7.4",
+    "celery>=5.3",
+    "redis>=5.0",
+    "python-dotenv>=1.0",
+    "cryptography>=41.0",
+    "apscheduler>=3.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-asyncio>=0.21",
+    "httpx>=0.25",
+    "ruff>=0.1",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

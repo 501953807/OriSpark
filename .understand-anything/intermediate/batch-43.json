@@ -1,0 +1,874 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/components/work/ProjectInfoCard.vue",
+      "type": "file",
+      "name": "ProjectInfoCard.vue",
+      "filePath": "frontend/src/components/work/ProjectInfoCard.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：ProjectInfoCard.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/ProjectStrip.vue",
+      "type": "file",
+      "name": "ProjectStrip.vue",
+      "filePath": "frontend/src/components/work/ProjectStrip.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：ProjectStrip.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/RelatedCard.vue",
+      "type": "file",
+      "name": "RelatedCard.vue",
+      "filePath": "frontend/src/components/work/RelatedCard.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：RelatedCard.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/StageAssetsStrip.vue",
+      "type": "file",
+      "name": "StageAssetsStrip.vue",
+      "filePath": "frontend/src/components/work/StageAssetsStrip.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：StageAssetsStrip.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/StageProgress.vue",
+      "type": "file",
+      "name": "StageProgress.vue",
+      "filePath": "frontend/src/components/work/StageProgress.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：StageProgress.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/StageTimeline.vue",
+      "type": "file",
+      "name": "StageTimeline.vue",
+      "filePath": "frontend/src/components/work/StageTimeline.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：StageTimeline.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/components/work/TagManager.vue",
+      "type": "file",
+      "name": "TagManager.vue",
+      "filePath": "frontend/src/components/work/TagManager.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：TagManager.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/components/work/TagStrip.vue",
+      "type": "file",
+      "name": "TagStrip.vue",
+      "filePath": "frontend/src/components/work/TagStrip.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：TagStrip.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/VersionHistoryCard.vue",
+      "type": "file",
+      "name": "VersionHistoryCard.vue",
+      "filePath": "frontend/src/components/work/VersionHistoryCard.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：VersionHistoryCard.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/VersionHistoryStrip.vue",
+      "type": "file",
+      "name": "VersionHistoryStrip.vue",
+      "filePath": "frontend/src/components/work/VersionHistoryStrip.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：VersionHistoryStrip.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/WorkCard.vue",
+      "type": "file",
+      "name": "WorkCard.vue",
+      "filePath": "frontend/src/components/work/WorkCard.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：WorkCard.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/WorkList.vue",
+      "type": "file",
+      "name": "WorkList.vue",
+      "filePath": "frontend/src/components/work/WorkList.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：WorkList.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/components/work/WorkPreview.vue",
+      "type": "file",
+      "name": "WorkPreview.vue",
+      "filePath": "frontend/src/components/work/WorkPreview.vue",
+      "summary": "作品管理相关的 Vue 单文件组件：WorkPreview.vue。",
+      "tags": [
+        "component",
+        "vue",
+        "work-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/composables/__tests__/composables.test.ts",
+      "type": "file",
+      "name": "composables.test.ts",
+      "filePath": "frontend/src/composables/__tests__/composables.test.ts",
+      "summary": "组合式函数的单元测试文件。",
+      "tags": [
+        "test",
+        "composable",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useFileUpload.ts",
+      "type": "file",
+      "name": "useFileUpload.ts",
+      "filePath": "frontend/src/composables/useFileUpload.ts",
+      "summary": "Vue Composition API 组合式函数 (useFileUpload)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/composables/useFileUpload.ts:useFileUpload",
+      "type": "function",
+      "name": "useFileUpload",
+      "filePath": "frontend/src/composables/useFileUpload.ts",
+      "lineRange": [
+        3,
+        55
+      ],
+      "summary": "组合式函数：useFileUpload。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useI18n.ts",
+      "type": "file",
+      "name": "useI18n.ts",
+      "filePath": "frontend/src/composables/useI18n.ts",
+      "summary": "Vue Composition API 组合式函数 (useI18n)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/src/composables/useI18n.ts:useI18n",
+      "type": "function",
+      "name": "useI18n",
+      "filePath": "frontend/src/composables/useI18n.ts",
+      "lineRange": [
+        132,
+        146
+      ],
+      "summary": "组合式函数：useI18n。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useKeyboard.ts",
+      "type": "file",
+      "name": "useKeyboard.ts",
+      "filePath": "frontend/src/composables/useKeyboard.ts",
+      "summary": "Vue Composition API 组合式函数 (useKeyboard)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useKeyboard.ts:useKeyboard",
+      "type": "function",
+      "name": "useKeyboard",
+      "filePath": "frontend/src/composables/useKeyboard.ts",
+      "lineRange": [
+        3,
+        20
+      ],
+      "summary": "组合式函数：useKeyboard。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useModal.ts",
+      "type": "file",
+      "name": "useModal.ts",
+      "filePath": "frontend/src/composables/useModal.ts",
+      "summary": "Vue Composition API 组合式函数 (useModal)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useModal.ts:useModal",
+      "type": "function",
+      "name": "useModal",
+      "filePath": "frontend/src/composables/useModal.ts",
+      "lineRange": [
+        3,
+        11
+      ],
+      "summary": "组合式函数：useModal。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useProductDesigner.ts",
+      "type": "file",
+      "name": "useProductDesigner.ts",
+      "filePath": "frontend/src/composables/useProductDesigner.ts",
+      "summary": "Vue Composition API 组合式函数 (useProductDesigner)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/src/composables/useProductDesigner.ts:saveState",
+      "type": "function",
+      "name": "saveState",
+      "filePath": "frontend/src/composables/useProductDesigner.ts",
+      "lineRange": [
+        94,
+        101
+      ],
+      "summary": "组合式函数：saveState。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useProductDesigner.ts:loadState",
+      "type": "function",
+      "name": "loadState",
+      "filePath": "frontend/src/composables/useProductDesigner.ts",
+      "lineRange": [
+        103,
+        117
+      ],
+      "summary": "组合式函数：loadState。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useProductDesigner.ts:clearState",
+      "type": "function",
+      "name": "clearState",
+      "filePath": "frontend/src/composables/useProductDesigner.ts",
+      "lineRange": [
+        119,
+        126
+      ],
+      "summary": "组合式函数：clearState。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useProductDesigner.ts:useProductDesigner",
+      "type": "function",
+      "name": "useProductDesigner",
+      "filePath": "frontend/src/composables/useProductDesigner.ts",
+      "lineRange": [
+        128,
+        166
+      ],
+      "summary": "组合式函数：useProductDesigner。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useTagInput.ts",
+      "type": "file",
+      "name": "useTagInput.ts",
+      "filePath": "frontend/src/composables/useTagInput.ts",
+      "summary": "Vue Composition API 组合式函数 (useTagInput)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/composables/useTagInput.ts:useTagInput",
+      "type": "function",
+      "name": "useTagInput",
+      "filePath": "frontend/src/composables/useTagInput.ts",
+      "lineRange": [
+        14,
+        99
+      ],
+      "summary": "组合式函数：useTagInput。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useToast.ts",
+      "type": "file",
+      "name": "useToast.ts",
+      "filePath": "frontend/src/composables/useToast.ts",
+      "summary": "Vue Composition API 组合式函数 (useToast)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useToast.ts:useToast",
+      "type": "function",
+      "name": "useToast",
+      "filePath": "frontend/src/composables/useToast.ts",
+      "lineRange": [
+        5,
+        28
+      ],
+      "summary": "组合式函数：useToast。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/composables/useWorkStages.ts",
+      "type": "file",
+      "name": "useWorkStages.ts",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "summary": "Vue Composition API 组合式函数 (IMAGE_STAGES, VIDEO_STAGES, AUDIO_STAGES, DOCUMENT_STAGES, DESIGN_STAGES, CODE_STAGES, getStagesForFileType, getAllStages, getStageColor, getStageIndex, ILLUSTRATION_STAGES, GENERIC_STAGES)，封装可复用的组件逻辑状态。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:getAllStages",
+      "type": "function",
+      "name": "getAllStages",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        87,
+        99
+      ],
+      "summary": "组合式函数：getAllStages。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:getStageColor",
+      "type": "function",
+      "name": "getStageColor",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        102,
+        108
+      ],
+      "summary": "组合式函数：getStageColor。",
+      "tags": [
+        "composable",
+        "vue",
+        "reactivity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:IMAGE_STAGES",
+      "type": "function",
+      "name": "IMAGE_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        13,
+        13
+      ],
+      "summary": "导出的常量：IMAGE_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:VIDEO_STAGES",
+      "type": "function",
+      "name": "VIDEO_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        23,
+        23
+      ],
+      "summary": "导出的常量：VIDEO_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:AUDIO_STAGES",
+      "type": "function",
+      "name": "AUDIO_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        33,
+        33
+      ],
+      "summary": "导出的常量：AUDIO_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:DOCUMENT_STAGES",
+      "type": "function",
+      "name": "DOCUMENT_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        43,
+        43
+      ],
+      "summary": "导出的常量：DOCUMENT_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:DESIGN_STAGES",
+      "type": "function",
+      "name": "DESIGN_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        51,
+        51
+      ],
+      "summary": "导出的常量：DESIGN_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:CODE_STAGES",
+      "type": "function",
+      "name": "CODE_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        62,
+        62
+      ],
+      "summary": "导出的常量：CODE_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:ILLUSTRATION_STAGES",
+      "type": "function",
+      "name": "ILLUSTRATION_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        117,
+        117
+      ],
+      "summary": "导出的常量：ILLUSTRATION_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/composables/useWorkStages.ts:GENERIC_STAGES",
+      "type": "function",
+      "name": "GENERIC_STAGES",
+      "filePath": "frontend/src/composables/useWorkStages.ts",
+      "lineRange": [
+        118,
+        118
+      ],
+      "summary": "导出的常量：GENERIC_STAGES。",
+      "tags": [
+        "constant",
+        "typescript",
+        "stage-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/env.d.ts",
+      "type": "file",
+      "name": "env.d.ts",
+      "filePath": "frontend/src/env.d.ts",
+      "summary": "Vite 前端项目的环境变量类型声明文件。",
+      "tags": [
+        "type-definition",
+        "vite",
+        "environment"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/stores/useAppStore.ts",
+      "type": "file",
+      "name": "useAppStore.ts",
+      "filePath": "frontend/src/stores/useAppStore.ts",
+      "summary": "Pinia 状态管理 store (useAppStore)，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/stores/useBusinessStore.ts",
+      "type": "file",
+      "name": "useBusinessStore.ts",
+      "filePath": "frontend/src/stores/useBusinessStore.ts",
+      "summary": "Pinia 状态管理 store (useBusinessStore)，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/composables/useFileUpload.ts",
+      "target": "function:frontend/src/composables/useFileUpload.ts:useFileUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useFileUpload.ts",
+      "target": "function:frontend/src/composables/useFileUpload.ts:useFileUpload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useI18n.ts",
+      "target": "function:frontend/src/composables/useI18n.ts:useI18n",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useI18n.ts",
+      "target": "function:frontend/src/composables/useI18n.ts:useI18n",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useKeyboard.ts",
+      "target": "function:frontend/src/composables/useKeyboard.ts:useKeyboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useKeyboard.ts",
+      "target": "function:frontend/src/composables/useKeyboard.ts:useKeyboard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useModal.ts",
+      "target": "function:frontend/src/composables/useModal.ts:useModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useModal.ts",
+      "target": "function:frontend/src/composables/useModal.ts:useModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useProductDesigner.ts",
+      "target": "function:frontend/src/composables/useProductDesigner.ts:saveState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useProductDesigner.ts",
+      "target": "function:frontend/src/composables/useProductDesigner.ts:loadState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useProductDesigner.ts",
+      "target": "function:frontend/src/composables/useProductDesigner.ts:clearState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useProductDesigner.ts",
+      "target": "function:frontend/src/composables/useProductDesigner.ts:useProductDesigner",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useProductDesigner.ts",
+      "target": "function:frontend/src/composables/useProductDesigner.ts:useProductDesigner",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useTagInput.ts",
+      "target": "function:frontend/src/composables/useTagInput.ts:useTagInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useTagInput.ts",
+      "target": "function:frontend/src/composables/useTagInput.ts:useTagInput",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useToast.ts",
+      "target": "function:frontend/src/composables/useToast.ts:useToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useToast.ts",
+      "target": "function:frontend/src/composables/useToast.ts:useToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:getAllStages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:getAllStages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:getStageColor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:getStageColor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:IMAGE_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:VIDEO_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:AUDIO_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:DOCUMENT_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:DESIGN_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:CODE_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:ILLUSTRATION_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/src/composables/useWorkStages.ts",
+      "target": "function:frontend/src/composables/useWorkStages.ts:GENERIC_STAGES",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

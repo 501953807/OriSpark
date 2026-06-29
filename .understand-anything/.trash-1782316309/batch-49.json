@@ -1,0 +1,344 @@
+{
+  "nodes": [
+    {
+      "id": "file:.omc/state/agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "type": "file",
+      "name": "agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "filePath": ".omc/state/agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "summary": "Agent replay log for session c8e99c09 recording tool call sequences, agent lifecycle events, and timing data for 135 logged operations.",
+      "tags": [
+        "log",
+        "agent-state",
+        "debugging",
+        "session-data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.omc/state/checkpoints/checkpoint-2026-06-22T13-48-29-226Z.json",
+      "type": "config",
+      "name": "checkpoint-2026-06-22T13-48-29-226Z.json",
+      "filePath": ".omc/state/checkpoints/checkpoint-2026-06-22T13-48-29-226Z.json",
+      "summary": "OMC session checkpoint state capturing the orchestrator's context at a specific point in the autopilot session for potential restoration.",
+      "tags": [
+        "configuration",
+        "session-state",
+        "checkpoint"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.omc/state/hud-stdin-cache.json",
+      "type": "config",
+      "name": "hud-stdin-cache.json",
+      "filePath": ".omc/state/hud-stdin-cache.json",
+      "summary": "HUD stdin cache for the OMC session dashboard, currently empty. Caches terminal input for the heads-up display interface.",
+      "tags": [
+        "configuration",
+        "cache",
+        "session-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.omc/state/idle-notif-cooldown.json",
+      "type": "config",
+      "name": "idle-notif-cooldown.json",
+      "filePath": ".omc/state/idle-notif-cooldown.json",
+      "summary": "Idle notification cooldown timer tracking state to prevent redundant session expiration warnings.",
+      "tags": [
+        "configuration",
+        "notification",
+        "session-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/tmp/ua-scan-files.json",
+      "type": "config",
+      "name": "ua-scan-files.json",
+      "filePath": ".understand-anything/tmp/ua-scan-files.json",
+      "summary": "Project file inventory produced by the Understand-Anything scanner, listing all detected files with language, line count, and category metadata.",
+      "tags": [
+        "configuration",
+        "scanning",
+        "project-inventory",
+        "metadata"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:backend/.omc/project-memory.json",
+      "type": "config",
+      "name": "project-memory.json",
+      "filePath": "backend/.omc/project-memory.json",
+      "summary": "Backend project memory file tracking accumulated knowledge about the backend codebase including architecture notes, patterns, and domain context.",
+      "tags": [
+        "configuration",
+        "project-memory",
+        "knowledge-base"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/.omc/state/agent-replay-78452f71-f492-4115-bdce-7ff3d44decdf.jsonl",
+      "type": "file",
+      "name": "agent-replay-78452f71-f492-4115-bdce-7ff3d44decdf.jsonl",
+      "filePath": "backend/.omc/state/agent-replay-78452f71-f492-4115-bdce-7ff3d44decdf.jsonl",
+      "summary": "Backend OMC agent replay log recording Explore agent lifecycle events for the backend subsystem.",
+      "tags": [
+        "log",
+        "agent-state",
+        "debugging",
+        "session-data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "type": "file",
+      "name": "agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "filePath": "backend/.omc/state/agent-replay-c8e99c09-fa40-4935-bd10-2b0b320cd15c.jsonl",
+      "summary": "Backend OMC agent replay log recording tool calls and agent events for session c8e99c09 with 48 logged operations.",
+      "tags": [
+        "log",
+        "agent-state",
+        "debugging",
+        "session-data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/.omc/state/hud-stdin-cache.json",
+      "type": "config",
+      "name": "hud-stdin-cache.json",
+      "filePath": "backend/.omc/state/hud-stdin-cache.json",
+      "summary": "Backend HUD stdin cache, currently empty. Caches terminal input for the OMC session dashboard.",
+      "tags": [
+        "configuration",
+        "cache",
+        "session-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/.omc/state/idle-notif-cooldown.json",
+      "type": "config",
+      "name": "idle-notif-cooldown.json",
+      "filePath": "backend/.omc/state/idle-notif-cooldown.json",
+      "summary": "Backend idle notification cooldown state preventing redundant session expiration warnings.",
+      "tags": [
+        "configuration",
+        "notification",
+        "session-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.pytest_cache/CACHEDIR.TAG",
+      "type": "file",
+      "name": "CACHEDIR.TAG",
+      "filePath": "backend/.pytest_cache/CACHEDIR.TAG",
+      "summary": "Pytest cache directory tag file marking this as a pytest cache location. Contains only a CACHEDIR signature tag.",
+      "tags": [
+        "cache",
+        "pytest",
+        "metadata"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.pytest_cache/README.md",
+      "type": "file",
+      "name": "README.md",
+      "filePath": "backend/.pytest_cache/README.md",
+      "summary": "Pytest cache README explaining the purpose of the .pytest_cache directory and its contents.",
+      "tags": [
+        "cache",
+        "documentation",
+        "pytest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.pytest_cache/v/cache/nodeids",
+      "type": "file",
+      "name": "nodeids",
+      "filePath": "backend/.pytest_cache/v/cache/nodeids",
+      "summary": "Pytest node ID cache storing test function identifiers for incremental test selection and skip-fast optimization.",
+      "tags": [
+        "cache",
+        "pytest",
+        "test-infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/alembic/script.py.mako",
+      "type": "file",
+      "name": "script.py.mako",
+      "filePath": "backend/alembic/script.py.mako",
+      "summary": "Alembic migration template defining the scaffold structure for auto-generated migration files including revision headers and upgrade/downgrade stubs.",
+      "tags": [
+        "template",
+        "migration",
+        "alembic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "type": "file",
+      "name": "76540445f941_initial_schema.py",
+      "filePath": "backend/alembic/versions/76540445f941_initial_schema.py",
+      "summary": "Initial database schema migration creating design_listings, design_template_compatibility, publish_analytics, publish_contents, and publish_schedules tables with indexes and foreign keys.",
+      "tags": [
+        "migration",
+        "database",
+        "alembic",
+        "schema-definition"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/alembic/versions/e34135f4e811_add_p2_p3_columns_and_tables.py",
+      "type": "file",
+      "name": "e34135f4e811_add_p2_p3_columns_and_tables.py",
+      "filePath": "backend/alembic/versions/e34135f4e811_add_p2_p3_columns_and_tables.py",
+      "summary": "P2/P3 migration adding commission_projects, rfq_requests, subscription_tiers, video_fingerprint_config, samples, subtitles, and other tables along with new columns to existing tables.",
+      "tags": [
+        "migration",
+        "database",
+        "alembic",
+        "schema-definition"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/app/migrations/add_work_fields.py",
+      "type": "file",
+      "name": "add_work_fields.py",
+      "filePath": "backend/app/migrations/add_work_fields.py",
+      "summary": "Migration script adding synopsis, completion_date, current_stage, and copyright_year columns to the works table using SQLite-safe ALTER TABLE operations.",
+      "tags": [
+        "migration",
+        "database",
+        "sqlite",
+        "data-modification"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/services/chinese_pod.py",
+      "type": "file",
+      "name": "chinese_pod.py",
+      "filePath": "backend/app/services/chinese_pod.py",
+      "summary": "Chinese POD platform templates for Yinge, Yunda, DingZhiLian, and ShanYin with metadata, product category mappings, and design specifications.",
+      "tags": [
+        "data-model",
+        "integration",
+        "pod-platform",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/app/services/json_feed.py",
+      "type": "file",
+      "name": "json_feed.py",
+      "filePath": "backend/app/services/json_feed.py",
+      "summary": "JSON Product Feed service providing standard feed generation and platform-specific converters for Google Merchant Center and Shopify.",
+      "tags": [
+        "service",
+        "api-handler",
+        "data-export",
+        "third-party-integration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/app/services/verified_badge.py",
+      "type": "file",
+      "name": "verified_badge.py",
+      "filePath": "backend/app/services/verified_badge.py",
+      "summary": "Verified badge service generating QR codes, SVG badges, PNG badges, and HTML/JS embed snippets for product authenticity verification.",
+      "tags": [
+        "service",
+        "certificate",
+        "qr-code",
+        "svg-rendering",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/data/backups/backup_20260612_063437.zip.enc",
+      "type": "file",
+      "name": "backup_20260612_063437.zip.enc",
+      "filePath": "backend/data/backups/backup_20260612_063437.zip.enc",
+      "summary": "Encrypted database backup archive from 2026-06-12 containing encrypted copy of the OriStudio production database.",
+      "tags": [
+        "backup",
+        "encrypted",
+        "disaster-recovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/backups/db_20260612_063437.bak",
+      "type": "file",
+      "name": "db_20260612_063437.bak",
+      "filePath": "backend/data/backups/db_20260612_063437.bak",
+      "summary": "Unencrypted database backup snapshot from 2026-06-12 preserving the full application state for disaster recovery.",
+      "tags": [
+        "backup",
+        "disaster-recovery",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "type": "config",
+      "name": "ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "filePath": "backend/data/c2pa/ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "summary": "C2PA content authentication metadata storing provenance assertions, hash chains, and claim generator info for a specific creative work.",
+      "tags": [
+        "configuration",
+        "c2pa",
+        "certificate",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/ff78f6f3aaed4a07b183dd92770551.c2pa.json",
+      "type": "config",
+      "name": "ff78f6f3aaed4a07b183dd92770551.c2pa.json",
+      "filePath": "backend/data/c2pa/ff78f6f3aaed4a07b183dd92770551.c2pa.json",
+      "summary": "C2PA content authentication metadata storing provenance assertions and hash chain data for a creative work certificate.",
+      "tags": [
+        "configuration",
+        "c2pa",
+        "certificate",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "data:backend/data/certificates/product_bbe295be86a848188befc4d83153fbeb_taobao.csv:product_bbe295be86a848188befc4d83153fbeb_taobao",
+      "type": "table",
+      "name": "product_bbe295be86a848188befc4d83153fbeb_taobao",
+      "filePath": "backend/data/certificates/product_bbe295be86a848188befc4d83153fbeb_taobao.csv",
+      "summary": "Taobao product certificate export with header row for one product listing containing licensing and verification metadata.",
+      "tags": [
+        "data",
+        "export",
+        "certificate",
+        "ecommerce"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

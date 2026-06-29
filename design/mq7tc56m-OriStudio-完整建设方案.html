@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio 个人创作者助手 — 完整建设方案</title>
+<style>
+  :root {
+    --bg: #0a0e1a; --surface: #111827; --surface2: #1a2332;
+    --border: #1e293b; --text: #e2e8f0; --text2: #94a3b8;
+    --accent: #8b5cf6; --accent2: #f59e0b;
+    --green: #10b981; --blue: #3b82f6; --red: #ef4444; --orange: #f97316;
+    --pink: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+  }
+  #sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 260px;
+    background: var(--surface); border-right: 1px solid var(--border);
+    overflow-y: auto; z-index: 100; padding: 0.8rem 0;
+  }
+  #sidebar::-webkit-scrollbar { width: 3px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .sidebar-brand {
+    padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); margin-bottom: 0.4rem;
+  }
+  .sidebar-brand h2 { font-size: 0.9rem; color: var(--accent); font-weight: 700; }
+  .sidebar-brand .tag {
+    display: inline-block; font-size: 0.55rem; background: rgba(139,92,246,0.15);
+    color: var(--accent); padding: 1px 5px; border-radius: 4px;
+  }
+  .sidebar-brand span { font-size: 0.65rem; color: var(--text2); display: block; margin-top: 1px; }
+  .nav-group-title {
+    padding: 0.3rem 1rem; font-size: 0.65rem; font-weight: 600;
+    color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .nav-item {
+    display: block; padding: 0.25rem 1rem 0.25rem 1.5rem;
+    font-size: 0.75rem; color: var(--text2); text-decoration: none;
+    border-left: 2px solid transparent; transition: all 0.15s;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(139,92,246,0.05); }
+  .nav-item.sub { padding-left: 2.2rem; font-size: 0.7rem; }
+  #main {
+    margin-left: 260px; padding: 1.5rem 2rem;
+    max-width: 100%; min-width: 0;
+  }
+  /* 桌面宽屏：居中内容，限制最大宽度 */
+  @media (min-width: 1400px) {
+    #main { max-width: 1100px; margin: 0 auto 0 260px; }
+  }
+  /* 中等屏幕：缩小边距 */
+  @media (max-width: 1100px) {
+    #sidebar { width: 220px; }
+    #main { margin-left: 220px; padding: 1.2rem 1.2rem; }
+    .nav-item { font-size: 0.7rem; padding: 0.2rem 0.8rem 0.2rem 1.2rem; }
+  }
+  /* 窄屏：隐藏侧边栏，使用顶部导航替代 */
+  @media (max-width: 860px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 1rem; }
+  }
+  /* 修复SVG溢出问题：所有SVG容器自动缩放 */
+  .svg-container {
+    max-width: 100%; overflow-x: auto;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border); padding: 0.5rem;
+    margin: 1rem 0;
+  }
+  .svg-container svg {
+    max-width: 100%; height: auto; display: block;
+  }
+  /* arch-box内容自动换行避免溢出 */
+  .arch-box {
+    overflow-x: auto; white-space: pre;
+    word-wrap: normal; font-size: 0.7rem;
+  }
+  h1 { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin: 2rem 0 0.5rem; }
+  h1:first-child { margin-top: 0; }
+  h1 .badge { font-size: 0.7rem; background: rgba(139,92,246,0.15); color: var(--accent); padding: 2px 8px; border-radius: 4px; }
+  h2 { font-size: 1.3rem; font-weight: 700; color: var(--text); margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 1.05rem; font-weight: 600; color: var(--accent2); margin: 1.5rem 0 0.75rem; }
+  h4 { font-size: 0.92rem; font-weight: 600; color: var(--pink); margin: 1rem 0 0.5rem; }
+  p { margin: 0.5rem 0; }
+  strong { color: var(--accent); }
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table {
+    width: 100%; border-collapse: collapse; font-size: 0.8rem;
+    background: var(--surface2); border-radius: 8px; overflow: hidden;
+  }
+  th {
+    background: var(--surface); color: var(--accent); font-weight: 600;
+    padding: 0.45rem 0.65rem; text-align: left; font-size: 0.76rem;
+    border-bottom: 2px solid var(--border);
+  }
+  td { padding: 0.4rem 0.65rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(139,92,246,0.03); }
+  blockquote {
+    background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(59,130,246,0.05));
+    border-left: 3px solid var(--accent); padding: 0.7rem 1rem;
+    margin: 1rem 0; border-radius: 0 8px 8px 0; font-size: 0.88rem; color: var(--text2);
+  }
+  .arch-box {
+    background: #1e1e2e; border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem; margin: 1rem 0;
+    font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.75rem;
+    overflow-x: auto; line-height: 1.5; color: var(--text2); white-space: pre;
+  }
+  .arch-box .hl { color: var(--accent); }
+  .arch-box .hl2 { color: var(--blue); }
+  .arch-box .hl3 { color: var(--accent2); }
+  .warn-box {
+    background: rgba(245,158,11,0.08); border-left: 3px solid var(--orange);
+    padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0;
+  }
+  .error-box {
+    background: rgba(239,68,68,0.08); border-left: 3px solid var(--red);
+    padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0;
+  }
+  .success-box {
+    background: rgba(16,185,129,0.08); border-left: 3px solid var(--green);
+    padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0;
+  }
+  .review-box {
+    background: rgba(139,92,246,0.06); border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+  }
+  .review-box .rl { color: var(--accent2); font-weight: 600; }
+  .tag-green { display: inline-block; background: rgba(16,185,129,0.12); color: var(--green); padding: 1px 6px; border-radius: 4px; font-size: 0.68rem; }
+  .tag-red { display: inline-block; background: rgba(239,68,68,0.12); color: var(--red); padding: 1px 6px; border-radius: 4px; font-size: 0.68rem; }
+  .tag-yellow { display: inline-block; background: rgba(245,158,11,0.12); color: var(--accent2); padding: 1px 6px; border-radius: 4px; font-size: 0.68rem; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .tl-item { display: flex; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-phase { min-width: 70px; font-weight: 700; font-size: 0.8rem; color: var(--accent); }
+  .tl-content { flex: 1; }
+  .tl-content .tl-title { font-weight: 600; font-size: 0.88rem; }
+  .tl-content .tl-desc { font-size: 0.78rem; color: var(--text2); }
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sidebar-brand">
+    <h2>OriStudio 个人创作者助手</h2>
+    <span class="tag">系统设计 V2.0</span>
+    <span>本地运行 · 全链路闭环 · 不重复造轮子</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">概览</div>
+    <a href="#intro" class="nav-item">1. 设计理念</a>
+    <a href="#review-summary" class="nav-item">2. 评审摘要与改进</a>
+    <a href="#arch-func" class="nav-item">3. 功能架构图</a>
+    <a href="#arch-tech" class="nav-item">4. 技术架构图</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">功能模块</div>
+    <a href="#mod-works" class="nav-item">5. 作品管理模块</a>
+    <a href="#mod-notary" class="nav-item">6. 存证确权模块</a>
+    <a href="#mod-monitor" class="nav-item">7. 侵权监测模块</a>
+    <a href="#mod-ip" class="nav-item">8. IP登记模块</a>
+    <a href="#mod-supply" class="nav-item">9. 供应链协作模块</a>
+    <a href="#mod-publish" class="nav-item">10. 发布变现模块</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">实现</div>
+    <a href="#db" class="nav-item">11. 数据库设计</a>
+    <a href="#api" class="nav-item">12. 第三方API清单</a>
+    <a href="#roadmap" class="nav-item">13. 开发路线图</a>
+    <a href="#mvp" class="nav-item">14. MVP定义</a>
+    <a href="#appendix" class="nav-item">15. 附录</a>
+    </div>
+  <div class="nav-group">
+    <div class="nav-group-title">附录</div>
+    <a href="#appendix" class="nav-item">15. 附录</a>
+  </div>
+</div>
+
+<div id="main">
+  <h1>OriStudio 个人创作者助手 <span class="badge">完整建设方案</span></h1>
+  <p style="color:var(--text2);margin-top:-0.3rem;">
+    系统设计说明书 · 基于7路专家评审完善 · 2026年6月10日
+  </p>
+
+  <!-- ========== 1. 设计理念 ========== -->
+  <h2 id="intro">1. 设计理念</h2>
+
+  <p><strong>一句话定义：</strong>一个在个人电脑上运行的创作者全链路助手工具，帮助没有经验的独立创作者快速完成作品管理、存证确权、侵权监测、知识产权登记、供应链协作和产品落地的完整业务闭环。</p>
+
+  <h3>核心原则</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>原则</th><th>说明</th><th>设计体现</th></tr>
+    <tr><td>创作者主权</td><td>数据永远在创作者的电脑上</td><td>本地SQLite + 本地存储，不上传创作者原始文件</td></tr>
+    <tr><td>不重复造轮子</td><td>存证/商标/搜索等通过API接入现有平台</td><td>用户扫码自助付费，工具只做中间桥梁</td></tr>
+    <tr><td>渐进式复杂度</td><td>新手只看得到基础功能，高级功能可展开</td><td>默认界面仅展示核心流程，高级设置在设置页</td></tr>
+    <tr><td>离线优先</td><td>无网络时仍可使用核心功能</td><td>本地哈希计算 + 本地数据库完全离线可用</td></tr>
+    <tr><td>易于移植</td><td>一键打包迁移到任何电脑</td><td>Docker + PyInstaller + pip 三种分发方式</td></tr>
+  </table>
+  </div>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进及用户修正汇总</span><br>
+    1️⃣ <strong>电商发布</strong>：非CSV导出！改为<b>一键扫码登录+Playwright浏览器自动化+开放平台OAuth</b>混合方案，实现真一键发布到淘宝/小红书/抖音<br>
+    2️⃣ <strong>商标注册</strong>：用户明确费用是用户扫码直接支付给国家平台，系统只是技术桥梁。保留表单预填+提交辅助功能，<span class="tag-green">删除的是"成功率预测"而非"提交辅助"</span><br>
+    3️⃣ <strong>存证/注册只对接国家/大平台</strong>：版权家(国家版权局DCI)、至信链(司法链)、商标局电子申请系统、中国版权保护中心<br>
+    4️⃣ <strong>架构模式</strong>：B/S模型优先（Python后端+Vue前端本地运行），后期支持PWA安装到桌面/可选服务器部署<br>
+    5️⃣ <strong>供应链大幅精简</strong>：砍掉库存管理/甘特图，保留轻量工厂协作记录<br>
+    6️⃣ <strong>增加维权闭环</strong>：侵权发现后→投诉材料生成→证据包导出→律师函模板</div>
+  </div>
+
+  <!-- ========== 2. 评审摘要 ========== -->
+  <h2 id="review-summary">2. 7路评审摘要与改进</h2>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>评估方</th><th>评分</th><th>核心建议</th><th>采纳改进</th></tr>
+    <tr><td>投资者</td><td>4.4/10</td><td>商业模式缺失；电商API个人不可接入；先做MVP验证</td><td>采纳：砍掉电商直连API改为CSV导出；明确MVP范围</td></tr>
+    <tr><td>技术</td><td>7.5/10</td><td>PyInstaller替代Docker初版；缺少异步任务队列</td><td>采纳：新增PyInstaller打包方案；新增Celery/RQ异步层</td></tr>
+    <tr><td>法律</td><td>关键红线</td><td>删商标评估功能；加数据加密；5条红线</td><td>采纳：删除评估功能；新增敏感字段加密</td></tr>
+    <tr><td>创作者</td><td>6.6/10</td><td>降低安装门槛；增加维权闭环</td><td>采纳：新增一键安装包；新增投诉指引+证据包</td></tr>
+    <tr><td>供应链</td><td>低实用性</td><td>工厂不配合本地工具；砍库存/甘特图</td><td>采纳：改名为"工厂协作记录"，砍掉库存和甘特图</td></tr>
+    <tr><td>消费者</td><td>7/10</td><td>缺少面向消费者的验证入口</td><td>采纳：新增"OriStudio Verified"标识+统一查询页</td></tr>
+    <tr><td>行业</td><td>6/10</td><td>聚焦单一创作者类型；需要杀手级场景</td><td>采纳：MVP聚焦数字创作者（插画师/AIGC）</td></tr>
+  </table>
+  </div>
+
+  <!-- ========== 3. 功能架构图 ========== -->
+  <h2 id="arch-func">3. 功能架构图</h2>
+
+  <p style="color:var(--text2);font-size:0.82rem;">六大功能模块全景视图 — 作品管理、存证确权、侵权监测、知识产权登记、供应链协作、发布变现</p>
+
+  <div style="max-width:100%;overflow-x:auto;margin:1rem 0;background:var(--surface2);border-radius:8px;border:1px solid var(--border);padding:1rem;">
+<svg viewBox="0 0 1200 1600" xmlns="http://www.w3.org/2000/svg" style="max-width:1200px;margin:0 auto;display:block;">
+  <defs>
+    <linearGradient id="f-bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="f-header1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="f-header2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="f-header3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="f-header4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="f-header5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="f-header6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="f-shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="f-glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1600" fill="url(#f-bgGrad)" rx="12"/>
+
+  <!-- Title area -->
+  <text x="600" y="45" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="2">OriStudio 功能架构总览</text>
+  <text x="600" y="68" text-anchor="middle" fill="#94a3b8" font-size="13">个体创作者全链路管理工具 · 六大模块 · 零服务器依赖</text>
+  <line x1="200" y1="85" x2="1000" y2="85" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ==================== MODULE 1: 作品管理 ==================== -->
+  <g transform="translate(30, 110)" filter="url(#f-shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header1)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header1)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">01 · 作品管理模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Work Management</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">批量导入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 拖拽上传</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文件夹批量</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 格式自动转换</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 去重检测</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">自动分类</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 按文件类型</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 按项目归类</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 按标签聚合</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· AI 自动打标</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 自定义规则</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">元数据管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· EXIF 提取</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-256 哈希</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 创建/修改时间</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义字段</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量编辑</text>
+    </g>
+
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">版本管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版本快照</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 版本对比</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 版本回滚</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 标签标记</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文件差异</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">本地预览</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片预览</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 音频播放</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 视频播放</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 代码高亮</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文档渲染</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">搜索检索</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· FTS5 全文搜索</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 标签筛选</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 日期范围</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 智能联想</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 2: 存证确权 ==================== -->
+  <g transform="translate(615, 110)" filter="url(#f-shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header2)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header2)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">02 · 存证确权模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Notary &amp; Rights</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">哈希计算</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· SHA-256 计算</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-512 可选</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 批量哈希</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 异步非阻塞</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 哈希校验</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">多平台存证</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版权家 (¥1-5)</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 蚂蚁链 (¥0.5)</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 至信链 (¥1-1.5)</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 效力级别标注</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 扫码自助付费</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">证书生成</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· PDF 证书</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 验证二维码</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 时间戳认证</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义模板</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量导出</text>
+    </g>
+
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">C2PA 元数据嵌入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片内容凭证</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文档内容凭证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 签名校验</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 开源 c2patool</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">存证记录管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 已存证列表</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 待存证队列</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 过期提醒</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 状态追踪</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 审计日志</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">验证入口</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· OriStudio 验证页</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 扫码验证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 平台 API 查询</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· "已验证"标识</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 3: 侵权监测 ==================== -->
+  <g transform="translate(30, 530)" filter="url(#f-shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header3)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header3)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">03 · 侵权监测模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Infringement Monitoring</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">以图搜图</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 百度识图 API（100次/天免费）</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google Vision（1000次/月免费）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度评分</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 结果标注/忽略</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">文本检测</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Copyscape 检测</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google 搜索对比</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度报告</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 代码查重（GitHub API）</text>
+    </g>
+    <g transform="translate(12, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">定时扫描</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Celery Beat 定时任务</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 每日/每周/自定义</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 邮箱通知</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 系统通知推送</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 用量限额预警</text>
+    </g>
+    <g transform="translate(283, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">维权闭环</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 投诉材料自动生成</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 证据包导出（ZIP）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 律师函模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 侵权时间线</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 关闭动作记录</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 4: 知识产权登记 ==================== -->
+  <g transform="translate(615, 530)" filter="url(#f-shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header4)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header4)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">04 · 知识产权登记模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">IP Registration · 指导性</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(234,179,8,0.12)" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#f59e0b" font-size="10">⚠ 本模块仅提供指导，不代办申请，不评估成功率（法律规定）</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">版权指导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 登记材料清单</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 按作品类型分类</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 链接至国家平台</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 费用参考（¥0-300）</text>
+    </g>
+    <g transform="translate(283, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">商标查询引导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 链接至 sbj.cnipa.gov.cn</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 类别推荐（非约束性）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 文创常用类（16/25/28/35）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 相似商标预警</text>
+    </g>
+    <g transform="translate(12, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">进度追踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 手动录入记录</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 申请号/日期/状态</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 续展日历提醒</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 时间线展示</text>
+    </g>
+    <g transform="translate(283, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">多类规划</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 类别交叉参考</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 防御性注册建议</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 费用估算</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· (注：不评估成功率)</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 5: 供应链协作 ==================== -->
+  <g transform="translate(30, 930)" filter="url(#f-shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#ec4899" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header5)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header5)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">05 · 供应链协作模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Supply Chain · 轻量级</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#8b5cf6" font-size="10">ℹ 本模块为"创作者协作笔记本"，非 ERP，工厂端数据由工厂自行管理</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">工厂联系人</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 名称/电话(加密)</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 地址/擅长领域</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 评分/备注</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 历史合作记录</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 联系人分组</text>
+    </g>
+    <g transform="translate(193, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">订单管理</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 关联作品ID</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 数量/单价/总价</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 定金/尾款</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 订单状态</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付日期</text>
+    </g>
+    <g transform="translate(374, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">沟通时间线</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 手动条目录入</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 附件上传</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 支付记录</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 提醒设置</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付/付款提醒</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 6: 发布与变现 ==================== -->
+  <g transform="translate(615, 930)" filter="url(#f-shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#06b6d4" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#f-header6)"/>
+    <rect width="555" height="10" y="30" fill="url(#f-header6)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">06 · 发布与变现模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Publishing &amp; Monetization</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">AI 产品描述</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· LLM 生成标题/描述</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 规格/定价生成</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 本地模型（Ollama）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 多语言支持</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">CSV 导出</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 淘宝 CSV 模板</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 小红书 CSV 模板</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 抖音 CSV 模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· Shopify CSV 模板</text>
+    </g>
+    <g transform="translate(12, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">OriStudio 已验证标识</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· QR 码嵌入产品页</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 指向存证验证地址</text>
+    </g>
+    <g transform="translate(283, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">收入跟踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 多平台手动录入</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 报表与趋势分析</text>
+    </g>
+  </g>
+
+  <!-- ==================== SYSTEM MANAGEMENT (Cross-cut) ==================== -->
+  <g transform="translate(30, 1260)" filter="url(#f-shadow)">
+    <rect width="1140" height="100" rx="10" fill="#1a2332" stroke="#64748b" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="1140" height="36" rx="10" fill="#334155"/>
+    <rect width="1140" height="10" y="26" fill="#334155"/>
+    <text x="570" y="25" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700">系统管理 · 横切关注点</text>
+
+    <g transform="translate(20, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">本地备份</text>
+    </g>
+    <g transform="translate(168, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">主题切换</text>
+    </g>
+    <g transform="translate(316, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">插件系统</text>
+    </g>
+    <g transform="translate(464, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">审计日志</text>
+    </g>
+    <g transform="translate(612, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">快捷键系统</text>
+    </g>
+    <g transform="translate(760, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">设置中心</text>
+    </g>
+    <g transform="translate(908, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">用量监控</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1410" text-anchor="middle" fill="#475569" font-size="10">OriStudio 个人创作者助手系统 · 功能架构图 · 六大模块 + 系统管理 · 版本 2.0</text>
+  <text x="600" y="1428" text-anchor="middle" fill="#334155" font-size="9">Designed with ❤️ for individual creators · 2026</text>
+
+  <!-- Flow arrows between modules -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" opacity="0.4">
+    <path d="M 307,500 L 307,510 L 892,510 L 892,520"/>
+    <polygon points="888,520 892,528 896,520" fill="#475569"/>
+    <path d="M 892,500 L 892,530" opacity="0"/>
+    <path d="M 307,900 L 307,910 L 892,910 L 892,920"/>
+    <polygon points="888,920 892,928 896,920" fill="#475569"/>
+    <path d="M 307,500 L 307,920" stroke-dasharray="4,4"/>
+    <path d="M 892,500 L 892,920" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Flow labels -->
+  <g fill="#64748b" font-size="9">
+    <text x="600" y="508" text-anchor="middle">作品 → 存证</text>
+    <text x="600" y="918" text-anchor="middle">存证 → 侵权监测</text>
+    <text x="140" y="910" text-anchor="middle" transform="rotate(-90,140,910)">作品直通供应链</text>
+    <text x="1060" y="910" text-anchor="middle" transform="rotate(90,1060,910)">存证直通发布</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(360, 1445)">
+    <rect x="0" y="0" width="16" height="16" rx="3" fill="#8b5cf6"/>
+    <text x="20" y="12" fill="#94a3b8" font-size="10">作品管理</text>
+    <rect x="100" y="0" width="16" height="16" rx="3" fill="#10b981"/>
+    <text x="120" y="12" fill="#94a3b8" font-size="10">存证确权</text>
+    <rect x="200" y="0" width="16" height="16" rx="3" fill="#f97316"/>
+    <text x="220" y="12" fill="#94a3b8" font-size="10">侵权监测</text>
+    <rect x="310" y="0" width="16" height="16" rx="3" fill="#3b82f6"/>
+    <text x="330" y="12" fill="#94a3b8" font-size="10">IP 登记</text>
+    <rect x="400" y="0" width="16" height="16" rx="3" fill="#ec4899"/>
+    <text x="420" y="12" fill="#94a3b8" font-size="10">供应链</text>
+    <rect x="500" y="0" width="16" height="16" rx="3" fill="#06b6d4"/>
+    <text x="520" y="12" fill="#94a3b8" font-size="10">发布变现</text>
+  </g>
+</svg>
+  </div>
+
+  <!-- ========== 4. 技术架构图 ========== -->
+  <h2 id="arch-tech">4. 技术架构图</h2>
+
+  <h3>架构模式：B/S → PWA → 服务器部署</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>阶段</th><th>模式</th><th>说明</th></tr>
+    <tr><td>Phase 0-1（MVP）</td><td><strong>B/S本地模式</strong></td><td>Python后端+Vue前端，用户在本地启动后端后浏览器访问 localhost:8765</td></tr>
+    <tr><td>Phase 2（稳定）</td><td><strong>PWA安装</strong></td><td>添加Service Worker支持，可"安装到桌面"获得类似原生应用体验，支持离线基础功能</td></tr>
+    <tr><td>Phase 3（可选）</td><td><strong>服务器部署</strong></td><td>Docker打包，部署到云服务器（VPS/云主机），支持多设备访问和团队协作</td></tr>
+  </table>
+  </div>
+
+  <div style="max-width:100%;overflow-x:auto;margin:1rem 0;background:var(--surface2);border-radius:8px;border:1px solid var(--border);padding:1rem;">
+<svg viewBox="0 0 1200 1550" xmlns="http://www.w3.org/2000/svg" style="max-width:1200px;margin:0 auto;display:block;">
+  <defs>
+    <linearGradient id="t-bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="t-layer1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="t-layer2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="t-layer3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="t-layer4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="t-shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="t-glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="t-arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto">
+      <path d="M0,0 L4,8 L8,0" fill="#64748b"/>
+    </marker>
+    <marker id="t-arrowUp" markerWidth="8" markerHeight="8" refX="4" refY="0" orient="auto">
+      <path d="M0,8 L4,0 L8,8" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1550" fill="url(#t-bgGrad)" rx="12"/>
+
+  <!-- Title area -->
+  <text x="600" y="45" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="2">OriStudio 系统技术架构图</text>
+  <text x="600" y="68" text-anchor="middle" fill="#94a3b8" font-size="13">分层架构 · 本地优先 · API 桥梁 · 渐进式分布</text>
+  <line x1="100" y1="85" x2="1100" y2="85" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 1: 用户界面层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 110)" filter="url(#t-shadow)">
+    <rect width="1120" height="240" rx="12" fill="url(#t-layer1)" stroke="#8b5cf6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#8b5cf6" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#8b5cf6" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#8b5cf6" font-size="14" font-weight="700">用户界面层 · UI Layer</text>
+
+    <rect x="30" y="50" width="300" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="30" y="50" width="300" height="28" rx="8" fill="#1e293b"/>
+    <rect x="30" y="70" width="300" height="8" fill="#1e293b"/>
+    <circle cx="45" cy="64" r="5" fill="#ef4444"/>
+    <circle cx="60" cy="64" r="5" fill="#f59e0b"/>
+    <circle cx="75" cy="64" r="5" fill="#10b981"/>
+    <text x="160" y="68" text-anchor="middle" fill="#64748b" font-size="9">localhost:8765 — 浏览器</text>
+
+    <text x="50" y="98" fill="#8b5cf6" font-size="10" font-weight="600">Vue 3 + Vite + Tailwind CSS</text>
+    <text x="50" y="118" fill="#94a3b8" font-size="9.5">· Pinia 状态管理</text>
+    <text x="50" y="136" fill="#94a3b8" font-size="9.5">· Vue Router 路由</text>
+    <text x="50" y="154" fill="#94a3b8" font-size="9.5">· Naive UI 组件库</text>
+    <text x="50" y="172" fill="#94a3b8" font-size="9.5">· Axios HTTP / WebSocket</text>
+    <text x="50" y="190" fill="#94a3b8" font-size="9.5">· 响应式布局 (桌面/平板)</text>
+    <text x="50" y="208" fill="#64748b" font-size="8.5">☆ 升级路径: Tauri 桌面原生</text>
+
+    <rect x="365" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="477" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">仪表盘</text>
+    <text x="477" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="380" y="108" fill="#94a3b8" font-size="9.5">· 工作台概览</text>
+    <text x="380" y="124" fill="#94a3b8" font-size="9.5">· 最近作品</text>
+    <text x="380" y="140" fill="#94a3b8" font-size="9.5">· 待办提醒</text>
+    <text x="380" y="156" fill="#94a3b8" font-size="9.5">· 存证统计</text>
+    <text x="380" y="172" fill="#94a3b8" font-size="9.5">· 侵权预警</text>
+    <text x="380" y="188" fill="#94a3b8" font-size="9.5">· 收入概览</text>
+
+    <rect x="625" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="737" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">模块入口</text>
+    <text x="737" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="640" y="108" fill="#94a3b8" font-size="9.5">· 作品管理 → 作品库</text>
+    <text x="640" y="124" fill="#94a3b8" font-size="9.5">· 存证中心 → 确权</text>
+    <text x="640" y="140" fill="#94a3b8" font-size="9.5">· 侵权监测 → 扫描</text>
+    <text x="640" y="156" fill="#94a3b8" font-size="9.5">· IP 登记 → 指导</text>
+    <text x="640" y="172" fill="#94a3b8" font-size="9.5">· 供应链 → 协作</text>
+    <text x="640" y="188" fill="#94a3b8" font-size="9.5">· 发布 → 变现</text>
+
+    <rect x="885" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="997" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">通用 UI 组件</text>
+    <text x="997" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="900" y="108" fill="#94a3b8" font-size="9.5">· 搜索栏 (FTS5)</text>
+    <text x="900" y="124" fill="#94a3b8" font-size="9.5">· 通知中心</text>
+    <text x="900" y="140" fill="#94a3b8" font-size="9.5">· 设置面板</text>
+    <text x="900" y="156" fill="#94a3b8" font-size="9.5">· 主题切换 (暗色)</text>
+    <text x="900" y="172" fill="#94a3b8" font-size="9.5">· 快捷键帮助</text>
+    <text x="900" y="188" fill="#94a3b8" font-size="9.5">· 数据导入/导出</text>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="350" x2="600" y2="380" stroke="#64748b" stroke-width="2" marker-end="url(#t-arrowDown)"/>
+  <text x="610" y="370" fill="#64748b" font-size="9">HTTP/WebSocket (127.0.0.1)</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 2: 后端服务层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 390)" filter="url(#t-shadow)">
+    <rect width="1120" height="310" rx="12" fill="url(#t-layer2)" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#3b82f6" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#3b82f6" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#3b82f6" font-size="14" font-weight="700">后端服务层 · Backend Layer</text>
+
+    <rect x="30" y="50" width="350" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="30" y="50" width="350" height="30" rx="8" fill="#1e293b"/>
+    <rect x="30" y="72" width="350" height="8" fill="#1e293b"/>
+    <text x="205" y="70" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="600">FastAPI + Uvicorn (ASGI)</text>
+
+    <text x="45" y="96" fill="#3b82f6" font-size="10" font-weight="600">API 路由</text>
+    <text x="45" y="114" fill="#94a3b8" font-size="9">&gt; GET  /api/works       — 作品列表</text>
+    <text x="45" y="130" fill="#94a3b8" font-size="9">&gt; POST /api/works       — 导入作品</text>
+    <text x="45" y="146" fill="#94a3b8" font-size="9">&gt; POST /api/notarize    — 存证哈希</text>
+    <text x="45" y="162" fill="#94a3b8" font-size="9">&gt; GET  /api/monitor     — 监测结果</text>
+    <text x="45" y="178" fill="#94a3b8" font-size="9">&gt; POST /api/export/csv  — CSV 导出</text>
+    <text x="45" y="194" fill="#94a3b8" font-size="9">&gt; WS   /ws/notify       — 实时通知</text>
+
+    <text x="45" y="220" fill="#3b82f6" font-size="10" font-weight="600">中间件</text>
+    <text x="45" y="238" fill="#94a3b8" font-size="9">· CORS · GZip · SQLAlchemy Session</text>
+    <text x="45" y="254" fill="#94a3b8" font-size="9">· 请求日志 · 错误处理 · 速率限制</text>
+    <text x="45" y="275" fill="#64748b" font-size="8.5">☆ 自动 OpenAPI 文档: /docs</text>
+
+    <rect x="410" y="50" width="300" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="410" y="50" width="300" height="30" rx="8" fill="#1e293b"/>
+    <rect x="410" y="72" width="300" height="8" fill="#1e293b"/>
+    <text x="560" y="70" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="600">Celery 异步任务队列</text>
+
+    <text x="425" y="96" fill="#f59e0b" font-size="10" font-weight="600">后台任务</text>
+    <text x="425" y="114" fill="#94a3b8" font-size="9">· SHA-256 批量哈希计算</text>
+    <text x="425" y="130" fill="#94a3b8" font-size="9">· PDF 证书生成</text>
+    <text x="425" y="146" fill="#94a3b8" font-size="9">· 侵权定时扫描</text>
+    <text x="425" y="162" fill="#94a3b8" font-size="9">· 邮件/系统通知发送</text>
+    <text x="425" y="178" fill="#94a3b8" font-size="9">· 数据备份任务</text>
+    <text x="425" y="194" fill="#94a3b8" font-size="9">· CSV 批量生成</text>
+
+    <text x="425" y="220" fill="#f59e0b" font-size="10" font-weight="600">消息代理</text>
+    <text x="425" y="238" fill="#94a3b8" font-size="9">· Redis (本地/Upstash Free)</text>
+    <text x="425" y="254" fill="#94a3b8" font-size="9">· Celery Beat 定时调度</text>
+    <text x="425" y="275" fill="#64748b" font-size="8.5">☆ Free tier: Upstash Redis 30MB</text>
+
+    <rect x="740" y="50" width="370" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="740" y="50" width="370" height="30" rx="8" fill="#1e293b"/>
+    <rect x="740" y="72" width="370" height="8" fill="#1e293b"/>
+    <text x="925" y="70" text-anchor="middle" fill="#10b981" font-size="11" font-weight="600">业务逻辑层 · Services</text>
+
+    <g transform="translate(755, 88)">
+      <rect width="170" height="95" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">作品管理 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 文件导入/分类</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 元数据提取</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· 版本对比</text>
+      <text x="10" y="84" fill="#94a3b8" font-size="8.5">· FTS5 搜索</text>
+    </g>
+    <g transform="translate(935, 88)">
+      <rect width="170" height="95" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">存证 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 哈希计算</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 平台桥接</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· PDF 生成</text>
+      <text x="10" y="84" fill="#94a3b8" font-size="8.5">· C2PA 嵌入</text>
+    </g>
+    <g transform="translate(755, 193)">
+      <rect width="170" height="85" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">监测 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 图像搜索调度</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 文本比对</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· 证据打包</text>
+    </g>
+    <g transform="translate(935, 193)">
+      <rect width="170" height="85" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">其他 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· IP 登记辅助</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 供应链管理</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· CSV 生成/导出</text>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="700" x2="600" y2="730" stroke="#64748b" stroke-width="2" marker-end="url(#t-arrowDown)"/>
+  <text x="610" y="720" fill="#64748b" font-size="9">ORM (SQLAlchemy) / 文件系统 IO</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 3: 数据存储层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 740)" filter="url(#t-shadow)">
+    <rect width="1120" height="230" rx="12" fill="url(#t-layer3)" stroke="#10b981" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#10b981" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#10b981" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#10b981" font-size="14" font-weight="700">数据存储层 · Data Layer</text>
+
+    <rect x="30" y="50" width="520" height="160" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="290" y="72" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">SQLite 本地数据库（SQLAlchemy ORM）</text>
+    <text x="290" y="88" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━━━━━━━━━━━━━</text>
+
+    <g transform="translate(45, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">核心表 (22表)</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">works · notary · monitor</text>
+    </g>
+    <g transform="translate(210, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">全文搜索</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">SQLite FTS5 索引</text>
+    </g>
+    <g transform="translate(375, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">数据安全</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">AES加密字段</text>
+    </g>
+    <text x="45" y="175" fill="#64748b" font-size="8.5">☆ 零配置 · 无需服务器 · 文件可迁移 · 支持 VACUUM 回收空间</text>
+    <text x="45" y="190" fill="#64748b" font-size="8.5">☆ 升级路径: PostgreSQL (迁移至服务器时)</text>
+
+    <rect x="580" y="50" width="530" height="160" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="845" y="72" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">本地文件系统 · workspace/</text>
+    <text x="845" y="88" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━━━━━━━━━━━━━</text>
+
+    <g transform="translate(595, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">作品文件</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">图片/音频/视频/文档</text>
+    </g>
+    <g transform="translate(760, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">输出文件</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">证书PDF/证据包ZIP</text>
+    </g>
+    <g transform="translate(925, 98)">
+      <rect width="170" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9">版本快照</text>
+      <text x="85" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">文件差分/历史版本</text>
+    </g>
+    <text x="595" y="175" fill="#64748b" font-size="8.5">☆ 直接操作文件系统 · 降低数据迁移成本 · 可直接用 Finder 管理原文件</text>
+    <text x="595" y="190" fill="#64748b" font-size="8.5">☆ 备份策略: 直接打包 workspace/ + sqlite 文件即可</text>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="970" x2="600" y2="1000" stroke="#64748b" stroke-width="2" marker-end="url(#t-arrowDown)"/>
+  <text x="610" y="990" fill="#64748b" font-size="9">httpx 异步 HTTP 请求</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 4: 外部 API 网关层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 1010)" filter="url(#t-shadow)">
+    <rect width="1120" height="220" rx="12" fill="url(#t-layer4)" stroke="#f97316" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#f97316" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#f97316" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#f97316" font-size="14" font-weight="700">外部 API 网关层 · External API Gateway</text>
+
+    <g transform="translate(30, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">存证平台</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 版权家 (司法链) ¥1-5/次</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· 蚂蚁链 (联盟链) ¥0.5/次</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· 至信链 (腾讯) ¥1-1.5/次</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· 对接方式: 扫码自付</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· 效力级别标注</text>
+    </g>
+
+    <g transform="translate(300, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">图像/文本搜索</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 百度识图 (100次/天 免费)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· Google Vision (1000次/月)</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· Copyscape 文本检测</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· GitHub Code Search API</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· (5000次/小时 免费)</text>
+    </g>
+
+    <g transform="translate(570, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">AI 大模型</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· Ollama (本地开源模型)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· AI 自动打标</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· 产品描述生成</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· 智能搜索联想</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· (离线可用)</text>
+    </g>
+
+    <g transform="translate(840, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">其他 API</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 商标局 (sbj.cnipa.gov.cn)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· 版权中心 (ccopyright.com.cn)</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· FFmpeg 媒体处理</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· ImageMagick 图像处理</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· c2patool (C2PA 工具)</text>
+    </g>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- DISTRIBUTION STRATEGY (bottom section) -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 1260)" filter="url(#t-shadow)">
+    <rect width="1120" height="80" rx="10" fill="#1a2332" stroke="#8b5cf6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="32" rx="10" fill="#8b5cf6" fill-opacity="0.12"/>
+    <rect width="1120" height="8" y="24" fill="#8b5cf6" fill-opacity="0.12"/>
+    <text x="560" y="22" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">分发策略 · 三轨并行</text>
+
+    <g transform="translate(30, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">📦 PyInstaller — 单 .app/.exe 分发给终端用户 (MVP)</text>
+    </g>
+    <g transform="translate(390, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">🐳 Docker — docker-compose up 技术用户</text>
+    </g>
+    <g transform="translate(750, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">📦 pip — pip install oristudio &amp;&amp; oristudio run 开发者</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1390" text-anchor="middle" fill="#475569" font-size="10">OriStudio 个人创作者助手系统 · 技术架构图 · 本地优先 · 零服务器 · 全链路闭环 · 版本 2.0</text>
+  <text x="600" y="1408" text-anchor="middle" fill="#334155" font-size="9">技术栈: Vue3 / FastAPI / SQLite / Celery / Redis · 2026</text>
+
+  <!-- Side layer labels -->
+  <g fill="#334155" font-size="8">
+    <text x="15" y="230" transform="rotate(-90,15,230)">用户界面层 · UI Layer</text>
+    <text x="15" y="545" transform="rotate(-90,15,545)">后端服务层 · Backend Layer</text>
+    <text x="15" y="855" transform="rotate(-90,15,855)">数据存储层 · Data Layer</text>
+    <text x="15" y="1120" transform="rotate(-90,15,1120)">外部 API 网关层 · External API Gateway</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(300, 1430)">
+    <rect x="0" y="0" width="14" height="14" rx="3" fill="#8b5cf6"/>
+    <text x="18" y="11" fill="#94a3b8" font-size="9">UI 层</text>
+    <rect x="80" y="0" width="14" height="14" rx="3" fill="#3b82f6"/>
+    <text x="98" y="11" fill="#94a3b8" font-size="9">后端层</text>
+    <rect x="170" y="0" width="14" height="14" rx="3" fill="#10b981"/>
+    <text x="188" y="11" fill="#94a3b8" font-size="9">数据层</text>
+    <rect x="260" y="0" width="14" height="14" rx="3" fill="#f97316"/>
+    <text x="278" y="11" fill="#94a3b8" font-size="9">API 网关</text>
+    <rect x="365" y="0" width="14" height="14" rx="3" fill="#64748b"/>
+    <text x="383" y="11" fill="#94a3b8" font-size="9">分发策略</text>
+  </g>
+</svg>
+  </div>
+
+  <h3>数据流图</h3>
+  <div class="arch-box">
+<span class="hl">关键数据流：创作→存证→监测→商标→生产→上架</span>
+
+创作 → 导入OriStudio → SHA-256哈希(本地) → 扫码付费 → 存证平台(云端)
+  │                              ↑                        │
+  │                         用户自助扫码                     ↓
+  ▼                         支付宝/微信支付              存证证书PDF生成
+侵权监测(定时任务) ←─────────── 作品库 ───────────────→ 本地存证记录
+  │                                                         │
+  ▼                                                         ▼
+发现侵权 → 投诉材料生成 → 商标注册引导 → 多品类商标规划
+  │                                                         │
+  ▼                                                         ▼
+工厂协作 → 订单创建 → 生产进度追踪 → 产品上架 → CSV导出 → 多平台发布
+  </div>
+
+  <!-- ========== 5. 作品管理模块 ========== -->
+  <h2 id="mod-works">5. 作品管理模块</h2>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th><th>技术实现</th></tr>
+    <tr><td>作品导入</td><td><span class="tag-green">P0</span></td><td>支持拖拽导入图片(JPG/PNG/WebP/GIF)、音频(MP3/WAV/FLAC)、视频(MP4/MOV)、文字(DOCX/PDF/TXT)、代码(ZIP/Git仓库)；自动按类型分类</td><td>Python mimetypes + FFmpeg提取元数据</td></tr>
+    <tr><td>元数据提取</td><td><span class="tag-green">P0</span></td><td>自动读取EXIF(相机型号/拍摄时间/GPS)、音频时长/采样率、视频分辨率/帧率、文字字数/语言、代码仓库信息</td><td>Pillow(PNG/JPG) / mutagen(音频) / FFprobe(视频) / python-docx(文字)</td></tr>
+    <tr><td>版本控制</td><td><span class="tag-yellow">P1</span></td><td>同一作品多次导入自动创建版本快照；支持版本对比、回滚、备注标记</td><td>SQLite版本表 + 文件系统差异存储</td></tr>
+    <tr><td>本地预览</td><td><span class="tag-green">P0</span></td><td>图片缩放/旋转/全屏；音频播放(波形+进度条)；视频播放(HTML5)；代码高亮(Syntax highlighting)；PDF渲染</td><td>前端Vue组件 + canvas + Audio API</td></tr>
+    <tr><td>标签/分类</td><td><span class="tag-green">P0</span></td><td>自定义标签；自动标签(AI生成描述)；按项目/类型/时间筛选</td><td>SQLite标签表 + LLM自动标签</td></tr>
+    <tr><td>搜索/收藏</td><td><span class="tag-green">P0</span></td><td>全文搜索(作品名/标签/描述)；高级筛选(类型/日期/存证状态)；收藏夹</td><td>SQLite FTS5全文索引</td></tr>
+  </table>
+  </div>
+
+  <h3>操作流程</h3>
+  <div class="arch-box">
+用户打开OriStudio → 作品库
+  → 拖拽文件到窗口 / 点击"导入"
+    → 系统自动检测文件类型
+    → 提取元数据（EXIF/时长/分辨率等）
+    → 存入SQLite + 复制文件到workspace目录
+  → 作品出现在作品库中
+    → 点击作品 → 本地预览
+    → 右键 → 添加标签 / 创建版本 / 存证 / 导出
+  </div>
+
+  <!-- ========== 6. 存证确权模块 ========== -->
+  <h2 id="mod-notary">6. 存证确权模块</h2>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进</span><br>
+    法律评审建议：存证平台选择界面需标注各平台司法效力级别 <span class="tag-green">（版权家DCI国家版权局体系 > 至信链司法链 > 蚂蚁链商业链）</span><br>
+    技术评审建议：哈希计算和缩略图生成需异步执行，不阻塞用户操作<br>
+    <strong>用户强调：所有存证必须对接国家/大平台才有真实效力</strong>
+  </div>
+
+  <h3>存证平台对接策略</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>平台</th><th>性质</th><th>对接方式</th><th>费用</th><th>司法效力</th></tr>
+    <tr><td><strong>版权家</strong>（国家版权局DCI体系）</td><td>国家级</td><td>HTTP API + 用户扫码自付</td><td>¥1-5/次</td><td><span class="tag-green">高（国家版权局认可）</span></td></tr>
+    <tr><td><strong>至信链</strong>（腾讯/互联网法院）</td><td>司法链</td><td>HTTP API + 用户扫码自付</td><td>¥1-1.5/次</td><td><span class="tag-green">高（法院采信）</span></td></tr>
+    <tr><td><strong>蚂蚁链</strong></td><td>商业链</td><td>HTTP API + 用户扫码自付</td><td>¥0.5/次</td><td><span class="tag-yellow">中（需额外司法认定）</span></td></tr>
+    <tr><td><strong>国家知识产权局电子申请</strong></td><td>国家级</td><td>引导用户自助办理（附材料清单和填写参考）</td><td>官方标准</td><td><span class="tag-green">最高</span></td></tr>
+  </table>
+  </div>
+  <p style="color:var(--text2);font-size:0.82rem;">所有存证费用由用户通过二维码扫码直接支付给平台，系统不碰资金。本地留存存证记录和证书供用户查询。</p>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th></tr>
+    <tr><td>本地哈希计算</td><td><span class="tag-green">P0</span></td><td>对作品文件进行SHA-256哈希计算（异步任务），生成哈希值+时间戳+文件属性记录，存入本地SQLite。离线可用</td></tr>
+    <tr><td>多平台存证对接</td><td><span class="tag-green">P0</span></td><td>内置3个存证平台：①版权家(¥1-5/次,司法采信) ②蚂蚁链(¥0.5/次,联盟链) ③至信链(¥1-1.5/次,腾讯)。用户选择平台→弹窗二维码→扫码自助付费→平台返回存证ID→存入本地</td></tr>
+    <tr><td>C2PA元数据嵌入</td><td><span class="tag-yellow">P1</span></td><td>将创作过程数据（软件/时间/版本）嵌入作品文件（支持PNG/JPG/WebP/MP4），开源c2patool实现</td></tr>
+    <tr><td>PDF证书生成</td><td><span class="tag-green">P0</span></td><td>生成存证证书PDF（作品缩略图+哈希值+时间戳+存证平台标识+验证二维码），用户可打印/分享</td></tr>
+    <tr><td>存证记录管理</td><td><span class="tag-green">P0</span></td><td>时间线视图展示所有存证记录；状态标识（未存证/已存证本地/已存证平台/待验证）；一键批量存证</td></tr>
+    <tr><td>验证入口</td><td><span class="tag-yellow">P1</span></td><td>消费者/第三方可通过OriStudio验证页面输入哈希值或扫描二维码验证真伪（读取存证平台数据）</td></tr>
+  </table>
+  </div>
+
+  <h3>存证操作流程</h3>
+  <div class="arch-box">
+作品库 → 选中作品 → 点击"存证"
+  → Step 1: 本地SHA-256哈希计算（异步，大文件不卡UI）
+  → Step 2: 选择存证平台（版权家/蚂蚁链/至信链）→ 显示费用和司法效力说明
+  → Step 3: 弹出二维码 → 用户手机扫码 → 自助付费
+  → Step 4: 等待平台确认（异步轮询状态）
+  → Step 5: 生成PDF证书 + 更新存证记录
+  → 完成！证书可导出/分享，验真二维码可嵌入作品展示页
+  </div>
+
+  <!-- ========== 7. 侵权监测模块 ========== -->
+  <h2 id="mod-monitor">7. 侵权监测模块</h2>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进（创作者评审建议）</span><br>
+    原设计缺少"发现侵权后怎么办"的闭环 → <span class="tag-green">新增投诉材料生成+律师函模板+证据包导出</span>
+  </div>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th></tr>
+    <tr><td>以图搜图</td><td><span class="tag-green">P0</span></td><td>选中作品→调用百度识图免费版(100次/天)或Google Vision(1000次/月免费)→自动比对搜索结果→标记高相似度结果</td></tr>
+    <tr><td>文字查重</td><td><span class="tag-yellow">P1</span></td><td>对文案/小说等文字作品进行Copyscape/百度搜索相似度检测</td></tr>
+    <tr><td>代码查重</td><td><span class="tag-yellow">P2</span></td><td>对软件作品进行GitHub代码搜索（GitHub API免费5000次/小时）</td></tr>
+    <tr><td>定时扫描</td><td><span class="tag-green">P0</span></td><td>设置定时任务（每天/每周），后台自动执行侵权扫描，结果推送（系统通知/邮件）</td></tr>
+    <tr><td>投诉材料生成</td><td><span class="tag-green">P0</span></td><td>自动生成各平台投诉/下架申请材料（含存证证书+侵权对比截图+权属证明）；用户审核后自行提交</td></tr>
+    <tr><td>证据包导出</td><td><span class="tag-green">P0</span></td><td>导出完整侵权证据包（哈希快照+时间线+对比图+存证证书+搜索结果），可用于司法举证</td></tr>
+    <tr><td>律师函模板</td><td><span class="tag-yellow">P1</span></td><td>生成律师函/警告信模板（含侵权事实+权属证明+诉求），用户可自行发送</td></tr>
+  </table>
+  </div>
+
+  <!-- ========== 8. IP登记模块 ========== -->
+  <h2 id="mod-ip">8. IP登记模块（引导型）</h2>
+
+  <div class="success-box">
+    <strong>法律澄清（用户确认）：</strong><br>
+    系统只是<b>技术桥梁</b>——表单预填+API提交辅助，不收费、不作法律判断。<br>
+    费用由用户<b>扫码直接支付给国家平台</b>（商标局/版权局）。这不构成商标代理。<br>
+    <span class="tag-green">保留功能</span>：商标查询引导、多品类规划建议、表单预填、API提交辅助<br>
+    <span class="tag-red">删除功能</span>：「注册成功概率预测」（因为无法准确评估，非法律原因）
+  </div>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th></tr>
+    <tr><td>版权登记引导</td><td><span class="tag-green">P0</span></td><td>根据作品类型（美术/文字/音乐/软件）引导用户准备对应材料（作品样本+创作说明+权利保证书），提供材料清单和填写参考，链接跳转国家版权局登记平台</td></tr>
+    <tr><td>商标查询引导</td><td><span class="tag-green">P0</span></td><td>引导用户到商标局官网（http://sbj.cnipa.gov.cn）进行近似查询；根据作品类型推荐注册类目（核心类目+关联类目）；提供查询结果记录表</td></tr>
+    <tr><td>多品类规划</td><td><span class="tag-yellow">P1</span></td><td>根据用户选择的产品类型自动推荐商标注册类目组合（如做文创→16类纸品+25类服装+28类玩具+35类广告）；生成类目规划表供用户参考</td></tr>
+    <tr><td>进度看板</td><td><span class="tag-green">P0</span></td><td>手动记录商标/版权申请的提交日期、申请号、状态、预计完成时间；设置续展/异议提醒（日历通知）</td></tr>
+    <tr><td>续展提醒</td><td><span class="tag-yellow">P1</span></td><td>商标续展期（到期前12个月）自动提醒；版权保护期到期提醒</td></tr>
+  </table>
+  </div>
+
+  <!-- ========== 9. 供应链协作 ========== -->
+  <h2 id="mod-supply">9. 供应链协作模块（轻量版）</h2>
+
+  <div class="warn-box">
+    <strong>评审共识：供应链要轻、要真、要能用</strong><br>
+    供应链评审指出：工厂无动力维护创作者本地工具中的数据。设计从"管理工厂"改为"记录协作"。<br>
+    砍掉：原材料库存、半成品库存、甘特图排期、生产任务分解 → <span class="tag-green">节省1-2周开发量</span>
+  </div>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th></tr>
+    <tr><td>工厂联系人</td><td><span class="tag-green">P0</span></td><td>添加/编辑工厂信息（名称/联系人/电话/地址/擅长品类/历史合作记录）；每个工厂可备注合作评级和注意事项</td></tr>
+    <tr><td>订单记录</td><td><span class="tag-green">P0</span></td><td>记录每个生产订单（关联作品+工厂+数量+单价+总价+付款方式）；手动更新订单状态（已下单/生产中/已发货/已完成）</td></tr>
+    <tr><td>付款记录</td><td><span class="tag-green">P0</span></td><td>记录订单付款情况（应付款/已付款/尾款/付款日期）；支持部分付款/分期付款</td></tr>
+    <tr><td>沟通时间线</td><td><span class="tag-green">P0</span></td><td>以时间线形式记录和工厂的沟通内容（文字备注+附件）；支持手动添加和导入（从微信截图/聊天记录）</td></tr>
+    <tr><td>关键事件提醒</td><td><span class="tag-yellow">P1</span></td><td>设置关键节点提醒（预计交货日提醒、尾款支付提醒、样品确认提醒）</td></tr>
+  </table>
+  </div>
+
+  <p>说明：这个模块的价值在于<strong>创作者自己的记录</strong>——不再靠微信聊天记录找工厂信息，所有协作数据统一管理。它不是一个ERP，而是一个创作者视角的工厂协作笔记本。</p>
+
+  <!-- ========== 10. 发布变现 ========== -->
+  <h2 id="mod-publish">10. 发布变现模块</h2>
+
+  <div class="warn-box">
+    <strong>核心变更：从CSV导出升级为一键扫码发布</strong><br>
+    系统通过<b>Playwright浏览器自动化 + 开放平台OAuth</b>混合方案实现一键发布：<br>
+    • 用户首次使用→系统弹出平台登录页→扫码或账号密码登录<br>
+    • 系统自动保存Session/OAuth Token（本地加密存储）<br>
+    • 后续发布→一键选择多平台→自动填写+自动上传<br>
+    • 淘宝/小红书/抖音三大平台均支持<br>
+    • 无API的平台用Playwright自动化模拟（用户可见浏览器操作过程）
+  </div>
+
+  <h3>功能清单</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>子功能</th><th>优先级</th><th>详细描述</th><th>技术实现</th></tr>
+    <tr><td>平台账号管理</td><td><span class="tag-green">P0</span></td><td>添加/管理各平台账号（淘宝/小红书/抖音/闲鱼等）；支持OAuth授权登录 + Cookie/Token加密存储；登录状态检测和过期提醒</td><td>Playwright + 各平台OAuth SDK + SQLite加密存储</td></tr>
+    <tr><td>一键扫码发布</td><td><span class="tag-green">P0</span></td><td>选择作品→选择平台→系统自动填写标题/描述/标签/定价→一键发布到淘宝(商品)、小红书(笔记)、抖音(短视频/图文)等</td><td>Playwright自动化 + 各平台创作开放平台API混合</td></tr>
+    <tr><td>批量多平台发布</td><td><span class="tag-green">P0</span></td><td>一次操作发布到多个平台；各平台内容格式自动适配；发布状态实时反馈（成功/失败/审核中）</td><td>异步任务队列 + 各平台适配器</td></tr>
+    <tr><td>产品信息AI生成</td><td><span class="tag-green">P0</span></td><td>基于作品内容自动生成标题、描述、标签、定价建议；支持多风格（小红书风/淘宝风/抖音风）</td><td>本地LLM(Ollama)或任意LLM API</td></tr>
+    <tr><td>OriStudio Verified</td><td><span class="tag-yellow">P1</span></td><td>生成防伪标识（含存证哈希二维码+作品信息），可嵌入产品包装/展示页；消费者扫码验证真伪</td><td>QR Code生成 + 验证页面</td></tr>
+    <tr><td>收入/销量统计</td><td><span class="tag-yellow">P1</span></td><td>各平台销量/收入汇总；按作品/时间段/平台分类统计报表</td><td>手动录入或平台API拉取</td></tr>
+  </table>
+  </div>
+
+  <!-- ========== 11. 数据库核心表 ========== -->
+  <h2 id="db">11. 数据库核心表设计（SQLite）</h2>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进</span><br>
+    技术评审建议：客户/工厂联系人中的姓名/电话/微信号需加密存储；审计日志需设定自动清理策略（保留90天）
+  </div>
+
+  <p><strong>共22张核心表</strong>（评审后从29张精简，减少库存/甘特图/排期相关表）</p>
+
+  <h3>作品相关</h3>
+  <div class="arch-box">
+works(id, title, type, file_path, file_hash, file_size, mime_type, 
+       metadata_json, tags, project_id, created_at, updated_at)
+work_versions(id, work_id, version_num, file_hash, file_path, notes, created_at)
+work_tags(id, work_id, tag, created_at)
+projects(id, name, description, cover_work_id, created_at, updated_at)
+  </div>
+
+  <h3>存证相关</h3>
+  <div class="arch-box">
+notary_records(id, work_id, hash_algorithm, local_hash, platform, 
+               platform_tx_id, status, fee, certificate_path, created_at)
+certificates(id, notary_record_id, cert_path, qr_code, issued_at, expires_at)
+  </div>
+
+  <h3>侵权监测相关</h3>
+  <div class="arch-box">
+monitor_tasks(id, work_id, search_type, platform, interval, last_run, next_run, status)
+monitor_results(id, task_id, matched_url, similarity, screenshot_path, 
+                found_at, status, action_taken)
+evidence_packages(id, work_id, related_result_ids, package_path, created_at)
+  </div>
+
+  <h3>知识产权登记</h3>
+  <div class="arch-box">
+ip_registrations(id, work_id, ip_type(copyright/trademark/patent), 
+                 application_no, filing_date, status, category_info,
+                 reminder_date, notes, created_at, updated_at)
+trademark_classes(id, registration_id, class_no, class_desc, status)
+  </div>
+
+  <h3>供应链协作</h3>
+  <div class="arch-box">
+partners(id, name, contact_person, phone(encrypted), address, 
+         specialties, rating, notes, created_at)
+orders(id, partner_id, work_id, quantity, unit_price, total_amount,
+       deposit, balance, status, delivery_date, notes, created_at)
+order_payments(id, order_id, amount, payment_type, payment_date, notes)
+order_communications(id, order_id, content, attachment_path, 
+                     direction(out/in), created_at)
+reminders(id, type(order/key_event), related_id, title, remind_at, 
+          status, created_at)
+  </div>
+
+  <h3>发布与变现</h3>
+  <div class="arch-box">
+products(id, work_id, order_id, title, description, price, 
+         category, csv_export_path, created_at, updated_at)
+product_publishings(id, product_id, platform, listing_url, 
+                    status, published_at, updated_at)
+verified_marks(id, product_id, qr_code, cert_url, created_at)
+revenue_records(id, product_id, platform, amount, date, notes)
+  </div>
+
+  <h3>系统管理</h3>
+  <div class="arch-box">
+system_settings(key, value, updated_at)
+audit_logs(id, action, detail, ip, created_at)  ← 保留90天自动清理
+backup_records(id, path, size, type, created_at)
+  </div>
+
+  <!-- ========== 12. 第三方API清单 ========== -->
+  <h2 id="api">12. 第三方API接入清单</h2>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进</span><br>
+    技术评审指出：原设计22个API被严重低估接入复杂度，电商类API对个人开发者不可行 → <span class="tag-green">精简为13项，电商改为CSV导出</span>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>用途</th><th>API/平台</th><th>费用</th><th>接入方式</th><th>优先级</th></tr>
+    <tr><td rowspan="3"><strong>存证</strong></td><td>版权家存证</td><td>¥1-5/次</td><td>HTTP API + 二维码支付</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td>蚂蚁链存证</td><td>¥0.5/次</td><td>HTTP API + 二维码支付</td><td><span class="tag-yellow">P1</span></td></tr>
+    <tr><td>至信链存证</td><td>¥1-1.5/次</td><td>HTTP API + 二维码支付</td><td><span class="tag-yellow">P1</span></td></tr>
+    <tr><td>C2PA</td><td>c2patool(开源)</td><td>免费</td><td>命令行调用，嵌入元数据</td><td><span class="tag-yellow">P1</span></td></tr>
+    <tr><td rowspan="2"><strong>侵权监测</strong></td><td>百度识图</td><td>免费100次/天</td><td>HTTP API (需百度开发者账号)</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td>Google Vision</td><td>免费1000次/月</td><td>HTTP API (Google Cloud账号)</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td><strong>文字查重</strong></td><td>Copyscape/百度搜索</td><td>免费有限</td><td>搜索API</td><td><span class="tag-yellow">P1</span></td></tr>
+    <tr><td><strong>代码查重</strong></td><td>GitHub Code Search</td><td>免费5000次/小时</td><td>GitHub REST API</td><td><span class="tag-yellow">P2</span></td></tr>
+    <tr><td><strong>AI辅助</strong></td><td>本地LLM / API</td><td>免费(本地) / 按量(API)</td><td>Ollama(本地) / 任意LLM API</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td rowspan="2"><strong>商标</strong></td><td>商标局查询</td><td>免费</td><td>引导用户访问网站 (sbj.cnipa.gov.cn)</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td>版权局登记</td><td>¥0-300/件</td><td>引导用户访问网站 (ccopyright.com.cn)</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td><strong>多媒体处理</strong></td><td>FFmpeg / ImageMagick</td><td>免费开源</td><td>本地命令行调用</td><td><span class="tag-green">P0</span></td></tr>
+    <tr><td><strong>验证</strong></td><td>存证平台验真API</td><td>免费</td><td>HTTP API查询存证状态</td><td><span class="tag-green">P0</span></td></tr>
+  </table>
+  </div>
+
+  <p style="color:var(--text2);font-size:0.82rem;">注：电商发布不再接入API，改为CSV模板导出+手动发布引导。商标注册全程引导用户自助操作，系统不代填/代提交。</p>
+
+  <!-- ========== 13. 开发路线图 ========== -->
+  <h2 id="roadmap">13. 开发路线图</h2>
+
+  <div class="review-box">
+    <span class="rl">📋 评审改进</span><br>
+    技术评审认为15-20周严重低估，实际需24-28周 → <span class="tag-yellow">调整为20-26周（含缓冲）</span><br>
+    投资者评审建议先做MVP验证需求 → <span class="tag-green">新增4-6周极简MVP阶段</span>
+  </div>
+
+  <div class="tl-item">
+    <div class="tl-phase">Phase 0<br><span style="font-size:0.7rem;color:var(--text2);">4-6周</span></div>
+    <div class="tl-content">
+      <div class="tl-title">极简MVP — 验证核心价值</div>
+      <div class="tl-desc">
+        <strong>目标</strong>：最小可用产品，验证创作者是否愿意使用<br>
+        <strong>功能</strong>：作品导入+管理 → 本地哈希计算 → PDF证书生成 → 社交分享<br>
+        <strong>技术</strong>：FastAPI+Vue3基础框架 + SQLite + PyInstaller打包<br>
+        <strong>交付</strong>：可下载的桌面应用，支持基础存证流程<br>
+        <strong>开发者</strong>：1人全栈兼职20h/周
+      </div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-phase">Phase 1<br><span style="font-size:0.7rem;color:var(--text2);">6-8周</span></div>
+    <div class="tl-content">
+      <div class="tl-title">核心功能 — 存证+监测上线</div>
+      <div class="tl-desc">
+        <strong>功能</strong>：接入第1个存证平台(版权家) → 侵权监测(百度识图) → 投诉材料生成 → 证据包导出<br>
+        <strong>改进</strong>：异步任务队列(Celery/RQ) + 系统通知 + 托盘图标<br>
+        <strong>交付</strong>：完整存证+侵权监测闭环
+      </div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-phase">Phase 2<br><span style="font-size:0.7rem;color:var(--text2);">5-6周</span></div>
+    <div class="tl-content">
+      <div class="tl-title">IP登记 + 发布引导</div>
+      <div class="tl-desc">
+        <strong>功能</strong>：版权登记引导 → 商标查询引导 → 多品类规划 → 产品信息生成(AI) → CSV导出 → OriStudio Verified
+      </div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-phase">Phase 3<br><span style="font-size:0.7rem;color:var(--text2);">3-4周</span></div>
+    <div class="tl-content">
+      <div class="tl-title">供应链协作 + 完善</div>
+      <div class="tl-desc">
+        <strong>功能</strong>：工厂联系人 → 订单记录 → 付款记录 → 沟通时间线 → 关键事件提醒<br>
+        <strong>完善</strong>：补充监测平台(Google Vision) + 第2存证平台 + 律师函模板
+      </div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-phase">Phase 4<br><span style="font-size:0.7rem;color:var(--text2);">2-3周</span></div>
+    <div class="tl-content">
+      <div class="tl-title">分发优化 + 社区</div>
+      <div class="tl-desc">
+        <strong>功能</strong>：Docker镜像发布 + pip包发布 + Electron桌面版(可选) + 开源社区文档<br>
+        <strong>完善</strong>：数据备份/恢复、主题切换、插件系统、性能优化
+      </div>
+    </div>
+  </div>
+
+  <p><strong>总工期：20-26周（5-6.5个月）| 建议1人全栈全职 或 2人兼职</strong></p>
+
+  <!-- ========== 14. MVP定义 ========== -->
+  <h2 id="mvp">14. MVP定义（Phase 0 — 最低可行产品）</h2>
+
+  <div class="success-box">
+    <strong>MVP目标：</strong>4-6周做出一个可用的作品管理+本地存证工具，发到创作者社群验证需求。<br>
+    如果用户说"这个有用"→继续；如果无人问津→止损，不浪费后续开发时间。
+  </div>
+
+  <h3>MVP功能列表</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>模块</th><th>包含功能</th><th>弃用功能</th></tr>
+    <tr><td>作品管理</td><td>导入(拖拽) + 缩略图 + 标签 + 搜索 + 预览(图片/音频)</td><td>版本控制、视频预览、代码高亮、项目分组</td></tr>
+    <tr><td>存证确权</td><td>SHA-256哈希 + PDF证书(含二维码) + 社交分享卡片</td><td>多平台存证、C2PA元数据、扫码付费</td></tr>
+    <tr><td>侵权监测</td><td>手动以图搜图(百度识图) + 结果标记</td><td>定时扫描、文字查重、代码查重、投诉材料</td></tr>
+    <tr><td>IP登记</td><td>无</td><td>全部</td></tr>
+    <tr><td>供应链</td><td>无</td><td>全部</td></tr>
+    <tr><td>发布变现</td><td>无</td><td>全部</td></tr>
+    <tr><td>系统</td><td>PyInstaller打包 + 自动更新</td><td>Docker、插件、主题</td></tr>
+  </table>
+  </div>
+
+  <h3>MVP验收标准</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>指标</th><th>Go标准</th><th>No-Go退出</th></tr>
+    <tr><td>下载量（首月）</td><td>> 500次下载</td><td>< 50次下载</td></tr>
+    <tr><td>活跃用户（次月留存）</td><td>> 30%留存</td><td>< 10%留存</td></tr>
+    <tr><td>创作者反馈NPS</td><td>NPS > 0（30%+推荐者）</td><td>NPS < -30</td></tr>
+    <tr><td>GitHub Star</td><td>> 100 Stars</td><td>< 20 Stars</td></tr>
+  </table>
+  </div>
+
+  <h3>MVP技术栈</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>组件</th><th>选型</th><th>原因</th></tr>
+    <tr><td>前端框架</td><td>Vue3 + Vite + Pinia + Tailwind CSS</td><td>轻量、生态好、开发快</td></tr>
+    <tr><td>后端框架</td><td>FastAPI + Uvicorn</td><td>Python异步、自动API文档</td></tr>
+    <tr><td>数据库</td><td>SQLite (通过 SQLAlchemy)</td><td>零配置、文件级、无需安装</td></tr>
+    <tr><td>前端组件库</td><td>Naive UI 或 Element Plus</td><td>中文友好、功能丰富</td></tr>
+    <tr><td>打包分发</td><td>PyInstaller + 前端build</td><td>单文件可执行，用户双击即用</td></tr>
+    <tr><td>文件处理</td><td>Pillow + FFmpeg (可选)</td><td>图像处理 + 音视频元数据</td></tr>
+    <tr><td>HTTP客户端</td><td>httpx</td><td>Python异步HTTP请求</td></tr>
+  </table>
+  </div>
+
+  <div class="review-box">
+    <span class="rl">💡 前端技术选型：Vue3 vs React</span><br>
+    本方案以 <strong>Vue3 + Vite</strong> 为默认前端框架，也完全支持替换为 <strong>React</strong>：<br>
+    <table style="font-size:0.78rem;margin-top:0.5rem;">
+      <tr><th>方案</th><th>框架</th><th>路由</th><th>状态管理</th><th>UI库</th></tr>
+      <tr><td><strong>默认（Vue3）</strong></td><td>Vue 3 + Vite</td><td>Vue Router</td><td>Pinia</td><td>Naive UI</td></tr>
+      <tr><td><strong>React替代</strong></td><td>React 18 + Vite</td><td>React Router v6</td><td>Zustand/Redux Toolkit</td><td>Ant Design / MUI</td></tr>
+    </table>
+    <strong>建议</strong>：团队熟悉哪个就用哪个。Vue3的SFC写法对1-2人开发更轻量；React的生态更适合复杂交互。两种选择不影响系统架构和功能。
+  </div>
+
+  <hr>
+
+  <p style="text-align:center; color:var(--text2); font-size:0.85rem;">
+    OriStudio 个人创作者助手 · 完整建设方案<br>
+    基于7路Agent评审完善 | 作品管理+存证+侵权监测+IP登记+供应链协作+发布变现<br>
+    技术栈：Vue3+FastAPI+SQLite | 分发方式：PyInstaller/Docker/pip<br>
+    2026年6月10日 | 可开发周期：MVP 4-6周，完整版 20-26周
+  </p>
+
+  <!-- ========== 15. 附录 ========== -->
+  <h2 id="appendix" style="margin-top:3rem;">15. 附录 — 技术规格补充说明</h2>
+
+  <p>以下内容来自详细技术规格说明书，补充主文档中未展开的数据库DDL定义、开发环境搭建指南和技术栈推荐。已包含在主文档正文的内容（如功能模块设计和核心API清单）此处不再重复。</p>
+
+  <h3>15.1 数据库完整DDL（SQLite）</h3>
+  <p>以下为补充表定义。主文档中已列出的核心表（works, work_versions, work_tags, projects, notary_records, certificates, monitor_tasks, monitor_results, evidence_packages, ip_registrations, trademark_classes, partners, orders, order_payments, order_communications, reminders, products, product_publishings, verified_marks, revenue_records, system_settings, audit_logs, backup_records）此处不再重复。</p>
+
+  <div class="arch-box" style="font-size:0.7rem;">
+-- 作品表（完整字段）
+CREATE TABLE works (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    title           TEXT NOT NULL,
+    file_path       TEXT NOT NULL,
+    file_name       TEXT NOT NULL,
+    file_size       INTEGER NOT NULL,
+    file_type       TEXT NOT NULL,
+    file_extension  TEXT NOT NULL,
+    mime_type       TEXT,
+    sha256          TEXT NOT NULL,
+    md5             TEXT,
+    description     TEXT,
+    tags            TEXT,
+    project_id      INTEGER REFERENCES projects(id),
+    status          TEXT DEFAULT 'active',
+    is_verified     INTEGER DEFAULT 0,
+    custom_metadata TEXT,
+    created_at      TEXT NOT NULL,
+    imported_at     TEXT NOT NULL,
+    updated_at      TEXT NOT NULL,
+    deleted_at      TEXT
+);
+
+-- 存证记录表（完整字段）
+CREATE TABLE notary_records (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    work_id         INTEGER NOT NULL REFERENCES works(id),
+    platform        TEXT NOT NULL,
+    platform_url    TEXT,
+    transaction_hash TEXT,
+    block_height    INTEGER,
+    blockchain      TEXT,
+    certificate_id  TEXT,
+    status          TEXT DEFAULT 'pending',
+    fee             REAL,
+    payment_method  TEXT,
+    payment_status  TEXT DEFAULT 'unpaid',
+    qr_code_url     TEXT,
+    confirmed_at    TEXT,
+    expires_at      TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL
+);
+
+-- C2PA嵌入记录表
+CREATE TABLE c2pa_records (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    work_id         INTEGER NOT NULL REFERENCES works(id),
+    manifest_json   TEXT NOT NULL,
+    embedded_at     TEXT NOT NULL,
+    is_active       INTEGER DEFAULT 1,
+    validator_url   TEXT
+);
+
+-- 定时扫描配置表
+CREATE TABLE scan_schedules (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            TEXT NOT NULL,
+    is_enabled      INTEGER DEFAULT 0,
+    scan_type       TEXT NOT NULL,
+    scan_scope      TEXT DEFAULT 'all',
+    scope_value     TEXT,
+    cron_expression TEXT NOT NULL,
+    last_run_at     TEXT,
+    next_run_at     TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL
+);
+
+-- 版权登记记录表
+CREATE TABLE copyright_registrations (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    work_id         INTEGER NOT NULL REFERENCES works(id),
+    registration_number TEXT,
+    application_date    TEXT,
+    registration_date   TEXT,
+    status          TEXT DEFAULT 'draft',
+    certificate_path    TEXT,
+    registration_url    TEXT,
+    notes           TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL
+);
+
+-- 商标记录表
+CREATE TABLE trademark_registrations (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            TEXT NOT NULL,
+    logo_work_id    INTEGER REFERENCES works(id),
+    categories      TEXT NOT NULL,
+    application_number TEXT,
+    application_date    TEXT,
+    registration_number TEXT,
+    status          TEXT DEFAULT 'planning',
+    trademark_office TEXT,
+    agent_name      TEXT,
+    notes           TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL,
+    UNIQUE(name, categories)
+);
+
+-- 商标监测记录表
+CREATE TABLE trademark_monitoring (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    trademark_id    INTEGER NOT NULL REFERENCES trademark_registrations(id),
+    monitored_name  TEXT NOT NULL,
+    application_number TEXT,
+    applicant       TEXT,
+    category        TEXT,
+    publication_date TEXT,
+    status          TEXT DEFAULT 'new',
+    action_type     TEXT,
+    action_date     TEXT,
+    created_at      TEXT NOT NULL
+);
+
+-- 合作伙伴表（完整字段）
+CREATE TABLE partners (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            TEXT NOT NULL,
+    company_name    TEXT,
+    contact_person  TEXT,
+    phone           TEXT,
+    email           TEXT,
+    address         TEXT,
+    website         TEXT,
+    categories      TEXT,
+    moq             TEXT,
+    rating          REAL DEFAULT 0,
+    tags            TEXT,
+    status          TEXT DEFAULT 'active',
+    notes           TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL
+);
+
+-- 合作伙伴资质表
+CREATE TABLE partner_qualifications (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    partner_id      INTEGER NOT NULL REFERENCES partners(id),
+    qual_type       TEXT NOT NULL,
+    file_path       TEXT,
+    expire_date     TEXT,
+    verified        INTEGER DEFAULT 0,
+    created_at      TEXT NOT NULL
+);
+
+-- 订单表（完整字段）
+CREATE TABLE orders (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_number    TEXT NOT NULL UNIQUE,
+    partner_id      INTEGER NOT NULL REFERENCES partners(id),
+    product_id      INTEGER REFERENCES products(id),
+    product_name    TEXT NOT NULL,
+    quantity        INTEGER NOT NULL,
+    specifications  TEXT,
+    unit_price      REAL,
+    total_amount    REAL,
+    deposit_percent REAL DEFAULT 30,
+    deposit_paid    REAL DEFAULT 0,
+    balance_due     REAL DEFAULT 0,
+    status          TEXT DEFAULT 'ordered',
+    expected_date   TEXT,
+    actual_date     TEXT,
+    shipping_method TEXT,
+    tracking_number TEXT,
+    notes           TEXT,
+    created_at      TEXT NOT NULL,
+    updated_at      TEXT NOT NULL
+);
+
+-- 索引
+CREATE INDEX idx_works_sha256 ON works(sha256);
+CREATE INDEX idx_works_file_type ON works(file_type);
+CREATE INDEX idx_work_tags_tag ON work_tags(tag);
+CREATE INDEX idx_notary_records_status ON notary_records(status);
+CREATE INDEX idx_orders_partner ON orders(partner_id);
+CREATE INDEX idx_revenue_records_date ON revenue_records(record_date);
+CREATE INDEX idx_audit_logs_created ON audit_logs(created_at);
+  </div>
+
+  <h3>15.2 API网关抽象层设计</h3>
+
+  <div class="arch-box" style="font-size:0.7rem;">
+┌──────────────────────────────────────────────────────────────┐
+│                    API 网关抽象层                              │
+│                                                              │
+│  ┌─────────────┐ ┌─────────────┐ ┌──────────────────────┐   │
+│  │ 平台管理器   │ │ 支付管理器   │ │    重试/限流/缓存     │   │
+│  │ ·存证平台A  │ │ ·生成二维码 │ │ ·指数退避重试        │   │
+│  │ ·存证平台B  │ │ ·轮询状态  │ │ ·速率限制            │   │
+│  │ ·存证平台C  │ │ ·退款处理  │ │ ·结果缓存(TTL)       │   │
+│  └─────────────┘ └─────────────┘ └──────────────────────┘   │
+│                                                              │
+│  核心策略:                                                    │
+│  1. 所有第三方API通过抽象接口调用，可随时切换供应商             │
+│  2. 支付流程: 系统生成二维码→用户扫码→平台处理→轮询结果       │
+│  3. API密钥存储在本地配置文件，不上传到版本控制                 │
+│  4. 所有API调用记录日志，便于排查问题                          │
+└──────────────────────────────────────────────────────────────┘
+  </div>
+
+  <h3>15.3 完整API接入清单（分类详表）</h3>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>分类</th><th>服务</th><th>API名称</th><th>用途</th><th>接入方式</th><th>费用</th></tr>
+    <tr><td rowspan="5"><strong>存证确权</strong></td><td>版权家</td><td>作品存证API</td><td>区块链存证上链</td><td>HTTP REST + 支付二维码</td><td>¥1-10/次</td></tr>
+    <tr><td>公证处区块链</td><td>存证API</td><td>公证级区块链存证</td><td>HTTP REST</td><td>¥20-50/次</td></tr>
+    <tr><td>蚂蚁链</td><td>蚂蚁链存证服务</td><td>阿里系区块链存证</td><td>SDK/API</td><td>按次收费</td></tr>
+    <tr><td>百度超级链</td><td>存证API</td><td>百度系区块链存证</td><td>HTTP REST</td><td>按次收费</td></tr>
+    <tr><td>C2PA工具</td><td>Content Credentials</td><td>嵌入/验证C2PA元数据</td><td>Python库(c2patool)</td><td>免费</td></tr>
+    <tr><td rowspan="5"><strong>侵权监测</strong></td><td>百度识图</td><td>百度图片搜索API</td><td>以图搜图</td><td>HTTP REST</td><td>免费额度+按量</td></tr>
+    <tr><td>Google Vision</td><td>Cloud Vision API</td><td>以图搜图+内容识别</td><td>HTTP REST/gRPC</td><td>免费额度+按量</td></tr>
+    <tr><td>TinEye</td><td>TinEye API</td><td>精确以图搜图</td><td>HTTP REST</td><td>≈$0.01/次</td></tr>
+    <tr><td>GitHub</td><td>GitHub Search API</td><td>代码查重</td><td>HTTP REST (OAuth)</td><td>免费(有速率限制)</td></tr>
+    <tr><td>Copyscape</td><td>Plagiarism Checker</td><td>网页内容相似度</td><td>HTTP REST</td><td>按次收费</td></tr>
+    <tr><td rowspan="4"><strong>知识产权</strong></td><td>国家知识产权局</td><td>商标查询API</td><td>商标近似查询</td><td>HTTP REST(公开接口)</td><td>免费</td></tr>
+    <tr><td>商标数据开放平台</td><td>综合查询API</td><td>商标状态/分类查询</td><td>HTTP REST</td><td>免费/付费</td></tr>
+    <tr><td>国家版权局</td><td>版权登记查询</td><td>版权登记状态查询</td><td>网页跳转</td><td>免费</td></tr>
+    <tr><td>知产代理平台</td><td>商标注册API</td><td>在线提交商标注册</td><td>HTTP REST</td><td>代理费+官费</td></tr>
+    <tr><td rowspan="4"><strong>电商发布</strong></td><td>淘宝开放平台</td><td>商品发布API</td><td>自动上架商品</td><td>OAuth2.0 + REST</td><td>需开发者资质</td></tr>
+    <tr><td>小红书开放平台</td><td>内容发布API</td><td>发布笔记/商品</td><td>OAuth2.0 + REST</td><td>审核制</td></tr>
+    <tr><td>抖音开放平台</td><td>商品管理API</td><td>抖音小店商品管理</td><td>OAuth2.0 + REST</td><td>审核制</td></tr>
+    <tr><td>Shopify</td><td>Admin API</td><td>独立站商品管理</td><td>REST/GraphQL</td><td>免费</td></tr>
+    <tr><td rowspan="4"><strong>辅助工具</strong></td><td>OpenAI/DeepSeek</td><td>LLM API</td><td>AI生成描述/标签/文案</td><td>HTTP REST</td><td>按量计费</td></tr>
+    <tr><td>FFmpeg</td><td>FFmpeg CLI</td><td>音视频处理/转码</td><td>子进程调用</td><td>免费</td></tr>
+    <tr><td>ImageMagick</td><td>图片处理</td><td>缩略图/格式转换</td><td>子进程调用</td><td>免费</td></tr>
+    <tr><td>Pandoc</td><td>文档转换</td><td>Markdown/Word/PDF互转</td><td>子进程调用</td><td>免费</td></tr>
+  </table>
+  </div>
+
+  <h3>15.4 开发环境搭建指南</h3>
+
+  <div class="success-box">
+    <strong>建议开发环境：</strong>Python 3.11+ + Node.js 18+ + SQLite 3（macOS内置）
+  </div>
+
+  <h4>后端环境</h4>
+  <div class="arch-box" style="font-size:0.75rem;">
+# 1. 克隆项目并创建虚拟环境
+git clone https://github.com/yourname/oristudio.git
+cd oristudio
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate   # Windows
+
+# 2. 安装依赖
+pip install -r requirements.txt
+
+# 3. 初始化数据库
+python -c "from backend.db.database import init_db; init_db()"
+
+# 4. 启动后端（开发模式）
+uvicorn backend.main:app --reload --port 8765
+# 访问 http://localhost:8765/docs 查看API文档
+  </div>
+
+  <h4>前端环境</h4>
+  <div class="arch-box" style="font-size:0.75rem;">
+# 1. 安装前端依赖
+cd frontend
+npm install
+
+# 2. 启动前端开发服务器
+npm run dev
+# 访问 http://localhost:5173
+
+# 3. 构建生产版本
+npm run build
+  </div>
+
+  <h4>完整启动（开发模式）</h4>
+  <div class="arch-box" style="font-size:0.75rem;">
+# 方式一：一键启动
+python app.py --dev
+# 自动启动后端 + 前端 + 打开浏览器
+
+# 方式二：Docker
+docker-compose up -d
+# 访问 http://localhost:8765
+  </div>
+
+  <h3>15.5 项目目录结构</h3>
+
+  <div class="arch-box" style="font-size:0.72rem;">
+oristudio/
+├── app.py                      # 应用入口（启动整个应用）
+├── requirements.txt            # Python依赖
+├── Dockerfile                  # Docker构建文件
+├── docker-compose.yml          # Docker编排
+├── README.md                   # 项目说明
+├── config/
+│   ├── settings.py             # 系统配置
+│   └── default.yaml            # 默认配置模板
+│
+├── backend/
+│   ├── main.py                 # FastAPI应用实例
+│   ├── api/                    # API路由层
+│   │   ├── works.py            # 作品管理API
+│   │   ├── notary.py           # 存证确权API
+│   │   ├── monitor.py          # 侵权监测API
+│   │   ├── ip.py               # 知识产权API
+│   │   ├── supply.py           # 供应链API
+│   │   ├── business.py         # 业务闭环API
+│   │   └── system.py           # 系统管理API
+│   ├── models/                 # SQLAlchemy数据模型
+│   ├── schemas/                # Pydantic数据校验
+│   ├── services/               # 业务逻辑层
+│   │   ├── workspace_service.py
+│   │   ├── hasher_service.py
+│   │   ├── notary_service.py
+│   │   ├── certificate_service.py
+│   │   ├── c2pa_service.py
+│   │   ├── image_search_service.py
+│   │   ├── trademark_service.py
+│   │   └── supply_chain_service.py
+│   ├── gateway/                # 第三方API网关
+│   │   ├── base.py             # 抽象基类
+│   │   ├── notary_platforms/   # 各存证平台适配器
+│   │   │   ├── banquanjia.py
+│   │   │   └── ...
+│   │   └── search_engines/     # 各搜索引擎适配器
+│   │       ├── baidu.py
+│   │       ├── google.py
+│   │       └── ...
+│   ├── utils/                  # 工具函数
+│   │   ├── file_utils.py
+│   │   ├── hash_utils.py
+│   │   └── preview_utils.py
+│   └── db/
+│       ├── database.py         # 数据库连接
+│       └── migrations/         # Alembic迁移
+│
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── src/
+│   │   ├── main.ts
+│   │   ├── App.vue
+│   │   ├── router/             # 路由
+│   │   ├── store/              # Pinia状态管理
+│   │   ├── api/                # HTTP请求封装
+│   │   ├── components/         # 通用组件
+│   │   ├── views/              # 页面视图
+│   │   │   ├── dashboard/
+│   │   │   ├── works/
+│   │   │   ├── notary/
+│   │   │   ├── monitor/
+│   │   │   ├── ip/
+│   │   │   ├── supply/
+│   │   │   ├── business/
+│   │   │   └── settings/
+│   │   └── composables/        # 组合式函数
+│   └── public/
+│
+├── workspace/                  # 用户作品工作目录
+│   ├── images/
+│   ├── audio/
+│   ├── videos/
+│   ├── documents/
+│   └── code/
+│
+└── data/                       # 应用数据目录
+    ├── oristudio.db            # SQLite数据库
+    ├── certificates/           # 存证证书PDF
+    ├── thumbnails/             # 缩略图缓存
+    ├── backups/                # 备份文件
+    ├── logs/                   # 日志文件
+    └── config/                 # 用户配置文件
+  </div>
+
+  <h3>15.6 关键开发最佳实践</h3>
+
+  <h4>架构原则</h4>
+  <div class="table-wrap">
+  <table>
+    <tr><th>原则</th><th>说明</th></tr>
+    <tr><td>模块化设计</td><td>每个业务模块完全独立，可以单独开发、测试、部署</td></tr>
+    <tr><td>插件化第三方服务</td><td>存证平台、搜索引擎等通过适配器模式接入，新增平台只需添加适配器</td></tr>
+    <tr><td>离线优先</td><td>核心功能（作品管理、本地预览、哈希计算、数据管理）完全离线可工作</td></tr>
+    <tr><td>渐进式加载</td><td>前端按路由懒加载，初始加载体积控制在500KB以内</td></tr>
+    <tr><td>文件操作安全</td><td>所有文件操作加锁，防止并发问题</td></tr>
+  </table>
+  </div>
+
+  <h4>性能考虑</h4>
+  <div class="arch-box" style="font-size:0.7rem;">
+· 缩略图异步生成，首屏不等待
+· 大型音视频文件流式预览，不一次性加载到内存
+· 数据库定期VACUUM（SQLite需要手动回收空间）
+· 作品列表支持虚拟滚动，几百个文件也不卡顿
+· 文件哈希计算后台线程执行，不阻塞UI
+  </div>
+
+  <h4>安全考虑</h4>
+  <div class="arch-box" style="font-size:0.7rem;">
+· 所有API密钥存储在本地配置文件中，不上传Git
+· 配置模板(secrets.yaml.example)放在仓库中，实际文件被.gitignore忽略
+· 本地应用不需要登录密码（单机使用），但可选的PIN码锁定
+· 所有第三方API调用通过HTTPS
+· 用户自行管理API token，系统不保存敏感第三方凭证
+  </div>
+
+  <h4>移植性与备份</h4>
+  <div class="arch-box" style="font-size:0.7rem;">
+· 所有数据（数据库+文件）都在 ~/.oristudio/ 目录下
+· 备份 = 复制该目录到一个U盘/云盘
+· 恢复 = 将备份目录复制到新电脑的对应位置
+· Docker部署: docker run -v /host/data:/app/data oristudio
+· 一键迁移脚本: oristudio-migrate.sh / oristudio-migrate.ps1
+  </div>
+
+  <h3>15.7 版本规划</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>版本</th><th>特性</th><th>目标用户</th></tr>
+    <tr><td>v0.1 MVP</td><td>作品管理 + 哈希存证</td><td>早期测试者</td></tr>
+    <tr><td>v0.2 Alpha</td><td>+侵权监测 + 证书生成</td><td>创作者社群</td></tr>
+    <tr><td>v0.3 Beta</td><td>+知识产权 + 供应链</td><td>独立品牌主</td></tr>
+    <tr><td>v1.0 Stable</td><td>+业务闭环 + 全功能</td><td>所有创作者</td></tr>
+    <tr><td>v1.x</td><td>插件系统 + 社区市场</td><td>扩展生态</td></tr>
+  </table>
+  </div>
+
+  <h3>15.8 技术栈推荐</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>层次</th><th>推荐技术</th><th>版本</th><th>选型理由</th></tr>
+    <tr><td>后端框架</td><td>FastAPI</td><td>≥0.110</td><td>异步高性能、自动OpenAPI文档、Pydantic数据校验</td></tr>
+    <tr><td>ASGI服务器</td><td>Uvicorn</td><td>≥0.29</td><td>轻量、FastAPI官方推荐</td></tr>
+    <tr><td>ORM</td><td>SQLAlchemy 2.0 + Alembic</td><td>≥2.0</td><td>成熟稳定、支持SQLite、迁移管理</td></tr>
+    <tr><td>前端框架</td><td>Vue 3 + Vite</td><td>≥3.4</td><td>轻量、组合式API、Vite构建速度极快</td></tr>
+    <tr><td>UI组件库</td><td>Naive UI / Element Plus</td><td>最新</td><td>美观、Vue 3原生、组件齐全</td></tr>
+    <tr><td>CSS框架</td><td>Tailwind CSS</td><td>≥3.4</td><td>原子化CSS、快速构建界面</td></tr>
+    <tr><td>图表库</td><td>ECharts</td><td>≥5.5</td><td>开源免费、图表类型丰富</td></tr>
+    <tr><td>预览器</td><td>PhotoSwipe(图片) / Plyr(音视频) / Monaco(代码)</td><td>最新</td><td>成熟、功能完善</td></tr>
+    <tr><td>文件监控</td><td>watchdog (Python)</td><td>≥4.0</td><td>跨平台文件系统监控</td></tr>
+    <tr><td>定时任务</td><td>APScheduler</td><td>≥3.10</td><td>轻量、支持cron表达式</td></tr>
+    <tr><td>桌面通知</td><td>plyer / notify-py</td><td>最新</td><td>跨平台系统通知</td></tr>
+    <tr><td>PDF生成</td><td>reportlab / weasyprint</td><td>最新</td><td>纯Python PDF生成</td></tr>
+    <tr><td>二维码</td><td>qrcode (Python)</td><td>≥7.4</td><td>二维码生成</td></tr>
+    <tr><td>Docker</td><td>Docker + docker-compose</td><td>最新</td><td>容器化部署</td></tr>
+  </table>
+  </div>
+
+  <h3>15.9 用户完整旅程图</h3>
+
+  <p>从创作到赚钱的完整6阶段用户旅程：</p>
+
+  <div class="arch-box" style="font-size:0.7rem;">
+第一阶段                         第二阶段
+创作与作品管理                   存证与确权
+┌─────────────────────┐         ┌─────────────────────┐
+│ ① 创作作品           │         │ ④ 哈希校验           │
+│   · 使用PS/AI/其他    │         │   · 自动计算SHA-256   │
+│   · 或直接导入已有    │         │   · 验证完整性        │
+│        ↓             │         │        ↓             │
+│ ② 导入OriStudio      │         │ ⑤ 区块链存证         │
+│   · 拖拽/文件夹扫描   │         │   · 选择存证平台      │
+│   · 自动分类+标签    │         │   · 扫码付费          │
+│        ↓             │         │   · 链上确认          │
+│ ③ 管理作品           │         │        ↓             │
+│   · 元数据查看/编辑   │         │ ⑥ 生成存证证书       │
+│   · 版本管理          │         │   · PDF证书+二维码    │
+│   · 项目分组          │         │   · C2PA元数据嵌入    │
+└─────────────────────┘         └─────────────────────┘
+
+         ↓                              ↓
+
+第三阶段                         第四阶段
+知识产权保护                     供应链与生产
+┌─────────────────────┐         ┌─────────────────────┐
+│ ⑦ 商标查询+注册     │         │ ⑩ 寻找工厂           │
+│   · 查询近似商标     │         │   · 添加合作伙伴      │
+│   · 推荐注册类别     │         │   · 查看资质/历史评价  │
+│   · 生成申请材料     │         │        ↓             │
+│        ↓             │         │ ⑪ 创建订单           │
+│ ⑧ 版权登记引导      │         │   · 选择产品+数量+规格 │
+│   · 材料准备清单     │         │   · 确认交期和价格    │
+│   · 引导至版权局     │         │   · 支付定金          │
+│        ↓             │         │        ↓             │
+│ ⑨ 侵权监测(持续)    │         │ ⑫ 生产跟进           │
+│   · 以图搜图         │         │   · 看板/甘特图跟踪   │
+│   · 文本/代码查重    │         │   · 沟通记录         │
+│   · 定时扫描+通知    │         │   · 质检+尾款+收货    │
+└─────────────────────┘         └─────────────────────┘
+
+         ↓                              ↓
+
+第五阶段                         第六阶段
+产品上架与销售                   持续运营
+┌─────────────────────┐         ┌─────────────────────┐
+│ ⑬ 创建产品           │         │ ⑯ 收入统计           │
+│   · 从作品库选择     │         │   · 自动/手动汇总收入  │
+│   · AI辅助生成描述   │         │   · 成本利润分析      │
+│   · 定价建议         │         │   · 报表导出          │
+│        ↓             │         │        ↓             │
+│ ⑭ 多平台上架         │         │ ⑰ 客户管理           │
+│   · 淘宝CSV导出      │         │   · 客户列表/标签     │
+│   · 小红书笔记导出   │         │   · 咨询/售后管理     │
+│   · 独立站发布       │         │        ↓             │
+│        ↓             │         │ ⑱ 回到步骤①         │
+│ ⑮ 库存管理           │         │   · 新创作 × 新灵感   │
+│   · 出入库记录       │         │   · 优化迭代产品      │
+│   · 库存预警         │         │   · 扩大生意版图      │
+└─────────────────────┘         └─────────────────────┘
+  </div>
+
+  <h3>15.10 新手引导流程</h3>
+
+  <div class="arch-box" style="font-size:0.72rem;">
+📱 新手引导流程 (首次使用)
+
+第一次打开 OriStudio:
+    │
+    ├──→ 欢迎页: "欢迎来到 OriStudio，你的个人创作助理"
+    │       │
+    │       └──→ 点击「开始使用」
+    │
+    ├──→ 第一步: "导入你的第一个作品"
+    │       │
+    │       ├──→ 拖拽一张图片/一段音乐/一个文件到页面
+    │       └──→ 系统自动识别文件类型并导入
+    │
+    ├──→ 第二步: "保护你的作品"
+    │       │
+    │       ├──→ 系统显示: "已自动计算作品指纹(SHA-256)"
+    │       ├──→ 点击「立即存证」→ 扫码支付 → 完成区块链确权
+    │       └──→ 系统生成证书PDF
+    │
+    ├──→ 第三步: "准备商业化"
+    │       │
+    │       ├──→ 点击「我想把作品变成商品」
+    │       ├──→ 填写产品名称和价格
+    │       └──→ 导出上架信息到淘宝/小红书
+    │
+    └──→ 完成! 进入仪表盘主页
+  </div>
+
+  <hr>
+
+  <p style="text-align:center; color:var(--text2); font-size:0.85rem;">
+    OriStudio 个人创作者助手 · 完整建设方案<br>
+    基于7路Agent评审完善 | 作品管理+存证+侵权监测+IP登记+供应链协作+发布变现<br>
+    技术栈：Vue3+FastAPI+SQLite | 分发方式：PyInstaller/Docker/pip<br>
+    2026年6月10日 | 可开发周期：MVP 4-6周，完整版 20-26周
+  </p>
+</div>
+</body>
+</html>  <div class="success-box">
+    <strong>📐 专业SVG功能架构图已嵌入</strong><br>
+    OriStudio 六大功能模块全景视图 — 作品管理/存证确权/侵权监测/IP登记/供应链协作/发布变现
+  </div>
+
+  <div class="svg-container">
+  <svg viewBox="0 0 1200 1600" xmlns="http://www.w3.org/2000/svg" style="max-width:1200px;margin:0 auto;">
+  <defs>
+    <linearGradient id="f_bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="header1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="header2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="header3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="header4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="header5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="header6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1600" fill="url(#f_bgGrad)" rx="12"/>
+
+  <!-- Title area -->
+  <text x="600" y="45" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="2">OriStudio 功能架构总览</text>
+  <text x="600" y="68" text-anchor="middle" fill="#94a3b8" font-size="13">个体创作者全链路管理工具 · 六大模块 · 零服务器依赖</text>
+  <line x1="200" y1="85" x2="1000" y2="85" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ==================== MODULE 1: 作品管理 ==================== -->
+  <g transform="translate(30, 110)" filter="url(#shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header1)"/>
+    <rect width="555" height="10" y="30" fill="url(#header1)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">01 · 作品管理模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Work Management</text>
+
+    <!-- Sub-cards row 1 -->
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">批量导入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 拖拽上传</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文件夹批量</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 格式自动转换</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 去重检测</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">自动分类</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 按文件类型</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 按项目归类</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 按标签聚合</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· AI 自动打标</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 自定义规则</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">元数据管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· EXIF 提取</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-256 哈希</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 创建/修改时间</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义字段</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量编辑</text>
+    </g>
+
+    <!-- Sub-cards row 2 -->
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">版本管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版本快照</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 版本对比</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 版本回滚</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 标签标记</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文件差异</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">本地预览</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片预览</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 音频播放</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 视频播放</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 代码高亮</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 文档渲染</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="600">搜索检索</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· FTS5 全文搜索</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 类型过滤</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 标签筛选</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 日期范围</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 智能联想</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 2: 存证确权 ==================== -->
+  <g transform="translate(615, 110)" filter="url(#shadow)">
+    <rect width="555" height="390" rx="10" fill="#1a2332" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header2)"/>
+    <rect width="555" height="10" y="30" fill="url(#header2)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">02 · 存证确权模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Notary &amp; Rights</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">哈希计算</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· SHA-256 计算</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· SHA-512 可选</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 批量哈希</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 异步非阻塞</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 哈希校验</text>
+    </g>
+    <g transform="translate(192, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">多平台存证</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 版权家 (¥1-5)</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 蚂蚁链 (¥0.5)</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 至信链 (¥1-1.5)</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 效力级别标注</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 扫码自助付费</text>
+    </g>
+    <g transform="translate(372, 55)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">证书生成</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· PDF 证书</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 验证二维码</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 时间戳认证</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 自定义模板</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 批量导出</text>
+    </g>
+
+    <g transform="translate(12, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">C2PA 元数据嵌入</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 图片内容凭证</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 文档内容凭证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 签名校验</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 开源 c2patool</text>
+    </g>
+    <g transform="translate(192, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">存证记录管理</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· 已存证列表</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 待存证队列</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 过期提醒</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· 状态追踪</text>
+      <text x="12" y="136" fill="#94a3b8" font-size="10.5">· 审计日志</text>
+    </g>
+    <g transform="translate(372, 218)">
+      <rect width="165" height="150" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="82" y="24" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">验证入口</text>
+      <text x="82" y="44" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10.5">· OriStudio 验证页</text>
+      <text x="12" y="82" fill="#94a3b8" font-size="10.5">· 扫码验证</text>
+      <text x="12" y="100" fill="#94a3b8" font-size="10.5">· 平台 API 查询</text>
+      <text x="12" y="118" fill="#94a3b8" font-size="10.5">· "已验证"标识</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 3: 侵权监测 ==================== -->
+  <g transform="translate(30, 530)" filter="url(#shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header3)"/>
+    <rect width="555" height="10" y="30" fill="url(#header3)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">03 · 侵权监测模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Infringement Monitoring</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">以图搜图</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 百度识图 API（100次/天免费）</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google Vision（1000次/月免费）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度评分</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 结果标注/忽略</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="135" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">文本检测</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Copyscape 检测</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· Google 搜索对比</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 相似度报告</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 代码查重（GitHub API）</text>
+    </g>
+    <g transform="translate(12, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">定时扫描</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· Celery Beat 定时任务</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 每日/每周/自定义</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 邮箱通知</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 系统通知推送</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 用量限额预警</text>
+    </g>
+    <g transform="translate(283, 203)">
+      <rect width="260" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">维权闭环</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 投诉材料自动生成</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 证据包导出（ZIP）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 律师函模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 侵权时间线</text>
+      <text x="12" y="130" fill="#94a3b8" font-size="10.5">· 关闭动作记录</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 4: 知识产权登记 ==================== -->
+  <g transform="translate(615, 530)" filter="url(#shadow)">
+    <rect width="555" height="370" rx="10" fill="#1a2332" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header4)"/>
+    <rect width="555" height="10" y="30" fill="url(#header4)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">04 · 知识产权登记模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">IP Registration · 指导性</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(234,179,8,0.12)" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#f59e0b" font-size="10">⚠ 本模块仅提供指导，不代办申请，不评估成功率（法律规定）</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">版权指导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 登记材料清单</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 按作品类型分类</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 链接至国家平台</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 费用参考（¥0-300）</text>
+    </g>
+    <g transform="translate(283, 88)">
+      <rect width="260" height="128" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">商标查询引导</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 链接至 sbj.cnipa.gov.cn</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 类别推荐（非约束性）</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 文创常用类（16/25/28/35）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 相似商标预警</text>
+    </g>
+    <g transform="translate(12, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">进度追踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 手动录入记录</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 申请号/日期/状态</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 续展日历提醒</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 时间线展示</text>
+    </g>
+    <g transform="translate(283, 228)">
+      <rect width="260" height="120" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">多类规划</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 类别交叉参考</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 防御性注册建议</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 费用估算</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· (注：不评估成功率)</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 5: 供应链协作 ==================== -->
+  <g transform="translate(30, 930)" filter="url(#shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#ec4899" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header5)"/>
+    <rect width="555" height="10" y="30" fill="url(#header5)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">05 · 供应链协作模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Supply Chain · 轻量级</text>
+
+    <rect x="12" y="50" width="530" height="28" rx="6" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="277" y="68" text-anchor="middle" fill="#8b5cf6" font-size="10">ℹ 本模块为"创作者协作笔记本"，非 ERP，工厂端数据由工厂自行管理</text>
+
+    <g transform="translate(12, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">工厂联系人</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 名称/电话(加密)</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 地址/擅长领域</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 评分/备注</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 历史合作记录</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 联系人分组</text>
+    </g>
+    <g transform="translate(193, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">订单管理</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 关联作品ID</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 数量/单价/总价</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 定金/尾款</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 订单状态</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付日期</text>
+    </g>
+    <g transform="translate(374, 88)">
+      <rect width="170" height="190" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="22" text-anchor="middle" fill="#ec4899" font-size="12" font-weight="600">沟通时间线</text>
+      <text x="85" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="10" y="58" fill="#94a3b8" font-size="10.5">· 手动条目录入</text>
+      <text x="10" y="76" fill="#94a3b8" font-size="10.5">· 附件上传</text>
+      <text x="10" y="94" fill="#94a3b8" font-size="10.5">· 支付记录</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="10.5">· 提醒设置</text>
+      <text x="10" y="130" fill="#94a3b8" font-size="10.5">· 交付/付款提醒</text>
+    </g>
+  </g>
+
+  <!-- ==================== MODULE 6: 发布与变现 ==================== -->
+  <g transform="translate(615, 930)" filter="url(#shadow)">
+    <rect width="555" height="300" rx="10" fill="#1a2332" stroke="#06b6d4" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="555" height="40" rx="10" fill="url(#header6)"/>
+    <rect width="555" height="10" y="30" fill="url(#header6)"/>
+    <text x="20" y="27" fill="#fff" font-size="15" font-weight="700">06 · 发布与变现模块</text>
+    <text x="540" y="27" text-anchor="end" fill="rgba(255,255,255,0.6)" font-size="11">Publishing &amp; Monetization</text>
+
+    <g transform="translate(12, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">AI 产品描述</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· LLM 生成标题/描述</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 规格/定价生成</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 本地模型（Ollama）</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· 多语言支持</text>
+    </g>
+    <g transform="translate(283, 55)">
+      <rect width="260" height="125" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">CSV 导出</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 淘宝 CSV 模板</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 小红书 CSV 模板</text>
+      <text x="12" y="94" fill="#94a3b8" font-size="10.5">· 抖音 CSV 模板</text>
+      <text x="12" y="112" fill="#94a3b8" font-size="10.5">· Shopify CSV 模板</text>
+    </g>
+    <g transform="translate(12, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">OriStudio 已验证标识</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· QR 码嵌入产品页</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 指向存证验证地址</text>
+    </g>
+    <g transform="translate(283, 193)">
+      <rect width="260" height="85" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="130" y="22" text-anchor="middle" fill="#06b6d4" font-size="12" font-weight="600">收入跟踪</text>
+      <text x="130" y="40" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="10.5">· 多平台手动录入</text>
+      <text x="12" y="76" fill="#94a3b8" font-size="10.5">· 报表与趋势分析</text>
+    </g>
+  </g>
+
+  <!-- ==================== SYSTEM MANAGEMENT (Cross-cut) ==================== -->
+  <g transform="translate(30, 1260)" filter="url(#shadow)">
+    <rect width="1140" height="100" rx="10" fill="#1a2332" stroke="#64748b" stroke-width="1.5" stroke-opacity="0.3"/>
+    <rect width="1140" height="36" rx="10" fill="#334155"/>
+    <rect width="1140" height="10" y="26" fill="#334155"/>
+    <text x="570" y="25" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700">系统管理 · 横切关注点</text>
+
+    <g transform="translate(20, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">本地备份</text>
+    </g>
+    <g transform="translate(168, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">主题切换</text>
+    </g>
+    <g transform="translate(316, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">插件系统</text>
+    </g>
+    <g transform="translate(464, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">审计日志</text>
+    </g>
+    <g transform="translate(612, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">快捷键系统</text>
+    </g>
+    <g transform="translate(760, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">设置中心</text>
+    </g>
+    <g transform="translate(908, 48)">
+      <rect width="135" height="40" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="67" y="27" text-anchor="middle" fill="#94a3b8" font-size="11">用量监控</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1410" text-anchor="middle" fill="#475569" font-size="10">OriStudio 个人创作者助手系统 · 功能架构图 · 六大模块 + 系统管理 · 版本 2.0</text>
+  <text x="600" y="1428" text-anchor="middle" fill="#334155" font-size="9">Designed with ❤️ for individual creators · 2026</text>
+
+  <!-- Flow arrows between modules -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" opacity="0.4">
+    <!-- From module 1 to 2 -->
+    <path d="M 307,500 L 307,510 L 892,510 L 892,520"/>
+    <polygon points="888,520 892,528 896,520" fill="#475569"/>
+    <!-- From module 2 to 3 -->
+    <path d="M 892,500 L 892,530" opacity="0"/>
+    <!-- From module 3 to 4 -->
+    <path d="M 307,900 L 307,910 L 892,910 L 892,920"/>
+    <polygon points="888,920 892,928 896,920" fill="#475569"/>
+    <!-- From module 1 direct to 5 -->
+    <path d="M 307,500 L 307,920" stroke-dasharray="4,4"/>
+    <!-- From module 2 direct to 6 -->
+    <path d="M 892,500 L 892,920" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Flow labels -->
+  <g fill="#64748b" font-size="9">
+    <text x="600" y="508" text-anchor="middle">作品 → 存证</text>
+    <text x="600" y="918" text-anchor="middle">存证 → 侵权监测</text>
+    <text x="140" y="910" text-anchor="middle" transform="rotate(-90,140,910)">作品直通供应链</text>
+    <text x="1060" y="910" text-anchor="middle" transform="rotate(90,1060,910)">存证直通发布</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(360, 1445)">
+    <rect x="0" y="0" width="16" height="16" rx="3" fill="#8b5cf6"/>
+    <text x="20" y="12" fill="#94a3b8" font-size="10">作品管理</text>
+    <rect x="100" y="0" width="16" height="16" rx="3" fill="#10b981"/>
+    <text x="120" y="12" fill="#94a3b8" font-size="10">存证确权</text>
+    <rect x="200" y="0" width="16" height="16" rx="3" fill="#f97316"/>
+    <text x="220" y="12" fill="#94a3b8" font-size="10">侵权监测</text>
+    <rect x="310" y="0" width="16" height="16" rx="3" fill="#3b82f6"/>
+    <text x="330" y="12" fill="#94a3b8" font-size="10">IP 登记</text>
+    <rect x="400" y="0" width="16" height="16" rx="3" fill="#ec4899"/>
+    <text x="420" y="12" fill="#94a3b8" font-size="10">供应链</text>
+    <rect x="500" y="0" width="16" height="16" rx="3" fill="#06b6d4"/>
+    <text x="520" y="12" fill="#94a3b8" font-size="10">发布变现</text>
+  </g>
+</svg>
+  </div>
+
+  <div class="success-box">
+    <strong>📐 专业SVG技术架构图已嵌入</strong><br>
+    分层架构（前端→后端→数据→外部API）+ 分发策略 + B/S→PWA→服务器部署三阶段演进
+  </div>
+
+  <h3>架构模式：B/S → PWA → 服务器部署</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>阶段</th><th>模式</th><th>说明</th></tr>
+    <tr><td>Phase 0-1（MVP）</td><td><strong>B/S本地模式</strong></td><td>Python后端+Vue前端，用户在本地启动后端后浏览器访问 localhost:8765</td></tr>
+    <tr><td>Phase 2（稳定）</td><td><strong>PWA安装</strong></td><td>添加Service Worker支持，可"安装到桌面"获得类似原生应用体验，支持离线基础功能</td></tr>
+    <tr><td>Phase 3（可选）</td><td><strong>服务器部署</strong></td><td>Docker打包，部署到云服务器，支持多设备访问和团队协作</td></tr>
+  </table>
+  </div>
+
+  <div class="svg-container">
+  <svg viewBox="0 0 1200 1550" xmlns="http://www.w3.org/2000/svg" style="max-width:1200px;margin:0 auto;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+    <linearGradient id="layer1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="layer2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="layer3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="layer4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto">
+      <path d="M0,0 L4,8 L8,0" fill="#64748b"/>
+    </marker>
+    <marker id="arrowUp" markerWidth="8" markerHeight="8" refX="4" refY="0" orient="auto">
+      <path d="M0,8 L4,0 L8,8" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1550" fill="url(#f_bgGrad)" rx="12"/>
+
+  <!-- Title area -->
+  <text x="600" y="45" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="2">OriStudio 系统技术架构图</text>
+  <text x="600" y="68" text-anchor="middle" fill="#94a3b8" font-size="13">分层架构 · 本地优先 · API 桥梁 · 渐进式分布</text>
+  <line x1="100" y1="85" x2="1100" y2="85" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 1: 用户界面层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 110)" filter="url(#shadow)">
+    <!-- Layer background -->
+    <rect width="1120" height="240" rx="12" fill="url(#layer1)" stroke="#8b5cf6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#8b5cf6" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#8b5cf6" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#8b5cf6" font-size="14" font-weight="700">用户界面层 · UI Layer</text>
+
+    <!-- Browser -->
+    <rect x="30" y="50" width="300" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="30" y="50" width="300" height="28" rx="8" fill="#1e293b"/>
+    <rect x="30" y="70" width="300" height="8" fill="#1e293b"/>
+    <circle cx="45" cy="64" r="5" fill="#ef4444"/>
+    <circle cx="60" cy="64" r="5" fill="#f59e0b"/>
+    <circle cx="75" cy="64" r="5" fill="#10b981"/>
+    <text x="160" y="68" text-anchor="middle" fill="#64748b" font-size="9">localhost:8765 — 浏览器</text>
+
+    <text x="50" y="98" fill="#8b5cf6" font-size="10" font-weight="600">Vue 3 + Vite + Tailwind CSS</text>
+    <text x="50" y="118" fill="#94a3b8" font-size="9.5">· Pinia 状态管理</text>
+    <text x="50" y="136" fill="#94a3b8" font-size="9.5">· Vue Router 路由</text>
+    <text x="50" y="154" fill="#94a3b8" font-size="9.5">· Naive UI 组件库</text>
+    <text x="50" y="172" fill="#94a3b8" font-size="9.5">· Axios HTTP / WebSocket</text>
+    <text x="50" y="190" fill="#94a3b8" font-size="9.5">· 响应式布局 (桌面/平板)</text>
+    <text x="50" y="208" fill="#64748b" font-size="8.5">☆ 升级路径: Tauri 桌面原生</text>
+
+    <!-- Dashboard -->
+    <rect x="365" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="477" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">仪表盘</text>
+    <text x="477" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="380" y="108" fill="#94a3b8" font-size="9.5">· 工作台概览</text>
+    <text x="380" y="124" fill="#94a3b8" font-size="9.5">· 最近作品</text>
+    <text x="380" y="140" fill="#94a3b8" font-size="9.5">· 待办提醒</text>
+    <text x="380" y="156" fill="#94a3b8" font-size="9.5">· 存证统计</text>
+    <text x="380" y="172" fill="#94a3b8" font-size="9.5">· 侵权预警</text>
+    <text x="380" y="188" fill="#94a3b8" font-size="9.5">· 收入概览</text>
+
+    <!-- Module Entry Points -->
+    <rect x="625" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="737" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">模块入口</text>
+    <text x="737" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="640" y="108" fill="#94a3b8" font-size="9.5">· 作品管理 → 作品库</text>
+    <text x="640" y="124" fill="#94a3b8" font-size="9.5">· 存证中心 → 确权</text>
+    <text x="640" y="140" fill="#94a3b8" font-size="9.5">· 侵权监测 → 扫描</text>
+    <text x="640" y="156" fill="#94a3b8" font-size="9.5">· IP 登记 → 指导</text>
+    <text x="640" y="172" fill="#94a3b8" font-size="9.5">· 供应链 → 协作</text>
+    <text x="640" y="188" fill="#94a3b8" font-size="9.5">· 发布 → 变现</text>
+
+    <!-- Common UI -->
+    <rect x="885" y="50" width="225" height="170" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="997" y="72" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="600">通用 UI 组件</text>
+    <text x="997" y="90" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━</text>
+    <text x="900" y="108" fill="#94a3b8" font-size="9.5">· 搜索栏 (FTS5)</text>
+    <text x="900" y="124" fill="#94a3b8" font-size="9.5">· 通知中心</text>
+    <text x="900" y="140" fill="#94a3b8" font-size="9.5">· 设置面板</text>
+    <text x="900" y="156" fill="#94a3b8" font-size="9.5">· 主题切换 (暗色)</text>
+    <text x="900" y="172" fill="#94a3b8" font-size="9.5">· 快捷键帮助</text>
+    <text x="900" y="188" fill="#94a3b8" font-size="9.5">· 数据导入/导出</text>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="350" x2="600" y2="380" stroke="#64748b" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="610" y="370" fill="#64748b" font-size="9">HTTP/WebSocket (127.0.0.1)</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 2: 后端服务层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 390)" filter="url(#shadow)">
+    <rect width="1120" height="310" rx="12" fill="url(#layer2)" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#3b82f6" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#3b82f6" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#3b82f6" font-size="14" font-weight="700">后端服务层 · Backend Layer</text>
+
+    <!-- FastAPI -->
+    <rect x="30" y="50" width="350" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="30" y="50" width="350" height="30" rx="8" fill="#1e293b"/>
+    <rect x="30" y="72" width="350" height="8" fill="#1e293b"/>
+    <text x="205" y="70" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="600">FastAPI + Uvicorn (ASGI)</text>
+
+    <text x="45" y="96" fill="#3b82f6" font-size="10" font-weight="600">API 路由</text>
+    <text x="45" y="114" fill="#94a3b8" font-size="9">&gt; GET  /api/works       — 作品列表</text>
+    <text x="45" y="130" fill="#94a3b8" font-size="9">&gt; POST /api/works       — 导入作品</text>
+    <text x="45" y="146" fill="#94a3b8" font-size="9">&gt; POST /api/notarize    — 存证哈希</text>
+    <text x="45" y="162" fill="#94a3b8" font-size="9">&gt; GET  /api/monitor     — 监测结果</text>
+    <text x="45" y="178" fill="#94a3b8" font-size="9">&gt; POST /api/export/csv  — CSV 导出</text>
+    <text x="45" y="194" fill="#94a3b8" font-size="9">&gt; WS   /ws/notify       — 实时通知</text>
+
+    <text x="45" y="220" fill="#3b82f6" font-size="10" font-weight="600">中间件</text>
+    <text x="45" y="238" fill="#94a3b8" font-size="9">· CORS · GZip · SQLAlchemy Session</text>
+    <text x="45" y="254" fill="#94a3b8" font-size="9">· 请求日志 · 错误处理 · 速率限制</text>
+    <text x="45" y="275" fill="#64748b" font-size="8.5">☆ 自动 OpenAPI 文档: /docs</text>
+
+    <!-- Celery -->
+    <rect x="410" y="50" width="300" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="410" y="50" width="300" height="30" rx="8" fill="#1e293b"/>
+    <rect x="410" y="72" width="300" height="8" fill="#1e293b"/>
+    <text x="560" y="70" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="600">Celery 异步任务队列</text>
+
+    <text x="425" y="96" fill="#f59e0b" font-size="10" font-weight="600">后台任务</text>
+    <text x="425" y="114" fill="#94a3b8" font-size="9">· SHA-256 批量哈希计算</text>
+    <text x="425" y="130" fill="#94a3b8" font-size="9">· PDF 证书生成</text>
+    <text x="425" y="146" fill="#94a3b8" font-size="9">· 侵权定时扫描</text>
+    <text x="425" y="162" fill="#94a3b8" font-size="9">· 邮件/系统通知发送</text>
+    <text x="425" y="178" fill="#94a3b8" font-size="9">· 数据备份任务</text>
+    <text x="425" y="194" fill="#94a3b8" font-size="9">· CSV 批量生成</text>
+
+    <text x="425" y="220" fill="#f59e0b" font-size="10" font-weight="600">消息代理</text>
+    <text x="425" y="238" fill="#94a3b8" font-size="9">· Redis (本地/Upstash Free)</text>
+    <text x="425" y="254" fill="#94a3b8" font-size="9">· Celery Beat 定时调度</text>
+    <text x="425" y="275" fill="#64748b" font-size="8.5">☆ Free tier: Upstash Redis 30MB</text>
+
+    <!-- Service layer -->
+    <rect x="740" y="50" width="370" height="240" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <rect x="740" y="50" width="370" height="30" rx="8" fill="#1e293b"/>
+    <rect x="740" y="72" width="370" height="8" fill="#1e293b"/>
+    <text x="925" y="70" text-anchor="middle" fill="#10b981" font-size="11" font-weight="600">业务逻辑层 · Services</text>
+
+    <g transform="translate(755, 88)">
+      <rect width="170" height="95" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">作品管理 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 文件导入/分类</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 元数据提取</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· 版本对比</text>
+      <text x="10" y="84" fill="#94a3b8" font-size="8.5">· FTS5 搜索</text>
+    </g>
+    <g transform="translate(935, 88)">
+      <rect width="170" height="95" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">存证 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 哈希计算</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 平台桥接</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· PDF 生成</text>
+      <text x="10" y="84" fill="#94a3b8" font-size="8.5">· C2PA 嵌入</text>
+    </g>
+    <g transform="translate(755, 193)">
+      <rect width="170" height="85" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">监测 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· 图像搜索调度</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 文本比对</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· 证据打包</text>
+    </g>
+    <g transform="translate(935, 193)">
+      <rect width="170" height="85" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9.5">其他 Service</text>
+      <text x="10" y="36" fill="#94a3b8" font-size="8.5">· IP 登记辅助</text>
+      <text x="10" y="52" fill="#94a3b8" font-size="8.5">· 供应链管理</text>
+      <text x="10" y="68" fill="#94a3b8" font-size="8.5">· CSV 生成/导出</text>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="700" x2="600" y2="730" stroke="#64748b" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="610" y="720" fill="#64748b" font-size="9">ORM (SQLAlchemy) / 文件系统 IO</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 3: 数据存储层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 740)" filter="url(#shadow)">
+    <rect width="1120" height="230" rx="12" fill="url(#layer3)" stroke="#10b981" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#10b981" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#10b981" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#10b981" font-size="14" font-weight="700">数据存储层 · Data Layer</text>
+
+    <!-- SQLite -->
+    <rect x="30" y="50" width="520" height="160" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="290" y="72" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">SQLite 本地数据库（SQLAlchemy ORM）</text>
+    <text x="290" y="88" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━━━━━━━━━━━━━</text>
+
+    <g transform="translate(45, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">核心表 (22表)</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">works · notary · monitor</text>
+    </g>
+    <g transform="translate(210, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">全文搜索</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">SQLite FTS5 索引</text>
+    </g>
+    <g transform="translate(375, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">数据安全</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">AES加密字段</text>
+    </g>
+    <text x="45" y="175" fill="#64748b" font-size="8.5">☆ 零配置 · 无需服务器 · 文件可迁移 · 支持 VACUUM 回收空间</text>
+    <text x="45" y="190" fill="#64748b" font-size="8.5">☆ 升级路径: PostgreSQL (迁移至服务器时)</text>
+
+    <!-- File System -->
+    <rect x="580" y="50" width="530" height="160" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+    <text x="845" y="72" text-anchor="middle" fill="#10b981" font-size="12" font-weight="600">本地文件系统 · workspace/</text>
+    <text x="845" y="88" text-anchor="middle" fill="#6b7280" font-size="9">━━━━━━━━━━━━━━━━━━━━━━━━</text>
+
+    <g transform="translate(595, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">作品文件</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">图片/音频/视频/文档</text>
+    </g>
+    <g transform="translate(760, 98)">
+      <rect width="155" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="77" y="18" text-anchor="middle" fill="#10b981" font-size="9">输出文件</text>
+      <text x="77" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">证书PDF/证据包ZIP</text>
+    </g>
+    <g transform="translate(925, 98)">
+      <rect width="170" height="48" rx="5" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="85" y="18" text-anchor="middle" fill="#10b981" font-size="9">版本快照</text>
+      <text x="85" y="38" text-anchor="middle" fill="#94a3b8" font-size="8">文件差分/历史版本</text>
+    </g>
+    <text x="595" y="175" fill="#64748b" font-size="8.5">☆ 直接操作文件系统 · 降低数据迁移成本 · 可直接用 Finder 管理原文件</text>
+    <text x="595" y="190" fill="#64748b" font-size="8.5">☆ 备份策略: 直接打包 workspace/ + sqlite 文件即可</text>
+  </g>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="970" x2="600" y2="1000" stroke="#64748b" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="610" y="990" fill="#64748b" font-size="9">httpx 异步 HTTP 请求</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER 4: 外部 API 网关层 -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 1010)" filter="url(#shadow)">
+    <rect width="1120" height="220" rx="12" fill="url(#layer4)" stroke="#f97316" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="36" rx="12" fill="#f97316" fill-opacity="0.15"/>
+    <rect width="1120" height="10" y="26" fill="#f97316" fill-opacity="0.15"/>
+    <text x="560" y="25" text-anchor="middle" fill="#f97316" font-size="14" font-weight="700">外部 API 网关层 · External API Gateway</text>
+
+    <!-- Notary -->
+    <g transform="translate(30, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">存证平台</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 版权家 (司法链) ¥1-5/次</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· 蚂蚁链 (联盟链) ¥0.5/次</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· 至信链 (腾讯) ¥1-1.5/次</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· 对接方式: 扫码自付</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· 效力级别标注</text>
+    </g>
+
+    <!-- Image Search -->
+    <g transform="translate(300, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">图像/文本搜索</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 百度识图 (100次/天 免费)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· Google Vision (1000次/月)</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· Copyscape 文本检测</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· GitHub Code Search API</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· (5000次/小时 免费)</text>
+    </g>
+
+    <!-- AI / LLM -->
+    <g transform="translate(570, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">AI 大模型</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· Ollama (本地开源模型)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· AI 自动打标</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· 产品描述生成</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· 智能搜索联想</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· (离线可用)</text>
+    </g>
+
+    <!-- Other -->
+    <g transform="translate(840, 50)">
+      <rect width="255" height="145" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="127" y="22" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="600">其他 API</text>
+      <text x="127" y="40" text-anchor="middle" fill="#6b7280" font-size="8">━━━━━━━━━━</text>
+      <text x="15" y="58" fill="#94a3b8" font-size="9">· 商标局 (sbj.cnipa.gov.cn)</text>
+      <text x="15" y="76" fill="#94a3b8" font-size="9">· 版权中心 (ccopyright.com.cn)</text>
+      <text x="15" y="94" fill="#94a3b8" font-size="9">· FFmpeg 媒体处理</text>
+      <text x="15" y="112" fill="#94a3b8" font-size="9">· ImageMagick 图像处理</text>
+      <text x="15" y="130" fill="#94a3b8" font-size="9">· c2patool (C2PA 工具)</text>
+    </g>
+  </g>
+
+  <!-- ================================================================ -->
+  <!-- DISTRIBUTION STRATEGY (bottom section) -->
+  <!-- ================================================================ -->
+  <g transform="translate(40, 1260)" filter="url(#shadow)">
+    <rect width="1120" height="80" rx="10" fill="#1a2332" stroke="#8b5cf6" stroke-width="1" stroke-opacity="0.3"/>
+    <rect width="1120" height="32" rx="10" fill="#8b5cf6" fill-opacity="0.12"/>
+    <rect width="1120" height="8" y="24" fill="#8b5cf6" fill-opacity="0.12"/>
+    <text x="560" y="22" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="700">分发策略 · 三轨并行</text>
+
+    <g transform="translate(30, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">📦 PyInstaller — 单 .app/.exe 分发给终端用户 (MVP)</text>
+    </g>
+    <g transform="translate(390, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">🐳 Docker — docker-compose up 技术用户</text>
+    </g>
+    <g transform="translate(750, 42)">
+      <rect width="340" height="30" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#94a3b8" font-size="11">📦 pip — pip install oristudio &amp;&amp; oristudio run 开发者</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1390" text-anchor="middle" fill="#475569" font-size="10">OriStudio 个人创作者助手系统 · 技术架构图 · 本地优先 · 零服务器 · 全链路闭环 · 版本 2.0</text>
+  <text x="600" y="1408" text-anchor="middle" fill="#334155" font-size="9">技术栈: Vue3 / FastAPI / SQLite / Celery / Redis · 2026</text>
+
+  <!-- Side layer labels -->
+  <g fill="#334155" font-size="8">
+    <text x="15" y="230" transform="rotate(-90,15,230)">用户界面层 · UI Layer</text>
+    <text x="15" y="545" transform="rotate(-90,15,545)">后端服务层 · Backend Layer</text>
+    <text x="15" y="855" transform="rotate(-90,15,855)">数据存储层 · Data Layer</text>
+    <text x="15" y="1120" transform="rotate(-90,15,1120)">外部 API 网关层 · External API Gateway</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(300, 1430)">
+    <rect x="0" y="0" width="14" height="14" rx="3" fill="#8b5cf6"/>
+    <text x="18" y="11" fill="#94a3b8" font-size="9">UI 层</text>
+    <rect x="80" y="0" width="14" height="14" rx="3" fill="#3b82f6"/>
+    <text x="98" y="11" fill="#94a3b8" font-size="9">后端层</text>
+    <rect x="170" y="0" width="14" height="14" rx="3" fill="#10b981"/>
+    <text x="188" y="11" fill="#94a3b8" font-size="9">数据层</text>
+    <rect x="260" y="0" width="14" height="14" rx="3" fill="#f97316"/>
+    <text x="278" y="11" fill="#94a3b8" font-size="9">API 网关</text>
+    <rect x="365" y="0" width="14" height="14" rx="3" fill="#64748b"/>
+    <text x="383" y="11" fill="#94a3b8" font-size="9">分发策略</text>
+  </g>
+</svg>
+  </div>
+
+

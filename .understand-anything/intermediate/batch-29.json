@@ -1,0 +1,183 @@
+{
+  "nodes": [
+    {
+      "id": "file:docs/modules-v3/01-creative-assets.md",
+      "type": "document",
+      "name": "01-creative-assets.md",
+      "filePath": "docs/modules-v3/01-creative-assets.md",
+      "summary": "创意资产中心（模块1）详细功能设计，涵盖作品导入（3种模式）、自动元数据提取、批量文件夹导入、版本管理、标签管理和全文搜索。v1深度支持插画师图片格式。",
+      "tags": ["模块设计", "作品管理", "元数据", "创意资产"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/02-rights-protection.md",
+      "type": "document",
+      "name": "02-rights-protection.md",
+      "filePath": "docs/modules-v3/02-rights-protection.md",
+      "summary": "权利保护中心（模块2）详细功能设计，涵盖SHA-256哈希存证、多平台区块链锚定（版权家/蚂蚁链/至信链）、PDF证书生成、侵权监测（以图搜图+文本检测）和证据包导出。",
+      "tags": ["模块设计", "存证", "侵权监测", "权利保护"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/03-ip-registration.md",
+      "type": "document",
+      "name": "03-ip-registration.md",
+      "filePath": "docs/modules-v3/03-ip-registration.md",
+      "summary": "IP登记工作站（模块3）详细功能设计，涵盖版权/商标/外观设计登记指引、尼斯分类推荐+置信度、CNIPA律师审核步骤（不可绕过）、7项免责声明全流程嵌入和申请材料导出。",
+      "tags": ["模块设计", "ip登记", "合规", "律师审核"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/04-monetization-engine.md",
+      "type": "document",
+      "name": "04-monetization-engine.md",
+      "filePath": "docs/modules-v3/04-monetization-engine.md",
+      "summary": "商业转化引擎（模块4）详细功能设计，四层架构（Design→Template→Listing→Publication），覆盖POD渠道管理、产品设计器、Canvas预览、规格校验、定价计算、众筹管理和IP授权。",
+      "tags": ["模块设计", "商业转化", "pod", "四层架构"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/05-content-distribution.md",
+      "type": "document",
+      "name": "05-content-distribution.md",
+      "filePath": "docs/modules-v3/05-content-distribution.md",
+      "summary": "内容分发中心（模块5）详细功能设计，涵盖多平台发布推广（小红书/站酷/B站/微博/Instagram等）、AI文案引擎（6种平台风格）、图片智能处理、排期发布、原创认证徽章和Feed导出。",
+      "tags": ["模块设计", "内容分发", "ai文案", "多平台"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/06-business-management.md",
+      "type": "document",
+      "name": "06-business-management.md",
+      "filePath": "docs/modules-v3/06-business-management.md",
+      "summary": "经营管理中心（模块6）详细功能设计，涵盖收入追踪（手动登记+CSV导入+自动汇总）、合作伙伴管理、订单管理、通知中心、数据分析看板和提醒管理。采用非财务软件化温暖设计风格。",
+      "tags": ["模块设计", "经营管理", "收入追踪", "空状态"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:docs/modules-v3/07-system-infra.md",
+      "type": "document",
+      "name": "07-system-infra.md",
+      "filePath": "docs/modules-v3/07-system-infra.md",
+      "summary": "系统基础设施（模块7）详细功能设计，涵盖统一字典数据中心（60+分组）、多平台联合认证、数据备份恢复、系统运行监控、审计日志、插件扩展框架、Onboarding向导和免责声明管理。",
+      "tags": ["模块设计", "系统基础设施", "字典中心", "认证", "备份"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/modules-v3/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "docs/modules-v3/README.md",
+      "summary": "OriStudio v3模块功能设计总索引，7个模块的概览、验证状态、API端点统计和关键设计决策汇总。",
+      "tags": ["索引", "模块总览", "v3设计"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/01-creative-assets.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/02-rights-protection.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/03-ip-registration.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/04-monetization-engine.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/05-content-distribution.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/06-business-management.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/README.md",
+      "target": "file:docs/modules-v3/07-system-infra.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/01-creative-assets.md",
+      "target": "file:docs/modules-v3/02-rights-protection.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/02-rights-protection.md",
+      "target": "file:docs/modules-v3/04-monetization-engine.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/03-ip-registration.md",
+      "target": "file:docs/modules-v3/04-monetization-engine.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/04-monetization-engine.md",
+      "target": "file:docs/modules-v3/05-content-distribution.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/05-content-distribution.md",
+      "target": "file:docs/modules-v3/06-business-management.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/06-business-management.md",
+      "target": "file:docs/modules-v3/07-system-infra.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/07-system-infra.md",
+      "target": "file:docs/modules-v3/01-creative-assets.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/modules-v3/01-creative-assets.md",
+      "target": "file:docs/modules-v3/03-ip-registration.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"ls /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/frontend/src/components/charts/ 2>/dev/null\",\"description\":\"List charts directory\"}",
+  "error": "Exit code 1",
+  "timestamp": "2026-06-23T12:04:15.631Z",
+  "retry_count": 1
+}

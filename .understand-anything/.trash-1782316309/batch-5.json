@@ -1,0 +1,125 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/api/client.ts",
+      "type": "file",
+      "name": "client.ts",
+      "filePath": "frontend/src/api/client.ts",
+      "summary": "Axios HTTP client configuration with JWT authentication interceptor, error handling with toast notifications, and response unwrapping.",
+      "tags": ["api-client", "http-client", "authentication"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/api/client.ts:_api.get",
+      "type": "function",
+      "name": "_api.get",
+      "filePath": "frontend/src/api/client.ts",
+      "lineRange": [15, 25],
+      "summary": "Axios GET wrapper with JWT token injection from localStorage and response error toast integration.",
+      "tags": ["http-client", "authentication"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/api/client.ts:_api.post",
+      "type": "function",
+      "name": "_api.post",
+      "filePath": "frontend/src/api/client.ts",
+      "lineRange": [28, 38],
+      "summary": "Axios POST wrapper with JSON content-type header and token injection.",
+      "tags": ["http-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/business.ts",
+      "type": "file",
+      "name": "business.ts",
+      "filePath": "frontend/src/api/business.ts",
+      "summary": "Business API wrapper providing TypeScript methods for business operations against the backend API.",
+      "tags": ["api-client", "business"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/dashboard.ts",
+      "type": "file",
+      "name": "dashboard.ts",
+      "filePath": "frontend/src/api/dashboard.ts",
+      "summary": "Dashboard API client wrapping GET requests for dashboard statistics endpoint.",
+      "tags": ["api-client", "dashboard"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/ipr.ts",
+      "type": "file",
+      "name": "ipr.ts",
+      "filePath": "frontend/src/api/ipr.ts",
+      "summary": "IPR API client with methods for trademark, copyright, and IP registration endpoints.",
+      "tags": ["api-client", "ipr"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/monitor.ts",
+      "type": "file",
+      "name": "monitor.ts",
+      "filePath": "frontend/src/api/monitor.ts",
+      "summary": "Monitor API client with methods for CRUD operations on monitoring tasks, results, and evidence packages.",
+      "tags": ["api-client", "monitoring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/api/notary.ts",
+      "type": "file",
+      "name": "notary.ts",
+      "filePath": "frontend/src/api/notary.ts",
+      "summary": "Notary API client wrapping blockchain notary registration and certificate retrieval endpoints.",
+      "tags": ["api-client", "notary"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/publish.ts",
+      "type": "file",
+      "name": "publish.ts",
+      "filePath": "frontend/src/api/publish.ts",
+      "summary": "Publish API client for product listings, monetization channels, campaign management, and revenue tracking.",
+      "tags": ["api-client", "publishing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/api/supply.ts",
+      "type": "file",
+      "name": "supply.ts",
+      "filePath": "frontend/src/api/supply.ts",
+      "summary": "Comprehensive supply chain API client with ~40 endpoint methods covering products, listings, channels, campaigns, licenses, orders, revenue, POD publishing, and mockup generation.",
+      "tags": ["api-client", "supply-chain"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/api/system.ts",
+      "type": "file",
+      "name": "system.ts",
+      "filePath": "frontend/src/api/system.ts",
+      "summary": "Most comprehensive frontend API client covering system settings, backups, notifications, dictionary data, plugins, email/WeChat integration, TOTP 2FA, sessions, watermark presets, work variants, subscriptions, commissions, and C2PA.",
+      "tags": ["api-client", "system-admin"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/api/works.ts",
+      "type": "file",
+      "name": "works.ts",
+      "filePath": "frontend/src/api/works.ts",
+      "summary": "Works API client with CRUD operations, variant management, tag assignment, and file upload methods for creative work management.",
+      "tags": ["api-client", "works"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {"source": "file:frontend/src/api/business.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/dashboard.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/ipr.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/monitor.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/notary.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/publish.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/supply.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/system.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7},
+    {"source": "file:frontend/src/api/works.ts", "target": "file:frontend/src/api/client.ts", "type": "imports", "direction": "forward", "weight": 0.7}
+  ]
+}

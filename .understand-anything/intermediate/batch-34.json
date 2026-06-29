@@ -1,0 +1,578 @@
+{
+  "nodes": [
+    {
+      "id": "config:.claude/skills/mle-workflow/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/mle-workflow/agents/openai.yaml",
+      "summary": "mle-workflow 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:mle-workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/mle-workflow/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/mle-workflow/SKILL.md",
+      "summary": "生产级机器学习工程工作流：数据契约、可复现训练、模型评估、部署和回滚。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "MLOps",
+        "生产工作流"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.claude/skills/nextjs-turbopack/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/nextjs-turbopack/agents/openai.yaml",
+      "summary": "nextjs-turbopack 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:nextjs-turbopack"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/nextjs-turbopack/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/nextjs-turbopack/SKILL.md",
+      "summary": "Next.js 16+ 和 Turbopack：增量打包、文件系统缓存、开发速度和 webpack 对比。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "Turbopack",
+        "构建系统"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.claude/skills/omc-reference/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/omc-reference/agents/openai.yaml",
+      "summary": "omc-reference 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:omc-reference"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/omc-reference/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/omc-reference/SKILL.md",
+      "summary": "OMC 智能体目录、可用工具、团队管线路由、提交协议和技能注册表。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "智能体编排",
+        "参考"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/skills/product-capability/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/product-capability/agents/openai.yaml",
+      "summary": "product-capability 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:product-capability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/product-capability/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/product-capability/SKILL.md",
+      "summary": "将 PRD 意图转化为可实现的实现能力计划，暴露约束和接口。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "PRD",
+        "规划"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/skills/search-first/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/search-first/agents/openai.yaml",
+      "summary": "search-first 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:search-first"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/search-first/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/search-first/SKILL.md",
+      "summary": "编码前搜索现有工具和库的研究工作流，调用研究者智能体避免重复造轮子。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "代码复用",
+        "工作流"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/skills/security-review/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/security-review/agents/openai.yaml",
+      "summary": "security-review 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:security-review"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/security-review/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/security-review/SKILL.md",
+      "summary": "处理认证、用户输入、密钥和支付功能时提供全面安全检查清单和模式。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "OWASP",
+        "最佳实践"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.claude/skills/strategic-compact/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/strategic-compact/agents/openai.yaml",
+      "summary": "strategic-compact 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:strategic-compact"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/strategic-compact/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/strategic-compact/SKILL.md",
+      "summary": "在逻辑节点触发手动上下文压缩，通过任务阶段保存上下文而非随意自动压缩。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "压缩",
+        "优化"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.claude/skills/tdd-workflow/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/tdd-workflow/agents/openai.yaml",
+      "summary": "tdd-workflow 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:tdd-workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/tdd-workflow/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/tdd-workflow/SKILL.md",
+      "summary": "强制测试驱动开发，覆盖率80%+，涵盖单元测试、集成测试和E2E测试。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "测试驱动",
+        "代码质量"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.claude/skills/verification-loop/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/verification-loop/agents/openai.yaml",
+      "summary": "verification-loop 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:verification-loop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/verification-loop/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/verification-loop/SKILL.md",
+      "summary": "Claude Code 会话的综合验证系统，确保变更正确生效。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "质量保证",
+        "循环"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/skills/video-editing/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/video-editing/agents/openai.yaml",
+      "summary": "video-editing 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:video-editing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/video-editing/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/video-editing/SKILL.md",
+      "summary": "AI辅助视频编辑工作流：从原始素材到 FFmpeg、Remotion、ElevenLabs、fal.ai 剪辑和精修。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "AI媒体",
+        "剪辑"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.claude/skills/x-api/agents/openai.yaml",
+      "type": "config",
+      "name": "openai.yaml",
+      "filePath": ".claude/skills/x-api/agents/openai.yaml",
+      "summary": "x-api 技能的 Claude Code 插件配置，定义名称、描述和触发关键词。",
+      "tags": [
+        "插件配置",
+        "agent",
+        "skill:x-api"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/skills/x-api/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/x-api/SKILL.md",
+      "summary": "X/Twitter API 集成：发帖、时间线、搜索和分析，涵盖 OAuth 认证、速率限制。",
+      "tags": [
+        "技能文档",
+        "工作流",
+        "社交媒体",
+        "集成"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/skills/omc-reference/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": ".claude/skills/omc-reference/SKILL.md",
+      "summary": "OMC（oh-my-claudecode）智能体目录、工具、团队管线、提交协议和技能注册表的综合参考文档。",
+      "tags": [
+        "技能文档",
+        "OMC",
+        "智能体编排"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "OriStudio 环境变量配置示例，包含应用、数据库、Redis、服务器和外部 API 的默认值。",
+      "tags": [
+        "环境变量",
+        "配置",
+        "运行环境"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.gitignore",
+      "type": "config",
+      "name": ".gitignore",
+      "filePath": ".gitignore",
+      "summary": "Git 忽略规则，覆盖 Python/Node/IDE/环境/数据/日志/临时文件等目录和文件类型。",
+      "tags": [
+        "Git配置",
+        "构建系统",
+        "排除规则"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/alembic/env.py",
+      "type": "file",
+      "name": "env.py",
+      "filePath": "backend/alembic/env.py",
+      "summary": "Alembic 数据库迁移环境配置，支持在线和离线两种迁移模式，自动导入所有模型元数据。",
+      "tags": [
+        "数据库迁移",
+        "Alembic",
+        "配置"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/alembic/script.py.mako",
+      "type": "file",
+      "name": "script.py.mako",
+      "filePath": "backend/alembic/script.py.mako",
+      "summary": "Alembic 迁移脚本的 Mako 模板，定义升级和降级函数的默认脚手架结构。",
+      "tags": [
+        "模板",
+        "Alembic",
+        "数据库迁移"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "type": "file",
+      "name": "76540445f941_initial_schema.py",
+      "filePath": "backend/alembic/versions/76540445f941_initial_schema.py",
+      "summary": "初始数据库模式迁移，创建 design_listings、design_template_compatibility、publish_analytics、publish_contents、publish_schedules 五张表并添加外键索引。",
+      "tags": [
+        "数据库迁移",
+        "Schema定义",
+        "初始模式"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/alembic/versions/76540445f941_initial_schema.py:upgrade",
+      "type": "function",
+      "name": "upgrade",
+      "filePath": "backend/alembic/versions/76540445f941_initial_schema.py",
+      "lineRange": [
+        18,
+        148
+      ],
+      "summary": "正向迁移函数：创建设计发布相关表并修改现有表结构以支持 listing 关联。",
+      "tags": [
+        "数据库迁移",
+        "升级"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/alembic/versions/76540445f941_initial_schema.py:downgrade",
+      "type": "function",
+      "name": "downgrade",
+      "filePath": "backend/alembic/versions/76540445f941_initial_schema.py",
+      "lineRange": [
+        151,
+        211
+      ],
+      "summary": "反向迁移函数：撤销设计发布相关表和外键约束，回滚 listing 字段。",
+      "tags": [
+        "数据库迁移",
+        "降级"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/alembic/env.py:run_migrations_offline",
+      "type": "function",
+      "name": "run_migrations_offline",
+      "filePath": "backend/alembic/env.py",
+      "lineRange": [
+        19,
+        29
+      ],
+      "summary": "离线模式迁移执行器，直接使用 SQL 字符串连接数据库而不创建 SQLAlchemy 引擎。",
+      "tags": [
+        "数据库迁移",
+        "Alembic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/alembic/env.py:run_migrations_online",
+      "type": "function",
+      "name": "run_migrations_online",
+      "filePath": "backend/alembic/env.py",
+      "lineRange": [
+        32,
+        45
+      ],
+      "summary": "在线模式迁移执行器，通过 SQLAlchemy 引擎连接数据库执行迁移。",
+      "tags": [
+        "数据库迁移",
+        "Alembic"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.claude/skills/mle-workflow/agents/openai.yaml",
+      "target": "document:.claude/skills/mle-workflow/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/nextjs-turbopack/agents/openai.yaml",
+      "target": "document:.claude/skills/nextjs-turbopack/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/omc-reference/agents/openai.yaml",
+      "target": "document:.claude/skills/omc-reference/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/product-capability/agents/openai.yaml",
+      "target": "document:.claude/skills/product-capability/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/search-first/agents/openai.yaml",
+      "target": "document:.claude/skills/search-first/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/security-review/agents/openai.yaml",
+      "target": "document:.claude/skills/security-review/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/strategic-compact/agents/openai.yaml",
+      "target": "document:.claude/skills/strategic-compact/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/tdd-workflow/agents/openai.yaml",
+      "target": "document:.claude/skills/tdd-workflow/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/verification-loop/agents/openai.yaml",
+      "target": "document:.claude/skills/verification-loop/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/video-editing/agents/openai.yaml",
+      "target": "document:.claude/skills/video-editing/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.claude/skills/x-api/agents/openai.yaml",
+      "target": "document:.claude/skills/x-api/SKILL.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:backend/alembic/env.py",
+      "target": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:backend/alembic/script.py.mako",
+      "target": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "target": "function:backend/alembic/versions/76540445f941_initial_schema.py:upgrade",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/alembic/versions/76540445f941_initial_schema.py",
+      "target": "function:backend/alembic/versions/76540445f941_initial_schema.py:downgrade",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/alembic/env.py",
+      "target": "function:backend/alembic/env.py:run_migrations_offline",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/alembic/env.py",
+      "target": "function:backend/alembic/env.py:run_migrations_online",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.env.example",
+      "target": "file:backend/alembic/env.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:.gitignore",
+      "target": "file:.env.example",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

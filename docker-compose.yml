@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./backend/data:/app/data
+      - ~/OriStudio/workspace:/app/data/workspace
+    environment:
+      - DATABASE_URL=sqlite:///./data/oristudio.db
+      - REDIS_URL=redis://redis:6379/0
+      - HOST=0.0.0.0
+      - PORT=8765
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app worker --loglevel=info
+    volumes:
+      - ./backend/data:/app/data
+      - ~/OriStudio/workspace:/app/data/workspace
+    environment:
+      - DATABASE_URL=sqlite:///./data/oristudio.db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app beat --loglevel=info
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/oristudio.db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+volumes:
+  redis_data:

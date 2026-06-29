@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/styles/a11y.css",
+      "type": "file",
+      "name": "a11y.css",
+      "filePath": "frontend/src/styles/a11y.css",
+      "summary": "无障碍 (a11y) 样式表，提供焦点可见性、屏幕阅读器隐藏、跳过链接、减少动效支持和移动端触控优化。",
+      "tags": [
+        "无障碍",
+        "css样式",
+        "响应式"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/styles/main.css",
+      "type": "file",
+      "name": "main.css",
+      "filePath": "frontend/src/styles/main.css",
+      "summary": "全局主样式文件，定义 OKLCH 设计令牌（颜色、字体、圆角）、暗色主题、基础布局、卡片按钮组件样式和关键帧动画。",
+      "tags": [
+        "设计令牌",
+        "css样式",
+        "主题"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/styles/transitions.css",
+      "type": "file",
+      "name": "transitions.css",
+      "filePath": "frontend/src/styles/transitions.css",
+      "summary": "Vue 组件过渡动画样式表，涵盖淡入、上滑、右滑、缩放和列表过渡等效果。",
+      "tags": [
+        "过渡动画",
+        "vue",
+        "css样式"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/styles/a11y.css",
+      "target": "file:frontend/src/styles/main.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/src/styles/transitions.css",
+      "target": "file:frontend/src/styles/main.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

@@ -1,0 +1,2263 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/tests/test_p3_edge_cases.py",
+      "type": "file",
+      "name": "test_p3_edge_cases.py",
+      "filePath": "backend/tests/test_p3_edge_cases.py",
+      "summary": "后端 test_p3_edge_cases.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/tests/test_p3_workflow_integration.py",
+      "type": "file",
+      "name": "test_p3_workflow_integration.py",
+      "filePath": "backend/tests/test_p3_workflow_integration.py",
+      "summary": "后端 test_p3_workflow_integration.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/tests/test_pdh.py",
+      "type": "file",
+      "name": "test_pdh.py",
+      "filePath": "backend/tests/test_pdh.py",
+      "summary": "后端 test_pdh.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_supply.py",
+      "type": "file",
+      "name": "test_supply.py",
+      "filePath": "backend/tests/test_supply.py",
+      "summary": "后端 test_supply.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_system.py",
+      "type": "file",
+      "name": "test_system.py",
+      "filePath": "backend/tests/test_system.py",
+      "summary": "后端 test_system.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/tests/test_works.py",
+      "type": "file",
+      "name": "test_works.py",
+      "filePath": "backend/tests/test_works.py",
+      "summary": "后端 test_works.py 测试文件，覆盖对应 router/service 模块的单元测试和集成测试。",
+      "tags": [
+        "test",
+        "backend",
+        "pytest",
+        "api-test"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/.claude/tmp-owasp-auth-claims.json",
+      "type": "file",
+      "name": "tmp-owasp-auth-claims.json",
+      "filePath": "frontend/.claude/tmp-owasp-auth-claims.json",
+      "summary": "前端安全审计相关的 JSON 数据文件。",
+      "tags": [
+        "security",
+        "owasp",
+        "data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/tests/test_p3_edge_cases.py:TestHasher",
+      "type": "class",
+      "name": "TestHasher",
+      "filePath": "backend/tests/test_p3_edge_cases.py",
+      "lineRange": [
+        13,
+        124
+      ],
+      "summary": "TestHasher 测试类，包含 8 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/tests/test_p3_edge_cases.py:TestWorkService",
+      "type": "class",
+      "name": "TestWorkService",
+      "filePath": "backend/tests/test_p3_edge_cases.py",
+      "lineRange": [
+        130,
+        202
+      ],
+      "summary": "TestWorkService 测试类，包含 4 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_p3_edge_cases.py:TestCertificateService",
+      "type": "class",
+      "name": "TestCertificateService",
+      "filePath": "backend/tests/test_p3_edge_cases.py",
+      "lineRange": [
+        205,
+        226
+      ],
+      "summary": "TestCertificateService 测试类，包含 2 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_p3_edge_cases.py:TestCacheService",
+      "type": "class",
+      "name": "TestCacheService",
+      "filePath": "backend/tests/test_p3_edge_cases.py",
+      "lineRange": [
+        232,
+        332
+      ],
+      "summary": "TestCacheService 测试类，包含 8 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/tests/test_p3_workflow_integration.py:_upload_random_image",
+      "type": "function",
+      "name": "_upload_random_image",
+      "filePath": "backend/tests/test_p3_workflow_integration.py",
+      "lineRange": [
+        14,
+        28
+      ],
+      "summary": "辅助函数：_upload_random_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_workflow_integration.py:test_full_workflow",
+      "type": "function",
+      "name": "test_full_workflow",
+      "filePath": "backend/tests/test_p3_workflow_integration.py",
+      "lineRange": [
+        31,
+        156
+      ],
+      "summary": "测试用例：test_full_workflow。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_p3_workflow_integration.py:test_workflow_with_multiple_platforms",
+      "type": "function",
+      "name": "test_workflow_with_multiple_platforms",
+      "filePath": "backend/tests/test_p3_workflow_integration.py",
+      "lineRange": [
+        159,
+        193
+      ],
+      "summary": "测试用例：test_workflow_with_multiple_platforms。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_describe_styles",
+      "type": "function",
+      "name": "test_describe_styles",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        11,
+        25
+      ],
+      "summary": "测试用例：test_describe_styles。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_describe_with_style",
+      "type": "function",
+      "name": "test_describe_with_style",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        28,
+        53
+      ],
+      "summary": "测试用例：test_describe_with_style。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_describe_with_shopify_style",
+      "type": "function",
+      "name": "test_describe_with_shopify_style",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        56,
+        73
+      ],
+      "summary": "测试用例：test_describe_with_shopify_style。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_describe_invalid_style",
+      "type": "function",
+      "name": "test_describe_invalid_style",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        76,
+        90
+      ],
+      "summary": "测试用例：test_describe_invalid_style。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_generate_verified_badge",
+      "type": "function",
+      "name": "test_generate_verified_badge",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        97,
+        118
+      ],
+      "summary": "测试用例：test_generate_verified_badge。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_verified_badge_embed",
+      "type": "function",
+      "name": "test_verified_badge_embed",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        121,
+        143
+      ],
+      "summary": "测试用例：test_verified_badge_embed。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_schema",
+      "type": "function",
+      "name": "test_feed_schema",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        156,
+        163
+      ],
+      "summary": "测试用例：test_feed_schema。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_platforms",
+      "type": "function",
+      "name": "test_feed_platforms",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        166,
+        175
+      ],
+      "summary": "测试用例：test_feed_platforms。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_empty",
+      "type": "function",
+      "name": "test_feed_empty",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        178,
+        186
+      ],
+      "summary": "测试用例：test_feed_empty。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_with_products",
+      "type": "function",
+      "name": "test_feed_with_products",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        189,
+        216
+      ],
+      "summary": "测试用例：test_feed_with_products。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_filter_by_category",
+      "type": "function",
+      "name": "test_feed_filter_by_category",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        219,
+        233
+      ],
+      "summary": "测试用例：test_feed_filter_by_category。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_export_google",
+      "type": "function",
+      "name": "test_feed_export_google",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        236,
+        255
+      ],
+      "summary": "测试用例：test_feed_export_google。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_feed_export_shopify",
+      "type": "function",
+      "name": "test_feed_export_shopify",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        258,
+        275
+      ],
+      "summary": "测试用例：test_feed_export_shopify。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_revenue_summary",
+      "type": "function",
+      "name": "test_revenue_summary",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        288,
+        313
+      ],
+      "summary": "测试用例：test_revenue_summary。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_revenue_summary_year",
+      "type": "function",
+      "name": "test_revenue_summary_year",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        316,
+        321
+      ],
+      "summary": "测试用例：test_revenue_summary_year。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_revenue_import_csv",
+      "type": "function",
+      "name": "test_revenue_import_csv",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        324,
+        339
+      ],
+      "summary": "测试用例：test_revenue_import_csv。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_revenue_import_taobao_csv",
+      "type": "function",
+      "name": "test_revenue_import_taobao_csv",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        342,
+        352
+      ],
+      "summary": "测试用例：test_revenue_import_taobao_csv。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_revenue_import_invalid_file",
+      "type": "function",
+      "name": "test_revenue_import_invalid_file",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        355,
+        361
+      ],
+      "summary": "测试用例：test_revenue_import_invalid_file。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_list_products",
+      "type": "function",
+      "name": "test_list_products",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        368,
+        374
+      ],
+      "summary": "测试用例：test_list_products。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_create_product",
+      "type": "function",
+      "name": "test_create_product",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        377,
+        385
+      ],
+      "summary": "测试用例：test_create_product。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_export_csv",
+      "type": "function",
+      "name": "test_export_csv",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        388,
+        400
+      ],
+      "summary": "测试用例：test_export_csv。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_publish_product",
+      "type": "function",
+      "name": "test_publish_product",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        403,
+        414
+      ],
+      "summary": "测试用例：test_publish_product。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_add_and_list_revenue",
+      "type": "function",
+      "name": "test_add_and_list_revenue",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        417,
+        431
+      ],
+      "summary": "测试用例：test_add_and_list_revenue。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_pdh.py:test_get_platforms",
+      "type": "function",
+      "name": "test_get_platforms",
+      "filePath": "backend/tests/test_pdh.py",
+      "lineRange": [
+        434,
+        440
+      ],
+      "summary": "测试用例：test_get_platforms。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestPublishToPod",
+      "type": "class",
+      "name": "TestPublishToPod",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        10,
+        81
+      ],
+      "summary": "TestPublishToPod 测试类，包含 6 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestChinesePodPlatforms",
+      "type": "class",
+      "name": "TestChinesePodPlatforms",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        88,
+        116
+      ],
+      "summary": "TestChinesePodPlatforms 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestCampaignEnhancements",
+      "type": "class",
+      "name": "TestCampaignEnhancements",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        123,
+        190
+      ],
+      "summary": "TestCampaignEnhancements 测试类，包含 5 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestLicenseExport",
+      "type": "class",
+      "name": "TestLicenseExport",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        197,
+        252
+      ],
+      "summary": "TestLicenseExport 测试类，包含 6 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestFactoryPriceCompare",
+      "type": "class",
+      "name": "TestFactoryPriceCompare",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        259,
+        321
+      ],
+      "summary": "TestFactoryPriceCompare 测试类，包含 4 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestGenerateMockup",
+      "type": "class",
+      "name": "TestGenerateMockup",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        328,
+        359
+      ],
+      "summary": "TestGenerateMockup 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestDigitalProductFormats",
+      "type": "class",
+      "name": "TestDigitalProductFormats",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        366,
+        419
+      ],
+      "summary": "TestDigitalProductFormats 测试类，包含 4 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestRevenueAggregation",
+      "type": "class",
+      "name": "TestRevenueAggregation",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        426,
+        451
+      ],
+      "summary": "TestRevenueAggregation 测试类，包含 2 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestPrintfulGateway",
+      "type": "class",
+      "name": "TestPrintfulGateway",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        458,
+        486
+      ],
+      "summary": "TestPrintfulGateway 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/tests/test_supply.py:TestRedbubbleGateway",
+      "type": "class",
+      "name": "TestRedbubbleGateway",
+      "filePath": "backend/tests/test_supply.py",
+      "lineRange": [
+        489,
+        526
+      ],
+      "summary": "TestRedbubbleGateway 测试类，包含 3 个测试方法。",
+      "tags": [
+        "test",
+        "pytest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_info",
+      "type": "function",
+      "name": "test_mcp_info",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        10,
+        26
+      ],
+      "summary": "测试用例：test_mcp_info。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_auth_required",
+      "type": "function",
+      "name": "test_mcp_auth_required",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        29,
+        36
+      ],
+      "summary": "测试用例：test_mcp_auth_required。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_invalid_key",
+      "type": "function",
+      "name": "test_mcp_invalid_key",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        39,
+        46
+      ],
+      "summary": "测试用例：test_mcp_invalid_key。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_initialize",
+      "type": "function",
+      "name": "test_mcp_initialize",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        49,
+        64
+      ],
+      "summary": "测试用例：test_mcp_initialize。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_list",
+      "type": "function",
+      "name": "test_mcp_tools_list",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        67,
+        76
+      ],
+      "summary": "测试用例：test_mcp_tools_list。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_list_products",
+      "type": "function",
+      "name": "test_mcp_tools_call_list_products",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        79,
+        100
+      ],
+      "summary": "测试用例：test_mcp_tools_call_list_products。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_get_product",
+      "type": "function",
+      "name": "test_mcp_tools_call_get_product",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        103,
+        124
+      ],
+      "summary": "测试用例：test_mcp_tools_call_get_product。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_search_products",
+      "type": "function",
+      "name": "test_mcp_tools_call_search_products",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        127,
+        148
+      ],
+      "summary": "测试用例：test_mcp_tools_call_search_products。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_get_verified_mark",
+      "type": "function",
+      "name": "test_mcp_tools_call_get_verified_mark",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        151,
+        170
+      ],
+      "summary": "测试用例：test_mcp_tools_call_get_verified_mark。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_revenue_summary",
+      "type": "function",
+      "name": "test_mcp_tools_call_revenue_summary",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        173,
+        195
+      ],
+      "summary": "测试用例：test_mcp_tools_call_revenue_summary。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_tools_call_get_product_feed",
+      "type": "function",
+      "name": "test_mcp_tools_call_get_product_feed",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        198,
+        210
+      ],
+      "summary": "测试用例：test_mcp_tools_call_get_product_feed。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_wangdiantong_feed",
+      "type": "function",
+      "name": "test_mcp_wangdiantong_feed",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        213,
+        229
+      ],
+      "summary": "测试用例：test_mcp_wangdiantong_feed。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_jushuitan_feed",
+      "type": "function",
+      "name": "test_mcp_jushuitan_feed",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        232,
+        248
+      ],
+      "summary": "测试用例：test_mcp_jushuitan_feed。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_mcp_notifications_initialized",
+      "type": "function",
+      "name": "test_mcp_notifications_initialized",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        251,
+        258
+      ],
+      "summary": "测试用例：test_mcp_notifications_initialized。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_health_dashboard",
+      "type": "function",
+      "name": "test_health_dashboard",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        265,
+        276
+      ],
+      "summary": "测试用例：test_health_dashboard。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_service_status",
+      "type": "function",
+      "name": "test_service_status",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        279,
+        288
+      ],
+      "summary": "测试用例：test_service_status。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_encrypted_backup",
+      "type": "function",
+      "name": "test_encrypted_backup",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        295,
+        304
+      ],
+      "summary": "测试用例：test_encrypted_backup。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_backup_schedule",
+      "type": "function",
+      "name": "test_backup_schedule",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        307,
+        315
+      ],
+      "summary": "测试用例：test_backup_schedule。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_get_backup_schedule",
+      "type": "function",
+      "name": "test_get_backup_schedule",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        318,
+        323
+      ],
+      "summary": "测试用例：test_get_backup_schedule。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_backup_list",
+      "type": "function",
+      "name": "test_backup_list",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        326,
+        334
+      ],
+      "summary": "测试用例：test_backup_list。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_restore_backup",
+      "type": "function",
+      "name": "test_restore_backup",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        337,
+        349
+      ],
+      "summary": "测试用例：test_restore_backup。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_delete_backup",
+      "type": "function",
+      "name": "test_delete_backup",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        352,
+        358
+      ],
+      "summary": "测试用例：test_delete_backup。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_email_test_without_config",
+      "type": "function",
+      "name": "test_email_test_without_config",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        365,
+        372
+      ],
+      "summary": "测试用例：test_email_test_without_config。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_register_plugin",
+      "type": "function",
+      "name": "test_register_plugin",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        379,
+        392
+      ],
+      "summary": "测试用例：test_register_plugin。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_list_plugins",
+      "type": "function",
+      "name": "test_list_plugins",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        395,
+        406
+      ],
+      "summary": "测试用例：test_list_plugins。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_enable_disable_plugin",
+      "type": "function",
+      "name": "test_enable_disable_plugin",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        409,
+        424
+      ],
+      "summary": "测试用例：test_enable_disable_plugin。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_delete_plugin",
+      "type": "function",
+      "name": "test_delete_plugin",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        427,
+        436
+      ],
+      "summary": "测试用例：test_delete_plugin。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_send_verification_email",
+      "type": "function",
+      "name": "test_send_verification_email",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        443,
+        450
+      ],
+      "summary": "测试用例：test_send_verification_email。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_confirm_verification_invalid",
+      "type": "function",
+      "name": "test_confirm_verification_invalid",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        453,
+        459
+      ],
+      "summary": "测试用例：test_confirm_verification_invalid。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_request_password_reset",
+      "type": "function",
+      "name": "test_request_password_reset",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        466,
+        471
+      ],
+      "summary": "测试用例：test_request_password_reset。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_check_password_strength_weak",
+      "type": "function",
+      "name": "test_check_password_strength_weak",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        478,
+        486
+      ],
+      "summary": "测试用例：test_check_password_strength_weak。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_check_password_strength_strong",
+      "type": "function",
+      "name": "test_check_password_strength_strong",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        489,
+        497
+      ],
+      "summary": "测试用例：test_check_password_strength_strong。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_export_all_json",
+      "type": "function",
+      "name": "test_export_all_json",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        504,
+        511
+      ],
+      "summary": "测试用例：test_export_all_json。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_export_all_csv",
+      "type": "function",
+      "name": "test_export_all_csv",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        514,
+        519
+      ],
+      "summary": "测试用例：test_export_all_csv。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_system.py:test_clear_data_without_confirmation",
+      "type": "function",
+      "name": "test_clear_data_without_confirmation",
+      "filePath": "backend/tests/test_system.py",
+      "lineRange": [
+        526,
+        531
+      ],
+      "summary": "测试用例：test_clear_data_without_confirmation。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_health_check",
+      "type": "function",
+      "name": "test_health_check",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        9,
+        15
+      ],
+      "summary": "测试用例：test_health_check。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_list_works_empty",
+      "type": "function",
+      "name": "test_list_works_empty",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        18,
+        24
+      ],
+      "summary": "测试用例：test_list_works_empty。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:_upload_unique_image",
+      "type": "function",
+      "name": "_upload_unique_image",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        27,
+        40
+      ],
+      "summary": "辅助函数：_upload_unique_image，供测试用例共用。",
+      "tags": [
+        "test",
+        "utility",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_upload_and_get_work",
+      "type": "function",
+      "name": "test_upload_and_get_work",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        43,
+        58
+      ],
+      "summary": "测试用例：test_upload_and_get_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_update_work",
+      "type": "function",
+      "name": "test_update_work",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        61,
+        72
+      ],
+      "summary": "测试用例：test_update_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_delete_work",
+      "type": "function",
+      "name": "test_delete_work",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        75,
+        85
+      ],
+      "summary": "测试用例：test_delete_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_search_works",
+      "type": "function",
+      "name": "test_search_works",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        88,
+        111
+      ],
+      "summary": "测试用例：test_search_works。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_hash_only_upload",
+      "type": "function",
+      "name": "test_hash_only_upload",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        116,
+        142
+      ],
+      "summary": "测试用例：test_hash_only_upload。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_lowres_upload",
+      "type": "function",
+      "name": "test_lowres_upload",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        147,
+        181
+      ],
+      "summary": "测试用例：test_lowres_upload。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_replace_work_file",
+      "type": "function",
+      "name": "test_replace_work_file",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        186,
+        221
+      ],
+      "summary": "测试用例：test_replace_work_file。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_fork_work",
+      "type": "function",
+      "name": "test_fork_work",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        226,
+        247
+      ],
+      "summary": "测试用例：test_fork_work。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_update_work_rights",
+      "type": "function",
+      "name": "test_update_work_rights",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        252,
+        277
+      ],
+      "summary": "测试用例：test_update_work_rights。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_generate_rights_declaration",
+      "type": "function",
+      "name": "test_generate_rights_declaration",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        282,
+        308
+      ],
+      "summary": "测试用例：test_generate_rights_declaration。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_suggest_tags_ai_rule_fallback",
+      "type": "function",
+      "name": "test_suggest_tags_ai_rule_fallback",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        313,
+        338
+      ],
+      "summary": "测试用例：test_suggest_tags_ai_rule_fallback。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_suggest_tags_ai_with_exif",
+      "type": "function",
+      "name": "test_suggest_tags_ai_with_exif",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        341,
+        350
+      ],
+      "summary": "测试用例：test_suggest_tags_ai_with_exif。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/test_works.py:test_suggest_tags_ai_style_detection",
+      "type": "function",
+      "name": "test_suggest_tags_ai_style_detection",
+      "filePath": "backend/tests/test_works.py",
+      "lineRange": [
+        353,
+        362
+      ],
+      "summary": "测试用例：test_suggest_tags_ai_style_detection。",
+      "tags": [
+        "test",
+        "unit-test"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/app/services/hasher.py",
+      "target": "file:backend/tests/test_p3_edge_cases.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_p3_edge_cases.py",
+      "target": "class:backend/tests/test_p3_edge_cases.py:TestHasher",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_edge_cases.py",
+      "target": "class:backend/tests/test_p3_edge_cases.py:TestWorkService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_edge_cases.py",
+      "target": "class:backend/tests/test_p3_edge_cases.py:TestCertificateService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_edge_cases.py",
+      "target": "class:backend/tests/test_p3_edge_cases.py:TestCacheService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/works.py",
+      "target": "file:backend/tests/test_p3_workflow_integration.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_p3_workflow_integration.py",
+      "target": "function:backend/tests/test_p3_workflow_integration.py:_upload_random_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_workflow_integration.py",
+      "target": "function:backend/tests/test_p3_workflow_integration.py:test_full_workflow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_p3_workflow_integration.py",
+      "target": "function:backend/tests/test_p3_workflow_integration.py:test_workflow_with_multiple_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/publish.py",
+      "target": "file:backend/tests/test_pdh.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_describe_styles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_describe_with_style",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_describe_with_shopify_style",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_describe_invalid_style",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_generate_verified_badge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_verified_badge_embed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_schema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_empty",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_with_products",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_filter_by_category",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_export_google",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_feed_export_shopify",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_revenue_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_revenue_summary_year",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_revenue_import_csv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_revenue_import_taobao_csv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_revenue_import_invalid_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_list_products",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_create_product",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_export_csv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_publish_product",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_add_and_list_revenue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_pdh.py",
+      "target": "function:backend/tests/test_pdh.py:test_get_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/supply.py",
+      "target": "file:backend/tests/test_supply.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestPublishToPod",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestChinesePodPlatforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestCampaignEnhancements",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestLicenseExport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestFactoryPriceCompare",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestGenerateMockup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestDigitalProductFormats",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestRevenueAggregation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestPrintfulGateway",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_supply.py",
+      "target": "class:backend/tests/test_supply.py:TestRedbubbleGateway",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/system.py",
+      "target": "file:backend/tests/test_system.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_info",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_auth_required",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_invalid_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_initialize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_list_products",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_get_product",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_search_products",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_get_verified_mark",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_revenue_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_tools_call_get_product_feed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_wangdiantong_feed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_jushuitan_feed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_mcp_notifications_initialized",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_health_dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_service_status",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_encrypted_backup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_backup_schedule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_get_backup_schedule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_backup_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_restore_backup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_delete_backup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_email_test_without_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_register_plugin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_list_plugins",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_enable_disable_plugin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_delete_plugin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_send_verification_email",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_confirm_verification_invalid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_request_password_reset",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_check_password_strength_weak",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_check_password_strength_strong",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_export_all_json",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_export_all_csv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_system.py",
+      "target": "function:backend/tests/test_system.py:test_clear_data_without_confirmation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/routers/works.py",
+      "target": "file:backend/tests/test_works.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_health_check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_list_works_empty",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:_upload_unique_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_upload_and_get_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_update_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_delete_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_search_works",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_hash_only_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_lowres_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_replace_work_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_fork_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_update_work_rights",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_generate_rights_declaration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_suggest_tags_ai_rule_fallback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_suggest_tags_ai_with_exif",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/test_works.py",
+      "target": "function:backend/tests/test_works.py:test_suggest_tags_ai_style_detection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

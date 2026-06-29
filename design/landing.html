@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio — 个人创作者全链路助手</title>
+<style>
+  :root {
+    --bg:      oklch(98% 0.004 240);
+    --surface: oklch(100% 0 0);
+    --fg:      oklch(20% 0.02 240);
+    --muted:   oklch(50% 0.018 240);
+    --border:  oklch(90% 0.006 240);
+    --accent:  oklch(56% 0.12 170);
+    --accent2: oklch(62% 0.16 280);
+    --grad1:   oklch(56% 0.12 170);
+    --grad2:   oklch(62% 0.16 260);
+    --font-display: 'Söhne', 'Avenir Next', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 clamp(16px, 4vw, 80px);
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: oklch(98% 0.004 240 / 0.82);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.35s ease;
+  }
+  .nav.scrolled { box-shadow: 0 1px 0 oklch(0 0 0 / 0.04), 0 4px 24px oklch(0 0 0 / 0.06); }
+
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 700; font-size: 1.35rem;
+    letter-spacing: -0.015em; color: var(--fg); text-decoration: none;
+    cursor: pointer;
+  }
+  .brand-logo {
+    width: 36px; height: 36px; border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.1rem; font-weight: 800;
+    box-shadow: 0 2px 12px oklch(56% 0.12 170 / 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .brand:hover .brand-logo { transform: scale(1.08) rotate(-2deg); box-shadow: 0 4px 20px oklch(56% 0.12 170 / 0.45); }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted); font-size: 0.925rem;
+    font-weight: 500; transition: color 0.2s; position: relative;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--fg); }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+    background: var(--accent); border-radius: 1px; transition: width 0.25s ease;
+  }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 22px; border-radius: var(--radius);
+    font-family: var(--font-body); font-size: 0.925rem; font-weight: 600;
+    cursor: pointer; transition: all 0.25s ease;
+    text-decoration: none; border: none; white-space: nowrap;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    color: #fff; box-shadow: 0 2px 14px oklch(56% 0.12 170 / 0.3);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, oklch(100% 0 0 / 0.15) 50%, transparent 60%);
+    transform: translateX(-100%); transition: transform 0.6s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(100%); }
+  .btn-primary:hover { box-shadow: 0 6px 24px oklch(56% 0.12 170 / 0.45); transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--surface); color: var(--fg);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: oklch(96% 0.004 240); border-color: var(--muted); }
+
+  /* ========== HERO ========== */
+  .hero-wrapper {
+    padding: 120px clamp(16px, 6vw, 80px) 80px;
+    background: linear-gradient(180deg, oklch(96% 0.006 240) 0%, var(--bg) 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero-bg-deco {
+    position: absolute; top: -120px; right: -80px; width: 600px; height: 600px;
+    background: radial-gradient(circle, oklch(56% 0.12 170 / 0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero-bg-deco2 {
+    position: absolute; bottom: -80px; left: -40px; width: 400px; height: 400px;
+    background: radial-gradient(circle, oklch(62% 0.16 260 / 0.06) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-text { display: flex; flex-direction: column; gap: 24px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 100px;
+    background: oklch(56% 0.12 170 / 0.1); color: var(--accent);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em;
+    width: fit-content;
+  }
+  .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  h1 {
+    font-family: var(--font-display); font-size: clamp(2.5rem, 5.5vw, 4rem);
+    font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+    color: var(--fg);
+  }
+  h1 .em { background: linear-gradient(135deg, var(--grad1), var(--grad2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .hero-desc { font-size: 1.15rem; color: var(--muted); line-height: 1.7; max-width: 480px; }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Hero visual — 3D mockup card */
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+    perspective: 1000px;
+  }
+  .hero-card-3d {
+    width: 100%; max-width: 520px;
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 0 0 1px oklch(0 0 0 / 0.04),
+      0 8px 32px oklch(0 0 0 / 0.06),
+      0 24px 80px oklch(0 0 0 / 0.08);
+    padding: 28px;
+    transform: rotateY(-4deg) rotateX(2deg);
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+    cursor: default;
+  }
+  .hero-card-3d:hover {
+    transform: rotateY(-1deg) rotateX(0.5deg);
+    box-shadow: 0 0 0 1px oklch(0 0 0 / 0.05), 0 12px 40px oklch(0 0 0 / 0.08), 0 32px 100px oklch(0 0 0 / 0.12);
+  }
+  .hc-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .hc-avatar {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, oklch(56% 0.12 170 / 0.2), oklch(62% 0.16 260 / 0.2));
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+  }
+  .hc-title { font-weight: 600; font-size: 0.95rem; }
+  .hc-sub { font-size: 0.78rem; color: var(--muted); }
+  .hc-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-bottom: 20px;
+  }
+  .hc-stat {
+    background: oklch(96% 0.006 240); border-radius: var(--radius);
+    padding: 14px; text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hc-stat:hover { transform: translateY(-2px); box-shadow: 0 4px 16px oklch(0 0 0 / 0.06); }
+  .hc-stat-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .hc-stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+  .hc-modules {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  }
+  .hc-mod {
+    display: flex; align-items: center; gap: 6px; padding: 10px 12px;
+    border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 500;
+    background: oklch(96% 0.006 240); transition: background 0.2s, transform 0.2s;
+  }
+  .hc-mod:hover { background: oklch(56% 0.12 170 / 0.08); transform: translateY(-1px); }
+  .hc-mod-dot { width: 8px; height: 8px; border-radius: 3px; }
+  .hc-mod-dot.purple { background: oklch(56% 0.12 280); }
+  .hc-mod-dot.green { background: oklch(56% 0.12 170); }
+  .hc-mod-dot.orange { background: oklch(62% 0.18 55); }
+  .hc-mod-dot.blue { background: oklch(58% 0.14 245); }
+  .hc-mod-dot.pink { background: oklch(58% 0.16 350); }
+  .hc-mod-dot.cyan { background: oklch(60% 0.12 200); }
+
+  /* ========== FEATURE SECTION ========== */
+  .section {
+    max-width: 1200px; margin: 0 auto;
+    padding: 80px clamp(16px, 6vw, 80px);
+  }
+  .section-header {
+    text-align: center; margin-bottom: 56px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .section-tag {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  h2 {
+    font-family: var(--font-display); font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+    font-weight: 700; letter-spacing: -0.015em; line-height: 1.2;
+  }
+  .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin: 0 auto; }
+
+  /* Feature cards grid */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: all 0.35s ease;
+    cursor: default; position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--grad1), var(--grad2));
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px oklch(0 0 0 / 0.08);
+    border-color: transparent;
+  }
+  .feature-card:hover::before { opacity: 1; }
+  .fc-icon {
+    width: 48px; height: 48px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .fc-icon.g1 { background: oklch(56% 0.12 170 / 0.12); color: oklch(56% 0.12 170); }
+  .fc-icon.g2 { background: oklch(62% 0.16 260 / 0.12); color: oklch(62% 0.16 260); }
+  .fc-icon.g3 { background: oklch(62% 0.18 55 / 0.12); color: oklch(62% 0.18 55); }
+  .fc-icon.g4 { background: oklch(58% 0.14 245 / 0.12); color: oklch(58% 0.14 245); }
+  .fc-icon.g5 { background: oklch(58% 0.16 350 / 0.12); color: oklch(58% 0.16 350); }
+  .fc-icon.g6 { background: oklch(60% 0.12 200 / 0.12); color: oklch(60% 0.12 200); }
+
+  .fc-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+  .fc-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+  .fc-features { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .fc-features li { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .fc-features li::before { content: '→'; color: var(--accent); font-weight: 600; }
+
+  /* ========== PROOF SECTION ========== */
+  .proof-section {
+    background: linear-gradient(180deg, var(--surface) 0%, oklch(96% 0.006 240) 100%);
+    padding: 80px clamp(16px, 6vw, 80px);
+  }
+  .proof-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .proof-stat { text-align: center; }
+  .proof-num {
+    font-family: var(--font-display); font-size: 2.6rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .proof-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+  /* ========== HOW IT WORKS ========== */
+  .steps-flow {
+    max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start;
+    justify-content: space-between; position: relative;
+  }
+  .steps-flow::before {
+    content: ''; position: absolute; top: 32px; left: 60px; right: 60px; height: 2px;
+    background: var(--border); z-index: 0;
+  }
+  .step {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    position: relative; z-index: 1; text-align: center; flex: 1;
+  }
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+    color: var(--accent); transition: all 0.35s ease;
+  }
+  .step:hover .step-num {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 8px 28px oklch(56% 0.12 170 / 0.3);
+    transform: scale(1.08);
+  }
+  .step-title { font-weight: 700; font-size: 0.95rem; }
+  .step-desc { font-size: 0.8rem; color: var(--muted); }
+
+  /* ========== CTA ========== */
+  .cta-section {
+    text-align: center; padding: 80px clamp(16px, 6vw, 80px);
+  }
+  .cta-card {
+    max-width: 700px; margin: 0 auto;
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    border-radius: var(--radius-xl); padding: 56px 48px; color: #fff;
+    position: relative; overflow: hidden;
+    box-shadow: 0 16px 56px oklch(56% 0.12 170 / 0.3);
+  }
+  .cta-card::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: oklch(100% 0 0 / 0.08); border-radius: 50%;
+  }
+  .cta-card::after {
+    content: ''; position: absolute; bottom: -40px; left: -40px;
+    width: 140px; height: 140px;
+    background: oklch(100% 0 0 / 0.06); border-radius: 50%;
+  }
+  .cta-card h3 {
+    font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+    position: relative; z-index: 1; margin-bottom: 12px;
+  }
+  .cta-card p { font-size: 1.05rem; opacity: 0.85; position: relative; z-index: 1; margin-bottom: 28px; }
+  .btn-cta {
+    background: #fff; color: var(--accent); padding: 12px 28px;
+    font-size: 0.95rem; font-weight: 700;
+    box-shadow: 0 4px 16px oklch(0 0 0 / 0.15);
+    position: relative; z-index: 1;
+  }
+  .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(0 0 0 / 0.2); }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    max-width: 1200px; margin: 0 auto;
+    padding: 40px clamp(16px, 6vw, 80px);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    font-size: 0.85rem; color: var(--muted);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; text-align: center; }
+    .hero-desc { max-width: 100%; }
+    .hero-actions { justify-content: center; }
+    .hero-card-3d { transform: none; max-width: 420px; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .proof-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-flow { flex-direction: column; align-items: center; gap: 24px; }
+    .steps-flow::before { display: none; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .proof-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-wrapper { padding: 100px 16px 56px; }
+    .section, .cta-section { padding: 56px 16px; }
+    .proof-section { padding: 56px 16px; }
+    .cta-card { padding: 40px 24px; }
+    .hc-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .hc-modules { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 360px) {
+    h1 { font-size: 2rem; }
+    .hero-card-3d { padding: 16px; }
+    .hc-stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .hc-stat { padding: 10px 6px; }
+    .hc-stat-val { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <a href="landing.html" class="brand">
+    <div class="brand-logo">O</div>
+    OriStudio
+  </a>
+  <ul class="nav-links">
+    <li><a href="landing.html" class="active">首页</a></li>
+    <li><a href="#features">功能</a></li>
+    <li><a href="#how">使用流程</a></li>
+    <li><a href="app.html">打开应用</a></li>
+    <li><a href="onboarding.html">新手指引</a></li>
+    <li><a href="login.html">登录</a></li>
+  </ul>
+  <div style="display:flex;gap:8px;">
+    <a href="login.html" class="btn btn-secondary">登录</a>
+    <a href="app.html" class="btn btn-primary">开始创作</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<main>
+  <div class="hero-wrapper">
+    <div class="hero-bg-deco"></div>
+    <div class="hero-bg-deco2"></div>
+    <div class="hero">
+      <div class="hero-text">
+        <div class="hero-badge"><span class="dot"></span> v2.0 · 全面升级</div>
+        <h1>让独立创作者<br><span class="em">拥有完整的工具链</span></h1>
+        <p class="hero-desc">从作品管理到存证确权、从侵权监测到多平台发布——OriStudio 为独立创作者打造了一个本地运行、全链路闭环的创作助手，数据永远在你手上。</p>
+        <div class="hero-actions">
+          <a href="app.html" class="btn btn-primary" style="font-size:1rem;padding:14px 28px;">进入工作台 →</a>
+          <a href="onboarding.html" class="btn btn-secondary">新手指引</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-3d" id="hero-card">
+          <div class="hc-header">
+            <div class="hc-avatar">🎨</div>
+            <div>
+              <div class="hc-title">Morning Studio</div>
+              <div class="hc-sub">今日创作 · 3 个活跃项目</div>
+            </div>
+          </div>
+          <div class="hc-stats">
+            <div class="hc-stat">
+              <div class="hc-stat-val">247</div>
+              <div class="hc-stat-label">作品总量</div>
+            </div>
+            <div class="hc-stat">
+              <div class="hc-stat-val">156</div>
+              <div class="hc-stat-label">已存证</div>
+            </div>
+            <div class="hc-stat">
+              <div class="hc-stat-val">12</div>
+              <div class="hc-stat-label">上架产品</div>
+            </div>
+          </div>
+          <div class="hc-modules">
+            <div class="hc-mod"><span class="hc-mod-dot purple"></span>作品库</div>
+            <div class="hc-mod"><span class="hc-mod-dot green"></span>存证中心</div>
+            <div class="hc-mod"><span class="hc-mod-dot orange"></span>侵权监测</div>
+            <div class="hc-mod"><span class="hc-mod-dot blue"></span>IP 登记</div>
+            <div class="hc-mod"><span class="hc-mod-dot pink"></span>供应链</div>
+            <div class="hc-mod"><span class="hc-mod-dot cyan"></span>发布变现</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-header">
+      <div class="section-tag">六大核心模块</div>
+      <h2>全链路覆盖，不重复造轮子</h2>
+      <p class="section-sub">一个工具覆盖创作→存证→监测→登记→生产→上架全流程，所有数据本地存储，隐私安全可控。</p>
+    </div>
+    <div class="features-grid">
+      <a href="app.html#works" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g1">📂</div>
+        <div class="fc-title">作品管理</div>
+        <div class="fc-desc">拖拽导入、自动分类、元数据提取、版本快照——像管理代码一样管理你的创作资产。</div>
+        <ul class="fc-features">
+          <li>批量导入 + 自动去重</li>
+          <li>FTS5 全文搜索</li>
+          <li>图片/音频/视频预览</li>
+        </ul>
+      </a>
+      <a href="app.html#notary" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g2">🔐</div>
+        <div class="fc-title">存证确权</div>
+        <div class="fc-desc">本地 SHA-256 哈希计算，一键对接版权家、蚂蚁链、至信链，生成 PDF 存证证书。</div>
+        <ul class="fc-features">
+          <li>多平台存证（¥0.5-5/次）</li>
+          <li>C2PA 元数据嵌入</li>
+          <li>验证二维码生成</li>
+        </ul>
+      </a>
+      <a href="app.html#monitor" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g3">🔍</div>
+        <div class="fc-title">侵权监测</div>
+        <div class="fc-desc">定时以图搜图 + 文本检测，发现侵权自动生成投诉材料与律师函模板，维权闭环。</div>
+        <ul class="fc-features">
+          <li>百度识图 / Google Vision</li>
+          <li>定时扫描 + 通知</li>
+          <li>证据包一键导出</li>
+        </ul>
+      </a>
+      <a href="app.html#ip" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g4">📋</div>
+        <div class="fc-title">IP 登记</div>
+        <div class="fc-desc">版权登记材料清单、商标查询链接引导、进度追踪——提供指导，不代办（合法合规）。</div>
+        <ul class="fc-features">
+          <li>版权 + 商标双线指导</li>
+          <li>类别推荐参考</li>
+          <li>续展日历提醒</li>
+        </ul>
+      </a>
+      <a href="app.html#supply" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g5">🏭</div>
+        <div class="fc-title">供应链协作</div>
+        <div class="fc-desc">轻量级工厂联系人 + 订单管理 + 沟通时间线，做你的创作「笔记本」而非 ERP。</div>
+        <ul class="fc-features">
+          <li>工厂联系人与分组</li>
+          <li>订单状态追踪</li>
+          <li>交付/付款提醒</li>
+        </ul>
+      </a>
+      <a href="app.html#publish" class="feature-card" style="text-decoration:none;color:inherit;">
+        <div class="fc-icon g6">🚀</div>
+        <div class="fc-title">发布变现</div>
+        <div class="fc-desc">AI 生成产品描述 → 适配多平台 CSV → 一键导出，附带「OriStudio 已验证」消费者信任标识。</div>
+        <ul class="fc-features">
+          <li>淘宝 / 小红书 / 抖音模板</li>
+          <li>LLM 描述生成</li>
+          <li>收入跟踪报表</li>
+        </ul>
+      </a>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <div class="proof-section">
+    <div class="proof-grid">
+      <div class="proof-stat">
+        <div class="proof-num">100%</div>
+        <div class="proof-label">本地数据主权</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-num">6</div>
+        <div class="proof-label">核心模块闭环</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-num">3 种</div>
+        <div class="proof-label">分发方式灵活</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-num">0</div>
+        <div class="proof-label">服务器依赖</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how">
+    <div class="section-header">
+      <div class="section-tag">使用流程</div>
+      <h2>四步走通创作全链路</h2>
+    </div>
+    <div class="steps-flow">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">导入作品</div>
+        <div class="step-desc">拖拽文件<br>自动分类打标</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">存证确权</div>
+        <div class="step-desc">一键哈希<br>上链存证</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">监测 + 登记</div>
+        <div class="step-desc">定时扫描侵权<br>IP 登记指导</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">发布变现</div>
+        <div class="step-desc">生成描述<br>多平台上架</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <h3>准备好保护你的创作了吗？</h3>
+      <p>OriStudio v2.0 现已支持完整创作闭环。本地运行，数据主权归你——免费开始使用。</p>
+      <a href="app.html" class="btn btn-primary btn-cta" style="color:var(--accent);font-size:1.05rem;padding:14px 32px;">打开工作台 →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>© 2026 OriStudio · 个人创作者助手</span>
+    <span>本地优先 · 数据主权 · 开源可审计</span>
+  </div>
+</main>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // 3D card tilt on mouse move
+  const card = document.getElementById('hero-card');
+  if (card && window.matchMedia('(min-width: 1025px)').matches) {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 6}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(-4deg) rotateX(2deg)';
+    });
+  }
+</script>
+</body>
+</html>

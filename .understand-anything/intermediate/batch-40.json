@@ -1,0 +1,377 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/c2pa/ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "type": "file",
+      "name": "ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "filePath": "backend/data/c2pa/ff463894c8c4401c891dff6b375e22e1.c2pa.json",
+      "summary": "C2PA 内容来源和版权信息存档的 JSON 配置文件。",
+      "tags": [
+        "configuration",
+        "c2pa",
+        "provenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/ff78f6f3aaed4a07b183dd927e770551.c2pa.json",
+      "type": "file",
+      "name": "ff78f6f3aaed4a07b183dd927e770551.c2pa.json",
+      "filePath": "backend/data/c2pa/ff78f6f3aaed4a07b183dd927e770551.c2pa.json",
+      "summary": "C2PA 内容来源和版权信息存档的 JSON 配置文件。",
+      "tags": [
+        "configuration",
+        "c2pa",
+        "provenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_1226f9ca7df14cb0af6ce48713a32932.pdf",
+      "type": "file",
+      "name": "cert_1226f9ca7df14cb0af6ce48713a32932.pdf",
+      "filePath": "backend/data/certificates/cert_1226f9ca7df14cb0af6ce48713a32932.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_27ea0c0540394b7981ff7217f3a9cd94.pdf",
+      "type": "file",
+      "name": "cert_27ea0c0540394b7981ff7217f3a9cd94.pdf",
+      "filePath": "backend/data/certificates/cert_27ea0c0540394b7981ff7217f3a9cd94.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_513a0901da7a437ba3edf6d7da6c87a6.pdf",
+      "type": "file",
+      "name": "cert_513a0901da7a437ba3edf6d7da6c87a6.pdf",
+      "filePath": "backend/data/certificates/cert_513a0901da7a437ba3edf6d7da6c87a6.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_63cc546203e24810818d941da00f3dbf.pdf",
+      "type": "file",
+      "name": "cert_63cc546203e24810818d941da00f3dbf.pdf",
+      "filePath": "backend/data/certificates/cert_63cc546203e24810818d941da00f3dbf.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_a9d891183b154258b098be5e0f08315b.pdf",
+      "type": "file",
+      "name": "cert_a9d891183b154258b098be5e0f08315b.pdf",
+      "filePath": "backend/data/certificates/cert_a9d891183b154258b098be5e0f08315b.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_d012386517984f01af310f9c129669da.pdf",
+      "type": "file",
+      "name": "cert_d012386517984f01af310f9c129669da.pdf",
+      "filePath": "backend/data/certificates/cert_d012386517984f01af310f9c129669da.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_ddd190852a9142ffbdc61abb50fd37d8.pdf",
+      "type": "file",
+      "name": "cert_ddd190852a9142ffbdc61abb50fd37d8.pdf",
+      "filePath": "backend/data/certificates/cert_ddd190852a9142ffbdc61abb50fd37d8.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_ee04aa8f13c94ce5bf00450ff9fe5b66.pdf",
+      "type": "file",
+      "name": "cert_ee04aa8f13c94ce5bf00450ff9fe5b66.pdf",
+      "filePath": "backend/data/certificates/cert_ee04aa8f13c94ce5bf00450ff9fe5b66.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_f1ab22dea16f4e97865302ce6cd29750.pdf",
+      "type": "file",
+      "name": "cert_f1ab22dea16f4e97865302ce6cd29750.pdf",
+      "filePath": "backend/data/certificates/cert_f1ab22dea16f4e97865302ce6cd29750.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_f368d7cf97b34466934b1c2c3860a955.pdf",
+      "type": "file",
+      "name": "cert_f368d7cf97b34466934b1c2c3860a955.pdf",
+      "filePath": "backend/data/certificates/cert_f368d7cf97b34466934b1c2c3860a955.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/cert_fd4ea271857341d7b51d05e9172db83c.pdf",
+      "type": "file",
+      "name": "cert_fd4ea271857341d7b51d05e9172db83c.pdf",
+      "filePath": "backend/data/certificates/cert_fd4ea271857341d7b51d05e9172db83c.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/product_bbe295be86a848188befc4d83153fbeb_taobao.csv",
+      "type": "file",
+      "name": "product_bbe295be86a848188befc4d83153fbeb_taobao.csv",
+      "filePath": "backend/data/certificates/product_bbe295be86a848188befc4d83153fbeb_taobao.csv",
+      "summary": "产品销售 CSV 数据存档文件。",
+      "tags": [
+        "data",
+        "csv",
+        "sales"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/product_fbda3352f75e4305b4ab851e8b7d240a_taobao.csv",
+      "type": "file",
+      "name": "product_fbda3352f75e4305b4ab851e8b7d240a_taobao.csv",
+      "filePath": "backend/data/certificates/product_fbda3352f75e4305b4ab851e8b7d240a_taobao.csv",
+      "summary": "产品销售 CSV 数据存档文件。",
+      "tags": [
+        "data",
+        "csv",
+        "sales"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/rights_declaration_fd5187972f3846b89c0262c1363935a0.pdf",
+      "type": "file",
+      "name": "rights_declaration_fd5187972f3846b89c0262c1363935a0.pdf",
+      "filePath": "backend/data/certificates/rights_declaration_fd5187972f3846b89c0262c1363935a0.pdf",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/config/users.json.bak",
+      "type": "file",
+      "name": "users.json.bak",
+      "filePath": "backend/data/config/users.json.bak",
+      "summary": "用户配置备份文件。",
+      "tags": [
+        "backup",
+        "configuration",
+        "data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/oristudio.db",
+      "type": "file",
+      "name": "oristudio.db",
+      "filePath": "backend/data/oristudio.db",
+      "summary": "OriStudio SQLite 数据库文件或其 WAL/SHM 缓存文件。",
+      "tags": [
+        "database",
+        "sqlite",
+        "storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/oristudio.db-shm",
+      "type": "file",
+      "name": "oristudio.db-shm",
+      "filePath": "backend/data/oristudio.db-shm",
+      "summary": "OriStudio SQLite 数据库文件或其 WAL/SHM 缓存文件。",
+      "tags": [
+        "database",
+        "sqlite",
+        "storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/oristudio.db-wal",
+      "type": "file",
+      "name": "oristudio.db-wal",
+      "filePath": "backend/data/oristudio.db-wal",
+      "summary": "OriStudio SQLite 数据库文件或其 WAL/SHM 缓存文件。",
+      "tags": [
+        "database",
+        "sqlite",
+        "storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/pre_restore_20260612_063437.db",
+      "type": "file",
+      "name": "pre_restore_20260612_063437.db",
+      "filePath": "backend/data/pre_restore_20260612_063437.db",
+      "summary": "OriStudio SQLite 数据库文件或其 WAL/SHM 缓存文件。",
+      "tags": [
+        "database",
+        "sqlite",
+        "storage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/workspace/aa/aa3d1a898e904d08a525dd0a00950dd3/《急性腹痛与护理》学习报告.docx",
+      "type": "file",
+      "name": "《急性腹痛与护理》学习报告.docx",
+      "filePath": "backend/data/workspace/aa/aa3d1a898e904d08a525dd0a00950dd3/《急性腹痛与护理》学习报告.docx",
+      "summary": "版权证书或权利声明文档存档文件。",
+      "tags": [
+        "certificate",
+        "rights",
+        "archive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/OriStudio.spec",
+      "type": "file",
+      "name": "OriStudio.spec",
+      "filePath": "backend/OriStudio.spec",
+      "summary": "PyInstaller 打包配置文件，定义后端应用的可执行文件构建规格。",
+      "tags": [
+        "build-system",
+        "packaging",
+        "infrastructure"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/tests/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/tests/__init__.py",
+      "summary": "后端测试包初始化文件，无公开导出。",
+      "tags": [
+        "test",
+        "barrel",
+        "python-package"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/tests/conftest.py",
+      "type": "file",
+      "name": "conftest.py",
+      "filePath": "backend/tests/conftest.py",
+      "summary": "Pytest 测试配置和共享 fixtures，设置 SQLite 测试数据库引擎和 FastAPI TestClient。",
+      "tags": [
+        "test",
+        "fixture",
+        "pytest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/conftest.py:setup_db",
+      "type": "function",
+      "name": "setup_db",
+      "filePath": "backend/tests/conftest.py",
+      "lineRange": [
+        33,
+        45
+      ],
+      "summary": "Pytest fixture：setup_db。",
+      "tags": [
+        "fixture",
+        "test"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/tests/conftest.py:client",
+      "type": "function",
+      "name": "client",
+      "filePath": "backend/tests/conftest.py",
+      "lineRange": [
+        49,
+        66
+      ],
+      "summary": "Pytest fixture：client。",
+      "tags": [
+        "fixture",
+        "test"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/tests/conftest.py",
+      "target": "function:backend/tests/conftest.py:setup_db",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/tests/conftest.py",
+      "target": "function:backend/tests/conftest.py:client",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

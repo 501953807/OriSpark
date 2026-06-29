@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/autopilot-state.json",
+      "type": "config",
+      "name": "autopilot-state.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/autopilot-state.json",
+      "summary": "Autopilot mode state for session 78452f71, tracking activation, original user prompt about UX/UI redesign, and confirmation status.",
+      "tags": ["omc-state", "autopilot", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/hud-state.json",
+      "type": "config",
+      "name": "hud-state.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/hud-state.json",
+      "summary": "HUD (heads-up display) state for session 78452f71, recording session start timestamp and background task list.",
+      "tags": ["omc-state", "hud", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/last-tool-error-state.json",
+      "type": "config",
+      "name": "last-tool-error-state.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/last-tool-error-state.json",
+      "summary": "Last tool error state recording a failed Read operation on a nonexistent frontend Vue component file, with 5 retries.",
+      "tags": ["omc-state", "error-log", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/mission-state.json",
+      "type": "config",
+      "name": "mission-state.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/mission-state.json",
+      "summary": "Mission state for session 78452f71 tracking one completed Explore mission with 3 worker agents, their timelines, and completion status.",
+      "tags": ["omc-state", "mission", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/pre-tool-advisory-throttle.json",
+      "type": "config",
+      "name": "pre-tool-advisory-throttle.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/pre-tool-advisory-throttle.json",
+      "summary": "Pre-tool advisory throttle entries for session 78452f71, deduplicating repeated agent spawn messages and execution tips.",
+      "tags": ["omc-state", "throttle", "session-data"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/subagent-tracking-state.json",
+      "type": "config",
+      "name": "subagent-tracking-state.json",
+      "filePath": "backend/.omc/state/sessions/78452f71-f492-4115-bdce-7ff3d44decdf/subagent-tracking-state.json",
+      "summary": "Subagent tracking state for session 78452f71 recording 3 spawned Explore agents, all completed with timing data.",
+      "tags": ["omc-state", "subagent-tracking", "session-data"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

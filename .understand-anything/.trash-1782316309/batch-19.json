@@ -1,0 +1,305 @@
+{
+  "nodes": [
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-31-44-430Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-31-44-430Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-31-44-430Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-33-09-709Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-33-09-709Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-33-09-709Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-33-33-318Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-33-33-318Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-33-33-318Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-33-43-700Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-33-43-700Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-33-43-700Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-33-48-428Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-33-48-428Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-33-48-428Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-00-086Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-00-086Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-00-086Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-00-637Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-00-637Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-00-637Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-01-231Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-01-231Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-01-231Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-01-795Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-01-795Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-01-795Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-02-377Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-02-377Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-02-377Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-02-914Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-02-914Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-02-914Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-03-524Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-03-524Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-03-524Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-07-335Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-07-335Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-07-335Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-30-480Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-30-480Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-30-480Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-34-42-990Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-34-42-990Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-34-42-990Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-36-16-819Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-36-16-819Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-36-16-819Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-36-17-387Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-36-17-387Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-36-17-387Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-36-17-958Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-36-17-958Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-36-17-958Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-36-18-560Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-36-18-560Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-36-18-560Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.playwright-mcp/page-2026-06-12T07-36-39-638Z.yml",
+      "type": "config",
+      "name": "page-2026-06-12T07-36-39-638Z.yml",
+      "filePath": ".playwright-mcp/page-2026-06-12T07-36-39-638Z.yml",
+      "summary": "Configuration file storing runtime state.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "e2e-testing",
+        "accessibility-tree",
+        "snapshot"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": []
+}

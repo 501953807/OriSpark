@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio — 新手指引</title>
+<style>
+  :root {
+    --bg:      oklch(98% 0.004 240);
+    --surface: oklch(100% 0 0);
+    --fg:      oklch(20% 0.02 240);
+    --muted:   oklch(50% 0.018 240);
+    --border:  oklch(90% 0.006 240);
+    --accent:  oklch(56% 0.12 170);
+    --accent2: oklch(62% 0.16 280);
+    --grad1:   oklch(56% 0.12 170);
+    --grad2:   oklch(62% 0.16 260);
+    --font-display: 'Söhne', 'Avenir Next', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg); color: var(--fg);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== ONBOARDING CONTAINER ========== */
+  .onboard {
+    max-width: 720px; width: 100%;
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 48px oklch(0 0 0 / 0.06);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Progress bar */
+  .ob-progress {
+    display: flex; padding: 0;
+    height: 4px; background: oklch(0 0 0 / 0.04);
+  }
+  .ob-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--grad1), var(--grad2));
+    border-radius: 0 2px 2px 0;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Header */
+  .ob-header {
+    padding: 32px 40px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ob-step-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--accent);
+  }
+  .ob-close {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--muted); font-size: 1.2rem;
+    transition: all 0.2s; text-decoration: none;
+  }
+  .ob-close:hover { background: oklch(0 0 0 / 0.06); color: var(--fg); }
+
+  /* Slides */
+  .ob-slides { position: relative; min-height: 420px; }
+  .ob-slide {
+    padding: 20px 40px 40px;
+    display: none;
+    flex-direction: column; gap: 20px;
+    animation: fadeSlide 0.4s ease;
+  }
+  .ob-slide.active { display: flex; }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .ob-icon-xl {
+    font-size: 3.5rem; animation: float 3s ease-in-out infinite;
+    width: fit-content;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .ob-icon-xl.delay-1 { animation-delay: 0.5s; }
+  .ob-icon-xl.delay-2 { animation-delay: 1s; }
+
+  .ob-title {
+    font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+    letter-spacing: -0.015em; line-height: 1.2;
+  }
+  .ob-desc {
+    font-size: 1rem; color: var(--muted); line-height: 1.7;
+  }
+  .ob-desc strong { color: var(--fg); font-weight: 600; }
+
+  /* Feature highlights */
+  .ob-features {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .ob-feature {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px;
+    background: oklch(96% 0.006 240);
+    border-radius: var(--radius);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .ob-feature:hover { background: oklch(56% 0.12 170 / 0.06); transform: translateX(4px); }
+  .ob-feat-icon {
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+    background: linear-gradient(135deg, oklch(56% 0.12 170 / 0.15), oklch(62% 0.16 260 / 0.15));
+  }
+  .ob-feat-text { flex: 1; }
+  .ob-feat-title { font-weight: 700; font-size: 0.92rem; }
+  .ob-feat-desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+  /* Demo mock card */
+  .ob-demo-card {
+    background: oklch(96% 0.006 240);
+    border-radius: var(--radius-lg); border: 1px solid var(--border);
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .ob-demo-row {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.88rem;
+  }
+  .ob-demo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .ob-demo-dot.green { background: oklch(56% 0.12 170); }
+  .ob-demo-dot.purple { background: oklch(62% 0.16 280); }
+  .ob-demo-badge {
+    padding: 3px 10px; border-radius: 100px; font-size: 0.72rem;
+    font-weight: 600; margin-left: auto;
+  }
+  .ob-demo-badge.ok { background: oklch(56% 0.12 170 / 0.12); color: oklch(56% 0.12 170); }
+  .ob-demo-badge.pend { background: oklch(62% 0.18 55 / 0.12); color: oklch(62% 0.18 55); }
+
+  /* 3D model placeholder */
+  .ob-3d-demo {
+    width: 100%; height: 120px;
+    background: linear-gradient(135deg, oklch(56% 0.12 170 / 0.06), oklch(62% 0.16 260 / 0.08));
+    border-radius: var(--radius-lg);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .ob-3d-box {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    border-radius: 10px;
+    box-shadow: 0 12px 32px oklch(56% 0.12 170 / 0.3);
+    animation: rotate-3d 6s ease-in-out infinite;
+  }
+  @keyframes rotate-3d {
+    0% { transform: perspective(600px) rotateY(0deg) rotateX(0deg); }
+    25% { transform: perspective(600px) rotateY(90deg) rotateX(5deg); }
+    50% { transform: perspective(600px) rotateY(180deg) rotateX(0deg); }
+    75% { transform: perspective(600px) rotateY(270deg) rotateX(-5deg); }
+    100% { transform: perspective(600px) rotateY(360deg) rotateX(0deg); }
+  }
+  .ob-3d-shadow {
+    width: 70px; height: 14px; background: oklch(0 0 0 / 0.10);
+    border-radius: 50%; position: absolute; bottom: 28px;
+    animation: shadow-pulse 6s ease-in-out infinite;
+  }
+  @keyframes shadow-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(0.7); opacity: 0.3; }
+  }
+
+  /* Buttons row */
+  .ob-buttons {
+    padding: 0 40px 36px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 11px 24px; border-radius: var(--radius);
+    font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.25s ease;
+    text-decoration: none; white-space: nowrap;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    color: #fff; box-shadow: 0 2px 14px oklch(56% 0.12 170 / 0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 22px oklch(56% 0.12 170 / 0.45); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--muted); }
+  .btn-ghost:hover { color: var(--fg); background: oklch(0 0 0 / 0.04); }
+
+  /* Step dots */
+  .ob-dots {
+    display: flex; gap: 6px;
+  }
+  .ob-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); transition: all 0.3s ease; cursor: pointer;
+  }
+  .ob-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+  .ob-dot.done { background: oklch(56% 0.12 170 / 0.4); }
+
+  /* Welcome final slide */
+  .ob-welcome-icon { font-size: 4rem; animation: pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes pop-in {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .onboard { border-radius: var(--radius-lg); }
+    .ob-header { padding: 24px 20px 0; }
+    .ob-slide { padding: 16px 20px 32px; }
+    .ob-buttons { padding: 0 20px 28px; flex-wrap: wrap; }
+    .ob-title { font-size: 1.4rem; }
+    .ob-dots { order: -1; width: 100%; justify-content: center; margin-bottom: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="onboard">
+  <!-- Progress -->
+  <div class="ob-progress">
+    <div class="ob-progress-fill" id="progress-fill" style="width:20%;"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="ob-header">
+    <span class="ob-step-label" id="step-label">第 1/5 步</span>
+    <a href="landing.html" class="ob-close">✕</a>
+  </div>
+
+  <!-- Slides -->
+  <div class="ob-slides">
+    <!-- Slide 1: Welcome -->
+    <div class="ob-slide active" data-index="0">
+      <div class="ob-icon-xl">🎨</div>
+      <div class="ob-title">欢迎来到 OriStudio</div>
+      <div class="ob-desc">
+        OriStudio 是你的<strong>个人创作全链路助手</strong>——从作品管理、存证确权，到侵权监测、多平台发布，一站式帮你搞定。
+      </div>
+      <div class="ob-features">
+        <div class="ob-feature">
+          <div class="ob-feat-icon">🔒</div>
+          <div class="ob-feat-text">
+            <div class="ob-feat-title">数据永远在你手上</div>
+            <div class="ob-feat-desc">所有数据本地存储（SQLite），不上传任何创作文件。创作者主权的工具。</div>
+          </div>
+        </div>
+        <div class="ob-feature">
+          <div class="ob-feat-icon">⚡</div>
+          <div class="ob-feat-text">
+            <div class="ob-feat-title">不重复造轮子</div>
+            <div class="ob-feat-desc">存证、商标搜索通过 API 接入现有平台，工具只做中间桥梁。</div>
+          </div>
+        </div>
+        <div class="ob-feature">
+          <div class="ob-feat-icon">📱</div>
+          <div class="ob-feat-text">
+            <div class="ob-feat-title">渐进式复杂度</div>
+            <div class="ob-feat-desc">新手只看基础功能，高级功能可展开——不会一上来就被复杂界面吓跑。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Work Management -->
+    <div class="ob-slide" data-index="1">
+      <div class="ob-icon-xl delay-1">📂</div>
+      <div class="ob-title">第一步：管理你的作品</div>
+      <div class="ob-desc">
+        拖拽导入你的图片、音频、视频、文档——系统自动<strong>提取元数据、计算哈希、按类型分类</strong>。像管理代码一样管理创作资产。
+      </div>
+      <div class="ob-demo-card">
+        <div class="ob-demo-row"><span class="ob-demo-dot green"></span> 春日插画系列-01.png · 2.4MB · EXIF 完整</div>
+        <div class="ob-demo-row"><span class="ob-demo-dot purple"></span> 产品展示动画.mp4 · 48MB · 1920×1080</div>
+        <div class="ob-demo-row"><span class="ob-demo-dot green"></span> 品牌IP形象-虎墩.psd · 12MB · 300dpi</div>
+        <div class="ob-demo-row"><span class="ob-demo-dot purple"></span> 品牌故事文案-v3.docx · 156KB</div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--accent);font-weight:600;">✨ 支持批量导入、版本快照、全文 FTS5 搜索</div>
+    </div>
+
+    <!-- Slide 3: Notarization -->
+    <div class="ob-slide" data-index="2">
+      <div class="ob-icon-xl delay-2">🔐</div>
+      <div class="ob-title">第二步：一键存证确权</div>
+      <div class="ob-desc">
+        作品导入后点击存证，系统<strong>本地计算 SHA-256 哈希</strong>，然后你扫码支付（¥0.5-5），哈希值上链存证。不经过中间人，直连司法链、联盟链平台。
+      </div>
+      <div class="ob-demo-card">
+        <div class="ob-demo-row">
+          📄 春日插画系列-01
+          <span class="ob-demo-badge ok">版权家 · ¥1/次</span>
+        </div>
+        <div class="ob-demo-row">
+          📄 品牌IP形象-虎墩
+          <span class="ob-demo-badge ok">蚂蚁链 · ¥0.5/次</span>
+        </div>
+        <div class="ob-demo-row">
+          📄 背景音乐-轻快版
+          <span class="ob-demo-badge pend">待存证</span>
+        </div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--muted);">支持平台：版权家（国家版权局 DCI）、至信链（司法链）、蚂蚁链（联盟链）</div>
+    </div>
+
+    <!-- Slide 4: Monitor + Publish -->
+    <div class="ob-slide" data-index="3">
+      <div class="ob-icon-xl">🚀</div>
+      <div class="ob-title">第三步：监测侵权 + 发布变现</div>
+      <div class="ob-desc">
+        OriStudio 会<strong>定时以图搜图</strong>帮你监测侵权，发现盗用自动生成投诉材料和律师函模板。同时一键生成多平台（淘宝/小红书/抖音）产品描述和 CSV，让你的创作快速变现。
+      </div>
+      <div class="ob-3d-demo">
+        <div class="ob-3d-shadow"></div>
+        <div class="ob-3d-box"></div>
+      </div>
+      <div class="ob-features" style="margin-top:4px;">
+        <div class="ob-feature">
+          <div class="ob-feat-icon">🔍</div>
+          <div class="ob-feat-text">
+            <div class="ob-feat-title">定时扫描 + 维权闭环</div>
+            <div class="ob-feat-desc">百度识图 / Google Vision · 发现 → 投诉 → 证据包 → 律师函</div>
+          </div>
+        </div>
+        <div class="ob-feature">
+          <div class="ob-feat-icon">📊</div>
+          <div class="ob-feat-text">
+            <div class="ob-feat-title">OriStudio Verified 信任标识</div>
+            <div class="ob-feat-desc">嵌入 QR 码指向存证验证页，消费者扫码可验证原创</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Ready -->
+    <div class="ob-slide" data-index="4" style="align-items:center;text-align:center;gap:28px;">
+      <div class="ob-welcome-icon">✨</div>
+      <div class="ob-title">一切就绪，开始创作吧！</div>
+      <div class="ob-desc" style="max-width:480px;">
+        你的<strong>创作数据主权</strong>，由 OriStudio 守护。从今天起，用工具箱思维管理创作全链路——安全、清爽、高效。
+      </div>
+      <div class="ob-features" style="width:100%;text-align:left;">
+        <div class="ob-feature"><div class="ob-feat-icon">📂</div><div class="ob-feat-text"><div class="ob-feat-title">管理作品</div><div class="ob-feat-desc">拖拽导入，开始构建你的作品库</div></div></div>
+        <div class="ob-feature"><div class="ob-feat-icon">🔐</div><div class="ob-feat-text"><div class="ob-feat-title">首次存证</div><div class="ob-feat-desc">选一个作品，体验一键上链存证</div></div></div>
+        <div class="ob-feature"><div class="ob-feat-icon">🔍</div><div class="ob-feat-text"><div class="ob-feat-title">开启监测</div><div class="ob-feat-desc">设置定时扫描，保护你的创作不被盗用</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="ob-buttons">
+    <button class="btn btn-ghost" id="btn-prev" onclick="prevSlide()">← 上一步</button>
+    <div class="ob-dots" id="dots">
+      <span class="ob-dot active" data-dot="0"></span>
+      <span class="ob-dot" data-dot="1"></span>
+      <span class="ob-dot" data-dot="2"></span>
+      <span class="ob-dot" data-dot="3"></span>
+      <span class="ob-dot" data-dot="4"></span>
+    </div>
+    <button class="btn btn-primary" id="btn-next" onclick="nextSlide()">下一步 →</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 5;
+  let current = 0;
+
+  function updateUI() {
+    const pct = ((current + 1) / TOTAL) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('step-label').textContent = `第 ${current + 1}/${TOTAL} 步`;
+
+    document.querySelectorAll('.ob-slide').forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+    });
+
+    document.querySelectorAll('.ob-dot').forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i === current) d.classList.add('active');
+      else if (i < current) d.classList.add('done');
+    });
+
+    document.getElementById('btn-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+    const nextBtn = document.getElementById('btn-next');
+    if (current === TOTAL - 1) {
+      nextBtn.innerHTML = '开始使用 →';
+      nextBtn.onclick = () => { window.location.href = 'app.html'; };
+    } else {
+      nextBtn.innerHTML = '下一步 →';
+      nextBtn.onclick = nextSlide;
+    }
+  }
+
+  function nextSlide() {
+    if (current < TOTAL - 1) { current++; updateUI(); }
+  }
+  function prevSlide() {
+    if (current > 0) { current--; updateUI(); }
+  }
+
+  // Dot click
+  document.querySelectorAll('.ob-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      current = parseInt(dot.dataset.dot);
+      updateUI();
+    });
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  updateUI();
+</script>
+</body>
+</html>

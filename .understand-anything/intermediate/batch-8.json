@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {
+      "id": "service:backend/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "backend/Dockerfile",
+      "summary": "后端 Python 应用容器化构建配置：基于 python:3.11-slim 基础镜像安装 FFmpeg 等系统依赖，通过 pip 安装 Python 包，暴露 8765 端口并使用 uvicorn 启动 Uvicorn ASGI 服务。",
+      "tags": ["containerization", "infrastructure", "deployment"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:backend/Dockerfile",
+      "target": "file:backend/app/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

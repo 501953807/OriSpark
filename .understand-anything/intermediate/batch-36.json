@@ -1,0 +1,2520 @@
+{
+  "nodes": [
+    {
+      "id": "service:backend/app/middleware/logging.py",
+      "type": "service",
+      "name": "logging.py",
+      "filePath": "backend/app/middleware/logging.py",
+      "summary": "记录 HTTP 请求的日志中间件，输出方法、路径、状态码和请求耗时。",
+      "tags": [
+        "middleware",
+        "http",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/middleware/logging.py:LoggingMiddleware",
+      "type": "function",
+      "name": "LoggingMiddleware",
+      "filePath": "backend/app/middleware/logging.py",
+      "summary": "LoggingMiddleware — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "middleware",
+        "http",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:backend/app/middleware/rate_limit.py",
+      "type": "service",
+      "name": "rate_limit.py",
+      "filePath": "backend/app/middleware/rate_limit.py",
+      "summary": "基于 IP 的滑动窗口速率限制中间件，防止 API 被过度调用并记录 API 调用统计。",
+      "tags": [
+        "middleware",
+        "http",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/middleware/rate_limit.py:RateLimitMiddleware",
+      "type": "function",
+      "name": "RateLimitMiddleware",
+      "filePath": "backend/app/middleware/rate_limit.py",
+      "summary": "RateLimitMiddleware — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "middleware",
+        "http",
+        "infrastructure"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/migrations/add_work_fields.py",
+      "type": "file",
+      "name": "add_work_fields.py",
+      "filePath": "backend/app/migrations/add_work_fields.py",
+      "summary": "向 works 表安全添加 synopsis 等新列的 SQLite 迁移脚本。",
+      "tags": [
+        "migration",
+        "database",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/migrations/add_work_fields.py:get_column_names",
+      "type": "function",
+      "name": "get_column_names",
+      "filePath": "backend/app/migrations/add_work_fields.py",
+      "summary": "get_column_names — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "migration",
+        "database",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/migrations/add_work_fields.py:migrate",
+      "type": "function",
+      "name": "migrate",
+      "filePath": "backend/app/migrations/add_work_fields.py",
+      "summary": "migrate — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "migration",
+        "database",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/migrations/migrate_products_to_listings.py",
+      "type": "file",
+      "name": "migrate_products_to_listings.py",
+      "filePath": "backend/app/migrations/migrate_products_to_listings.py",
+      "summary": "将 products 表数据迁移到 design_listings 表的完整迁移脚本。",
+      "tags": [
+        "migration",
+        "database",
+        "maintenance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/app/migrations/migrate_products_to_listings.py:migrate_products_to_listings",
+      "type": "function",
+      "name": "migrate_products_to_listings",
+      "filePath": "backend/app/migrations/migrate_products_to_listings.py",
+      "summary": "migrate_products_to_listings — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "migration",
+        "database",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/app/models/__init__.py",
+      "summary": "模型包入口，导入所有 SQLAlchemy ORM 模型确保 Alembic 迁移工具可检测全部表结构。",
+      "tags": [
+        "barrel",
+        "entry-point",
+        "module"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/base.py",
+      "type": "file",
+      "name": "base.py",
+      "filePath": "backend/app/models/base.py",
+      "summary": "SQLAlchemy Base 基类定义，所有数据模型通过继承此基类来映射数据库表。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/commission.py",
+      "type": "file",
+      "name": "commission.py",
+      "filePath": "backend/app/models/commission.py",
+      "summary": "委托项目管理数据模型，包含委托项目、订单和沟通消息三张关联表。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/commission.py:CommissionProject",
+      "type": "class",
+      "name": "CommissionProject",
+      "filePath": "backend/app/models/commission.py",
+      "summary": "CommissionProject — 数据模型类，定义 commissionproject 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/commission.py:CommissionOrder",
+      "type": "class",
+      "name": "CommissionOrder",
+      "filePath": "backend/app/models/commission.py",
+      "summary": "CommissionOrder — 数据模型类，定义 commissionorder 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/commission.py:CommissionMessage",
+      "type": "class",
+      "name": "CommissionMessage",
+      "filePath": "backend/app/models/commission.py",
+      "summary": "CommissionMessage — 数据模型类，定义 commissionmessage 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/factory.py",
+      "type": "file",
+      "name": "factory.py",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "工厂协作数据模型，包含 RFQ 询价单、样品管理和质量报告。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/models/factory.py:generate_uuid",
+      "type": "function",
+      "name": "generate_uuid",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "generate_uuid — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/factory.py:RFQRequest",
+      "type": "class",
+      "name": "RFQRequest",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "RFQRequest — 数据模型类，定义 rfqrequest 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/factory.py:Sample",
+      "type": "class",
+      "name": "Sample",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "Sample — 数据模型类，定义 sample 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/factory.py:QualityReport",
+      "type": "class",
+      "name": "QualityReport",
+      "filePath": "backend/app/models/factory.py",
+      "summary": "QualityReport — 数据模型类，定义 qualityreport 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/ipr.py",
+      "type": "file",
+      "name": "ipr.py",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "知识产权数据模型，涵盖商标注册、版权登记、外观设计和监测。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:IPRegistration",
+      "type": "class",
+      "name": "IPRegistration",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "IPRegistration — 数据模型类，定义 ipregistration 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:TrademarkClass",
+      "type": "class",
+      "name": "TrademarkClass",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "TrademarkClass — 数据模型类，定义 trademarkclass 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:CopyrightRegistration",
+      "type": "class",
+      "name": "CopyrightRegistration",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "CopyrightRegistration — 数据模型类，定义 copyrightregistration 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:TrademarkRegistration",
+      "type": "class",
+      "name": "TrademarkRegistration",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "TrademarkRegistration — 数据模型类，定义 trademarkregistration 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:TrademarkMonitoring",
+      "type": "class",
+      "name": "TrademarkMonitoring",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "TrademarkMonitoring — 数据模型类，定义 trademarkmonitoring 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:ApplicationTemplate",
+      "type": "class",
+      "name": "ApplicationTemplate",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "ApplicationTemplate — 数据模型类，定义 applicationtemplate 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/ipr.py:NiceClassification",
+      "type": "class",
+      "name": "NiceClassification",
+      "filePath": "backend/app/models/ipr.py",
+      "summary": "NiceClassification — 数据模型类，定义 niceclassification 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/listings.py",
+      "type": "file",
+      "name": "listings.py",
+      "filePath": "backend/app/models/listings.py",
+      "summary": "商品上架数据模型，管理设计商品与平台模板的兼容性。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/listings.py:DesignListing",
+      "type": "class",
+      "name": "DesignListing",
+      "filePath": "backend/app/models/listings.py",
+      "summary": "DesignListing — 数据模型类，定义 designlisting 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/listings.py:DesignTemplateCompatibility",
+      "type": "class",
+      "name": "DesignTemplateCompatibility",
+      "filePath": "backend/app/models/listings.py",
+      "summary": "DesignTemplateCompatibility — 数据模型类，定义 designtemplatecompatibility 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/metadata_template.py",
+      "type": "file",
+      "name": "metadata_template.py",
+      "filePath": "backend/app/models/metadata_template.py",
+      "summary": "元数据模板数据模型，支持动态自定义字段定义的模板系统。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/metadata_template.py:MetadataTemplate",
+      "type": "class",
+      "name": "MetadataTemplate",
+      "filePath": "backend/app/models/metadata_template.py",
+      "summary": "MetadataTemplate — 数据模型类，定义 metadatatemplate 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/metadata_template.py:TemplateField",
+      "type": "class",
+      "name": "TemplateField",
+      "filePath": "backend/app/models/metadata_template.py",
+      "summary": "TemplateField — 数据模型类，定义 templatefield 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/monetization.py",
+      "type": "file",
+      "name": "monetization.py",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "变现数据模型，包含产品规格模板、变现渠道、众筹项目和 IP 授权。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/monetization.py:ProductTemplate",
+      "type": "class",
+      "name": "ProductTemplate",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "ProductTemplate — 数据模型类，定义 producttemplate 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monetization.py:MonetizationChannel",
+      "type": "class",
+      "name": "MonetizationChannel",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "MonetizationChannel — 数据模型类，定义 monetizationchannel 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monetization.py:Campaign",
+      "type": "class",
+      "name": "Campaign",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "Campaign — 数据模型类，定义 campaign 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monetization.py:License",
+      "type": "class",
+      "name": "License",
+      "filePath": "backend/app/models/monetization.py",
+      "summary": "License — 数据模型类，定义 license 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/monitor_ext.py",
+      "type": "file",
+      "name": "monitor_ext.py",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "扩展监控数据模型，包含本地指纹、品牌监控、域名监控和白名单推荐。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/monitor_ext.py:LocalFingerprint",
+      "type": "class",
+      "name": "LocalFingerprint",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "LocalFingerprint — 数据模型类，定义 localfingerprint 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor_ext.py:BrandWatch",
+      "type": "class",
+      "name": "BrandWatch",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "BrandWatch — 数据模型类，定义 brandwatch 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor_ext.py:BrandScanResult",
+      "type": "class",
+      "name": "BrandScanResult",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "BrandScanResult — 数据模型类，定义 brandscanresult 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor_ext.py:DomainWatch",
+      "type": "class",
+      "name": "DomainWatch",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "DomainWatch — 数据模型类，定义 domainwatch 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor_ext.py:WhitelistSuggestion",
+      "type": "class",
+      "name": "WhitelistSuggestion",
+      "filePath": "backend/app/models/monitor_ext.py",
+      "summary": "WhitelistSuggestion — 数据模型类，定义 whitelistsuggestion 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/monitor.py",
+      "type": "file",
+      "name": "monitor.py",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "侵权监控数据模型，涵盖监控任务、检测结果、证据包和扫描计划。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/monitor.py:MonitorTask",
+      "type": "class",
+      "name": "MonitorTask",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "MonitorTask — 数据模型类，定义 monitortask 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor.py:MonitorResult",
+      "type": "class",
+      "name": "MonitorResult",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "MonitorResult — 数据模型类，定义 monitorresult 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor.py:EvidencePackage",
+      "type": "class",
+      "name": "EvidencePackage",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "EvidencePackage — 数据模型类，定义 evidencepackage 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/monitor.py:ScanSchedule",
+      "type": "class",
+      "name": "ScanSchedule",
+      "filePath": "backend/app/models/monitor.py",
+      "summary": "ScanSchedule — 数据模型类，定义 scanschedule 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/notary.py",
+      "type": "file",
+      "name": "notary.py",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "存证数据模型，包含公证记录、证书、C2PA 记录和审计追踪。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/notary.py:NotaryRecord",
+      "type": "class",
+      "name": "NotaryRecord",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "NotaryRecord — 数据模型类，定义 notaryrecord 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/notary.py:Certificate",
+      "type": "class",
+      "name": "Certificate",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "Certificate — 数据模型类，定义 certificate 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/notary.py:C2PARecord",
+      "type": "class",
+      "name": "C2PARecord",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "C2PARecord — 数据模型类，定义 c2parecord 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/notary.py:NotaryAuditTrail",
+      "type": "class",
+      "name": "NotaryAuditTrail",
+      "filePath": "backend/app/models/notary.py",
+      "summary": "NotaryAuditTrail — 数据模型类，定义 notaryaudittrail 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/publish.py",
+      "type": "file",
+      "name": "publish.py",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "发布数据模型，涵盖商品、发布记录、验证标记、收益和发布排程。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:Product",
+      "type": "class",
+      "name": "Product",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "Product — 数据模型类，定义 product 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:ProductPublishing",
+      "type": "class",
+      "name": "ProductPublishing",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "ProductPublishing — 数据模型类，定义 productpublishing 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:VerifiedMark",
+      "type": "class",
+      "name": "VerifiedMark",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "VerifiedMark — 数据模型类，定义 verifiedmark 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:RevenueRecord",
+      "type": "class",
+      "name": "RevenueRecord",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "RevenueRecord — 数据模型类，定义 revenuerecord 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:PublishSchedule",
+      "type": "class",
+      "name": "PublishSchedule",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "PublishSchedule — 数据模型类，定义 publishschedule 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:PublishContent",
+      "type": "class",
+      "name": "PublishContent",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "PublishContent — 数据模型类，定义 publishcontent 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/publish.py:PublishAnalytics",
+      "type": "class",
+      "name": "PublishAnalytics",
+      "filePath": "backend/app/models/publish.py",
+      "summary": "PublishAnalytics — 数据模型类，定义 publishanalytics 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/quality_inspection.py",
+      "type": "file",
+      "name": "quality_inspection.py",
+      "filePath": "backend/app/models/quality_inspection.py",
+      "summary": "质检数据模型，管理产品质量检验记录。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/quality_inspection.py:QualityInspection",
+      "type": "class",
+      "name": "QualityInspection",
+      "filePath": "backend/app/models/quality_inspection.py",
+      "summary": "QualityInspection — 数据模型类，定义 qualityinspection 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_crafts.py",
+      "type": "file",
+      "name": "reserved_crafts.py",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "手工创作者预留数据模型，管理实物商品、材料库存和生产批次。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/reserved_crafts.py:PhysicalProduct",
+      "type": "class",
+      "name": "PhysicalProduct",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "PhysicalProduct — 数据模型类，定义 physicalproduct 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_crafts.py:MaterialInventory",
+      "type": "class",
+      "name": "MaterialInventory",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "MaterialInventory — 数据模型类，定义 materialinventory 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_crafts.py:MaterialTransaction",
+      "type": "class",
+      "name": "MaterialTransaction",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "MaterialTransaction — 数据模型类，定义 materialtransaction 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_crafts.py:ProductionBatch",
+      "type": "class",
+      "name": "ProductionBatch",
+      "filePath": "backend/app/models/reserved_crafts.py",
+      "summary": "ProductionBatch — 数据模型类，定义 productionbatch 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_music.py",
+      "type": "file",
+      "name": "reserved_music.py",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "音乐创作者预留数据模型，涵盖专辑、曲目、发行平台和采样清仓。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:Album",
+      "type": "class",
+      "name": "Album",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "Album — 数据模型类，定义 album 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:AlbumTrack",
+      "type": "class",
+      "name": "AlbumTrack",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "AlbumTrack — 数据模型类，定义 albumtrack 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:WorkCollaborator",
+      "type": "class",
+      "name": "WorkCollaborator",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "WorkCollaborator — 数据模型类，定义 workcollaborator 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:DistributionRelease",
+      "type": "class",
+      "name": "DistributionRelease",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "DistributionRelease — 数据模型类，定义 distributionrelease 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:DistroPlatform",
+      "type": "class",
+      "name": "DistroPlatform",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "DistroPlatform — 数据模型类，定义 distroplatform 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_music.py:SampleClearance",
+      "type": "class",
+      "name": "SampleClearance",
+      "filePath": "backend/app/models/reserved_music.py",
+      "summary": "SampleClearance — 数据模型类，定义 sampleclearance 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_photographer.py",
+      "type": "file",
+      "name": "reserved_photographer.py",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "摄影师预留数据模型，包含原始格式、图库渠道和销售记录。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:RawFormat",
+      "type": "class",
+      "name": "RawFormat",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "RawFormat — 数据模型类，定义 rawformat 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:StockChannel",
+      "type": "class",
+      "name": "StockChannel",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "StockChannel — 数据模型类，定义 stockchannel 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:StockUpload",
+      "type": "class",
+      "name": "StockUpload",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "StockUpload — 数据模型类，定义 stockupload 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:StockSale",
+      "type": "class",
+      "name": "StockSale",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "StockSale — 数据模型类，定义 stocksale 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:DigitalDownload",
+      "type": "class",
+      "name": "DigitalDownload",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "DigitalDownload — 数据模型类，定义 digitaldownload 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_photographer.py:FineArtPrintConfig",
+      "type": "class",
+      "name": "FineArtPrintConfig",
+      "filePath": "backend/app/models/reserved_photographer.py",
+      "summary": "FineArtPrintConfig — 数据模型类，定义 fineartprintconfig 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_video.py",
+      "type": "file",
+      "name": "reserved_video.py",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "视频创作者预留数据模型，涵盖品牌活动和平台收益追踪。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_video.py:BrandCampaign",
+      "type": "class",
+      "name": "BrandCampaign",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "BrandCampaign — 数据模型类，定义 brandcampaign 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_video.py:BrandTask",
+      "type": "class",
+      "name": "BrandTask",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "BrandTask — 数据模型类，定义 brandtask 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_video.py:BrandMessage",
+      "type": "class",
+      "name": "BrandMessage",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "BrandMessage — 数据模型类，定义 brandmessage 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_video.py:PlatformGoal",
+      "type": "class",
+      "name": "PlatformGoal",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "PlatformGoal — 数据模型类，定义 platformgoal 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_video.py:PlatformEarning",
+      "type": "class",
+      "name": "PlatformEarning",
+      "filePath": "backend/app/models/reserved_video.py",
+      "summary": "PlatformEarning — 数据模型类，定义 platformearning 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/reserved_writing.py",
+      "type": "file",
+      "name": "reserved_writing.py",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "文字创作者预留数据模型，包含章节管理、修订和有声书制作。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:Chapter",
+      "type": "class",
+      "name": "Chapter",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "Chapter — 数据模型类，定义 chapter 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:ChapterComment",
+      "type": "class",
+      "name": "ChapterComment",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "ChapterComment — 数据模型类，定义 chaptercomment 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:ChapterRevision",
+      "type": "class",
+      "name": "ChapterRevision",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "ChapterRevision — 数据模型类，定义 chapterrevision 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:ExportConfig",
+      "type": "class",
+      "name": "ExportConfig",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "ExportConfig — 数据模型类，定义 exportconfig 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:EbookProduct",
+      "type": "class",
+      "name": "EbookProduct",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "EbookProduct — 数据模型类，定义 ebookproduct 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:AudiobookProduction",
+      "type": "class",
+      "name": "AudiobookProduction",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "AudiobookProduction — 数据模型类，定义 audiobookproduction 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/reserved_writing.py:AudiobookChapter",
+      "type": "class",
+      "name": "AudiobookChapter",
+      "filePath": "backend/app/models/reserved_writing.py",
+      "summary": "AudiobookChapter — 数据模型类，定义 audiobookchapter 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/subscription.py",
+      "type": "file",
+      "name": "subscription.py",
+      "filePath": "backend/app/models/subscription.py",
+      "summary": "订阅管理数据模型，管理会员等级和订阅者关系。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/subscription.py:SubscriptionTier",
+      "type": "class",
+      "name": "SubscriptionTier",
+      "filePath": "backend/app/models/subscription.py",
+      "summary": "SubscriptionTier — 数据模型类，定义 subscriptiontier 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/subscription.py:SubscriptionSubscriber",
+      "type": "class",
+      "name": "SubscriptionSubscriber",
+      "filePath": "backend/app/models/subscription.py",
+      "summary": "SubscriptionSubscriber — 数据模型类，定义 subscriptionsubscriber 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/subtitle.py",
+      "type": "file",
+      "name": "subtitle.py",
+      "filePath": "backend/app/models/subtitle.py",
+      "summary": "字幕管理数据模型，包含字幕文件和项目格式定义。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/app/models/subtitle.py:generate_uuid",
+      "type": "function",
+      "name": "generate_uuid",
+      "filePath": "backend/app/models/subtitle.py",
+      "summary": "generate_uuid — Python 函数，处理具体的业务逻辑操作。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/subtitle.py:Subtitle",
+      "type": "class",
+      "name": "Subtitle",
+      "filePath": "backend/app/models/subtitle.py",
+      "summary": "Subtitle — 数据模型类，定义 subtitle 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/subtitle.py:ProjectFileFormat",
+      "type": "class",
+      "name": "ProjectFileFormat",
+      "filePath": "backend/app/models/subtitle.py",
+      "summary": "ProjectFileFormat — 数据模型类，定义 projectfileformat 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/app/models/supply.py",
+      "type": "file",
+      "name": "supply.py",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "供应链管理数据模型，涵盖合作伙伴、订单、付款和提醒通知。",
+      "tags": [
+        "database",
+        "orm",
+        "model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:Partner",
+      "type": "class",
+      "name": "Partner",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "Partner — 数据模型类，定义 partner 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:PartnerQualification",
+      "type": "class",
+      "name": "PartnerQualification",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "PartnerQualification — 数据模型类，定义 partnerqualification 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:Order",
+      "type": "class",
+      "name": "Order",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "Order — 数据模型类，定义 order 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:OrderPayment",
+      "type": "class",
+      "name": "OrderPayment",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "OrderPayment — 数据模型类，定义 orderpayment 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:OrderCommunication",
+      "type": "class",
+      "name": "OrderCommunication",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "OrderCommunication — 数据模型类，定义 ordercommunication 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/app/models/supply.py:Reminder",
+      "type": "class",
+      "name": "Reminder",
+      "filePath": "backend/app/models/supply.py",
+      "summary": "Reminder — 数据模型类，定义 reminder 的数据库结构和字段约束。",
+      "tags": [
+        "data-model"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:backend/app/middleware/logging.py",
+      "target": "function:backend/app/middleware/logging.py:LoggingMiddleware",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:backend/app/middleware/logging.py",
+      "target": "function:backend/app/middleware/logging.py:LoggingMiddleware",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "service:backend/app/middleware/rate_limit.py",
+      "target": "function:backend/app/middleware/rate_limit.py:RateLimitMiddleware",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:backend/app/middleware/rate_limit.py",
+      "target": "function:backend/app/middleware/rate_limit.py:RateLimitMiddleware",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/migrations/add_work_fields.py",
+      "target": "function:backend/app/migrations/add_work_fields.py:get_column_names",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/migrations/add_work_fields.py",
+      "target": "function:backend/app/migrations/add_work_fields.py:get_column_names",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/migrations/add_work_fields.py",
+      "target": "function:backend/app/migrations/add_work_fields.py:migrate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/migrations/add_work_fields.py",
+      "target": "function:backend/app/migrations/add_work_fields.py:migrate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/migrations/migrate_products_to_listings.py",
+      "target": "function:backend/app/migrations/migrate_products_to_listings.py:migrate_products_to_listings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/migrations/migrate_products_to_listings.py",
+      "target": "function:backend/app/migrations/migrate_products_to_listings.py:migrate_products_to_listings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionProject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionProject",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionOrder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionOrder",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/commission.py",
+      "target": "class:backend/app/models/commission.py:CommissionMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "function:backend/app/models/factory.py:generate_uuid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "function:backend/app/models/factory.py:generate_uuid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:RFQRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:RFQRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:Sample",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:Sample",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:QualityReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/factory.py",
+      "target": "class:backend/app/models/factory.py:QualityReport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:IPRegistration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:IPRegistration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkClass",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkClass",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:CopyrightRegistration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:CopyrightRegistration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkRegistration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkRegistration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkMonitoring",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:TrademarkMonitoring",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:ApplicationTemplate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:ApplicationTemplate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:NiceClassification",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/ipr.py",
+      "target": "class:backend/app/models/ipr.py:NiceClassification",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/listings.py",
+      "target": "class:backend/app/models/listings.py:DesignListing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/listings.py",
+      "target": "class:backend/app/models/listings.py:DesignListing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/listings.py",
+      "target": "class:backend/app/models/listings.py:DesignTemplateCompatibility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/listings.py",
+      "target": "class:backend/app/models/listings.py:DesignTemplateCompatibility",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/metadata_template.py",
+      "target": "class:backend/app/models/metadata_template.py:MetadataTemplate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/metadata_template.py",
+      "target": "class:backend/app/models/metadata_template.py:MetadataTemplate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/metadata_template.py",
+      "target": "class:backend/app/models/metadata_template.py:TemplateField",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/metadata_template.py",
+      "target": "class:backend/app/models/metadata_template.py:TemplateField",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:ProductTemplate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:ProductTemplate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:MonetizationChannel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:MonetizationChannel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:Campaign",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:Campaign",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:License",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monetization.py",
+      "target": "class:backend/app/models/monetization.py:License",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:LocalFingerprint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:LocalFingerprint",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:BrandWatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:BrandWatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:BrandScanResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:BrandScanResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:DomainWatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:DomainWatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:WhitelistSuggestion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor_ext.py",
+      "target": "class:backend/app/models/monitor_ext.py:WhitelistSuggestion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:MonitorTask",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:MonitorTask",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:MonitorResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:MonitorResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:EvidencePackage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:EvidencePackage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:ScanSchedule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/monitor.py",
+      "target": "class:backend/app/models/monitor.py:ScanSchedule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:NotaryRecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:NotaryRecord",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:Certificate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:Certificate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:C2PARecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:C2PARecord",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:NotaryAuditTrail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/notary.py",
+      "target": "class:backend/app/models/notary.py:NotaryAuditTrail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:Product",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:Product",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:ProductPublishing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:ProductPublishing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:VerifiedMark",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:VerifiedMark",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:RevenueRecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:RevenueRecord",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishSchedule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishSchedule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishAnalytics",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/publish.py",
+      "target": "class:backend/app/models/publish.py:PublishAnalytics",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/quality_inspection.py",
+      "target": "class:backend/app/models/quality_inspection.py:QualityInspection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/quality_inspection.py",
+      "target": "class:backend/app/models/quality_inspection.py:QualityInspection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:PhysicalProduct",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:PhysicalProduct",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:MaterialInventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:MaterialInventory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:MaterialTransaction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:MaterialTransaction",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:ProductionBatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_crafts.py",
+      "target": "class:backend/app/models/reserved_crafts.py:ProductionBatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:Album",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:Album",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:AlbumTrack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:AlbumTrack",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:WorkCollaborator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:WorkCollaborator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:DistributionRelease",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:DistributionRelease",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:DistroPlatform",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:DistroPlatform",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:SampleClearance",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_music.py",
+      "target": "class:backend/app/models/reserved_music.py:SampleClearance",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:RawFormat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:RawFormat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockChannel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockChannel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockUpload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockSale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:StockSale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:DigitalDownload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:DigitalDownload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:FineArtPrintConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_photographer.py",
+      "target": "class:backend/app/models/reserved_photographer.py:FineArtPrintConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandCampaign",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandCampaign",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandTask",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandTask",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:BrandMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:PlatformGoal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:PlatformGoal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:PlatformEarning",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_video.py",
+      "target": "class:backend/app/models/reserved_video.py:PlatformEarning",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:Chapter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:Chapter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ChapterComment",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ChapterComment",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ChapterRevision",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ChapterRevision",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ExportConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:ExportConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:EbookProduct",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:EbookProduct",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:AudiobookProduction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:AudiobookProduction",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:AudiobookChapter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/reserved_writing.py",
+      "target": "class:backend/app/models/reserved_writing.py:AudiobookChapter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/subscription.py",
+      "target": "class:backend/app/models/subscription.py:SubscriptionTier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/subscription.py",
+      "target": "class:backend/app/models/subscription.py:SubscriptionTier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/subscription.py",
+      "target": "class:backend/app/models/subscription.py:SubscriptionSubscriber",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/subscription.py",
+      "target": "class:backend/app/models/subscription.py:SubscriptionSubscriber",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "function:backend/app/models/subtitle.py:generate_uuid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "function:backend/app/models/subtitle.py:generate_uuid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "class:backend/app/models/subtitle.py:Subtitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "class:backend/app/models/subtitle.py:Subtitle",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "class:backend/app/models/subtitle.py:ProjectFileFormat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/subtitle.py",
+      "target": "class:backend/app/models/subtitle.py:ProjectFileFormat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Partner",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Partner",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:PartnerQualification",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:PartnerQualification",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Order",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Order",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:OrderPayment",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:OrderPayment",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:OrderCommunication",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:OrderCommunication",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Reminder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/app/models/supply.py",
+      "target": "class:backend/app/models/supply.py:Reminder",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

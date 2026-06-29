@@ -1,0 +1,43 @@
+{
+  "nodes": [
+    {
+      "id": "document:.claude/CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": ".claude/CLAUDE.md",
+      "summary": "oh-my-claudecode multi-agent orchestration configuration documenting operating principles, delegation rules, model routing, available skills, and execution protocols.",
+      "tags": [
+        "documentation",
+        "configuration",
+        "orchestration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/ralph-loop.local.md",
+      "type": "document",
+      "name": "ralph-loop.local.md",
+      "filePath": ".claude/ralph-loop.local.md",
+      "summary": "Ralph Loop configuration document instructing implementation of all planned features from documentation into system code.",
+      "tags": [
+        "documentation",
+        "task-list"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.claude/settings.local.json",
+      "type": "config",
+      "name": "settings.local.json",
+      "filePath": ".claude/settings.local.json",
+      "summary": "Local Claude Code settings granting broad Bash command permissions including pytest, curl, uvicorn, SQLite, and Playwright browser automation.",
+      "tags": [
+        "configuration",
+        "permissions",
+        "tooling"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

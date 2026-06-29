@@ -1,0 +1,68 @@
+{
+  "nodes": [
+    {
+      "id": "document:.claude/rules/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": ".claude/rules/README.md",
+      "summary": "规则模板总览文档，列出可用的代码规范模板列表及其用途，说明自动发现机制和自定义方法。",
+      "tags": ["documentation", "rules-management", "getting-started"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/coding-style.md",
+      "type": "document",
+      "name": "coding-style.md",
+      "filePath": ".claude/rules/coding-style.md",
+      "summary": "编码规范指南，涵盖不可变性、文件组织、错误处理和输入验证等核心准则，附带代码质量检查清单。",
+      "tags": ["documentation", "coding-standards", "code-quality"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/git-workflow.md",
+      "type": "document",
+      "name": "git-workflow.md",
+      "filePath": ".claude/rules/git-workflow.md",
+      "summary": "Git 工作流规范，定义提交消息格式、PR 流程和分支命名约定。",
+      "tags": ["documentation", "git-workflow", "commit-conventions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/karpathy-guidelines.md",
+      "type": "document",
+      "name": "karpathy-guidelines.md",
+      "filePath": ".claude/rules/karpathy-guidelines.md",
+      "summary": "Karpathy 编程指导原则，强调编码前思考、简单性优先、外科手术式变更和目标驱动执行四大准则。",
+      "tags": ["documentation", "best-practices", "code-discipline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/performance.md",
+      "type": "document",
+      "name": "performance.md",
+      "filePath": ".claude/rules/performance.md",
+      "summary": "性能优化规则，定义模型选择策略、上下文窗口管理和算法效率指南。",
+      "tags": ["documentation", "performance", "optimization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/security.md",
+      "type": "document",
+      "name": "security.md",
+      "filePath": ".claude/rules/security.md",
+      "summary": "安全规则文档，包含强制安全检查项、密钥管理和安全响应协议。",
+      "tags": ["documentation", "security", "checklist"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/testing.md",
+      "type": "document",
+      "name": "testing.md",
+      "filePath": ".claude/rules/testing.md",
+      "summary": "测试规则文档，规定最低 80% 测试覆盖率要求，以及测试驱动开发和边缘用例测试标准。",
+      "tags": ["documentation", "testing", "tdd"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

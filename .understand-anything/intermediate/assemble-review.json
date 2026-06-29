@@ -1,0 +1,19 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 1,
+  "edgesRestored": 1,
+  "crossBatchEdgesAdded": 249,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "file:backend/app/main.py 在 scan-result.json 中存在但未被任何批次分析覆盖，导致 Dockerfile 的 deploys 边成为悬空边。已从知识图谱恢复该节点并用中文摘要填充。",
+    "知识图谱中的导入关系有 397 条，合并图仅有 29 条。补充了 249 条文件间导入边（涉及 routers/__init__.py、alembic/env.py、gateway/__init__.py 等多个文件的跨批量连接缺口）。",
+    "不存在类型重映射或复杂度值未知的问题。所有节点均有 summary、tags、complexity 字段。",
+    "描述字段（description）在所有批次和知识图谱中均未填充，属于上游分析器的设计决策而非缺陷。",
+    "144 个 config 类型节点中有 100 个是 VC/c2pa JSON 数据文件，语义上不应归为 config。这是批次分析器的分类问题，非合并脚本职责范围。",
+    "2 个 middleware 文件（logging.py, rate_limit.py）被批处理标记为 service 类型，更准确的类型应为 file。同样属于批处理阶段的分类偏差。",
+    "23 个 document 类型节点全部孤立（无入度无出度），包含 .claude/rules/ 下的规则文档。这些是 Markdown 元数据文件，不包含可链接的代码结构。",
+    "197 个孤立 file 节点主要是 backend/data/ 下的数据文件（.c2pa.json、.vc.json、.pdf、.csv 等），它们是被扫描到的资源文件而非可分析代码。",
+    "语言质量检查：所有 1536 个节点的 summary 均为中文，语言质量良好。"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "file:.claude/rules/typescript/coding-style.md",
+      "type": "document",
+      "name": "coding-style.md",
+      "filePath": ".claude/rules/typescript/coding-style.md",
+      "summary": "TypeScript/JavaScript-specific coding style extending common/coding-style.md: explicit types on public APIs, interface vs type alias guidance, avoiding any, React props typing, JSDoc for JS files, immutability with spread, zod validation, and console.log prohibition.",
+      "tags": ["documentation", "typescript", "coding-style", "react"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.claude/rules/typescript/hooks.md",
+      "type": "document",
+      "name": "hooks.md",
+      "filePath": ".claude/rules/typescript/hooks.md",
+      "summary": "TypeScript-specific hook configuration: PostToolUse hooks for Prettier auto-format and tsc type-check after edits, plus Stop hooks for console.log audit.",
+      "tags": ["documentation", "typescript", "hooks", "automation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.claude/rules/typescript/patterns.md",
+      "type": "document",
+      "name": "patterns.md",
+      "filePath": ".claude/rules/typescript/patterns.md",
+      "summary": "TypeScript-specific patterns: generic ApiResponse<T> envelope, useDebounce custom hook with cleanup, and Repository interface with standard CRUD operations.",
+      "tags": ["documentation", "typescript", "design-patterns", "custom-hooks"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.claude/rules/typescript/security.md",
+      "type": "document",
+      "name": "security.md",
+      "filePath": ".claude/rules/typescript/security.md",
+      "summary": "TypeScript-specific security guidance on environment variable secret management and leveraging the security-reviewer skill for comprehensive audits.",
+      "tags": ["documentation", "typescript", "security", "secret-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.claude/rules/typescript/testing.md",
+      "type": "document",
+      "name": "testing.md",
+      "filePath": ".claude/rules/typescript/testing.md",
+      "summary": "TypeScript-specific testing rules: Playwright as the designated E2E framework and e2e-runner agent support for critical user flows.",
+      "tags": ["documentation", "typescript", "testing", "e2e"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:.claude/rules/typescript/coding-style.md",
+      "target": "file:.claude/rules/common/coding-style.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.claude/rules/typescript/hooks.md",
+      "target": "file:.claude/rules/common/hooks.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.claude/rules/typescript/patterns.md",
+      "target": "file:.claude/rules/common/patterns.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.claude/rules/typescript/security.md",
+      "target": "file:.claude/rules/common/security.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.claude/rules/typescript/testing.md",
+      "target": "file:.claude/rules/common/testing.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

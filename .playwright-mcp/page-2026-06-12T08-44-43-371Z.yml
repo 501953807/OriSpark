@@ -1,0 +1,138 @@
+- generic [ref=e4]:
+  - link "跳转到主内容" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主导航" [ref=e6]:
+    - link "OriStudio 首页" [ref=e7] [cursor=pointer]:
+      - /url: /app
+      - generic [ref=e8]: O
+      - generic [ref=e9]:
+        - generic [ref=e10]: OriStudio
+        - generic [ref=e11]: 创作者全链路助手
+    - navigation [ref=e12]:
+      - generic [ref=e13]: 概览
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /app
+        - generic [ref=e15]: 📊
+        - generic [ref=e16]: 工作台
+      - generic [ref=e17]: 核心模块
+      - link "作品管理" [ref=e18] [cursor=pointer]:
+        - /url: /app/works
+        - generic [ref=e19]: 🎨
+        - generic [ref=e20]: 作品管理
+        - generic [ref=e21]: "0"
+      - link "存证确权" [ref=e22] [cursor=pointer]:
+        - /url: /app/notary
+        - generic [ref=e23]: 🔒
+        - generic [ref=e24]: 存证确权
+        - generic [ref=e25]: "0"
+      - link "侵权监测" [ref=e26] [cursor=pointer]:
+        - /url: /app/monitor
+        - generic [ref=e27]: 🛡️
+        - generic [ref=e28]: 侵权监测
+      - link "IP 登记" [ref=e29] [cursor=pointer]:
+        - /url: /app/ipr
+        - generic [ref=e30]: 📋
+        - generic [ref=e31]: IP 登记
+      - link "创作变现" [ref=e32] [cursor=pointer]:
+        - /url: /app/supply
+        - generic [ref=e33]: 💰
+        - generic [ref=e34]: 创作变现
+      - link "产品数据" [ref=e35] [cursor=pointer]:
+        - /url: /app/publish
+        - generic [ref=e36]: 📊
+        - generic [ref=e37]: 产品数据
+      - generic [ref=e38]: 设置
+      - link "偏好设置" [ref=e39] [cursor=pointer]:
+        - /url: /app/settings
+        - generic [ref=e40]: ⚙️
+        - generic [ref=e41]: 偏好设置
+      - link "第三方对接" [ref=e42] [cursor=pointer]:
+        - /url: /app/integrations
+        - generic [ref=e43]: 🔌
+        - generic [ref=e44]: 第三方对接
+    - button "◀" [ref=e45] [cursor=pointer]
+    - generic [ref=e46]:
+      - generic [ref=e47]: 创
+      - generic [ref=e48]:
+        - generic [ref=e49]: 创作者
+        - generic [ref=e50]: 本地用户
+  - generic [ref=e51]:
+    - banner [ref=e52]:
+      - heading "创作变现引擎" [level=1] [ref=e54]
+      - generic [ref=e55]:
+        - button "切换到暗色模式" [ref=e56] [cursor=pointer]: 🌙
+        - button "导入作品" [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]: 📤
+          - text: 导入作品
+        - button "🔔" [ref=e60] [cursor=pointer]
+        - link "偏好设置" [ref=e61] [cursor=pointer]:
+          - /url: /app/settings
+          - text: ⚙️
+        - link "第三方对接" [ref=e62] [cursor=pointer]:
+          - /url: /app/integrations
+          - text: 🔌
+    - main [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - button "📊 变现仪表盘" [ref=e66] [cursor=pointer]
+          - button "🎨 设计→产品" [ref=e67] [cursor=pointer]
+          - button "📦 产品" [ref=e68] [cursor=pointer]
+          - button "🚀 众筹" [ref=e69] [cursor=pointer]
+          - button "📜 IP授权" [ref=e70] [cursor=pointer]
+          - button "🖨️ POD发布" [ref=e71] [cursor=pointer]
+          - button "🏭 工厂" [ref=e72] [cursor=pointer]
+          - button "📋 订单" [ref=e73] [cursor=pointer]
+          - button "🤖 变现顾问" [ref=e74] [cursor=pointer]
+          - button "⏰ 提醒" [ref=e75] [cursor=pointer]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: 💰
+              - generic [ref=e80]: ¥0
+              - generic [ref=e81]: 总收入
+            - generic [ref=e82]:
+              - generic [ref=e83]: 📦
+              - generic [ref=e84]: "0"
+              - generic [ref=e85]: 订单数
+            - generic [ref=e86]:
+              - generic [ref=e87]: 🎨
+              - generic [ref=e88]: "1"
+              - generic [ref=e89]: 活跃产品
+            - generic [ref=e90]:
+              - generic [ref=e91]: 🌍
+              - generic [ref=e92]: "0"
+              - generic [ref=e93]: 覆盖渠道
+            - generic [ref=e94]:
+              - generic [ref=e95]: 🏭
+              - generic [ref=e96]: "0"
+              - generic [ref=e97]: 合作工厂
+            - generic [ref=e98]:
+              - generic [ref=e99]: 🚀
+              - generic [ref=e100]: "0"
+              - generic [ref=e101]: 活跃众筹
+          - generic [ref=e102]:
+            - heading "按变现路径分布" [level=3] [ref=e103]
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]: 🖨️
+                - generic [ref=e107]: POD按需打印
+                - generic [ref=e108]: 0 款
+              - generic [ref=e109]:
+                - generic [ref=e110]: 🚀
+                - generic [ref=e111]: 众筹验证
+                - generic [ref=e112]: 1 款
+              - generic [ref=e113]:
+                - generic [ref=e114]: 📜
+                - generic [ref=e115]: IP授权
+                - generic [ref=e116]: 0 款
+              - generic [ref=e117]:
+                - generic [ref=e118]: 🏭
+                - generic [ref=e119]: 按需制造
+                - generic [ref=e120]: 0 款
+              - generic [ref=e121]:
+                - generic [ref=e122]: 💾
+                - generic [ref=e123]: 数字产品
+                - generic [ref=e124]: 0 款
+          - generic [ref=e125]:
+            - heading "按材质分类" [level=3] [ref=e126]
+            - generic [ref=e128]: textile 1款

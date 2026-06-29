@@ -1,0 +1,305 @@
+{
+  "nodes": [
+    {
+      "id": "config:backend/data/vc/99c235173be24b93bd77e3234100f093.vc.json",
+      "type": "config",
+      "name": "99c235173be24b93bd77e3234100f093.vc.json",
+      "filePath": "backend/data/vc/99c235173be24b93bd77e3234100f093.vc.json",
+      "summary": "W3C Verifiable Credential for work 99c23517... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/9c0935825c0f4f53bbfe828cafaba1cc.vc.json",
+      "type": "config",
+      "name": "9c0935825c0f4f53bbfe828cafaba1cc.vc.json",
+      "filePath": "backend/data/vc/9c0935825c0f4f53bbfe828cafaba1cc.vc.json",
+      "summary": "W3C Verifiable Credential for work 9c093582... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/9ccefb616c954ab6bc9b3c4d34973fad.vc.json",
+      "type": "config",
+      "name": "9ccefb616c954ab6bc9b3c4d34973fad.vc.json",
+      "filePath": "backend/data/vc/9ccefb616c954ab6bc9b3c4d34973fad.vc.json",
+      "summary": "W3C Verifiable Credential for work 9ccefb61... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a00c8fe6141a46ca9ddd38e1c7912f65.vc.json",
+      "type": "config",
+      "name": "a00c8fe6141a46ca9ddd38e1c7912f65.vc.json",
+      "filePath": "backend/data/vc/a00c8fe6141a46ca9ddd38e1c7912f65.vc.json",
+      "summary": "W3C Verifiable Credential for work a00c8fe6... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a0a2367034f34e9d8641ad67711c6d6c.vc.json",
+      "type": "config",
+      "name": "a0a2367034f34e9d8641ad67711c6d6c.vc.json",
+      "filePath": "backend/data/vc/a0a2367034f34e9d8641ad67711c6d6c.vc.json",
+      "summary": "W3C Verifiable Credential for work a0a23670... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a10293ed469143cc871c5efd1809a344.vc.json",
+      "type": "config",
+      "name": "a10293ed469143cc871c5efd1809a344.vc.json",
+      "filePath": "backend/data/vc/a10293ed469143cc871c5efd1809a344.vc.json",
+      "summary": "W3C Verifiable Credential for work a10293ed... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a184be8604804a5ebe813fae36e1e661.vc.json",
+      "type": "config",
+      "name": "a184be8604804a5ebe813fae36e1e661.vc.json",
+      "filePath": "backend/data/vc/a184be8604804a5ebe813fae36e1e661.vc.json",
+      "summary": "W3C Verifiable Credential for work a184be86... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a233a22829c3425b83c8c05865679abe.vc.json",
+      "type": "config",
+      "name": "a233a22829c3425b83c8c05865679abe.vc.json",
+      "filePath": "backend/data/vc/a233a22829c3425b83c8c05865679abe.vc.json",
+      "summary": "W3C Verifiable Credential for work a233a228... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a2b499848920456e85cec6b8e040c875.vc.json",
+      "type": "config",
+      "name": "a2b499848920456e85cec6b8e040c875.vc.json",
+      "filePath": "backend/data/vc/a2b499848920456e85cec6b8e040c875.vc.json",
+      "summary": "W3C Verifiable Credential for work a2b49984... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a5c663ca0d1a456f9312d32e4b5b03e3.vc.json",
+      "type": "config",
+      "name": "a5c663ca0d1a456f9312d32e4b5b03e3.vc.json",
+      "filePath": "backend/data/vc/a5c663ca0d1a456f9312d32e4b5b03e3.vc.json",
+      "summary": "W3C Verifiable Credential for work a5c663ca... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a7c70f9a386f48d1934e17726ca1ecf4.vc.json",
+      "type": "config",
+      "name": "a7c70f9a386f48d1934e17726ca1ecf4.vc.json",
+      "filePath": "backend/data/vc/a7c70f9a386f48d1934e17726ca1ecf4.vc.json",
+      "summary": "W3C Verifiable Credential for work a7c70f9a... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a8bdd82686354522b3695ab07c6acfb4.vc.json",
+      "type": "config",
+      "name": "a8bdd82686354522b3695ab07c6acfb4.vc.json",
+      "filePath": "backend/data/vc/a8bdd82686354522b3695ab07c6acfb4.vc.json",
+      "summary": "W3C Verifiable Credential for work a8bdd826... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a93daa885f4f413891580f6593659a82.vc.json",
+      "type": "config",
+      "name": "a93daa885f4f413891580f6593659a82.vc.json",
+      "filePath": "backend/data/vc/a93daa885f4f413891580f6593659a82.vc.json",
+      "summary": "W3C Verifiable Credential for work a93daa88... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/a9a284b9244d4c3baf019054fa8c19be.vc.json",
+      "type": "config",
+      "name": "a9a284b9244d4c3baf019054fa8c19be.vc.json",
+      "filePath": "backend/data/vc/a9a284b9244d4c3baf019054fa8c19be.vc.json",
+      "summary": "W3C Verifiable Credential for work a9a284b9... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/ab73550efd0341acb4c18289c22c0b6c.vc.json",
+      "type": "config",
+      "name": "ab73550efd0341acb4c18289c22c0b6c.vc.json",
+      "filePath": "backend/data/vc/ab73550efd0341acb4c18289c22c0b6c.vc.json",
+      "summary": "W3C Verifiable Credential for work ab73550e... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/affdeb4b07a143dc8b10519c94ada214.vc.json",
+      "type": "config",
+      "name": "affdeb4b07a143dc8b10519c94ada214.vc.json",
+      "filePath": "backend/data/vc/affdeb4b07a143dc8b10519c94ada214.vc.json",
+      "summary": "W3C Verifiable Credential for work affdeb4b... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/b2926cf30de34079b18af8fc304b9053.vc.json",
+      "type": "config",
+      "name": "b2926cf30de34079b18af8fc304b9053.vc.json",
+      "filePath": "backend/data/vc/b2926cf30de34079b18af8fc304b9053.vc.json",
+      "summary": "W3C Verifiable Credential for work b2926cf3... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/b5da0825f6f04794b5221109b073f4cb.vc.json",
+      "type": "config",
+      "name": "b5da0825f6f04794b5221109b073f4cb.vc.json",
+      "filePath": "backend/data/vc/b5da0825f6f04794b5221109b073f4cb.vc.json",
+      "summary": "W3C Verifiable Credential for work b5da0825... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/b7e2a45885424214943e3262f2ee1da0.vc.json",
+      "type": "config",
+      "name": "b7e2a45885424214943e3262f2ee1da0.vc.json",
+      "filePath": "backend/data/vc/b7e2a45885424214943e3262f2ee1da0.vc.json",
+      "summary": "W3C Verifiable Credential for work b7e2a458... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/vc/bf229b81caa34ad8953b58badd8a117a.vc.json",
+      "type": "config",
+      "name": "bf229b81caa34ad8953b58badd8a117a.vc.json",
+      "filePath": "backend/data/vc/bf229b81caa34ad8953b58badd8a117a.vc.json",
+      "summary": "W3C Verifiable Credential for work bf229b81... notarized by OriStudio Notary Service using ECDSA-secp256r1 signatures.",
+      "tags": [
+        "configuration",
+        "security",
+        "certificate",
+        "verifiable-credential",
+        "notary"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

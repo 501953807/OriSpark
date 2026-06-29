@@ -1,0 +1,21 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 0,
+  "edgesRestored": 2,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Fixed 2 orphaned function nodes in frontend/src/api/client.ts by adding missing contains edges (functions existed as nodes but had no container link to the file).",
+    "All 967 edges reference valid nodes. All nodes have required fields (id, type, summary, tags).",
+    "No 'could not fix' items from the merge script needed action - the 'no id' nodes 432-435 were edge-level constructs (contains/imports as node types) that the scanner did not produce as nodes, consistent with expected behavior.",
+    "Major gap: 290 of 344 file nodes have NO function/class extraction and NO contains edges. Affected areas include 22 gateway implementations, 20 model files, 8 store files, 7 type files, 6 service files, and 70+ Vue components. This is a batch-analyzer limitation, not a merge-script issue.",
+    "4 backend source files (chinese_pod.py, json_feed.py, verified_badge.py, add_work_fields.py) were scanned and placed in import-map but found to have zero exports. No function nodes were produced for them, and no other file imports them by exported symbol. They are legitimately disconnected.",
+    "16 real test files (backend/tests/*) have no function nodes extracted - test files were analyzed as empty stubs. Frontend test files are similarly empty.",
+    "2 table nodes (Taobao CSV certificates) have no edges - tables are standalone data artifacts, acceptable.",
+    "Import map coverage is excellent: 333 of 334 applicable import edges present. Only 1 self-import in middleware/logging.py is absent (likely a code-smell in the source file, not a graph issue).",
+    "Complexity distribution is healthy: 677 simple, 273 moderate, 106 complex. No unknown complexity values present.",
+    "5 flipped tested_by edges were correctly corrected by the merge script. Remaining 5 are properly directed (file -> test file, direction=forward).",
+    "7 dropped tested_by edges (orphan endpoint or test-to-test/prod-to-prod pairs) were correctly excluded."
+  ]
+}

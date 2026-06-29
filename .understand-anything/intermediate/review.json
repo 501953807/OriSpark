@@ -1,0 +1,44 @@
+{
+  "approved": false,
+  "issues": [
+    "361 tag validation failures -- Chinese-language tags detected across 88 nodes (e.g., '设计系统', '文档', '入口点', '技术规范'). Tags must follow lowercase-hyphenated format (e.g., 'design-system', 'documentation', 'entry-point').",
+    "Graph has no layers -- assembled-graph.json contains no 'layers' array populated; layers.json exists separately but was not integrated into the assembled graph.",
+    "Graph has no tour steps -- assembled-graph.json contains no 'tour' section with steps; tour.json exists separately but was not integrated.",
+    "600 file-level nodes missing from all layers -- all 366 file nodes, 4 service nodes, 88 document nodes, 144 config nodes, and 4 schema nodes are file-level types but none appear in any layer (because layers are absent)."
+  ],
+  "warnings": [
+    "232 class nodes have no expected relationship edges (no 'extends'/inherits/etc.)",
+    "699 function nodes have no edges connecting to them (orphans)",
+    "19 function nodes have generic summaries that restate their filename or name",
+    "Multiple config nodes of type 'config' have ID prefixes matching but lack 'configures' edges",
+    "Document nodes (88 total) mostly lack 'documents' edges; only 57 document edges found",
+    "Service nodes (4 total) mostly lack 'deploys' or 'depends_on' edges; only 1 deploys edge found",
+    "Node type 'class' nodes have 0 incoming/outgoing edges (no related edge types in edgeTypes)"
+  ],
+  "stats": {
+    "totalNodes": 1537,
+    "totalEdges": 2063,
+    "totalLayers": 0,
+    "tourSteps": 0,
+    "nodeTypes": {
+      "file": 366,
+      "function": 699,
+      "service": 4,
+      "document": 88,
+      "config": 144,
+      "schema": 4,
+      "class": 232
+    },
+    "edgeTypes": {
+      "imports": 278,
+      "contains": 930,
+      "depends_on": 49,
+      "related": 9,
+      "documents": 57,
+      "configures": 1,
+      "exports": 724,
+      "tested_by": 14,
+      "deploys": 1
+    }
+  }
+}

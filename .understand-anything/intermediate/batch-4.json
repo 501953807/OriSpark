@@ -1,0 +1,190 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/components/layout/AppLayout.vue",
+      "type": "file",
+      "name": "AppLayout.vue",
+      "filePath": "frontend/src/components/layout/AppLayout.vue",
+      "summary": "应用布局根组件：组合 AppSidebar/AppTopbar/BusinessChainBar 构成整体页面骨架，内嵌文件导入模态框和 router-view 内容区。",
+      "tags": ["vue-component", "layout", "root-component", "file-upload", "routing"],
+      "complexity": "moderate",
+      "languageNotes": "实现移动端汉堡菜单、拖拽文件上传、进度展示和 Toast 通知，通过 appStore 管理侧栏折叠状态。"
+    },
+    {
+      "id": "file:frontend/src/components/layout/AppSidebar.vue",
+      "type": "file",
+      "name": "AppSidebar.vue",
+      "filePath": "frontend/src/components/layout/AppSidebar.vue",
+      "summary": "主导航侧边栏：包含工作台、创意资产、权利保护、IP 登记、商业转化、内容分发和经营管理等分组导航链接。",
+      "tags": ["vue-component", "sidebar", "navigation", "route-links"],
+      "complexity": "moderate",
+      "languageNotes": "通过 useI18n composable 实现国际化，appStore 管理折叠状态，显示作品数量和通知徽标。"
+    },
+    {
+      "id": "file:frontend/src/components/layout/AppTopbar.vue",
+      "type": "file",
+      "name": "AppTopbar.vue",
+      "filePath": "frontend/src/components/layout/AppTopbar.vue",
+      "summary": "顶部工具栏：展示当前页面标题、主题切换、导入作品按钮、通知面板和快捷设置入口。",
+      "tags": ["vue-component", "topbar", "header", "theme-toggle"],
+      "complexity": "simple",
+      "languageNotes": "基于 vue-router route.name 映射页面标题，支持暗色主题切换。"
+    },
+    {
+      "id": "file:frontend/src/components/layout/BusinessChainBar.vue",
+      "type": "file",
+      "name": "BusinessChainBar.vue",
+      "filePath": "frontend/src/components/layout/BusinessChainBar.vue",
+      "summary": "业务链导航条：展示创意资产→IP登记→权利保护→内容分发→商业转化→经营管理六个步骤的流转进度。",
+      "tags": ["vue-component", "business-flow", "stepper", "navigation"],
+      "complexity": "simple",
+      "languageNotes": "通过 computed 根据当前路由名和各模块完成状态标记 active/done 样式。"
+    },
+    {
+      "id": "function:frontend/src/components/layout/AppLayout.vue:startUpload",
+      "type": "function",
+      "name": "startUpload",
+      "filePath": "frontend/src/components/layout/AppLayout.vue",
+      "lineRange": [134, 157],
+      "summary": "顺序遍历选中的文件列表，逐个构造 FormData 调用 worksApi.create 上传，更新每个文件的进度状态并展示 Toast。",
+      "tags": ["file-upload", "async", "progress-tracking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/components/layout/AppLayout.vue:onDrop",
+      "type": "function",
+      "name": "onDrop",
+      "filePath": "frontend/src/components/layout/AppLayout.vue",
+      "lineRange": [117, 124],
+      "summary": "处理文件拖放事件：从 DragEvent.dataTransfer 提取 File 列表并追加到选中队列。",
+      "tags": ["drag-drop", "file-upload", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/components/layout/AppSidebar.vue:sb-nav-render",
+      "type": "function",
+      "name": "sidebar-navigation",
+      "filePath": "frontend/src/components/layout/AppSidebar.vue",
+      "lineRange": [11, 90],
+      "summary": "渲染侧边栏导航链接：按概览/核心业务/经营管理/设置四个分组输出 router-link 导航项，支持折叠和徽标计数。",
+      "tags": ["navigation", "sidebar", "router-links"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/components/layout/BusinessChainBar.vue:steps-computed",
+      "type": "function",
+      "name": "steps-computed",
+      "filePath": "frontend/src/components/layout/BusinessChainBar.vue",
+      "lineRange": [23, 35],
+      "summary": "计算当前业务链六步的状态（active/done），根据路由名和 appStore 中的作品/公证数量判定完成态。",
+      "tags": ["computed", "business-flow", "route-sync"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/components/layout/AppTopbar.vue:pageTitle",
+      "type": "function",
+      "name": "pageTitle",
+      "filePath": "frontend/src/components/layout/AppTopbar.vue",
+      "lineRange": [66, 69],
+      "summary": "根据当前路由名映射中文页面标题，未匹配时降级为 OriStudio。",
+      "tags": ["computed", "page-title", "route-mapping"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/components/layout/AppTopbar.vue:toggleTheme",
+      "type": "function",
+      "name": "toggleTheme",
+      "filePath": "frontend/src/components/layout/AppTopbar.vue",
+      "lineRange": [71, 73],
+      "summary": "切换暗色/亮色主题：调用 appStore 的 toggleTheme action。",
+      "tags": ["theme", "dark-mode", "store-action"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/AppSidebar.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/AppTopbar.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/BusinessChainBar.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/AppSidebar.vue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/AppTopbar.vue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "file:frontend/src/components/layout/BusinessChainBar.vue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "function:frontend/src/components/layout/AppLayout.vue:startUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppLayout.vue",
+      "target": "function:frontend/src/components/layout/AppLayout.vue:onDrop",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppSidebar.vue",
+      "target": "function:frontend/src/components/layout/AppSidebar.vue:sb-nav-render",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/BusinessChainBar.vue",
+      "target": "function:frontend/src/components/layout/BusinessChainBar.vue:steps-computed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppTopbar.vue",
+      "target": "function:frontend/src/components/layout/AppTopbar.vue:pageTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/components/layout/AppTopbar.vue",
+      "target": "function:frontend/src/components/layout/AppTopbar.vue:toggleTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

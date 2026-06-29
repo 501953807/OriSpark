@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "entries": {
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1781322187808,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1781322183529,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
+      "last_emitted_at_ms": 1781322110539,
+      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "136a015d4a2a8df7f36d17dffe88433bec054db1cd6d9ebff12ffd5a670012b4": {
+      "last_emitted_at_ms": 1781321811662,
+      "message": "Spawning agent: Explore (inherit) [BACKGROUND] | Task: 审查App主布局和组件"
+    },
+    "e1f6d9b2cee1655428e10e70678cee4c9485ae06182c5d468dbf6ed0be5a41d5": {
+      "last_emitted_at_ms": 1781321808379,
+      "message": "Spawning agent: Explore (inherit) [BACKGROUND] | Task: 审查所有前端视图页面"
+    },
+    "0ac834abb1250756cb1324200a48c6790795723d1686115d52fc27ffb4d48ca4": {
+      "last_emitted_at_ms": 1781321804011,
+      "message": "Spawning agent: Explore (inherit) [BACKGROUND] | Task: 审查前端路由和菜单结构"
+    }
+  },
+  "updated_at": "2026-06-13T03:43:07.808Z"
+}

@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "document:.claude/rules/typescript/coding-style.md",
+      "type": "document",
+      "name": "coding-style.md",
+      "filePath": ".claude/rules/typescript/coding-style.md",
+      "summary": "TypeScript/JavaScript 编码规范，覆盖类型接口定义、不可变性、错误处理、输入验证和禁止 console.log 等语言特定准则。",
+      "tags": ["documentation", "typescript", "coding-standards"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/typescript/hooks.md",
+      "type": "document",
+      "name": "hooks.md",
+      "filePath": ".claude/rules/typescript/hooks.md",
+      "summary": "TypeScript/JavaScript 钩子规范，定义 PostToolUse 和 Stop 两种钩子的行为约束。",
+      "tags": ["documentation", "typescript", "hooks"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/typescript/patterns.md",
+      "type": "document",
+      "name": "patterns.md",
+      "filePath": ".claude/rules/typescript/patterns.md",
+      "summary": "TypeScript/JavaScript 模式文档，规定 API 响应格式、自定义 Hook 模式和仓库模式的 TS 实现指南。",
+      "tags": ["documentation", "typescript", "design-patterns"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/typescript/security.md",
+      "type": "document",
+      "name": "security.md",
+      "filePath": ".claude/rules/typescript/security.md",
+      "summary": "TypeScript/JavaScript 安全规范，涵盖密钥管理和智能体安全支持。",
+      "tags": ["documentation", "typescript", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/typescript/testing.md",
+      "type": "document",
+      "name": "testing.md",
+      "filePath": ".claude/rules/typescript/testing.md",
+      "summary": "TypeScript/JavaScript 测试规范，覆盖 E2E 测试和智能体辅助测试。",
+      "tags": ["documentation", "typescript", "testing"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

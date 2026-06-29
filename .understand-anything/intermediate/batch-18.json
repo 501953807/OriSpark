@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/certificates/signatures/27ea0c0540394b7981ff7217f3a9cd94.json",
+      "type": "file",
+      "name": "27ea0c0540394b7981ff7217f3a9cd94.json",
+      "filePath": "backend/data/certificates/signatures/27ea0c0540394b7981ff7217f3a9cd94.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/513a0901da7a437ba3edf6d7da6c87a6.json",
+      "type": "file",
+      "name": "513a0901da7a437ba3edf6d7da6c87a6.json",
+      "filePath": "backend/data/certificates/signatures/513a0901da7a437ba3edf6d7da6c87a6.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/63cc546203e24810818d941da00f3dbf.json",
+      "type": "file",
+      "name": "63cc546203e24810818d941da00f3dbf.json",
+      "filePath": "backend/data/certificates/signatures/63cc546203e24810818d941da00f3dbf.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "type": "file",
+      "name": "70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "filePath": "backend/data/certificates/signatures/70c742e03a49419aa333c8ca145e58cd_vc_key.json",
+      "summary": "VC（可验证凭证）私钥数据文件，用于生成可验证凭证的ECDSA签名。",
+      "tags": ["vc-key", "private-key", "data-artifact", "configuration", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "type": "file",
+      "name": "914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "filePath": "backend/data/certificates/signatures/914c71f5b9514ea28cd0a61a15aed325_vc_key.json",
+      "summary": "VC（可验证凭证）私钥数据文件，用于生成可验证凭证的ECDSA签名。",
+      "tags": ["vc-key", "private-key", "data-artifact", "configuration", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/a9d891183b154258b098be5e0f08315b.json",
+      "type": "file",
+      "name": "a9d891183b154258b098be5e0f08315b.json",
+      "filePath": "backend/data/certificates/signatures/a9d891183b154258b098be5e0f08315b.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "type": "file",
+      "name": "dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "filePath": "backend/data/certificates/signatures/dbabf0e9a59544b88ff5c9afcfefb2d4_c2pa_key.json",
+      "summary": "C2PA密钥数据文件，包含C2PA内容真实性声明的签名密钥信息。",
+      "tags": ["c2pa-key", "data-artifact", "configuration", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "type": "file",
+      "name": "ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "filePath": "backend/data/certificates/signatures/ee04aa8f13c94ce5bf00450ff9fe5b66.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/certificates/signatures/f1ab22dea16f4e97865302ce6cd29750.json",
+      "type": "file",
+      "name": "f1ab22dea16f4e97865302ce6cd29750.json",
+      "filePath": "backend/data/certificates/signatures/f1ab22dea16f4e97865302ce6cd29750.json",
+      "summary": "ECDSA证书签名数据文件，包含工作内容的数字签名、公钥和签名算法信息。",
+      "tags": ["signature", "ecdsa", "certificate", "data-artifact", "configuration"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

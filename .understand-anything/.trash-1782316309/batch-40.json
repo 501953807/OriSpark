@@ -1,0 +1,146 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/archive/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "docs/archive/README.md",
+      "summary": "Archive index explaining why each document was archived and identifying the superseding replacement document in the parent docs/ directory.",
+      "tags": ["documentation", "index", "archive"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/archive/agent-evaluation-report.md",
+      "type": "document",
+      "name": "agent-evaluation-report.md",
+      "filePath": "docs/archive/agent-evaluation-report.md",
+      "summary": "Original nine-role agent evaluation report critiquing that the system was initially designed solely for illustrators; content was later absorbed into pm-startup-report.md.",
+      "tags": ["documentation", "evaluation", "historical"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/archive/final-revision-summary.md",
+      "type": "document",
+      "name": "final-revision-summary.md",
+      "filePath": "docs/archive/final-revision-summary.md",
+      "summary": "Summary of eight key decisions including v1 focus strategy, POD boundary definition, Canvas preview approach, legal compliance measures, and revision scoping; superseded by master-design-v3.md.",
+      "tags": ["documentation", "decision-log", "historical"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/archive/modules-README-v2.md",
+      "type": "document",
+      "name": "modules-README-v2.md",
+      "filePath": "docs/archive/modules-README-v2.md",
+      "summary": "Module README v2 indexing the older module design documents; superseded by modules-v3/README.md with expanded seven-module architecture.",
+      "tags": ["documentation", "index", "historical"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/archive/pm-startup-report.md",
+      "type": "document",
+      "name": "pm-startup-report.md",
+      "filePath": "docs/archive/pm-startup-report.md",
+      "summary": "Project management startup report with thirty structured problems, forty-six task assignments, and eight key decision points; superseded by OriStudio-完整实施计划.md.",
+      "tags": ["documentation", "project-management", "historical"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/archive/requirements-v3-full.md",
+      "type": "document",
+      "name": "requirements-v3-full.md",
+      "filePath": "docs/archive/requirements-v3-full.md",
+      "summary": "Comprehensive requirements analysis covering all six creator types; superseded by requirements-v3-final.md which narrowed focus to illustrators and AIGC artists for v1.",
+      "tags": ["documentation", "requirements", "historical"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/archive/用户手册.md",
+      "type": "document",
+      "name": "用户手册.md",
+      "filePath": "docs/archive/用户手册.md",
+      "summary": "Pre-v3 user manual with terminology inconsistent with v3 decisions (e.g., POD integration claims); superseded by ux-design-spec.md and master-design-v3.md.",
+      "tags": ["documentation", "user-guide", "historical"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/agent-evaluation-report.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/final-revision-summary.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/modules-README-v2.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/pm-startup-report.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/requirements-v3-full.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/README.md",
+      "target": "document:docs/archive/用户手册.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/agent-evaluation-report.md",
+      "target": "document:docs/archive/pm-startup-report.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/final-revision-summary.md",
+      "target": "document:docs/master-design-v3.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/modules-README-v2.md",
+      "target": "document:docs/master-design-v3.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/pm-startup-report.md",
+      "target": "file:docs/OriStudio-完整实施计划.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/archive/requirements-v3-full.md",
+      "target": "document:docs/requirements-v3-final.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

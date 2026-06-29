@@ -1,0 +1,70 @@
+{
+  "claim_generator": "OriStudio_C2PA/1.0 c2pa-service/0.2.0",
+  "claim_generator_info": [
+    {
+      "name": "OriStudio C2PA Service",
+      "version": "0.2.0"
+    }
+  ],
+  "vendor": "oristudio",
+  "recorder": "OriStudio",
+  "title": "C2PA 测试作品",
+  "format": "application/json",
+  "instance_id": "oristudio:20260612062601243558",
+  "signature_info": {
+    "issuer": "OriStudio",
+    "time": "2026-06-12T06:26:01.243392+00:00",
+    "alg": "es256",
+    "ta_url": ""
+  },
+  "assertions": [
+    {
+      "label": "stds.schema-org.CreativeWork",
+      "data": {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": "C2PA 测试作品",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "OriStudio Creator"
+          }
+        ],
+        "dateCreated": "2026-06-12T06:26:01.243392+00:00"
+      }
+    },
+    {
+      "label": "stds.schema-org.ClaimReview",
+      "data": {
+        "@context": "https://schema.org",
+        "@type": "ClaimReview",
+        "claimReviewed": "Content hash for 'C2PA 测试作品'",
+        "reviewAspect": "origin",
+        "datePublished": "2026-06-12T06:26:01.243392+00:00"
+      }
+    },
+    {
+      "label": "oristudio.hash",
+      "data": {
+        "algorithm": "SHA-256",
+        "hash": "b2e56ada7153d14304c78550532080330a1f0e991f19135f50b12fef9788548a",
+        "c2pa_hash": "suVq2nFT0UMEx4VQUyCAMwofDpkfGRNfULEv75eIVIo"
+      }
+    },
+    {
+      "label": "oristudio.signature",
+      "data": {
+        "algorithm": "ECDSA-secp256r1+SHA256",
+        "signed_at": "2026-06-12T06:26:01.243392+00:00",
+        "signer": "OriStudio"
+      }
+    }
+  ],
+  "ingredients": [],
+  "signature": {
+    "alg": "es256",
+    "hash": "MEYCIQDnuHQ1Ifzofo-lhIqWavsUmpUGGMqXH80_jBtRF19jYAIhALFmEfQ0nX0CxvUtWbNczdmA24JZFWLWi45OlVDuaiIZ",
+    "pad": "",
+    "signed_at": "2026-06-12T06:26:01.243929+00:00"
+  }
+}

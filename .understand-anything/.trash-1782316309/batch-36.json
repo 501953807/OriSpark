@@ -1,0 +1,185 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/vc/c3e3d6226e414d5fb54e07ad3b9e1ea8.vc.json",
+      "type": "file",
+      "name": "c3e3d6226e414d5fb54e07ad3b9e1ea8.vc.json",
+      "filePath": "backend/data/vc/c3e3d6226e414d5fb54e07ad3b9e1ea8.vc.json",
+      "summary": "W3C Verifiable Credential for a SHA-256 hashed image work issued by the OriStudio Notary Service with ECDSA-secp256r1 proof.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/c4bd5691d60f4bbd9c1040a04f8252c1.vc.json",
+      "type": "file",
+      "name": "c4bd5691d60f4bbd9c1040a04f8252c1.vc.json",
+      "filePath": "backend/data/vc/c4bd5691d60f4bbd9c1040a04f8252c1.vc.json",
+      "summary": "W3C Verifiable Credential for a SHA-256 hashed test image work issued by the OriStudio Notary Service with ECDSA-secp256r1 proof.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/c675aac2a4b945809087894d456d3874.vc.json",
+      "type": "file",
+      "name": "c675aac2a4b945809087894d456d3874.vc.json",
+      "filePath": "backend/data/vc/c675aac2a4b945809087894d456d3874.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/c85a8f7daece4097a62f4afa08b622ba.vc.json",
+      "type": "file",
+      "name": "c85a8f7daece4097a62f4afa08b622ba.vc.json",
+      "filePath": "backend/data/vc/c85a8f7daece4097a62f4afa08b622ba.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/c8a0f70393654a95be60a733dfb28c65.vc.json",
+      "type": "file",
+      "name": "c8a0f70393654a95be60a733dfb28c65.vc.json",
+      "filePath": "backend/data/vc/c8a0f70393654a95be60a733dfb28c65.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/cc24e338a5ee41bb9b0db16490fea17b.vc.json",
+      "type": "file",
+      "name": "cc24e338a5ee41bb9b0db16490fea17b.vc.json",
+      "filePath": "backend/data/vc/cc24e338a5ee41bb9b0db16490fea17b.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/cc69b15066704c25b83ae6c70470e7b5.vc.json",
+      "type": "file",
+      "name": "cc69b15066704c25b83ae6c70470e7b5.vc.json",
+      "filePath": "backend/data/vc/cc69b15066704c25b83ae6c70470e7b5.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/ce44d10acf5e48cfa1f9624729f3251c.vc.json",
+      "type": "file",
+      "name": "ce44d10acf5e48cfa1f9624729f3251c.vc.json",
+      "filePath": "backend/data/vc/ce44d10acf5e48cfa1f9624729f3251c.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/d04040abb49d49fcb5aac6f2bb563637.vc.json",
+      "type": "file",
+      "name": "d04040abb49d49fcb5aac6f2bb563637.vc.json",
+      "filePath": "backend/data/vc/d04040abb49d49fcb5aac6f2bb563637.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/d4c0d34983ca43359fe5ee9072683650.vc.json",
+      "type": "file",
+      "name": "d4c0d34983ca43359fe5ee9072683650.vc.json",
+      "filePath": "backend/data/vc/d4c0d34983ca43359fe5ee9072683650.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/d51c9fc62988416daefbf21f03545f09.vc.json",
+      "type": "file",
+      "name": "d51c9fc62988416daefbf21f03545f09.vc.json",
+      "filePath": "backend/data/vc/d51c9fc62988416daefbf21f03545f09.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/d59018872e1a4df5a0ca141ebc2564d8.vc.json",
+      "type": "file",
+      "name": "d59018872e1a4df5a0ca141ebc2564d8.vc.json",
+      "filePath": "backend/data/vc/d59018872e1a4df5a0ca141ebc2564d8.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/ddae536c8d544613aa2162854aebe8ad.vc.json",
+      "type": "file",
+      "name": "ddae536c8d544613aa2162854aebe8ad.vc.json",
+      "filePath": "backend/data/vc/ddae536c8d544613aa2162854aebe8ad.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/e1e37abd312f4b24b28092b8cc597ad5.vc.json",
+      "type": "file",
+      "name": "e1e37abd312f4b24b28092b8cc597ad5.vc.json",
+      "filePath": "backend/data/vc/e1e37abd312f4b24b28092b8cc597ad5.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/e22472afd54e45d9b0d543bdb12219ca.vc.json",
+      "type": "file",
+      "name": "e22472afd54e45d9b0d543bdb12219ca.vc.json",
+      "filePath": "backend/data/vc/e22472afd54e45d9b0d543bdb12219ca.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/e2b7aac50c3c44818dab213f6e240a01.vc.json",
+      "type": "file",
+      "name": "e2b7aac50c3c44818dab213f6e240a01.vc.json",
+      "filePath": "backend/data/vc/e2b7aac50c3c44818dab213f6e240a01.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/eb43228b2b2c4d1d90284a3624ca5998.vc.json",
+      "type": "file",
+      "name": "eb43228b2b2c4d1d90284a3624ca5998.vc.json",
+      "filePath": "backend/data/vc/eb43228b2b2c4d1d90284a3624ca5998.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/ec70db5c7f77472daf1181d51a22469d.vc.json",
+      "type": "file",
+      "name": "ec70db5c7f77472daf1181d51a22469d.vc.json",
+      "filePath": "backend/data/vc/ec70db5c7f77472daf1181d51a22469d.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/f644d3523fcf46b5ba7a950f55245902.vc.json",
+      "type": "file",
+      "name": "f644d3523fcf46b5ba7a950f55245902.vc.json",
+      "filePath": "backend/data/vc/f644d3523fcf46b5ba7a950f55245902.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/f6897550b17b4121be6e13609925f881.vc.json",
+      "type": "file",
+      "name": "f6897550b17b4121be6e13609925f881.vc.json",
+      "filePath": "backend/data/vc/f6897550b17b4121be6e13609925f881.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for an image work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

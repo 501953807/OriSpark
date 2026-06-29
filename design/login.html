@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OriStudio — 登录</title>
+<style>
+  :root {
+    --bg:      oklch(98% 0.004 240);
+    --surface: oklch(100% 0 0);
+    --fg:      oklch(20% 0.02 240);
+    --muted:   oklch(50% 0.018 240);
+    --border:  oklch(90% 0.006 240);
+    --accent:  oklch(56% 0.12 170);
+    --accent2: oklch(62% 0.16 280);
+    --grad1:   oklch(56% 0.12 170);
+    --grad2:   oklch(62% 0.16 260);
+    --font-display: 'Söhne', 'Avenir Next', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    --radius: 14px; --radius-sm: 8px; --radius-lg: 20px; --radius-xl: 28px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-body); background: var(--bg); color: var(--fg);
+    display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+    background: linear-gradient(135deg, oklch(96% 0.006 240) 0%, oklch(99% 0.002 240) 50%, oklch(97% 0.004 250) 100%);
+  }
+  /* Animated bg orbs */
+  .bg-orb {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+    filter: blur(80px); opacity: 0.35;
+  }
+  .bg-orb.o1 { width: 400px; height: 400px; background: oklch(56% 0.12 170 / 0.12); top: -100px; right: -80px; animation: orb-drift 12s ease-in-out infinite; }
+  .bg-orb.o2 { width: 300px; height: 300px; background: oklch(62% 0.16 260 / 0.10); bottom: -80px; left: -60px; animation: orb-drift 15s ease-in-out infinite reverse; }
+  @keyframes orb-drift { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -20px) scale(1.05); } 66% { transform: translate(-20px, 15px) scale(0.95); } }
+
+  .auth-container {
+    position: relative; z-index: 1; width: 100%; max-width: 440px;
+    background: var(--surface); border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 48px oklch(0 0 0 / 0.06), 0 0 0 1px oklch(0 0 0 / 0.03);
+    overflow: hidden;
+    animation: card-enter 0.6s ease;
+  }
+  @keyframes card-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Brand header */
+  .auth-brand {
+    padding: 32px 32px 0; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .auth-logo {
+    width: 56px; height: 56px; border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.5rem; font-weight: 800;
+    box-shadow: 0 4px 20px oklch(56% 0.12 170 / 0.3);
+    animation: logo-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes logo-pop { from { transform: scale(0) rotate(-10deg); } to { transform: scale(1) rotate(0); } }
+  .auth-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; }
+  .auth-sub { font-size: 0.85rem; color: var(--muted); }
+
+  /* Tab switcher */
+  .auth-tabs {
+    display: flex; gap: 4px; padding: 6px; margin: 24px 32px 0;
+    background: oklch(0 0 0 / 0.03); border-radius: var(--radius);
+  }
+  .auth-tab {
+    flex: 1; padding: 10px; border-radius: var(--radius-sm);
+    font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none;
+    background: transparent; color: var(--muted);
+    transition: all 0.25s ease; font-family: var(--font-body);
+  }
+  .auth-tab.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 6px oklch(0 0 0 / 0.06); }
+
+  /* Forms */
+  .auth-form { padding: 28px 32px 32px; display: none; flex-direction: column; gap: 18px; }
+  .auth-form.active { display: flex; animation: fadeSlide 0.35s ease; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 0.8rem; font-weight: 600; color: var(--fg); }
+  .field-input {
+    padding: 11px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    font-size: 0.9rem; font-family: var(--font-body); color: var(--fg);
+    background: var(--bg); transition: all 0.2s ease; outline: none;
+  }
+  .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.12); }
+  .field-input.error { border-color: #ef4444; }
+  .field-error { font-size: 0.72rem; color: #ef4444; display: none; }
+  .field-error.show { display: block; animation: shake 0.4s ease; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+  .field-row { display: flex; justify-content: space-between; align-items: center; }
+  .field-link { font-size: 0.8rem; color: var(--accent); cursor: pointer; text-decoration: none; font-weight: 500; }
+  .field-link:hover { text-decoration: underline; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 24px; border-radius: var(--radius);
+    font-family: var(--font-body); font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.25s ease; width: 100%;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--grad1), var(--grad2));
+    color: #fff; box-shadow: 0 2px 14px oklch(56% 0.12 170 / 0.3);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, oklch(100% 0 0 / 0.15) 50%, transparent 60%);
+    transform: translateX(-100%); transition: transform 0.6s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(100%); }
+  .btn-primary:hover { box-shadow: 0 6px 24px oklch(56% 0.12 170 / 0.45); transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary.loading { pointer-events: none; opacity: 0.8; }
+  .spinner { display: none; width: 18px; height: 18px; border: 2px solid oklch(100% 0 0 / 0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  .btn-primary.loading .spinner { display: inline-block; }
+  .btn-primary.loading .btn-text { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Social login */
+  .divider {
+    display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: var(--muted);
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .social-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .social-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); background: var(--surface);
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    transition: all 0.2s ease; color: var(--fg); font-family: var(--font-body);
+  }
+  .social-btn:hover { background: oklch(96% 0.006 240); border-color: var(--muted); transform: translateY(-1px); }
+  .social-btn .si { font-size: 1.1rem; }
+
+  /* 2FA code input */
+  .code-inputs { display: flex; gap: 10px; justify-content: center; }
+  .code-digit {
+    width: 48px; height: 56px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    text-align: center; font-size: 1.4rem; font-weight: 700; font-family: var(--font-display);
+    background: var(--bg); color: var(--fg); outline: none; transition: all 0.2s;
+  }
+  .code-digit:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.12); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
+    background: var(--fg); color: var(--surface); padding: 14px 28px;
+    border-radius: var(--radius); font-weight: 500; font-size: 0.88rem;
+    opacity: 0; transition: all 0.3s ease; z-index: 200; pointer-events: none;
+    box-shadow: 0 8px 32px oklch(0 0 0 / 0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Terms checkbox */
+  .checkbox-wrap { display: flex; align-items: flex-start; gap: 8px; }
+  .checkbox-wrap input[type=checkbox] { margin-top: 2px; accent-color: var(--accent); }
+  .checkbox-wrap label { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .checkbox-wrap label a { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .auth-container { border-radius: var(--radius-lg); }
+    .auth-brand { padding: 24px 20px 0; }
+    .auth-tabs { margin: 20px 20px 0; }
+    .auth-form { padding: 20px 20px 24px; }
+    .code-digit { width: 40px; height: 48px; font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-orb o1"></div>
+<div class="bg-orb o2"></div>
+
+<div class="auth-container">
+  <!-- Brand -->
+  <div class="auth-brand">
+    <div class="auth-logo">O</div>
+    <div class="auth-title">欢迎回到 OriStudio</div>
+    <div class="auth-sub">个人创作者全链路助手</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="auth-tabs">
+    <button class="auth-tab active" onclick="switchTab('login')">登录</button>
+    <button class="auth-tab" onclick="switchTab('register')">注册</button>
+  </div>
+
+  <!-- Login Form -->
+  <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
+    <div class="field-group">
+      <label class="field-label">邮箱 / 用户名</label>
+      <input class="field-input" type="text" placeholder="hello@example.com" id="login-email" required>
+      <div class="field-error" id="login-email-error">请输入有效的邮箱地址</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">密码</label>
+      <input class="field-input" type="password" placeholder="••••••••" id="login-password" required minlength="6">
+      <div class="field-error" id="login-pass-error">密码至少 6 位</div>
+    </div>
+    <div class="field-row">
+      <label class="checkbox-wrap" style="flex-direction:row;align-items:center;gap:6px;">
+        <input type="checkbox" checked> <span style="font-size:0.8rem;color:var(--muted);">记住我</span>
+      </label>
+      <span class="field-link" onclick="switchTab('forgot')">忘记密码？</span>
+    </div>
+    <button class="btn btn-primary" type="submit" id="login-btn">
+      <span class="spinner"></span>
+      <span class="btn-text">登录</span>
+    </button>
+    <div class="divider">或</div>
+    <div class="social-btns">
+      <button type="button" class="social-btn" onclick="socialLogin('Google')"><span class="si">G</span> Google</button>
+      <button type="button" class="social-btn" onclick="socialLogin('GitHub')"><span class="si">⌂</span> GitHub</button>
+      <button type="button" class="social-btn" onclick="socialLogin('微信')"><span class="si">💬</span> 微信</button>
+    </div>
+  </form>
+
+  <!-- Register Form -->
+  <form class="auth-form" id="form-register" onsubmit="handleRegister(event)">
+    <div class="field-group">
+      <label class="field-label">用户名</label>
+      <input class="field-input" type="text" placeholder="你的创作名称" id="reg-name" required>
+      <div class="field-error" id="reg-name-error">请输入用户名</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">邮箱</label>
+      <input class="field-input" type="email" placeholder="hello@example.com" id="reg-email" required>
+      <div class="field-error" id="reg-email-error">请输入有效邮箱</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">密码</label>
+      <input class="field-input" type="password" placeholder="至少 8 位，含数字和字母" id="reg-password" required minlength="8">
+      <div class="field-error" id="reg-pass-error">密码至少 8 位，需包含数字和字母</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">确认密码</label>
+      <input class="field-input" type="password" placeholder="再次输入密码" id="reg-password2" required>
+      <div class="field-error" id="reg-pass2-error">两次密码输入不一致</div>
+    </div>
+    <div class="checkbox-wrap">
+      <input type="checkbox" id="reg-tos" required>
+      <label for="reg-tos">我同意 <a href="#">服务条款</a> 和 <a href="#">隐私政策</a></label>
+    </div>
+    <button class="btn btn-primary" type="submit" id="reg-btn">
+      <span class="spinner"></span>
+      <span class="btn-text">创建账号</span>
+    </button>
+    <div style="text-align:center;font-size:0.82rem;color:var(--muted);">
+      已有账号？<span class="field-link" onclick="switchTab('login')">去登录</span>
+    </div>
+  </form>
+
+  <!-- Forgot Password Form -->
+  <form class="auth-form" id="form-forgot" onsubmit="handleForgot(event)">
+    <div style="text-align:center;margin-bottom:4px;">
+      <div style="font-size:2rem;margin-bottom:8px;">🔑</div>
+      <div style="font-family:var(--font-display);font-size:1.15rem;font-weight:700;">重置密码</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">输入注册邮箱，我们会发送验证码</div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">邮箱</label>
+      <input class="field-input" type="email" placeholder="hello@example.com" id="forgot-email" required>
+    </div>
+    <button class="btn btn-primary" type="submit" id="forgot-btn">
+      <span class="spinner"></span>
+      <span class="btn-text">发送验证码</span>
+    </button>
+    <div style="text-align:center;">
+      <span class="field-link" onclick="switchTab('login')">← 返回登录</span>
+    </div>
+  </form>
+
+  <!-- 2FA Form -->
+  <form class="auth-form" id="form-2fa" onsubmit="handle2FA(event)">
+    <div style="text-align:center;margin-bottom:4px;">
+      <div style="font-size:2rem;margin-bottom:8px;">📱</div>
+      <div style="font-family:var(--font-display);font-size:1.15rem;font-weight:700;">双重验证</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">已发送 6 位验证码至你的邮箱</div>
+    </div>
+    <div class="code-inputs" id="code-inputs">
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+      <input class="code-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+    </div>
+    <button class="btn btn-primary" type="submit" id="2fa-btn">
+      <span class="spinner"></span>
+      <span class="btn-text">验证</span>
+    </button>
+    <div style="text-align:center;display:flex;justify-content:center;gap:16px;">
+      <span class="field-link" onclick="switchTab('login')">← 返回登录</span>
+      <span class="field-link" onclick="showToast('验证码已重新发送')">重新发送</span>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let currentTab = 'login';
+  const forms = { login: 'form-login', register: 'form-register', forgot: 'form-forgot', '2fa': 'form-2fa' };
+
+  function switchTab(tab) {
+    currentTab = tab;
+    // Update tabs
+    document.querySelectorAll('.auth-tab').forEach(t => {
+      t.classList.toggle('active', t.textContent.includes(tab === 'login' ? '登录' : '注册') && (tab === 'login' || tab === 'register'));
+    });
+    if (tab === 'forgot' || tab === '2fa') {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    }
+    // Show/hide forms
+    Object.values(forms).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    const target = document.getElementById(forms[tab]);
+    if (target) target.classList.add('active');
+  }
+
+  function showToast(msg, duration = 2000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  function setLoading(btnId, loading) {
+    const btn = document.getElementById(btnId);
+    if (btn) btn.classList.toggle('loading', loading);
+  }
+
+  // Login
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    let valid = true;
+    document.getElementById('login-email-error').classList.remove('show');
+    document.getElementById('login-pass-error').classList.remove('show');
+    if (!email || !email.includes('@')) { document.getElementById('login-email-error').classList.add('show'); valid = false; }
+    if (password.length < 6) { document.getElementById('login-pass-error').classList.add('show'); valid = false; }
+    if (!valid) return;
+
+    setLoading('login-btn', true);
+    setTimeout(() => {
+      setLoading('login-btn', false);
+      switchTab('2fa');
+    }, 1200);
+  }
+
+  // Register
+  function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pw = document.getElementById('reg-password').value;
+    const pw2 = document.getElementById('reg-password2').value;
+    const tos = document.getElementById('reg-tos').checked;
+    let valid = true;
+    document.querySelectorAll('#form-register .field-error').forEach(el => el.classList.remove('show'));
+    if (!name) { document.getElementById('reg-name-error').classList.add('show'); valid = false; }
+    if (!email.includes('@')) { document.getElementById('reg-email-error').classList.add('show'); valid = false; }
+    if (pw.length < 8 || !/\d/.test(pw) || !/[a-zA-Z]/.test(pw)) { document.getElementById('reg-pass-error').classList.add('show'); valid = false; }
+    if (pw !== pw2) { document.getElementById('reg-pass2-error').classList.add('show'); valid = false; }
+    if (!tos) { showToast('请先同意服务条款'); valid = false; }
+    if (!valid) return;
+
+    setLoading('reg-btn', true);
+    setTimeout(() => {
+      setLoading('reg-btn', false);
+      showToast('✅ 注册成功！正在跳转...');
+      setTimeout(() => { window.location.href = 'app.html'; }, 1500);
+    }, 1500);
+  }
+
+  // Forgot password
+  function handleForgot(e) {
+    e.preventDefault();
+    const email = document.getElementById('forgot-email').value.trim();
+    if (!email.includes('@')) { showToast('请输入有效邮箱'); return; }
+    setLoading('forgot-btn', true);
+    setTimeout(() => {
+      setLoading('forgot-btn', false);
+      showToast('📧 验证码已发送至 ' + email);
+    }, 1000);
+  }
+
+  // 2FA
+  function handle2FA(e) {
+    e.preventDefault();
+    const code = [...document.querySelectorAll('#code-inputs .code-digit')].map(i => i.value).join('');
+    if (code.length < 6) { showToast('请输入完整验证码'); return; }
+    setLoading('2fa-btn', true);
+    setTimeout(() => {
+      setLoading('2fa-btn', false);
+      showToast('✅ 验证成功！');
+      setTimeout(() => { window.location.href = 'app.html'; }, 1000);
+    }, 1200);
+  }
+
+  // Social login
+  function socialLogin(platform) {
+    showToast(`正在跳转 ${platform} 授权...`);
+    setTimeout(() => { showToast(`✅ ${platform} 授权成功`); }, 1500);
+  }
+
+  // Code input auto-focus
+  document.querySelectorAll('.code-digit').forEach((input, idx, inputs) => {
+    input.addEventListener('input', () => {
+      if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+    });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !input.value && idx > 0) inputs[idx - 1].focus();
+    });
+  });
+
+  // Tab click handler for login/register tabs
+  document.querySelectorAll('.auth-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const isLogin = this.textContent.includes('登录');
+      switchTab(isLogin ? 'login' : 'register');
+    });
+  });
+</script>
+</body>
+</html>

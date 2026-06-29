@@ -1,0 +1,47 @@
+{
+  "nodes": [
+    {
+      "id": "file:.omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/hud-state.json",
+      "type": "config",
+      "name": "hud-state.json",
+      "filePath": ".omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/hud-state.json",
+      "summary": "OMC session HUD UI state capturing the last visible dashboard configuration.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "ui-state",
+        "dashboard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/pre-tool-advisory-throttle.json",
+      "type": "config",
+      "name": "pre-tool-advisory-throttle.json",
+      "filePath": ".omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/pre-tool-advisory-throttle.json",
+      "summary": "OMC session pre-tool advisory throttle configuration controlling prompt timing.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "throttle",
+        "timing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/subagent-tracking-state.json",
+      "type": "config",
+      "name": "subagent-tracking-state.json",
+      "filePath": ".omc/state/sessions/ce8c7482-5892-47ba-9948-f37776181555/subagent-tracking-state.json",
+      "summary": "OMC session subagent tracking state recording spawned agent status and ownership.",
+      "tags": [
+        "configuration",
+        "runtime-state",
+        "agent-orchestration",
+        "tracking"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

@@ -1,0 +1,185 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/vc/027b070aab1342af80cc6eb9d06c7f7a.vc.json",
+      "type": "file",
+      "name": "027b070aab1342af80cc6eb9d06c7f7a.vc.json",
+      "filePath": "backend/data/vc/027b070aab1342af80cc6eb9d06c7f7a.vc.json",
+      "summary": "可验证凭证（Verifiable Credential），包含作品创建证明、ECDSA签名和W3C标准凭证结构。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/02e0c9940d2248d28b278b08a259e9e5.vc.json",
+      "type": "file",
+      "name": "02e0c9940d2248d28b278b08a259e9e5.vc.json",
+      "filePath": "backend/data/vc/02e0c9940d2248d28b278b08a259e9e5.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/02f6f944fced48649dc1f1d0827fa22b.vc.json",
+      "type": "file",
+      "name": "02f6f944fced48649dc1f1d0827fa22b.vc.json",
+      "filePath": "backend/data/vc/02f6f944fced48649dc1f1d0827fa22b.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/04cc3a3d611345e592f790db8c772e9a.vc.json",
+      "type": "file",
+      "name": "04cc3a3d611345e592f790db8c772e9a.vc.json",
+      "filePath": "backend/data/vc/04cc3a3d611345e592f790db8c772e9a.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/04deccff3d554b15927b7227c386f3f1.vc.json",
+      "type": "file",
+      "name": "04deccff3d554b15927b7227c386f3f1.vc.json",
+      "filePath": "backend/data/vc/04deccff3d554b15927b7227c386f3f1.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/09ff9a1b245f46d1b2e69a512d14925a.vc.json",
+      "type": "file",
+      "name": "09ff9a1b245f46d1b2e69a512d14925a.vc.json",
+      "filePath": "backend/data/vc/09ff9a1b245f46d1b2e69a512d14925a.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/0a3c31b241884f80b56f142c1cc4bc51.vc.json",
+      "type": "file",
+      "name": "0a3c31b241884f80b56f142c1cc4bc51.vc.json",
+      "filePath": "backend/data/vc/0a3c31b241884f80b56f142c1cc4bc51.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/0c2bc038ce5740bc88273d1e1c716899.vc.json",
+      "type": "file",
+      "name": "0c2bc038ce5740bc88273d1e1c716899.vc.json",
+      "filePath": "backend/data/vc/0c2bc038ce5740bc88273d1e1c716899.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/0f3582f2a1f746e0961731e089448788.vc.json",
+      "type": "file",
+      "name": "0f3582f2a1f746e0961731e089448788.vc.json",
+      "filePath": "backend/data/vc/0f3582f2a1f746e0961731e089448788.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/10364eb45832491c884c65a9b090812a.vc.json",
+      "type": "file",
+      "name": "10364eb45832491c884c65a9b090812a.vc.json",
+      "filePath": "backend/data/vc/10364eb45832491c884c65a9b090812a.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/1053968ad7ac48bdb5475f39c21d4df3.vc.json",
+      "type": "file",
+      "name": "1053968ad7ac48bdb5475f39c21d4df3.vc.json",
+      "filePath": "backend/data/vc/1053968ad7ac48bdb5475f39c21d4df3.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/11647050cf6441f7b532e9a69a02aa5b.vc.json",
+      "type": "file",
+      "name": "11647050cf6441f7b532e9a69a02aa5b.vc.json",
+      "filePath": "backend/data/vc/11647050cf6441f7b532e9a69a02aa5b.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/14540a0e3cfa4b459cd1ac82a738b1a7.vc.json",
+      "type": "file",
+      "name": "14540a0e3cfa4b459cd1ac82a738b1a7.vc.json",
+      "filePath": "backend/data/vc/14540a0e3cfa4b459cd1ac82a738b1a7.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/168701d3229f4f8da83140f046828872.vc.json",
+      "type": "file",
+      "name": "168701d3229f4f8da83140f046828872.vc.json",
+      "filePath": "backend/data/vc/168701d3229f4f8da83140f046828872.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/192a572cdcc542b596e33afee110e1cf.vc.json",
+      "type": "file",
+      "name": "192a572cdcc542b596e33afee110e1cf.vc.json",
+      "filePath": "backend/data/vc/192a572cdcc542b596e33afee110e1cf.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/1ad5723b342d45e59def5949718806ad.vc.json",
+      "type": "file",
+      "name": "1ad5723b342d45e59def5949718806ad.vc.json",
+      "filePath": "backend/data/vc/1ad5723b342d45e59def5949718806ad.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/1b150536ad9f4f1794d9ce90c5a61fcf.vc.json",
+      "type": "file",
+      "name": "1b150536ad9f4f1794d9ce90c5a61fcf.vc.json",
+      "filePath": "backend/data/vc/1b150536ad9f4f1794d9ce90c5a61fcf.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/1e722c46804749358076458364f24eca.vc.json",
+      "type": "file",
+      "name": "1e722c46804749358076458364f24eca.vc.json",
+      "filePath": "backend/data/vc/1e722c46804749358076458364f24eca.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/227b783f87c84a838404a64543f77360.vc.json",
+      "type": "file",
+      "name": "227b783f87c84a838404a64543f77360.vc.json",
+      "filePath": "backend/data/vc/227b783f87c84a838404a64543f77360.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/22f552ff99fd4cedaebf89cc93cd3f3e.vc.json",
+      "type": "file",
+      "name": "22f552ff99fd4cedaebf89cc93cd3f3e.vc.json",
+      "filePath": "backend/data/vc/22f552ff99fd4cedaebf89cc93cd3f3e.vc.json",
+      "summary": "可验证凭证文件，包含作品身份标识、创建时间和数字签名。",
+      "tags": ["verifiable-credential", "vc", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

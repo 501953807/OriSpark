@@ -1,0 +1,436 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic "announcement" [ref=e3]:
+      - paragraph [ref=e4]:
+        - text: Please support the OWASP mission to improve software security through open source initiatives and community education.
+        - link "Donate Now!" [ref=e5] [cursor=pointer]:
+          - /url: https://owasp.org/donate/
+      - link "close announcement" [ref=e6] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e7]: 
+    - generic "main navigation" [ref=e8]:
+      - navigation "primary navigation" [ref=e9]:
+        - link "go to homepage" [ref=e10] [cursor=pointer]:
+          - /url: https://owasp.org/
+        - list "header menu" [ref=e12]:
+          - listitem [ref=e13]:
+            - link "PROJECTS" [ref=e14] [cursor=pointer]:
+              - /url: https://owasp.org/projects/
+          - listitem [ref=e15]:
+            - link "CHAPTERS" [ref=e16] [cursor=pointer]:
+              - /url: https://owasp.org/chapters/
+          - listitem [ref=e17]:
+            - link "EVENTS" [ref=e18] [cursor=pointer]:
+              - /url: /events/
+          - listitem [ref=e19]:
+            - link "ABOUT" [ref=e20] [cursor=pointer]:
+              - /url: https://owasp.org/about/
+          - listitem [ref=e21]:
+            - link "" [ref=e22] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e23]: 
+            - text: 
+        - generic "donate to or join OWASP" [ref=e25]:
+          - link "Store" [ref=e26] [cursor=pointer]:
+            - /url: https://owasp.org/store
+            - generic [ref=e27]: 
+            - text: Store
+          - link "Donate" [ref=e28] [cursor=pointer]:
+            - /url: https://owasp.org/donate?reponame=www-project-application-security-verification-standard&title=OWASP+Application+Security+Verification+Standard+%28ASVS%29
+          - link "Join" [ref=e29] [cursor=pointer]:
+            - /url: https://owasp.glueup.com/organization/6727/memberships
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: This website uses cookies to analyze our traffic and only share that information with our analytics partners.
+          - generic [ref=e33] [cursor=pointer]: Accept
+        - generic [ref=e34] [cursor=pointer]: x
+    - text: 
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - navigation "navigate page tabs" [ref=e37]:
+        - tablist [ref=e38]:
+          - listitem [ref=e39]:
+            - tab "Main" [selected] [ref=e40] [cursor=pointer]
+          - listitem [ref=e41]:
+            - tab "Meet the ASVS" [ref=e42] [cursor=pointer]
+          - listitem [ref=e43]:
+            - tab "Supporters" [ref=e44] [cursor=pointer]
+          - listitem [ref=e45]:
+            - tab "News and Events" [ref=e46] [cursor=pointer]
+          - listitem [ref=e47]:
+            - tab "Acknowledgements" [ref=e48] [cursor=pointer]
+          - listitem [ref=e49]:
+            - tab "Get Involved" [ref=e50] [cursor=pointer]
+          - listitem [ref=e51]:
+            - tab "ASVS Users" [ref=e52] [cursor=pointer]
+      - heading "OWASP Application Security Verification Standard (ASVS)" [level=1] [ref=e53]
+      - tabpanel "Main" [ref=e54]:
+        - img [ref=e55]
+        - generic [ref=e56]:
+          - paragraph [ref=e57]:
+            - link "Creative Commons License" [ref=e58] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/4.0/
+              - img "Creative Commons License" [ref=e59]
+            - link "OWASP Flagship" [ref=e60] [cursor=pointer]:
+              - /url: https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory
+              - img "OWASP Flagship" [ref=e61]
+            - img "Github stars ASVS" [ref=e62]
+            - link "Twitter Follow" [ref=e63] [cursor=pointer]:
+              - /url: https://twitter.com/OWASP_ASVS
+              - img "Twitter Follow" [ref=e64]
+            - link [ref=e65] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/owasp-asvs/
+              - img [ref=e66]
+          - heading "What is the ASVS?" [level=2] [ref=e67]
+          - paragraph [ref=e68]: The OWASP Application Security Verification Standard (ASVS) Project provides a basis for testing web application technical security controls and also provides developers with a list of requirements for secure development.
+          - heading "Support the ASVS" [level=2] [ref=e69]
+          - paragraph [ref=e70]:
+            - text: For more details on how to financially support the ASVS, see our
+            - link "Supporters Page" [ref=e71] [cursor=pointer]:
+              - /url: https://appsecg.host/fundasvs
+            - text: .
+          - heading "Stay up to date with the ASVS" [level=2] [ref=e72]
+          - paragraph [ref=e73]: "Follow us on social media to ensure you don’t miss updates about the ASVS:"
+          - list [ref=e74]:
+            - listitem [ref=e75]:
+              - link "Twitter Follow" [ref=e76] [cursor=pointer]:
+                - /url: https://twitter.com/OWASP_ASVS
+                - img "Twitter Follow" [ref=e77]
+            - listitem [ref=e78]:
+              - link [ref=e79] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/owasp-asvs/
+                - img [ref=e80]
+          - heading "More Details on the ASVS" [level=2] [ref=e81]
+          - paragraph [ref=e82]:
+            - text: The primary aim of the
+            - strong [ref=e83]: OWASP Application Security Verification Standard (ASVS) Project
+            - text: "is to normalize the range in the coverage and level of rigor available in the market when it comes to performing Web application security verification using a commercially-workable open standard. The standard provides a basis for testing application technical security controls, as well as any technical security controls in the environment, that are relied on to protect against vulnerabilities such as Cross-Site Scripting (XSS) and SQL injection. This standard can be used to establish a level of confidence in the security of Web applications. The requirements were developed with the following objectives in mind:"
+          - list [ref=e84]:
+            - listitem [ref=e85]:
+              - strong [ref=e86]: Use as a metric
+              - text: "- Provide application developers and application owners with a yardstick with which to assess the degree of trust that can be placed in their Web applications,"
+            - listitem [ref=e87]:
+              - strong [ref=e88]: Use as guidance
+              - text: "- Provide guidance to security control developers as to what to build into security controls in order to satisfy application security requirements, and"
+            - listitem [ref=e89]:
+              - strong [ref=e90]: Use during procurement
+              - text: "- Provide a basis for specifying application security verification requirements in contracts."
+          - paragraph [ref=e91]:
+            - text: Get the latest stable version of the ASVS (5.0.0) from the
+            - link "Downloads" [ref=e92] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/tree/v5.0.0#latest-stable-version---500
+            - text: page.
+          - heading "How To Reference ASVS Requirements" [level=2] [ref=e93]
+          - paragraph [ref=e94]:
+            - text: Each requirement has an identifier in the format
+            - code [ref=e95]: <chapter>.<section>.<requirement>
+            - text: ", where each element is a number. For example,"
+            - code [ref=e96]: 1.11.3
+            - text: .
+          - list [ref=e97]:
+            - listitem [ref=e98]:
+              - text: The
+              - code [ref=e99]: <chapter>
+              - text: value corresponds to the chapter from which the requirement comes; for example, all
+              - code [ref=e100]: 1.#.#
+              - text: requirements are from the ‘Encoding and Sanitization’ chapter.
+            - listitem [ref=e101]:
+              - text: The
+              - code [ref=e102]: <section>
+              - text: "value corresponds to the section within that chapter where the requirement appears, for example: all"
+              - code [ref=e103]: 1.2.#
+              - text: requirements are in the ‘Injection Prevention’ section of the ‘Encoding and Sanitization’ chapter.
+            - listitem [ref=e104]:
+              - text: The
+              - code [ref=e105]: <requirement>
+              - text: value identifies the specific requirement within the chapter and section, for example,
+              - code [ref=e106]: 1.2.5
+              - text: "which as of version 5.0.0 of this standard is:"
+          - blockquote [ref=e107]:
+            - paragraph [ref=e108]: Verify that the application protects against OS command injection and that operating system calls use parameterized OS queries or use contextual command line output encoding.
+          - paragraph [ref=e109]:
+            - text: "Since the identifiers may change between versions of the standard, it is preferable for other documents, reports, or tools to use the following format:"
+            - code [ref=e110]: v<version>-<chapter>.<section>.<requirement>
+            - text: ", where: ‘version’ is the ASVS version tag. For example:"
+            - code [ref=e111]: v5.0.0-1.2.5
+            - text: would be understood to mean specifically the 5th requirement in the ‘Injection Prevention’ section of the ‘Encoding and Sanitization’ chapter from version 5.0.0. (This could be summarized as
+            - code [ref=e112]: v<version>-<requirement_identifier>
+            - text: .)
+          - paragraph [ref=e113]:
+            - text: "Note: The"
+            - code [ref=e114]: v
+            - text: preceding the version number in the format should always be lowercase.
+          - paragraph [ref=e115]:
+            - text: If identifiers are used without including the
+            - code [ref=e116]: v<version>
+            - text: element then they should be assumed to refer to the latest Application Security Verification Standard content. As the standard grows and changes this becomes problematic, which is why writers or developers should include the version element.
+          - paragraph [ref=e117]:
+            - text: ASVS requirement lists are made available in
+            - link "CSV, JSON, and other formats" [ref=e118] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS
+            - text: which may be useful for reference or programmatic use.
+          - heading "Related Projects" [level=2] [ref=e119]
+          - paragraph [ref=e120]: "OWASP Resources:"
+          - list [ref=e121]:
+            - listitem [ref=e122]:
+              - link "OWASP Top Ten Proactive Controls (2018)" [ref=e123] [cursor=pointer]:
+                - /url: https://top10proactive.owasp.org/
+            - listitem [ref=e124]:
+              - link "OWASP Top Ten Risks (2017)" [ref=e125] [cursor=pointer]:
+                - /url: https://owasp.org/Top10/
+            - listitem [ref=e126]:
+              - link "OWASP Cheatsheet Series" [ref=e127] [cursor=pointer]:
+                - /url: https://cheatsheetseries.owasp.org/index.html
+      - separator [ref=e128]
+      - link "Edit on GitHub" [ref=e130] [cursor=pointer]:
+        - /url: https://github.com/OWASP/www-project-application-security-verification-standard/blob/master/index.md
+        - generic [ref=e131]:
+          - img [ref=e132]
+          - text: Edit on GitHub
+      - generic [ref=e135]:
+        - link "Watch on GitHub" [ref=e136] [cursor=pointer]:
+          - /url: https://github.com/owasp/www-project-application-security-verification-standard/subscription
+          - text: Watch
+        - link "Star on GitHub" [ref=e137] [cursor=pointer]:
+          - /url: https://github.com/owasp/www-project-application-security-verification-standard
+          - text: Star
+      - complementary [ref=e138]:
+        - generic [ref=e139]:
+          - strong [ref=e140]:
+            - text: The OWASP
+            - superscript [ref=e141]: ®
+            - text: Foundation
+          - text: works to improve the security of software through its community-led open source software projects, hundreds of chapters worldwide, tens of thousands of members, and by hosting local and global conferences.
+        - heading "Source in GitHub" [level=3] [ref=e142]
+        - list [ref=e143]:
+          - listitem [ref=e144]:
+            - link "Stable Release 5.0.0" [ref=e145] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/tree/v5.0.0/5.0
+          - listitem [ref=e146]:
+            - link "“Bleeding Edge” version" [ref=e147] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/tree/master/5.0
+        - heading "Previous stable releases:" [level=4] [ref=e148]
+        - list [ref=e149]:
+          - listitem [ref=e150]:
+            - link "Stable Release 4.0.3" [ref=e151] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/tree/v4.0.3/4.0
+        - heading "Downloads (ASVS 5.0.0)" [level=3] [ref=e152]
+        - heading "English version" [level=4] [ref=e153]
+        - list [ref=e154]:
+          - listitem [ref=e155]:
+            - link "English PDF" [ref=e156] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_en.pdf
+          - listitem [ref=e157]:
+            - link "English Word" [ref=e158] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.docx
+          - listitem [ref=e159]:
+            - link "English CSV" [ref=e160] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
+          - listitem [ref=e161]:
+            - link "GitHub Branch for v5.0.0" [ref=e162] [cursor=pointer]:
+              - /url: https://github.com/OWASP/ASVS/tree/v5.0.0
+        - heading "Local Mirror of Release" [level=4] [ref=e163]
+        - list [ref=e164]:
+          - listitem [ref=e165]:
+            - link "5.0.0 release files" [ref=e166] [cursor=pointer]:
+              - /url: ./assets/ASVS-5.0.0_release.zip
+        - heading "Translations:" [level=4] [ref=e167]
+        - list [ref=e168]:
+          - listitem [ref=e169]:
+            - text: v5.0.0
+            - list [ref=e170]:
+              - listitem [ref=e171]:
+                - link "Turkish" [ref=e172] [cursor=pointer]:
+                  - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_tr.pdf
+              - listitem [ref=e173]:
+                - link "Russian" [ref=e174] [cursor=pointer]:
+                  - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_ru.pdf
+              - listitem [ref=e175]:
+                - link "French" [ref=e176] [cursor=pointer]:
+                  - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_fr.pdf
+              - listitem [ref=e177]:
+                - link "Korean" [ref=e178] [cursor=pointer]:
+                  - /url: https://github.com/OWASP/ASVS/raw/v5.0.0/5.0/OWASP_Application_Security_Verification_Standard_5.0.0_ko.pdf
+        - paragraph [ref=e179]:
+          - text: You can see other
+          - link "in-progress translations here" [ref=e180] [cursor=pointer]:
+            - /url: https://github.com/OWASP/ASVS/blob/master/CONTRIBUTING.md#translations
+          - text: . Historic translations of the v4.x versions can be found in the
+          - link "TRANSLATIONS.md file" [ref=e181] [cursor=pointer]:
+            - /url: https://github.com/OWASP/ASVS/blob/master/4.0/TRANSLATIONS.md
+          - text: in the 4.0 folder.
+        - heading "Branding Assets" [level=4] [ref=e182]
+        - paragraph [ref=e183]:
+          - text: The ASVS’s branding assets were created by
+          - link "Hugo Costa" [ref=e184] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/hugo75costa/
+          - text: and can be
+          - link "found here" [ref=e185] [cursor=pointer]:
+            - /url: https://github.com/OWASP/www-project-application-security-verification-standard/tree/master/brand/
+          - text: .
+        - heading "Social Links" [level=3] [ref=e186]
+        - paragraph [ref=e187]:
+          - text: "Follow the project on Twitter at:"
+          - link "@OWASP_ASVS" [ref=e188] [cursor=pointer]:
+            - /url: https://twitter.com/OWASP_ASVS
+        - heading "Project Classification" [level=3] [ref=e189]
+        - list [ref=e190]:
+          - listitem [ref=e191]:
+            - generic [ref=e192]: 
+            - text: Flagship Project
+          - listitem [ref=e193]:
+            - generic [ref=e194]: 
+            - text: Documentation
+          - listitem [ref=e195]:
+            - generic [ref=e196]: 
+            - text: Builder
+          - listitem [ref=e197]:
+            - generic [ref=e198]: 
+            - text: Defender
+          - listitem [ref=e199]:
+            - generic [ref=e200]: 
+            - text: Breaker
+        - heading "Leaders" [level=3] [ref=e201]
+        - list [ref=e202]:
+          - listitem [ref=e203]:
+            - link "Daniel Cuthbert" [ref=e204] [cursor=pointer]:
+              - /url: mailto:daniel.cuthbert@owasp.org
+          - listitem [ref=e205]:
+            - link "Elar Lang" [ref=e206] [cursor=pointer]:
+              - /url: mailto:elarlang@gmail.com
+          - listitem [ref=e207]:
+            - link "Josh Grossman" [ref=e208] [cursor=pointer]:
+              - /url: mailto:josh.grossman@owasp.org
+        - heading "Working Group" [level=3] [ref=e209]
+        - list [ref=e210]:
+          - listitem [ref=e211]:
+            - link "Shanni Prutchi" [ref=e212] [cursor=pointer]:
+              - /url: https://github.com/EnigmaRosa
+          - listitem [ref=e213]:
+            - link "Ralph Andalis" [ref=e214] [cursor=pointer]:
+              - /url: https://github.com/csfreak92
+          - listitem [ref=e215]:
+            - link "Meghan Jacquot" [ref=e216] [cursor=pointer]:
+              - /url: https://github.com/meghanjacquot
+          - listitem [ref=e217]:
+            - link "Iman Sharafaldin" [ref=e218] [cursor=pointer]:
+              - /url: https://github.com/ImanSharaf
+          - listitem [ref=e219]:
+            - link "Ryan Armstrong" [ref=e220] [cursor=pointer]:
+              - /url: https://github.com/ryarmst
+          - listitem [ref=e221]:
+            - link "Gabriel Corona" [ref=e222] [cursor=pointer]:
+              - /url: https://github.com/randomstuff
+          - listitem [ref=e223]:
+            - link "Tobias Ahnoff" [ref=e224] [cursor=pointer]:
+              - /url: https://github.com/TobiasAhnoff
+          - listitem [ref=e225]:
+            - link "Eden Yardeni" [ref=e226] [cursor=pointer]:
+              - /url: https://github.com/cronchie
+        - generic [ref=e227]:
+          - heading "Upcoming OWASP Global Events" [level=3] [ref=e228]
+          - list [ref=e230]:
+            - listitem [ref=e231]:
+              - link "OWASP Global AppSec EU 2026 - Vienna, Austria" [ref=e232] [cursor=pointer]:
+                - /url: https://owasp.glueup.com/event/owasp-global-appsec-eu-2026-vienna-austria-162243/
+              - list [ref=e233]:
+                - listitem [ref=e234]: June 22-26, 2026
+            - listitem [ref=e235]:
+              - link "OWASP Global AppSec USA 2026 - San Francisco, CA" [ref=e236] [cursor=pointer]:
+                - /url: https://owasp.glueup.com/event/owasp-2026-global-appsec-usa-san-francisco-ca-167174/
+              - list [ref=e237]:
+                - listitem [ref=e238]: November 2-6, 2026
+            - listitem [ref=e239]:
+              - link "OWASP Global AppSec EU 2027 - Vienna, Austria" [ref=e240] [cursor=pointer]:
+                - /url: https://owasp.org/events/
+              - list [ref=e241]:
+                - listitem [ref=e242]: June 21-25, 2027
+            - listitem [ref=e243]:
+              - link "OWASP Global AppSec USA 2027 - Atlanta, GA" [ref=e244] [cursor=pointer]:
+                - /url: https://owasp.org/events/
+              - list [ref=e245]:
+                - listitem [ref=e246]: September 20-24, 2027
+            - listitem [ref=e247]:
+              - link "OWASP Global AppSec EU 2028 - Vienna, Austria" [ref=e248] [cursor=pointer]:
+                - /url: https://owasp.org/events/
+              - list [ref=e249]:
+                - listitem [ref=e250]: June 19-23, 2028
+  - contentinfo [ref=e251]:
+    - generic [ref=e253]:
+      - generic [ref=e254]:
+        - 'heading "Spotlight: Arnica" [level=2] [ref=e255]'
+        - link "image" [ref=e256] [cursor=pointer]:
+          - /url: https://www.arnica.io
+          - img "image" [ref=e257]
+        - paragraph [ref=e258]: Arnica integrates across your software supply chain and provides the necessary context, prioritization, ownership, and actionability to proactively mitigate risks. In addition to providing complete reports around code risk, excessive permissions, vulnerable dependencies, code repository misconfigurations, anomalous developer behavior, and more, Arnica’s pipelineless approach eliminates these risks in a blameless and shameless way by interacting directly with the developers in real-time to stop any new risks from entering your source code while also helping resolve your risks backlog.
+      - generic [ref=e259]:
+        - heading "Corporate Supporters" [level=2] [ref=e260]
+        - generic [ref=e261]:
+          - link "image" [ref=e262] [cursor=pointer]:
+            - /url: https://www.bloomberg.com/company/values/tech-at-bloomberg/
+            - img "image" [ref=e263]
+          - link "image" [ref=e264] [cursor=pointer]:
+            - /url: https://www.backslash.security/?utm_campaign=Launch&utm_source=owasp-sponsorship&utm_medium=banner&utm_content=homepage
+            - img "image" [ref=e265]
+          - link "image" [ref=e266] [cursor=pointer]:
+            - /url: http://blend-ed.com
+            - img "image" [ref=e267]
+          - link "image" [ref=e268] [cursor=pointer]:
+            - /url: http://trust.adobe.com
+            - img "image" [ref=e269]
+          - link "image" [ref=e270] [cursor=pointer]:
+            - /url: https://www.root.io/
+            - img "image" [ref=e271]
+          - link "image" [ref=e272] [cursor=pointer]:
+            - /url: http://promon.co
+            - img "image" [ref=e273]
+          - link "image" [ref=e274] [cursor=pointer]:
+            - /url: https://www.cobalt.io/
+            - img "image" [ref=e275]
+          - link "image" [ref=e276] [cursor=pointer]:
+            - /url: https://www.microfocus.com/en-us/cyberres/application-security
+            - img "image" [ref=e277]
+          - link "image" [ref=e278] [cursor=pointer]:
+            - /url: https://www.zimperium.com/
+            - img "image" [ref=e279]
+        - link "Become a corporate supporter" [ref=e281] [cursor=pointer]:
+          - /url: https://owasp.org/supporters
+    - generic [ref=e282]:
+      - generic [ref=e283]:
+        - link "github organization" [ref=e284] [cursor=pointer]:
+          - /url: https://github.com/OWASP/
+          - generic [ref=e285]: 
+        - link "slack group" [ref=e286] [cursor=pointer]:
+          - /url: https://owasp.org/slack/invite
+          - generic [ref=e287]: 
+        - link "facebook group" [ref=e288] [cursor=pointer]:
+          - /url: https://www.facebook.com/OWASPFoundation
+          - generic [ref=e289]: 
+        - link "mastodon account" [ref=e290] [cursor=pointer]:
+          - /url: https://infosec.exchange/@owasp
+          - img [ref=e291]
+        - link "twitter account" [ref=e293] [cursor=pointer]:
+          - /url: https://twitter.com/owasp
+          - img [ref=e294]
+        - link "linkedin account" [ref=e296] [cursor=pointer]:
+          - /url: https://www.linkedin.com/company/owasp/
+          - generic [ref=e297]: 
+        - link "youtube account" [ref=e298] [cursor=pointer]:
+          - /url: https://www.youtube.com/user/OWASPGLOBAL
+          - generic [ref=e299]: 
+      - navigation "secondary navigation" [ref=e300]:
+        - list [ref=e301]:
+          - listitem [ref=e302]:
+            - link "PRIVACY" [ref=e303] [cursor=pointer]:
+              - /url: https://owasp.org/www-policy/operational/privacy
+          - listitem [ref=e304]:
+            - link "SITEMAP" [ref=e305] [cursor=pointer]:
+              - /url: https://owasp.org/sitemap/
+          - listitem [ref=e306]:
+            - link "CONTACT" [ref=e307] [cursor=pointer]:
+              - /url: https://owasp.org/contact/
+      - paragraph [ref=e308]:
+        - text: OWASP, the OWASP logo, and Global AppSec are registered trademarks and AppSec Days, AppSec California, AppSec Cali, SnowFROC, OWASP Boston Application Security Conference, and LASCON are trademarks of the OWASP Foundation, Inc. Unless otherwise specified, all content on the site is Creative Commons Attribution-ShareAlike v4.0 and provided without warranty of service or accuracy. For more information, please refer to our
+        - link "General Disclaimer" [ref=e309] [cursor=pointer]:
+          - /url: https://policy.owasp.org/operational/general-disclaimer.html
+        - text: . OWASP does not endorse or recommend commercial products or services, allowing our community to remain vendor neutral with the collective wisdom of the best minds in software security worldwide. Copyright 2026, OWASP Foundation, Inc.

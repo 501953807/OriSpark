@@ -1,0 +1,95 @@
+{
+  "nodes": [
+    {
+      "id": "document:.claude/rules/common/agents.md",
+      "type": "document",
+      "name": "agents.md",
+      "filePath": ".claude/rules/common/agents.md",
+      "summary": "智能体编排规范，列出可用智能体类型及其用途，定义并行任务执行和多视角分析策略。",
+      "tags": ["documentation", "agent-orchestration", "parallel-execution"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/code-review.md",
+      "type": "document",
+      "name": "code-review.md",
+      "filePath": ".claude/rules/common/code-review.md",
+      "summary": "代码评审标准文档，定义强制审查触发条件、审查清单、安全审查触发器和严重程度等级体系。",
+      "tags": ["documentation", "code-review", "security"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/common/coding-style.md",
+      "type": "document",
+      "name": "coding-style.md",
+      "filePath": ".claude/rules/common/coding-style.md",
+      "summary": "通用编码风格规范，涵盖不可变性核心原则、KISS/DRY/YAGNI 三大约念、命名约定和代码异味规避。",
+      "tags": ["documentation", "coding-standards", "best-practices"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/common/development-workflow.md",
+      "type": "document",
+      "name": "development-workflow.md",
+      "filePath": ".claude/rules/common/development-workflow.md",
+      "summary": "开发工作流规范，扩展 Git 流程，定义从研究复用到规划、TDD、代码审查的完整功能开发管线。",
+      "tags": ["documentation", "development-workflow", "tdd"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/common/git-workflow.md",
+      "type": "document",
+      "name": "git-workflow.md",
+      "filePath": ".claude/rules/common/git-workflow.md",
+      "summary": "通用 Git 工作流规范，定义提交消息格式和 PR 流程。",
+      "tags": ["documentation", "git-workflow", "commit-conventions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/hooks.md",
+      "type": "document",
+      "name": "hooks.md",
+      "filePath": ".claude/rules/common/hooks.md",
+      "summary": "钩子系统规范，定义 PreToolUse/PostToolUse/Stop 三种钩子类型、自动接受权限管理和 TodoWrite 最佳实践。",
+      "tags": ["documentation", "automation", "hooks"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/patterns.md",
+      "type": "document",
+      "name": "patterns.md",
+      "filePath": ".claude/rules/common/patterns.md",
+      "summary": "常见设计模式文档，涵盖骨架项目复用、仓库模式和统一 API 响应格式。",
+      "tags": ["documentation", "design-patterns", "architecture"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/performance.md",
+      "type": "document",
+      "name": "performance.md",
+      "filePath": ".claude/rules/common/performance.md",
+      "summary": "通用性能优化文档，扩展模型选择策略至 Haiku 4.5/Sonnet 4.6/Opus 4.6 三级体系，并定义扩展思维和 Plan 模式的使用指南。",
+      "tags": ["documentation", "performance", "model-selection"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/security.md",
+      "type": "document",
+      "name": "security.md",
+      "filePath": ".claude/rules/common/security.md",
+      "summary": "通用安全指南文档，包含强制安全检查清单、密钥管理和安全响应协议。",
+      "tags": ["documentation", "security", "checklist"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/common/testing.md",
+      "type": "document",
+      "name": "testing.md",
+      "filePath": ".claude/rules/common/testing.md",
+      "summary": "通用测试需求文档，定义 80% 最低测试覆盖率、TDD 工作流、AAA 测试结构和测试命名规范。",
+      "tags": ["documentation", "testing", "tdd"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

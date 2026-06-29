@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "file:.claude/CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": ".claude/CLAUDE.md",
+      "summary": "Oh-my-claudecode (OMC) orchestration master config defining operating principles, delegation rules, model routing, skill triggers, verification, and execution protocols for the multi-agent Claude Code layer.",
+      "tags": ["documentation", "configuration", "orchestration", "entry-point"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.claude/ralph-loop.local.md",
+      "type": "document",
+      "name": "ralph-loop.local.md",
+      "filePath": ".claude/ralph-loop.local.md",
+      "summary": "Ralph Loop session configuration activating iteration mode with a directive to enforce feature implementation across all planned work.",
+      "tags": ["documentation", "configuration", "orchestration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.claude/settings.local.json",
+      "type": "config",
+      "name": "settings.local.json",
+      "filePath": ".claude/settings.local.json",
+      "summary": "Local Claude Code settings granting permission allowlists for Bash commands, Playwright browser tools, WebSearch, and the deep-research workflow.",
+      "tags": ["configuration", "permissions", "tool-access"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

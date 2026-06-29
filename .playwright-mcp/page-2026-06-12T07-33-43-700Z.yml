@@ -1,0 +1,80 @@
+- generic [ref=e4]:
+  - link "跳转到主内容" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主导航" [ref=e6]:
+    - link "OriStudio 首页" [ref=e7] [cursor=pointer]:
+      - /url: /app
+      - generic [ref=e8]: O
+      - generic [ref=e9]:
+        - generic [ref=e10]: OriStudio
+        - generic [ref=e11]: 创作者全链路助手
+    - navigation [ref=e12]:
+      - generic [ref=e13]: 概览
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /app
+        - generic [ref=e15]: 📊
+        - generic [ref=e16]: 工作台
+      - generic [ref=e17]: 核心模块
+      - link "作品管理" [ref=e18] [cursor=pointer]:
+        - /url: /app/works
+        - generic [ref=e19]: 🎨
+        - generic [ref=e20]: 作品管理
+        - generic [ref=e21]: "0"
+      - link "项目分组" [ref=e22] [cursor=pointer]:
+        - /url: /app/projects
+        - generic [ref=e23]: 📁
+        - generic [ref=e24]: 项目分组
+      - link "存证确权" [ref=e25] [cursor=pointer]:
+        - /url: /app/notary
+        - generic [ref=e26]: 🔒
+        - generic [ref=e27]: 存证确权
+        - generic [ref=e28]: "0"
+      - link "侵权监测" [ref=e29] [cursor=pointer]:
+        - /url: /app/monitor
+        - generic [ref=e30]: 🛡️
+        - generic [ref=e31]: 侵权监测
+      - link "IP 登记" [ref=e32] [cursor=pointer]:
+        - /url: /app/ipr
+        - generic [ref=e33]: 📋
+        - generic [ref=e34]: IP 登记
+      - link "供应链" [ref=e35] [cursor=pointer]:
+        - /url: /app/supply
+        - generic [ref=e36]: 🏭
+        - generic [ref=e37]: 供应链
+      - link "发布变现" [ref=e38] [cursor=pointer]:
+        - /url: /app/publish
+        - generic [ref=e39]: 🚀
+        - generic [ref=e40]: 发布变现
+      - generic [ref=e41]: 设置
+      - link "偏好设置" [ref=e42] [cursor=pointer]:
+        - /url: /app/settings
+        - generic [ref=e43]: ⚙️
+        - generic [ref=e44]: 偏好设置
+      - link "第三方对接" [ref=e45] [cursor=pointer]:
+        - /url: /app/integrations
+        - generic [ref=e46]: 🔌
+        - generic [ref=e47]: 第三方对接
+    - button "◀" [ref=e48] [cursor=pointer]
+    - generic [ref=e49]:
+      - generic [ref=e50]: 创
+      - generic [ref=e51]:
+        - generic [ref=e52]: 创作者
+        - generic [ref=e53]: 本地用户
+  - generic [ref=e54]:
+    - banner [ref=e55]:
+      - heading "作品详情" [level=1] [ref=e158]
+      - generic [ref=e58]:
+        - button "切换到暗色模式" [ref=e59] [cursor=pointer]: 🌙
+        - button "导入作品" [ref=e60] [cursor=pointer]:
+          - generic [ref=e61]: 📤
+          - text: 导入作品
+        - button "🔔" [ref=e63] [cursor=pointer]
+        - link "偏好设置" [ref=e64] [cursor=pointer]:
+          - /url: /app/settings
+          - text: ⚙️
+        - link "第三方对接" [ref=e65] [cursor=pointer]:
+          - /url: /app/integrations
+          - text: 🔌
+    - main [ref=e66]:
+      - link "← 作品列表" [ref=e161] [cursor=pointer]:
+        - /url: /app/works

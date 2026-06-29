@@ -1,0 +1,224 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/api/client.ts",
+      "type": "file",
+      "name": "client.ts",
+      "filePath": "frontend/src/api/client.ts",
+      "summary": "封装 Axios HTTP 客户端，配置基础 URL、超时时间、认证 Token 拦截器及统一错误处理与 Toast 提示。",
+      "tags": ["api-client", "http-client", "axios", "interceptor", "authentication"],
+      "complexity": "simple",
+      "languageNotes": "Axios 客户端通过拦截器注入 Bearer Token，提供统一错误码映射和全局 Toast 通知。"
+    },
+    {
+      "id": "file:frontend/src/api/business.ts",
+      "type": "file",
+      "name": "business.ts",
+      "filePath": "frontend/src/api/business.ts",
+      "summary": "经营管理 API 集合，涵盖收入管理、合作伙伴、订单、通知和仪表盘数据接口。",
+      "tags": ["api-handler", "business", "revenue", "partners", "notifications"],
+      "complexity": "simple",
+      "languageNotes": "使用 apiClient 别名引用 client 模块，按业务域分组接口。"
+    },
+    {
+      "id": "file:frontend/src/api/dashboard.ts",
+      "type": "file",
+      "name": "dashboard.ts",
+      "filePath": "frontend/src/api/dashboard.ts",
+      "summary": "工作台统计数据和近期作品查询接口。",
+      "tags": ["api-handler", "dashboard", "statistics"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/ipr.ts",
+      "type": "file",
+      "name": "ipr.ts",
+      "filePath": "frontend/src/api/ipr.ts",
+      "summary": "知识产权登记全套接口：注册 CRUD、指引查询、尼斯分类推荐、智能申请表助手、资产仪表盘和费用计算器。",
+      "tags": ["api-handler", "ipr", "trademark", "copyright", "schema-definition"],
+      "complexity": "moderate",
+      "languageNotes": "覆盖商标、版权等多种 IP 类型，整合了尼斯分类推荐和智能申请表生成。"
+    },
+    {
+      "id": "file:frontend/src/api/monitor.ts",
+      "type": "file",
+      "name": "monitor.ts",
+      "filePath": "frontend/src/api/monitor.ts",
+      "summary": "侵权监控 API：任务管理、指纹计算、品牌监测、域名监测、DMCA 模板、代码相似性和白名单学习。",
+      "tags": ["api-handler", "monitor", "fingerprint", "brand-watch", "dmca"],
+      "complexity": "moderate",
+      "languageNotes": "整合感知哈希、品牌关键词监控、域名监测和白名单推荐学习等多维度侵权检测能力。"
+    },
+    {
+      "id": "file:frontend/src/api/notary.ts",
+      "type": "file",
+      "name": "notary.ts",
+      "filePath": "frontend/src/api/notary.ts",
+      "summary": "电子存证 API：平台列表、记录 CRUD、批量存证、证书获取、C2PA 生成与验证。",
+      "tags": ["api-handler", "notary", "c2pa", "certificate", "blockchain"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/api/publish.ts",
+      "type": "file",
+      "name": "publish.ts",
+      "filePath": "frontend/src/api/publish.ts",
+      "summary": "内容分发 API：商品管理、AI 描述生成、认证徽章、JSON Feed 导出、收入管理和内容排程中心。",
+      "tags": ["api-handler", "publish", "feed", "badge", "scheduling"],
+      "complexity": "moderate",
+      "languageNotes": "支持淘宝/Shopify 等多平台商品描述风格和 Feed 格式导出。"
+    },
+    {
+      "id": "file:frontend/src/api/supply.ts",
+      "type": "file",
+      "name": "supply.ts",
+      "filePath": "frontend/src/api/supply.ts",
+      "summary": "商业转化全量 API：产品目录、设计规格验证、Listing 管理、众筹、IP 授权、订单、收入聚合、POD 发布和 AI 建议。",
+      "tags": ["api-handler", "supply-chain", "monetization", "pod", "licensing"],
+      "complexity": "complex",
+      "languageNotes": "覆盖设计合规校验、Listing 管理、众筹营销、IP 授权定价、POD 打印按需生产和收入聚合等完整商业链路。"
+    },
+    {
+      "id": "file:frontend/src/api/system.ts",
+      "type": "file",
+      "name": "system.ts",
+      "filePath": "frontend/src/api/system.ts",
+      "summary": "系统管理 API：设置、备份恢复、健康看板、字典数据、通知管理、邮件/微信推送、插件框架、OAuth、TOTP 双因素和数据导出。",
+      "tags": ["api-handler", "system", "backup", "notification", "oauth", "plugins"],
+      "complexity": "complex",
+      "languageNotes": "涵盖元数据模板管理、水印预设、作品变体生成、RAW 处理、审片批量操作、订阅层级和委托管理等丰富系统功能。"
+    },
+    {
+      "id": "file:frontend/src/api/works.ts",
+      "type": "file",
+      "name": "works.ts",
+      "filePath": "frontend/src/api/works.ts",
+      "summary": "作品管理 API：CRUD、标签管理、版本控制、批量操作、回收站、项目关联、AI 标签推荐和文件夹导入。",
+      "tags": ["api-handler", "work-management", "version-control", "batch-ops", "ai-tags"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/src/api/client.ts:setToast",
+      "type": "function",
+      "name": "setToast",
+      "filePath": "frontend/src/api/client.ts",
+      "lineRange": [9, 9],
+      "summary": "设置全局 Toast 提示函数，供 Axios 响应拦截器在请求出错时展示错误消息。",
+      "tags": ["utility", "toast", "interceptor"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/src/api/supply.ts:supplyApi",
+      "type": "function",
+      "name": "supplyApi",
+      "filePath": "frontend/src/api/supply.ts",
+      "lineRange": [9, 185],
+      "summary": "导出涵盖产品目录、规格验证、Listing 管理、众筹、IP 授权、订单、收入聚合、POD 和中国 POD 平台的全套 API 对象。",
+      "tags": ["api-handler", "supply-chain", "monetization"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/src/api/system.ts:systemApi",
+      "type": "function",
+      "name": "systemApi",
+      "filePath": "frontend/src/api/system.ts",
+      "lineRange": [3, 337],
+      "summary": "导出包含系统设置、备份、健康监控、字典中心、通知、邮件/微信推送、插件、OAuth、TOTP、元数据模板、水印预设和订阅管理的全量 API 对象。",
+      "tags": ["api-handler", "system", "admin"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/api/business.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/dashboard.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/ipr.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/monitor.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/notary.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/publish.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/supply.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/system.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/works.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/api/client.ts",
+      "target": "function:frontend/src/api/client.ts:setToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/api/supply.ts",
+      "target": "function:frontend/src/api/supply.ts:supplyApi",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/api/system.ts",
+      "target": "function:frontend/src/api/system.ts:systemApi",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/src/api/works.ts",
+      "target": "file:frontend/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

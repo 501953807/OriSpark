@@ -1,0 +1,403 @@
+- generic [ref=e4]:
+  - link "跳转到主内容" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主导航" [ref=e6]:
+    - link "OriStudio 首页" [ref=e7] [cursor=pointer]:
+      - /url: /app
+      - generic [ref=e8]: O
+      - generic [ref=e9]:
+        - generic [ref=e10]: OriStudio
+        - generic [ref=e11]: 创作者全链路助手
+    - navigation [ref=e12]:
+      - generic [ref=e13]: 概览
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /app
+        - generic [ref=e15]: 📊
+        - generic [ref=e16]: 工作台
+      - generic [ref=e17]: 核心模块
+      - link "作品管理" [ref=e18] [cursor=pointer]:
+        - /url: /app/works
+        - generic [ref=e19]: 🎨
+        - generic [ref=e20]: 作品管理
+        - generic [ref=e21]: "0"
+      - link "存证确权" [ref=e22] [cursor=pointer]:
+        - /url: /app/notary
+        - generic [ref=e23]: 🔒
+        - generic [ref=e24]: 存证确权
+        - generic [ref=e25]: "0"
+      - link "侵权监测" [ref=e26] [cursor=pointer]:
+        - /url: /app/monitor
+        - generic [ref=e27]: 🛡️
+        - generic [ref=e28]: 侵权监测
+      - link "IP 登记" [ref=e29] [cursor=pointer]:
+        - /url: /app/ipr
+        - generic [ref=e30]: 📋
+        - generic [ref=e31]: IP 登记
+      - link "创作变现" [ref=e32] [cursor=pointer]:
+        - /url: /app/supply
+        - generic [ref=e33]: 💰
+        - generic [ref=e34]: 创作变现
+      - link "产品数据" [ref=e35] [cursor=pointer]:
+        - /url: /app/publish
+        - generic [ref=e36]: 📊
+        - generic [ref=e37]: 产品数据
+      - generic [ref=e38]: 设置
+      - link "偏好设置" [ref=e39] [cursor=pointer]:
+        - /url: /app/settings
+        - generic [ref=e40]: ⚙️
+        - generic [ref=e41]: 偏好设置
+      - link "第三方对接" [ref=e42] [cursor=pointer]:
+        - /url: /app/integrations
+        - generic [ref=e43]: 🔌
+        - generic [ref=e44]: 第三方对接
+    - button "◀" [ref=e45] [cursor=pointer]
+    - generic [ref=e46]:
+      - generic [ref=e47]: 创
+      - generic [ref=e48]:
+        - generic [ref=e49]: 创作者
+        - generic [ref=e50]: 本地用户
+  - generic [ref=e51]:
+    - banner [ref=e52]:
+      - heading "IP 登记" [level=1] [ref=e54]
+      - generic [ref=e55]:
+        - button "切换到暗色模式" [ref=e56] [cursor=pointer]: 🌙
+        - button "导入作品" [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]: 📤
+          - text: 导入作品
+        - button "🔔" [ref=e60] [cursor=pointer]
+        - link "偏好设置" [ref=e61] [cursor=pointer]:
+          - /url: /app/settings
+          - text: ⚙️
+        - link "第三方对接" [ref=e62] [cursor=pointer]:
+          - /url: /app/integrations
+          - text: 🔌
+    - main [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - button "📖 登记指引" [ref=e66] [cursor=pointer]
+          - button "🪄 智能助手" [ref=e67] [cursor=pointer]
+          - button "📋 登记记录" [ref=e68] [cursor=pointer]
+          - button "📊 IP资产" [ref=e69] [cursor=pointer]
+          - button "💰 费用计算" [ref=e70] [cursor=pointer]
+        - generic [ref=e71]:
+          - generic [ref=e72]: ⚠️ 本工具仅提供信息指引，不构成法律建议。所有IP申请须由权利人自行向官方机构提交。
+          - generic [ref=e73]:
+            - button "🇨🇳 中国" [ref=e74] [cursor=pointer]:
+              - generic [ref=e75]: 🇨🇳
+              - generic [ref=e76]: 中国
+            - button "🇺🇸 美国" [ref=e77] [cursor=pointer]:
+              - generic [ref=e78]: 🇺🇸
+              - generic [ref=e79]: 美国
+            - button "🇪🇺 欧盟" [ref=e80] [cursor=pointer]:
+              - generic [ref=e81]: 🇪🇺
+              - generic [ref=e82]: 欧盟
+            - button "🌐 WIPO" [ref=e83] [cursor=pointer]:
+              - generic [ref=e84]: 🌐
+              - generic [ref=e85]: WIPO
+            - button "🇯🇵 日本" [ref=e86] [cursor=pointer]:
+              - generic [ref=e87]: 🇯🇵
+              - generic [ref=e88]: 日本
+            - button "🇰🇷 韩国" [ref=e89] [cursor=pointer]:
+              - generic [ref=e90]: 🇰🇷
+              - generic [ref=e91]: 韩国
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]: ©️
+              - generic [ref=e95]:
+                - heading "中国著作权登记指引" [level=3] [ref=e96]
+                - paragraph [ref=e97]: 根据《中华人民共和国著作权法》，作品创作完成即自动获得著作权。登记可提供维权证据。
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - heading "📋 所需材料" [level=4] [ref=e100]
+                - generic [ref=e101]:
+                  - generic [ref=e102]:
+                    - generic [ref=e103]: ✓
+                    - generic [ref=e104]:
+                      - generic [ref=e105]: 作品登记申请表
+                      - generic [ref=e106]: 系统可自动预填, 用户确认后导出
+                      - text: 🪄 可自动预填
+                  - generic [ref=e107]:
+                    - generic [ref=e108]: ✓
+                    - generic [ref=e109]:
+                      - generic [ref=e110]: 作品样本
+                      - generic [ref=e111]: 图片JPG/PNG格式, 大小≤50MB; 或音频MP3≤50MB; 视频MP4≤200MB
+                      - text: 🪄 可自动预填
+                  - generic [ref=e112]:
+                    - generic [ref=e113]: ✓
+                    - generic [ref=e114]:
+                      - generic [ref=e115]: 作品创作说明书
+                      - generic [ref=e116]: 50-500字, 说明创作过程、独创性、完成日期等
+                      - text: 🪄 可自动预填
+                  - generic [ref=e117]:
+                    - generic [ref=e118]: ✓
+                    - generic [ref=e119]:
+                      - generic [ref=e120]: 申请人身份证明
+                      - generic [ref=e121]: "自然人: 身份证/护照复印件; 法人: 营业执照复印件"
+                  - generic [ref=e122]:
+                    - generic [ref=e123]: ○
+                    - generic [ref=e124]:
+                      - generic [ref=e125]: 权利归属证明
+                      - generic [ref=e126]: 如为委托作品、职务作品等, 需提供合同或声明
+                  - generic [ref=e127]:
+                    - generic [ref=e128]: ○
+                    - generic [ref=e129]:
+                      - generic [ref=e130]: 代理人委托书
+                      - generic [ref=e131]: 如委托代理机构办理, 需提供委托书
+              - generic [ref=e132]:
+                - heading "📝 办理流程" [level=4] [ref=e133]
+                - generic [ref=e134]:
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: "1"
+                    - generic [ref=e137]:
+                      - strong [ref=e138]: 准备材料
+                      - paragraph [ref=e139]: 按材料清单准备齐全
+                      - text: ⏱ 自行安排
+                  - generic [ref=e140]:
+                    - generic [ref=e141]: "2"
+                    - generic [ref=e142]:
+                      - strong [ref=e143]: 系统预填申请表
+                      - paragraph [ref=e144]: 使用智能助手从作品数据自动填充申请信息
+                      - text: ⏱ 即时
+                  - generic [ref=e145]:
+                    - generic [ref=e146]: "3"
+                    - generic [ref=e147]:
+                      - strong [ref=e148]: 在线提交
+                      - paragraph [ref=e149]: 通过中国版权保护中心官网在线提交
+                      - text: ⏱ 约30分钟
+                  - generic [ref=e150]:
+                    - generic [ref=e151]: "4"
+                    - generic [ref=e152]:
+                      - strong [ref=e153]: 形式审查
+                      - paragraph [ref=e154]: 版权保护中心对申请材料进行形式审查
+                      - text: ⏱ 约15工作日
+                  - generic [ref=e155]:
+                    - generic [ref=e156]: "5"
+                    - generic [ref=e157]:
+                      - strong [ref=e158]: 缴费
+                      - paragraph [ref=e159]: 收到缴费通知后在线缴纳费用
+                      - text: ⏱ 即时
+                  - generic [ref=e160]:
+                    - generic [ref=e161]: "6"
+                    - generic [ref=e162]:
+                      - strong [ref=e163]: 登记完成
+                      - paragraph [ref=e164]: 发放作品登记证书
+                      - text: ⏱ 约15工作日
+              - generic [ref=e165]:
+                - generic [ref=e166]:
+                  - text: 🏛️
+                  - link "中国版权保护中心" [ref=e167] [cursor=pointer]:
+                    - /url: https://www.ccopyright.com.cn
+                - generic [ref=e168]: 📜 《中华人民共和国著作权法》及《作品自愿登记试行办法》
+                - generic [ref=e169]: ⏱️ 约30个工作日
+                - generic [ref=e170]: "🔄 公民: 终身+死后50年; 法人: 发表后50年"
+              - generic [ref=e171]:
+                - heading "💰 费用参考" [level=4] [ref=e172]
+                - generic [ref=e173]:
+                  - generic [ref=e174]:
+                    - strong [ref=e175]: 美术作品
+                    - generic [ref=e176]: ¥0-300/件 (美术作品)
+                  - generic [ref=e177]:
+                    - strong [ref=e178]: 文字作品
+                    - generic [ref=e179]: ¥0-300/件 (文字作品)
+                  - generic [ref=e180]:
+                    - strong [ref=e181]: 音乐作品
+                    - generic [ref=e182]: ¥0-300/件 (音乐作品)
+                  - generic [ref=e183]:
+                    - strong [ref=e184]: 计算机软件
+                    - generic [ref=e185]: ¥0-300/件 (计算机软件)
+          - generic [ref=e186]:
+            - generic [ref=e187]:
+              - generic [ref=e188]: ™️
+              - generic [ref=e189]:
+                - heading "中国商标注册指引" [level=3] [ref=e190]
+                - paragraph [ref=e191]: 商标须经注册方获得专用权。通过国家知识产权局商标局办理。
+            - generic [ref=e192]:
+              - generic [ref=e193]: ⚠️ 本工具不提供商标代理服务，仅提供信息指引，不构成法律建议。所有申请费用由用户直接支付给国家平台。
+              - generic [ref=e194]: ⚠️ 自然人(个人)申请商标需要个体工商户营业执照。如无执照, 需以企业名义申请或申请个体工商户注册。
+              - generic [ref=e195]:
+                - heading "💰 费用" [level=4] [ref=e196]
+                - paragraph [ref=e197]: ¥300/类 (电子申请, 10个商品项目以内), 超过10个项目每项加收¥30
+              - generic [ref=e198]:
+                - heading "📋 所需材料" [level=4] [ref=e199]
+                - generic [ref=e200]:
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: ✓
+                    - generic [ref=e203]:
+                      - generic [ref=e204]: 商标注册申请书
+                      - generic [ref=e205]: 含申请人信息、商标图样、指定类别和商品/服务项目
+                      - text: 🪄 可自动预填
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: ✓
+                    - generic [ref=e208]:
+                      - generic [ref=e209]: 商标图样
+                      - generic [ref=e210]: JPG格式, 分辨率300dpi以上, 黑白或彩色, 不大于10cm×10cm
+                  - generic [ref=e211]:
+                    - generic [ref=e212]: ✓
+                    - generic [ref=e213]:
+                      - generic [ref=e214]: 申请人身份证明
+                      - generic [ref=e215]: "个体工商户: 个体工商户营业执照+经营者身份证; 企业: 营业执照复印件"
+                  - generic [ref=e216]:
+                    - generic [ref=e217]: ○
+                    - generic [ref=e218]:
+                      - generic [ref=e219]: 代理委托书
+                      - generic [ref=e220]: 如委托代理机构办理, 需提供委托书
+              - generic [ref=e221]:
+                - heading "📝 办理流程" [level=4] [ref=e222]
+                - generic [ref=e223]:
+                  - generic [ref=e224]:
+                    - generic [ref=e225]: "1"
+                    - generic [ref=e226]:
+                      - strong [ref=e227]: 商标检索
+                      - paragraph [ref=e228]: 建议通过商标网上检索系统查询是否已有相同/近似商标
+                      - text: ⏱ 自行安排
+                  - generic [ref=e229]:
+                    - generic [ref=e230]: "2"
+                    - generic [ref=e231]:
+                      - strong [ref=e232]: 选择类别
+                      - paragraph [ref=e233]: 使用类别推荐引擎选定需要注册的商品/服务类别
+                      - text: ⏱ 即时
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: "3"
+                    - generic [ref=e236]:
+                      - strong [ref=e237]: 准备申请材料
+                      - paragraph [ref=e238]: 按材料清单准备齐全
+                      - text: ⏱ 自行安排
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: "4"
+                    - generic [ref=e241]:
+                      - strong [ref=e242]: 在线提交
+                      - paragraph [ref=e243]: 通过商标网上服务系统提交申请
+                      - text: ⏱ 约30分钟
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: "5"
+                    - generic [ref=e246]:
+                      - strong [ref=e247]: 形式审查
+                      - paragraph [ref=e248]: 商标局进行形式审查
+                      - text: ⏱ 约1个月
+                  - generic [ref=e249]:
+                    - generic [ref=e250]: "6"
+                    - generic [ref=e251]:
+                      - strong [ref=e252]: 实质审查
+                      - paragraph [ref=e253]: 审查是否符合商标法规定
+                      - text: ⏱ 约4-6个月
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: "7"
+                    - generic [ref=e256]:
+                      - strong [ref=e257]: 初审公告
+                      - paragraph [ref=e258]: 公告期3个月, 任何人均可提出异议
+                      - text: ⏱ 3个月
+                  - generic [ref=e259]:
+                    - generic [ref=e260]: "8"
+                    - generic [ref=e261]:
+                      - strong [ref=e262]: 注册公告
+                      - paragraph [ref=e263]: 无人异议或异议不成立, 颁发商标注册证
+                      - text: ⏱ 约1个月
+              - generic [ref=e264]:
+                - generic [ref=e265]:
+                  - text: 🏛️
+                  - link "国家知识产权局商标局" [ref=e266] [cursor=pointer]:
+                    - /url: https://sbj.cnipa.gov.cn
+                - generic [ref=e267]: 📜 《中华人民共和国商标法》及其实施条例
+                - generic [ref=e268]: ⏱️ 6-12个月 (含3个月公告期)
+                - generic [ref=e269]: 🔄 有效期10年, 每次续展10年 (续展费¥450/类电子)
+          - generic [ref=e270]:
+            - generic [ref=e271]:
+              - generic [ref=e272]: 🎨
+              - generic [ref=e273]:
+                - heading "中国外观设计专利指引" [level=3] [ref=e274]
+                - paragraph [ref=e275]: 外观设计保护产品的外观造型, 如图案、形状或其结合。适合手办、盲盒、包装、UI等设计保护。
+            - generic [ref=e276]:
+              - generic [ref=e277]: ⚠️ 本工具仅提供信息指引，不构成法律建议。
+              - generic [ref=e278]:
+                - heading "💰 费用参考" [level=4] [ref=e279]
+                - generic [ref=e280]:
+                  - generic [ref=e281]:
+                    - strong [ref=e282]: application
+                    - generic [ref=e283]: ¥500 (申请费)
+                  - generic [ref=e284]:
+                    - strong [ref=e285]: registration
+                    - generic [ref=e286]: ¥600 (登记费 + 印花税¥5 + 第1年年费¥600)
+                  - generic [ref=e287]:
+                    - strong [ref=e288]: annual_1_3
+                    - generic [ref=e289]: ¥600/年 (第1-3年)
+                  - generic [ref=e290]:
+                    - strong [ref=e291]: annual_4_5
+                    - generic [ref=e292]: ¥900/年 (第4-5年)
+                  - generic [ref=e293]:
+                    - strong [ref=e294]: annual_6_8
+                    - generic [ref=e295]: ¥1,200/年 (第6-8年)
+                  - generic [ref=e296]:
+                    - strong [ref=e297]: annual_9_10
+                    - generic [ref=e298]: ¥2,000/年 (第9-10年)
+                  - generic [ref=e299]:
+                    - strong [ref=e300]: annual_11_15
+                    - generic [ref=e301]: ¥— (保护期15年, 无续展)
+              - generic [ref=e302]:
+                - heading "📋 所需材料" [level=4] [ref=e303]
+                - generic [ref=e304]:
+                  - generic [ref=e305]:
+                    - generic [ref=e306]: ✓
+                    - generic [ref=e307]:
+                      - generic [ref=e308]: 外观设计专利请求书
+                      - generic [ref=e309]: 含设计名称、申请人、设计人、洛迦诺分类号
+                      - text: 🪄 可自动预填
+                  - generic [ref=e310]:
+                    - generic [ref=e311]: ✓
+                    - generic [ref=e312]:
+                      - generic [ref=e313]: 外观设计图片或照片
+                      - generic [ref=e314]: 正投影六面视图+立体图, JPG/PNG, 灰度或彩色
+                      - text: 🪄 可自动预填
+                  - generic [ref=e315]:
+                    - generic [ref=e316]: ✓
+                    - generic [ref=e317]:
+                      - generic [ref=e318]: 简要说明
+                      - generic [ref=e319]: 产品用途、设计要点、最能表明设计要点的图片
+                      - text: 🪄 可自动预填
+                  - generic [ref=e320]:
+                    - generic [ref=e321]: ✓
+                    - generic [ref=e322]:
+                      - generic [ref=e323]: 申请人身份证明
+                      - generic [ref=e324]: 身份证/营业执照复印件
+              - generic [ref=e325]:
+                - heading "📝 办理流程" [level=4] [ref=e326]
+                - generic [ref=e327]:
+                  - generic [ref=e328]:
+                    - generic [ref=e329]: "1"
+                    - generic [ref=e330]:
+                      - strong [ref=e331]: 新颖性检索
+                      - paragraph [ref=e332]: 检索现有设计, 确保无相同/实质相同设计
+                      - text: ⏱ 自行安排
+                  - generic [ref=e333]:
+                    - generic [ref=e334]: "2"
+                    - generic [ref=e335]:
+                      - strong [ref=e336]: 准备图样
+                      - paragraph [ref=e337]: 制作六面视图+立体图
+                      - text: ⏱ 自行安排
+                  - generic [ref=e338]:
+                    - generic [ref=e339]: "3"
+                    - generic [ref=e340]:
+                      - strong [ref=e341]: 提交申请
+                      - paragraph [ref=e342]: 通过中国专利电子申请系统提交
+                      - text: ⏱ 约30分钟
+                  - generic [ref=e343]:
+                    - generic [ref=e344]: "4"
+                    - generic [ref=e345]:
+                      - strong [ref=e346]: 形式审查
+                      - paragraph [ref=e347]: 审查文件是否齐全、格式是否合规
+                      - text: ⏱ 约1个月
+                  - generic [ref=e348]:
+                    - generic [ref=e349]: "5"
+                    - generic [ref=e350]:
+                      - strong [ref=e351]: 初步审查
+                      - paragraph [ref=e352]: 审查是否明显不符合授权条件
+                      - text: ⏱ 3-6个月
+                  - generic [ref=e353]:
+                    - generic [ref=e354]: "6"
+                    - generic [ref=e355]:
+                      - strong [ref=e356]: 授权公告
+                      - paragraph [ref=e357]: 审查合格, 发出授权通知, 缴纳登记费后公告
+                      - text: ⏱ 约1个月
+              - generic [ref=e359]:
+                - text: 🏛️
+                - link "国家知识产权局 (CNIPA)" [ref=e360] [cursor=pointer]:
+                  - /url: https://www.cnipa.gov.cn

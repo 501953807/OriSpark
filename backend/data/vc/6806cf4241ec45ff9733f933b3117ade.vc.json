@@ -1,0 +1,39 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.w3.org/2018/credentials/examples/v1"
+  ],
+  "id": "urn:oristudio:vc:6806cf4241ec45ff9733f933b3117ade:20260612051106237029",
+  "type": [
+    "VerifiableCredential",
+    "WorkCredential"
+  ],
+  "issuer": {
+    "id": "did:key:zXwpRd1zECpPMuP6pEUjpkeHk5gNzke5SC2ZVamCfNfpTgxt3vZbVD5hHYAj9N2UPUtVoMpZArubzKpFycxVyowjWW7H",
+    "name": "OriStudio Notary Service"
+  },
+  "issuanceDate": "2026-06-12T05:11:06.237029+00:00",
+  "credentialSubject": {
+    "id": "did:key:zXwpRd1zECpPMuP6pEUjpkeHk5gNzke5SC2ZVamCfNfpTgxt3vZbVD5hHYAj9N2UPUtVoMpZArubzKpFycxVyowjWW7H",
+    "type": "WorkCredential",
+    "work": {
+      "id": "6806cf4241ec45ff9733f933b3117ade",
+      "title": "VC 验证测试",
+      "sha256": "5c7239ffca6b8977632b188bcbf4bcd9024f6831677d37eaa8ffa18cf27639f1",
+      "file_type": "image",
+      "created_at": "2026-06-12T05:11:06.232946"
+    },
+    "proof_of_creation": {
+      "algorithm": "ECDSA-secp256r1+SHA256",
+      "timestamp": "2026-06-12T05:11:06.236824+00:00",
+      "signature": "30450220172908a16a25934aba4a3c0ba6a2c8c8094e16ee9af89b1af95b04eb3d191000022100e17965f83c566201ea5c2d5a86e20b0756be656a1fc920036212aa991ebd8c3a"
+    }
+  },
+  "proof": {
+    "type": "EcdsaSecp256r1Signature2019",
+    "created": "2026-06-12T05:11:06.237042+00:00",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:key:zXwpRd1zECpPMuP6pEUjpkeHk5gNzke5SC2ZVamCfNfpTgxt3vZbVD5hHYAj9N2UPUtVoMpZArubzKpFycxVyowjWW7H#zXwpRd1z",
+    "jws": "MEMCIA04zos7LFOhJaD62zZgiIxCCteXcYFabhiMWnZqLCMLAh8wvp395VqzTaxArVj7TCOTyqamkt5a0UxUPPlXXSxs"
+  }
+}

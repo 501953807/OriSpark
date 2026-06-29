@@ -1,0 +1,265 @@
+{
+  "nodes": [
+    {
+      "id": "config:backend/data/c2pa/ad4bba1ed3ac4f3aa6a13dfa5bf731de.c2pa.json",
+      "type": "config",
+      "name": "ad4bba1ed3ac4f3aa6a13dfa5bf731de.c2pa.json",
+      "filePath": "backend/data/c2pa/ad4bba1ed3ac4f3aa6a13dfa5bf731de.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/af611d5f5c8d4380bcd3890cea186986.c2pa.json",
+      "type": "config",
+      "name": "af611d5f5c8d4380bcd3890cea186986.c2pa.json",
+      "filePath": "backend/data/c2pa/af611d5f5c8d4380bcd3890cea186986.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/b6b4d8126a7c49f0840d7198b571a876.c2pa.json",
+      "type": "config",
+      "name": "b6b4d8126a7c49f0840d7198b571a876.c2pa.json",
+      "filePath": "backend/data/c2pa/b6b4d8126a7c49f0840d7198b571a876.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/b7907d74fcff49d2b80f64e141c7453c.c2pa.json",
+      "type": "config",
+      "name": "b7907d74fcff49d2b80f64e141c7453c.c2pa.json",
+      "filePath": "backend/data/c2pa/b7907d74fcff49d2b80f64e141c7453c.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/bc852e37f64a41eea51dc5907084f5ea.c2pa.json",
+      "type": "config",
+      "name": "bc852e37f64a41eea51dc5907084f5ea.c2pa.json",
+      "filePath": "backend/data/c2pa/bc852e37f64a41eea51dc5907084f5ea.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/c4479d2af80b4d54905fc6033fc8294a.c2pa.json",
+      "type": "config",
+      "name": "c4479d2af80b4d54905fc6033fc8294a.c2pa.json",
+      "filePath": "backend/data/c2pa/c4479d2af80b4d54905fc6033fc8294a.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/cc89063561434ccb84c279dff9e36357.c2pa.json",
+      "type": "config",
+      "name": "cc89063561434ccb84c279dff9e36357.c2pa.json",
+      "filePath": "backend/data/c2pa/cc89063561434ccb84c279dff9e36357.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/d564469941af442fa52df7df70fc7898.c2pa.json",
+      "type": "config",
+      "name": "d564469941af442fa52df7df70fc7898.c2pa.json",
+      "filePath": "backend/data/c2pa/d564469941af442fa52df7df70fc7898.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/dbabf0e9a59544b88ff5c9afcfefb2d4.c2pa.json",
+      "type": "config",
+      "name": "dbabf0e9a59544b88ff5c9afcfefb2d4.c2pa.json",
+      "filePath": "backend/data/c2pa/dbabf0e9a59544b88ff5c9afcfefb2d4.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/df6b8a5c9325416d943be5899ddc9ba7.c2pa.json",
+      "type": "config",
+      "name": "df6b8a5c9325416d943be5899ddc9ba7.c2pa.json",
+      "filePath": "backend/data/c2pa/df6b8a5c9325416d943be5899ddc9ba7.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/e1d2b35ebb2f48e49ba42b6d5fc0f345.c2pa.json",
+      "type": "config",
+      "name": "e1d2b35ebb2f48e49ba42b6d5fc0f345.c2pa.json",
+      "filePath": "backend/data/c2pa/e1d2b35ebb2f48e49ba42b6d5fc0f345.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/e7e2bd9e1f234a4c96cec6623a4b2589.c2pa.json",
+      "type": "config",
+      "name": "e7e2bd9e1f234a4c96cec6623a4b2589.c2pa.json",
+      "filePath": "backend/data/c2pa/e7e2bd9e1f234a4c96cec6623a4b2589.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/e9e0b721f4a84801a0d982e26a166cc6.c2pa.json",
+      "type": "config",
+      "name": "e9e0b721f4a84801a0d982e26a166cc6.c2pa.json",
+      "filePath": "backend/data/c2pa/e9e0b721f4a84801a0d982e26a166cc6.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f1d53598c63547bf95f8214ce771fcfd.c2pa.json",
+      "type": "config",
+      "name": "f1d53598c63547bf95f8214ce771fcfd.c2pa.json",
+      "filePath": "backend/data/c2pa/f1d53598c63547bf95f8214ce771fcfd.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f3f8da674b6f47e29d9f6ee6f65c55b2.c2pa.json",
+      "type": "config",
+      "name": "f3f8da674b6f47e29d9f6ee6f65c55b2.c2pa.json",
+      "filePath": "backend/data/c2pa/f3f8da674b6f47e29d9f6ee6f65c55b2.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f500f18375f84492bcdca806ce938fd4.c2pa.json",
+      "type": "config",
+      "name": "f500f18375f84492bcdca806ce938fd4.c2pa.json",
+      "filePath": "backend/data/c2pa/f500f18375f84492bcdca806ce938fd4.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f65e9ebfd5594af7acc25239751a4d90.c2pa.json",
+      "type": "config",
+      "name": "f65e9ebfd5594af7acc25239751a4d90.c2pa.json",
+      "filePath": "backend/data/c2pa/f65e9ebfd5594af7acc25239751a4d90.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f832d0691cb6455b9649fd8ced5c6ed9.c2pa.json",
+      "type": "config",
+      "name": "f832d0691cb6455b9649fd8ced5c6ed9.c2pa.json",
+      "filePath": "backend/data/c2pa/f832d0691cb6455b9649fd8ced5c6ed9.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/f8d9cff4436748538fd2f914775b7c05.c2pa.json",
+      "type": "config",
+      "name": "f8d9cff4436748538fd2f914775b7c05.c2pa.json",
+      "filePath": "backend/data/c2pa/f8d9cff4436748538fd2f914775b7c05.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/data/c2pa/fecb20f2383741549a95598572b2522e.c2pa.json",
+      "type": "config",
+      "name": "fecb20f2383741549a95598572b2522e.c2pa.json",
+      "filePath": "backend/data/c2pa/fecb20f2383741549a95598572b2522e.c2pa.json",
+      "summary": "C2PA (Coalition for Content Provenance and Authenticity) claim assertion data recording content origin, SHA-256 hash, and ECDSA signature for a creative work.",
+      "tags": [
+        "configuration",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

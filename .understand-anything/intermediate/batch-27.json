@@ -1,0 +1,178 @@
+{
+  "nodes": [
+    {
+      "id": "file:docs/OriStudio-功能架构图.html",
+      "type": "document",
+      "name": "OriStudio-功能架构图.html",
+      "filePath": "docs/OriStudio-功能架构图.html",
+      "summary": "OriStudio功能架构图，以SVG可视化展示六大核心模块及其内部组件的关系。",
+      "tags": ["架构图", "功能模块", "svg"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:docs/OriStudio-完整实施计划.md",
+      "type": "document",
+      "name": "OriStudio-完整实施计划.md",
+      "filePath": "docs/OriStudio-完整实施计划.md",
+      "summary": "OriStudio v3分4个Phase的实施计划：合规修复(P0)、核心能力(P0)、UX体验(P1)、文档同步(P2)，共13-14天。",
+      "tags": ["实施计划", "phased-rollout", "项目管理"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/OriStudio-完整建设方案.html",
+      "type": "document",
+      "name": "OriStudio-完整建设方案.html",
+      "filePath": "docs/OriStudio-完整建设方案.html",
+      "summary": "OriStudio完整建设方案，包含系统设计、数据库表结构、API接口和开发路线图的HTML综合文档。",
+      "tags": ["设计文档", "系统架构", "数据库设计"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/OriStudio-技术架构图.html",
+      "type": "document",
+      "name": "OriStudio-技术架构图.html",
+      "filePath": "docs/OriStudio-技术架构图.html",
+      "summary": "OriStudio分层技术架构图，SVG可视化展示前端Vue3、后端FastAPI、数据库SQLite/PostgreSQL和外部服务的分层架构。",
+      "tags": ["架构图", "技术栈", "svg"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:docs/master-design-v3.md",
+      "type": "document",
+      "name": "master-design-v3.md",
+      "filePath": "docs/master-design-v3.md",
+      "summary": "OriStudio v3系统功能设计总纲，定义v1聚焦插画师/AIGC艺术家的核心定位、7模块全景、232端点和49数据模型的完整设计。",
+      "tags": ["总纲", "系统设计", "v1定位", "模块全景"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/requirements-v3-final.md",
+      "type": "document",
+      "name": "requirements-v3-final.md",
+      "filePath": "docs/requirements-v3-final.md",
+      "summary": "OriStudio v3最终需求文档，基于9角色评估，v1聚焦插画师、诚实声明能力边界、7项免责声明和CNIPA律师审核合规要求。",
+      "tags": ["需求文档", "合规", "upl", "v1定位"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:docs/technical-feasibility-report.md",
+      "type": "document",
+      "name": "technical-feasibility-report.md",
+      "filePath": "docs/technical-feasibility-report.md",
+      "summary": "OriStudio技术方案可行性分析报告，评估关键技术点的实现难度和风险。",
+      "tags": ["技术评估", "可行性分析", "风险分析"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:docs/ux-design-spec.md",
+      "type": "document",
+      "name": "ux-design-spec.md",
+      "filePath": "docs/ux-design-spec.md",
+      "summary": "OriStudio UX设计规范，包含Onboarding三步向导、10个空状态设计、9个术语优化和移动端响应式适配方案。",
+      "tags": ["ux设计", "规范", "onboarding", "空状态"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:docs/version-roadmap.md",
+      "type": "document",
+      "name": "version-roadmap.md",
+      "filePath": "docs/version-roadmap.md",
+      "summary": "OriStudio完整版本路线图，从v1插画师聚焦到v4+涵盖摄影/视频/手工/音乐/文字创作者的演进路线。",
+      "tags": ["路线图", "版本规划", "v1-v4"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:docs/master-design-v3.md",
+      "target": "file:docs/requirements-v3-final.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/master-design-v3.md",
+      "target": "file:docs/version-roadmap.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/master-design-v3.md",
+      "target": "file:docs/ux-design-spec.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/master-design-v3.md",
+      "target": "file:docs/OriStudio-完整实施计划.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/OriStudio-完整实施计划.md",
+      "target": "file:docs/requirements-v3-final.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/OriStudio-完整实施计划.md",
+      "target": "file:docs/master-design-v3.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/OriStudio-完整建设方案.html",
+      "target": "file:docs/OriStudio-功能架构图.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/OriStudio-完整建设方案.html",
+      "target": "file:docs/OriStudio-技术架构图.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/OriStudio-功能架构图.html",
+      "target": "file:docs/OriStudio-技术架构图.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/ux-design-spec.md",
+      "target": "file:docs/requirements-v3-final.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/version-roadmap.md",
+      "target": "file:docs/master-design-v3.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/technical-feasibility-report.md",
+      "target": "file:docs/master-design-v3.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:docs/technical-feasibility-report.md",
+      "target": "file:docs/requirements-v3-final.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

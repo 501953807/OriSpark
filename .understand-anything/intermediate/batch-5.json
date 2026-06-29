@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/App.vue",
+      "type": "file",
+      "name": "App.vue",
+      "filePath": "frontend/src/App.vue",
+      "summary": "Vue 根组件，包裹 router-view 并提供全局错误捕获边界。",
+      "tags": ["entry-point", "component", "error-boundary"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/main.ts",
+      "type": "file",
+      "name": "main.ts",
+      "filePath": "frontend/src/main.ts",
+      "summary": "Vue 应用入口脚本，初始化 Pinia、路由并挂载到 #app DOM 节点。",
+      "tags": ["entry-point", "bootstrapping", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/router/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "frontend/src/router/index.ts",
+      "summary": "基于 vue-router 定义前端路由表，涵盖公开页面、需登录的应用内页面及 404 重定向，并实现本地模式的自动登录守卫。",
+      "tags": ["entry-point", "routing", "authentication"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/src/main.ts",
+      "target": "file:frontend/src/App.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/main.ts",
+      "target": "file:frontend/src/router/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/src/App.vue",
+      "target": "file:frontend/src/router/index.ts",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

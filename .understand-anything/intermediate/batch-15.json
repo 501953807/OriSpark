@@ -1,0 +1,185 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/c2pa/00d5c5bcc9554b0c9576ee9511bce13a.c2pa.json",
+      "type": "file",
+      "name": "00d5c5bcc9554b0c9576ee9511bce13a.c2pa.json",
+      "filePath": "backend/data/c2pa/00d5c5bcc9554b0c9576ee9511bce13a.c2pa.json",
+      "summary": "C2PA content authenticity assertion manifest记录作品的来源、哈希签名和内容断言，用于数字版权溯源。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/07f538b2fc064b9bb54cf5970c4f4bd6.c2pa.json",
+      "type": "file",
+      "name": "07f538b2fc064b9bb54cf5970c4f4bd6.c2pa.json",
+      "filePath": "backend/data/c2pa/07f538b2fc064b9bb54cf5970c4f4bd6.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/0966b57461d843448c3b257a0f225a85.c2pa.json",
+      "type": "file",
+      "name": "0966b57461d843448c3b257a0f225a85.c2pa.json",
+      "filePath": "backend/data/c2pa/0966b57461d843448c3b257a0f225a85.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/0ade55590a5d433db0d81e1040faec28.c2pa.json",
+      "type": "file",
+      "name": "0ade55590a5d433db0d81e1040faec28.c2pa.json",
+      "filePath": "backend/data/c2pa/0ade55590a5d433db0d81e1040faec28.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/0d0a16b5643c45c1971e4684bdb82feb.c2pa.json",
+      "type": "file",
+      "name": "0d0a16b5643c45c1971e4684bdb82feb.c2pa.json",
+      "filePath": "backend/data/c2pa/0d0a16b5643c45c1971e4684bdb82feb.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/0e5544770dc4407b96c5ddbd69536fa0.c2pa.json",
+      "type": "file",
+      "name": "0e5544770dc4407b96c5ddbd69536fa0.c2pa.json",
+      "filePath": "backend/data/c2pa/0e5544770dc4407b96c5ddbd69536fa0.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/0fca7a6d0492493cad383f7d71941c98.c2pa.json",
+      "type": "file",
+      "name": "0fca7a6d0492493cad383f7d71941c98.c2pa.json",
+      "filePath": "backend/data/c2pa/0fca7a6d0492493cad383f7d71941c98.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/11c83ab4b9f5484d9bce2291fd95d9f5.c2pa.json",
+      "type": "file",
+      "name": "11c83ab4b9f5484d9bce2291fd95d9f5.c2pa.json",
+      "filePath": "backend/data/c2pa/11c83ab4b9f5484d9bce2291fd95d9f5.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/15600f369d0e4e979fe02d6a8949089d.c2pa.json",
+      "type": "file",
+      "name": "15600f369d0e4e979fe02d6a8949089d.c2pa.json",
+      "filePath": "backend/data/c2pa/15600f369d0e4e979fe02d6a8949089d.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/1a6a376e9a4b49e0a74f1bd851dfaa1e.c2pa.json",
+      "type": "file",
+      "name": "1a6a376e9a4b49e0a74f1bd851dfaa1e.c2pa.json",
+      "filePath": "backend/data/c2pa/1a6a376e9a4b49e0a74f1bd851dfaa1e.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/1bd39c5c5ffd4a38842cd077ac026cf1.c2pa.json",
+      "type": "file",
+      "name": "1bd39c5c5ffd4a38842cd077ac026cf1.c2pa.json",
+      "filePath": "backend/data/c2pa/1bd39c5c5ffd4a38842cd077ac026cf1.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/1ee6268b3d5e44308a986395d6c90851.c2pa.json",
+      "type": "file",
+      "name": "1ee6268b3d5e44308a986395d6c90851.c2pa.json",
+      "filePath": "backend/data/c2pa/1ee6268b3d5e44308a986395d6c90851.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/222063085a7b495395295b812ee1ac9a.c2pa.json",
+      "type": "file",
+      "name": "222063085a7b495395295b812ee1ac9a.c2pa.json",
+      "filePath": "backend/data/c2pa/222063085a7b495395295b812ee1ac9a.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/2226e697bea84bd9b4a2cef8ccb44b21.c2pa.json",
+      "type": "file",
+      "name": "2226e697bea84bd9b4a2cef8ccb44b21.c2pa.json",
+      "filePath": "backend/data/c2pa/2226e697bea84bd9b4a2cef8ccb44b21.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/226cebe1b3f9494bb34e1ca043f02e9e.c2pa.json",
+      "type": "file",
+      "name": "226cebe1b3f9494bb34e1ca043f02e9e.c2pa.json",
+      "filePath": "backend/data/c2pa/226cebe1b3f9494bb34e1ca043f02e9e.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/22829eaba03847ff887e8c98622574c6.c2pa.json",
+      "type": "file",
+      "name": "22829eaba03847ff887e8c98622574c6.c2pa.json",
+      "filePath": "backend/data/c2pa/22829eaba03847ff887e8c98622574c6.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/268429bc9e074d05933e872b4c3f4ce6.c2pa.json",
+      "type": "file",
+      "name": "268429bc9e074d05933e872b4c3f4ce6.c2pa.json",
+      "filePath": "backend/data/c2pa/268429bc9e074d05933e872b4c3f4ce6.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/2efcf0ef2a8f43db92c92238ef082098.c2pa.json",
+      "type": "file",
+      "name": "2efcf0ef2a8f43db92c92238ef082098.c2pa.json",
+      "filePath": "backend/data/c2pa/2efcf0ef2a8f43db92c92238ef082098.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/317aae7d9b7f4b39ae7dd298f2c60796.c2pa.json",
+      "type": "file",
+      "name": "317aae7d9b7f4b39ae7dd298f2c60796.c2pa.json",
+      "filePath": "backend/data/c2pa/317aae7d9b7f4b39ae7dd298f2c60796.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/c2pa/3707d64b252c45c494681cc256e2b527.c2pa.json",
+      "type": "file",
+      "name": "3707d64b252c45c494681cc256e2b527.c2pa.json",
+      "filePath": "backend/data/c2pa/3707d64b252c45c494681cc256e2b527.c2pa.json",
+      "summary": "C2PA内容真实性声明文件，包含作品哈希和ECDSA签名信息。",
+      "tags": ["c2pa", "content-authenticity", "digital-rights", "data-artifact", "configuration"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

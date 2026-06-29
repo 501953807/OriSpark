@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.whl
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env
+
+# Node
+node_modules/
+dist/
+.vite/
+*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Backend Data
+backend/data/oristudio.db
+backend/data/certificates/
+backend/data/thumbnails/
+backend/data/backups/
+backend/data/logs/
+backend/data/config/secrets.yaml
+
+# Coverage
+coverage/
+htmlcov/
+*.coverage
+
+# Docker
+.docker/
+
+# Logs
+*.log
+logs/
+
+# Temp
+tmp/
+temp/
+*.tmp

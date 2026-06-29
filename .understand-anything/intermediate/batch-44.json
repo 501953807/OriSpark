@@ -1,0 +1,341 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/src/stores/useDashboardStore.ts",
+      "type": "file",
+      "name": "useDashboardStore.ts",
+      "filePath": "frontend/src/stores/useDashboardStore.ts",
+      "summary": "Pinia store：useDashboardStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/stores/useDictStore.ts",
+      "type": "file",
+      "name": "useDictStore.ts",
+      "filePath": "frontend/src/stores/useDictStore.ts",
+      "summary": "Pinia store：useDictStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/stores/useMonitorStore.ts",
+      "type": "file",
+      "name": "useMonitorStore.ts",
+      "filePath": "frontend/src/stores/useMonitorStore.ts",
+      "summary": "Pinia store：useMonitorStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/stores/useNotaryStore.ts",
+      "type": "file",
+      "name": "useNotaryStore.ts",
+      "filePath": "frontend/src/stores/useNotaryStore.ts",
+      "summary": "Pinia store：useNotaryStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/stores/useSettingsStore.ts",
+      "type": "file",
+      "name": "useSettingsStore.ts",
+      "filePath": "frontend/src/stores/useSettingsStore.ts",
+      "summary": "Pinia store：useSettingsStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/stores/useWorkStore.ts",
+      "type": "file",
+      "name": "useWorkStore.ts",
+      "filePath": "frontend/src/stores/useWorkStore.ts",
+      "summary": "Pinia store：useWorkStore.ts，管理前端应用级共享状态。",
+      "tags": [
+        "store",
+        "pinia",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/tsconfig.json",
+      "type": "file",
+      "name": "tsconfig.json",
+      "filePath": "frontend/src/tsconfig.json",
+      "summary": "前端 TypeScript 项目配置文件。",
+      "tags": [
+        "configuration",
+        "typescript",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/types/common.ts",
+      "type": "file",
+      "name": "common.ts",
+      "filePath": "frontend/src/types/common.ts",
+      "summary": "TypeScript 类型定义文件：common.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/types/ipr.ts",
+      "type": "file",
+      "name": "ipr.ts",
+      "filePath": "frontend/src/types/ipr.ts",
+      "summary": "TypeScript 类型定义文件：ipr.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/types/monitor.ts",
+      "type": "file",
+      "name": "monitor.ts",
+      "filePath": "frontend/src/types/monitor.ts",
+      "summary": "TypeScript 类型定义文件：monitor.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/types/notary.ts",
+      "type": "file",
+      "name": "notary.ts",
+      "filePath": "frontend/src/types/notary.ts",
+      "summary": "TypeScript 类型定义文件：notary.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/types/publish.ts",
+      "type": "file",
+      "name": "publish.ts",
+      "filePath": "frontend/src/types/publish.ts",
+      "summary": "TypeScript 类型定义文件：publish.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/types/supply.ts",
+      "type": "file",
+      "name": "supply.ts",
+      "filePath": "frontend/src/types/supply.ts",
+      "summary": "TypeScript 类型定义文件：supply.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/types/work.ts",
+      "type": "file",
+      "name": "work.ts",
+      "filePath": "frontend/src/types/work.ts",
+      "summary": "TypeScript 类型定义文件：work.ts，定义前端业务对象接口。",
+      "tags": [
+        "type-definition",
+        "typescript",
+        "interface"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/views/BusinessView.vue",
+      "type": "file",
+      "name": "BusinessView.vue",
+      "filePath": "frontend/src/views/BusinessView.vue",
+      "summary": "Vue 视图组件：BusinessView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/src/views/CommissionView.vue",
+      "type": "file",
+      "name": "CommissionView.vue",
+      "filePath": "frontend/src/views/CommissionView.vue",
+      "summary": "Vue 视图组件：CommissionView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/CullingView.vue",
+      "type": "file",
+      "name": "CullingView.vue",
+      "filePath": "frontend/src/views/CullingView.vue",
+      "summary": "Vue 视图组件：CullingView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/DashboardView.vue",
+      "type": "file",
+      "name": "DashboardView.vue",
+      "filePath": "frontend/src/views/DashboardView.vue",
+      "summary": "Vue 视图组件：DashboardView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/ErrorView.vue",
+      "type": "file",
+      "name": "ErrorView.vue",
+      "filePath": "frontend/src/views/ErrorView.vue",
+      "summary": "Vue 视图组件：ErrorView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/src/views/IntegrationsView.vue",
+      "type": "file",
+      "name": "IntegrationsView.vue",
+      "filePath": "frontend/src/views/IntegrationsView.vue",
+      "summary": "Vue 视图组件：IntegrationsView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/IprView.vue",
+      "type": "file",
+      "name": "IprView.vue",
+      "filePath": "frontend/src/views/IprView.vue",
+      "summary": "Vue 视图组件：IprView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/LandingView.vue",
+      "type": "file",
+      "name": "LandingView.vue",
+      "filePath": "frontend/src/views/LandingView.vue",
+      "summary": "Vue 视图组件：LandingView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/ListingDetailView.vue",
+      "type": "file",
+      "name": "ListingDetailView.vue",
+      "filePath": "frontend/src/views/ListingDetailView.vue",
+      "summary": "Vue 视图组件：ListingDetailView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/ListingListView.vue",
+      "type": "file",
+      "name": "ListingListView.vue",
+      "filePath": "frontend/src/views/ListingListView.vue",
+      "summary": "Vue 视图组件：ListingListView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/src/views/LoginView.vue",
+      "type": "file",
+      "name": "LoginView.vue",
+      "filePath": "frontend/src/views/LoginView.vue",
+      "summary": "Vue 视图组件：LoginView.vue，作为前端页面的主内容容器。",
+      "tags": [
+        "component",
+        "vue",
+        "view",
+        "page"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": []
+}

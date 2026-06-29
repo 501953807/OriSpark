@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c2.vc.json",
+      "type": "file",
+      "name": "f77150ea06774a8e8c8c5f4cd4cf00c2.vc.json",
+      "filePath": "backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c2.vc.json",
+      "summary": "W3C Verifiable Credential for a test work (VC u zuo pin) issued by the OriStudio Notary Service with ECDSA-secp256r1 proof.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c3.vc.json",
+      "type": "file",
+      "name": "f77150ea06774a8e8c8c5f4cd4cf00c3.vc.json",
+      "filePath": "backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c3.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for a test work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c4.vc.json",
+      "type": "file",
+      "name": "f77150ea06774a8e8c8c5f4cd4cf00c4.vc.json",
+      "filePath": "backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c4.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for a test work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c5.vc.json",
+      "type": "file",
+      "name": "f77150ea06774a8e8c8c5f4cd4cf00c5.vc.json",
+      "filePath": "backend/data/vc/f77150ea06774a8e8c8c5f4cd4cf00c5.vc.json",
+      "summary": "W3C Verifiable Credential storing cryptographic proof of creation for a test work via SHA-256 hashing and ECDSA signature.",
+      "tags": ["configuration", "schema-definition", "data-pipeline"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "config:backend/alembic.ini",
+      "type": "config",
+      "name": "alembic.ini",
+      "filePath": "backend/alembic.ini",
+      "summary": "Alembic database migration configuration pointing to a local SQLite database with logger level settings.",
+      "tags": [
+        "configuration",
+        "database",
+        "migration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/pyproject.toml",
+      "type": "config",
+      "name": "pyproject.toml",
+      "filePath": "backend/pyproject.toml",
+      "summary": "Python project metadata and dependency declarations for OriStudio including FastAPI, SQLAlchemy, Celery, and cryptography libraries.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "dependency-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:backend/requirements.txt",
+      "type": "config",
+      "name": "requirements.txt",
+      "filePath": "backend/requirements.txt",
+      "summary": "Flat pip requirements listing production dependencies for the OriStudio backend including FastAPI, SQLAlchemy, Redis, and Celery.",
+      "tags": [
+        "configuration",
+        "dependency-management",
+        "build-system"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}
