@@ -96,6 +96,55 @@
             <TagInput v-model="form.tags" />
           </div>
 
+          <!-- Type-Specific Fields -->
+          <template v-if="work?.creator_type === 'photographer'">
+            <div class="section-label">摄影参数</div>
+            <div class="form-group">
+              <label>相机型号</label>
+              <input v-model="form.camera_model" class="form-input" placeholder="如: Sony A7IV" />
+            </div>
+            <div class="form-group">
+              <label>镜头</label>
+              <input v-model="form.lens" class="form-input" placeholder="如: FE 24-70mm f/2.8 GM" />
+            </div>
+            <div class="form-group">
+              <label>RAW 文件路径</label>
+              <input v-model="form.raw_file_path" class="form-input" placeholder="/path/to/raw/file" />
+            </div>
+          </template>
+
+          <template v-if="work?.creator_type === 'musician'">
+            <div class="section-label">音乐信息</div>
+            <div class="form-group">
+              <label>ISRC</label>
+              <input v-model="form.isrc" class="form-input" placeholder="CN-xxx-xx-00001" />
+            </div>
+            <div class="form-group">
+              <label>BPM</label>
+              <input v-model.number="form.bpm" type="number" class="form-input" min="1" max="999" />
+            </div>
+            <div class="form-group">
+              <label>调性</label>
+              <input v-model="form.music_key" class="form-input" placeholder="如: C大调" />
+            </div>
+          </template>
+
+          <template v-if="work?.creator_type === 'writer'">
+            <div class="section-label">文稿信息</div>
+            <div class="form-group">
+              <label>字数</label>
+              <input v-model.number="form.word_count" type="number" class="form-input" min="0" />
+            </div>
+            <div class="form-group">
+              <label>章节数</label>
+              <input v-model.number="form.chapter_count" type="number" class="form-input" min="0" />
+            </div>
+            <div class="form-group">
+              <label>体裁</label>
+              <input v-model="form.genre" class="form-input" placeholder="小说/散文/诗歌…" />
+            </div>
+          </template>
+
           <!-- Notes -->
           <div class="section-label">备注</div>
           <div class="form-group">
@@ -165,6 +214,18 @@ const form = reactive({
   creation_location: '',
   project_id: '',
   tags: [] as WorkTag[],
+  // Photographer
+  camera_model: '',
+  lens: '',
+  raw_file_path: '',
+  // Musician
+  isrc: '',
+  bpm: null as number | null,
+  music_key: '',
+  // Writer
+  word_count: null as number | null,
+  chapter_count: null as number | null,
+  genre: '',
 })
 
 watch(() => props.work, (w) => {
@@ -189,6 +250,17 @@ watch(() => props.work, (w) => {
     const cm = w.custom_metadata || {}
     form.creation_tool = cm.creation_tool || cm.creation_tool_name || ''
     form.creation_location = cm.creation_location || ''
+
+    // Type-specific fields from custom_metadata
+    form.camera_model = cm.camera_model || ''
+    form.lens = cm.lens || ''
+    form.raw_file_path = cm.raw_file_path || ''
+    form.isrc = cm.isrc || ''
+    form.bpm = cm.bpm ?? null
+    form.music_key = cm.music_key || ''
+    form.word_count = cm.word_count ?? null
+    form.chapter_count = cm.chapter_count ?? null
+    form.genre = cm.genre || ''
 
     // Tags
     form.tags = (w.tags || []).map(t => ({ ...t }))
@@ -230,6 +302,17 @@ function handleSave() {
     creation_tool: form.creation_tool,
     creation_location: form.creation_location,
   }
+
+  // Type-specific metadata
+  if (form.camera_model) metadata.camera_model = form.camera_model
+  if (form.lens) metadata.lens = form.lens
+  if (form.raw_file_path) metadata.raw_file_path = form.raw_file_path
+  if (form.isrc) metadata.isrc = form.isrc
+  if (form.bpm !== null) metadata.bpm = form.bpm
+  if (form.music_key) metadata.music_key = form.music_key
+  if (form.word_count !== null) metadata.word_count = form.word_count
+  if (form.chapter_count !== null) metadata.chapter_count = form.chapter_count
+  if (form.genre) metadata.genre = form.genre
 
   emit('save', {
     title: form.title,
