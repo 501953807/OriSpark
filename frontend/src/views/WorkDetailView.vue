@@ -113,6 +113,9 @@
             </div>
           </section>
 
+          <!-- Group 5.5: Creator Type Specific Info -->
+          <CreatorTypeInfo :work="work" />
+
           <!-- Group 6: Synopsis -->
           <section class="info-group" v-if="work.synopsis || work.description">
             <h4 class="info-group-title">简介</h4>
@@ -277,6 +280,7 @@ import { systemApi } from '@/api/system'
 import { monitorApi } from '@/api/monitor'
 import type { Work } from '@/types/work'
 import { getAllStages, getStagesForFileType, getStageColor as getStageColorUtil } from '@/composables/useWorkStages'
+import CreatorTypeInfo from '@/components/work/CreatorTypeInfo.vue'
 
 const route = useRoute()
 const router = useRouter()
