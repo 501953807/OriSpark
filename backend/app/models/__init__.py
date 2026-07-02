@@ -26,7 +26,7 @@ from app.models.commission import CommissionProject, CommissionOrder, Commission
 # v2-v4 预留模型
 from app.models.subtitle import Subtitle
 from app.models.video_fingerprint import VideoFingerprintConfig, VideoFrameFingerprint
-from app.models.work_variant import WorkVariantGroup
+from app.models.work_variant import WorkVariantGroup, WorkVariant
 from app.models.factory import RFQRequest, Sample, QualityReport
 from app.models.subtitle import Subtitle, ProjectFileFormat
 
@@ -54,9 +54,13 @@ from app.models.quality_inspection import QualityInspection
 from app.models.risk_warning import RiskWarning
 from app.models.ai_session import AiCreationSession
 
+from app.models.album import Album
+from app.models.music_release import MusicRelease
+from app.models.split_sheet import SplitSheet
+
 # 音乐 v4 预留
 from app.models.reserved_music import (
-    Album, AlbumTrack,
+    AlbumTrack,
     WorkCollaborator,
     DistributionRelease, DistroPlatform,
     SampleClearance,
@@ -92,6 +96,7 @@ __all__ = [
     "Subtitle", "ProjectFileFormat",
     "VideoFingerprintConfig", "VideoFrameFingerprint",
     "WorkVariantGroup",
+    "WorkVariant",
     "RFQRequest", "Sample", "QualityReport",
     # 摄影师 v2
     "RawFormat",
@@ -109,7 +114,7 @@ __all__ = [
     "RiskWarning",
     "AiCreationSession",
     # 音乐 v4
-    "Album", "AlbumTrack",
+    "Album", "MusicRelease", "SplitSheet", "AlbumTrack",
     "WorkCollaborator",
     "DistributionRelease", "DistroPlatform",
     "SampleClearance",
