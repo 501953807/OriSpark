@@ -68,6 +68,7 @@ class WorkResponse(BaseModel):
     license_type: Optional[str] = None
     custom_metadata: Optional[dict] = None
     exif_data: Optional[dict] = None
+    creator_type: str = "illustrator"
     tags: list[WorkTagResponse] = []
     created_at: datetime
     imported_at: datetime
