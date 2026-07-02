@@ -121,6 +121,36 @@ def _build_auto_rights(exif_data):
     return rights
 
 
+def _detect_creator_type(file_type: str, exif_data: Optional[dict], full_meta: Optional[dict]) -> str:
+    """Detect creator type from file characteristics."""
+    # Photographer: image with EXIF camera data
+    if file_type == "image" and exif_data:
+        camera_signals = ("CameraMake", "CameraModel", "LensModel", "Model")
+        if any(exif_data.get(k) for k in camera_signals):
+            return "photographer"
+    # Musician: audio with ISRC/BPM/artists
+    if file_type == "audio":
+        audio_signals = ("isrc", "bpm", "artist", "Album")
+        if any(full_meta and full_meta.get(k) for k in audio_signals):
+            return "musician"
+        return "musician"  # All audio defaults to musician
+    # Video: video file type
+    if file_type == "video":
+        return "video"
+    # Document: could be writer or craftsman
+    if file_type == "document":
+        # Check for CAD/design metadata
+        if full_meta and any(k in full_meta for k in ("software", "Application", "Producer")):
+            app = str(full_meta.get("software", "") + full_meta.get("Application", "") + full_meta.get("Producer", ""))
+            if any(kw in app.lower() for kw in ("autocad", "solidworks", " sketchup")):
+                return "craftsman"
+        return "writer"
+    # Default: illustrator for design files and everything else
+    if file_type == "design":
+        return "illustrator"
+    return "illustrator"
+
+
 MAX_FILE_SIZE = 500 * 1024 * 1024  # 500MB
 
 
@@ -292,6 +322,7 @@ async def create_work(
         import_mode="full",
         is_raw_original=is_raw,
         rights=auto_rights,
+        creator_type=_detect_creator_type(file_type, exif_data, full_meta),
         custom_metadata={
             "auto_tags": auto_tags,
             "imported_size": file_size,
@@ -632,6 +663,8 @@ def create_hash_only_work(data: "HashOnlyUpload", user_id: str = Depends(require
         import_mode="hash_only",
         custom_metadata=data.custom_metadata,
     )
+    detected_ft = data.file_type or "image"
+    work.creator_type = "illustrator"  # hash-only can't detect, default
 
     for tag_name in data.tags:
         work.tags.append(WorkTag(tag=tag_name))
@@ -712,6 +745,7 @@ async def create_lowres_work(
         thumbnail_path=str(thumb_path.resolve()),
         width=width,
         height=height,
+        creator_type=_detect_creator_type(ft, None, {"width": width, "height": height}),
     )
 
     for tag_name in user_tags:
@@ -1212,6 +1246,7 @@ async def import_folder(
                 sha256=file_hash,
                 project_id=project_id,
                 current_stage=initial_stage,
+                creator_type=_detect_creator_type(file_type, None, {}),
             )
             db.add(work)
             imported += 1
