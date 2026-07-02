@@ -142,7 +142,7 @@ def _detect_creator_type(file_type: str, exif_data: Optional[dict], full_meta: O
         # Check for CAD/design metadata
         if full_meta and any(k in full_meta for k in ("software", "Application", "Producer")):
             app = str(full_meta.get("software", "") + full_meta.get("Application", "") + full_meta.get("Producer", ""))
-            if any(kw in app.lower() for kw in ("autocad", "solidworks", " sketchup")):
+            if any(kw in app.lower() for kw in ("autocad", "solidworks", "sketchup")):
                 return "craftsman"
         return "writer"
     # Default: illustrator for design files and everything else
