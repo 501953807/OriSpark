@@ -31,17 +31,21 @@ export interface Work {
   exif_data: Record<string, any> | null
   tags: WorkTag[]
   import_mode: string
+  creator_type: string  // illustrator | photographer | video | craftsman | musician | writer
   rights: Record<string, any> | null
   license_type: string | null
   created_at: string
   imported_at: string
   updated_at: string
   verified_status?: string | null
-  // New fields
   synopsis?: string | null
   completion_date?: string | null
   current_stage?: string | null
   copyright_year?: number | null
+  // Culling fields
+  cull_status?: 'pending' | 'pass' | 'fail' | 'hold' | null
+  cull_rating?: number | null
+  color_label?: string | null
 }
 
 export interface WorkListParams {
