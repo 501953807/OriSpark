@@ -59,3 +59,7 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Design & Docs (not for git control)
+design/
+docs/
