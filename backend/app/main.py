@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants
+from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
 from app.middleware.logging import LoggingMiddleware
@@ -102,6 +102,11 @@ app.include_router(metadata_templates.router, prefix="/api", tags=["MetadataTemp
 app.include_router(watermark.router, prefix="/api", tags=["Watermark"])
 app.include_router(mcp_server.router, prefix="/api", tags=["MCP"])
 app.include_router(work_variants.router, prefix="/api", tags=["WorkVariants"])
+app.include_router(photographer.router, prefix="/api", tags=["Photographer"])
+app.include_router(craftsman.router, prefix="/api", tags=["Craftsman"])
+app.include_router(musician.router, prefix="/api", tags=["Musician"])
+app.include_router(writer.router, prefix="/api", tags=["Writer"])
+app.include_router(certification.router, prefix="/api", tags=["Certification"])
 app.include_router(ws_router, tags=["WebSocket"])
 
 # Phase 0: 新路由
@@ -110,6 +115,8 @@ from app.routers.ai_session import router as ai_session_router
 
 app.include_router(risk_warning_router)
 app.include_router(ai_session_router)
+from app.routers.ai_generate import router as ai_generate_router
+app.include_router(ai_generate_router)
 
 
 @app.get("/api/health")
