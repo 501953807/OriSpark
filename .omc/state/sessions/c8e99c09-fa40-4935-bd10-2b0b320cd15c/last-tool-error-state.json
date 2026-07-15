@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"PYTHONPATH=. python3 -c \\\"\\nfrom app.main import app\\ntags = {}\\nfor r in app.routes:\\n    if hasattr(r, 'methods'):\\n        tag = None\\n        for t in getattr(r, 'tags', []):\\n        ...",
-  "error": "Exit code 1\nTraceback (most recent call last):\n  File \"<string>\", line 2, in <module>\n    from app.main import app\nModuleNotFoundError: No module named 'app'",
-  "timestamp": "2026-06-23T07:22:38.420Z",
-  "retry_count": 3
-}

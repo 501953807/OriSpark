@@ -63,3 +63,17 @@ temp/
 # Design & Docs (not for git control)
 design/
 docs/
+
+# AI Agent tools / Claude Code / Serena / OMC (local dev only)
+.claude/
+.omc/
+.serena/
+.understand-anything/
+.playwright-mcp/
+.archive/
+
+# Environment files (DO NOT commit real env)
+.env
+.env.local
+.env.*
+!.env.example

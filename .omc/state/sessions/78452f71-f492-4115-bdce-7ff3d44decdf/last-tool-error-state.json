@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/backend && python -c \\\"\\nimport sys\\nsys.path.insert(0, '.')\\nfrom app.database import Base, engine\\n# 试创建所有表\\nBase.metadata.cr...",
-  "error": "Exit code 127\n(eval):1: command not found: python",
-  "timestamp": "2026-06-13T03:09:35.935Z",
-  "retry_count": 1
-}
