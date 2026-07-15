@@ -127,7 +127,7 @@ async function loadOrders() {
 }
 
 function viewOrder(o: Ord) {
-  alert(`订单详情: ${o.order_number}`)
+  ;(window as any).$toast?.show(`查看订单: ${o.order_number}`, 'info')
 }
 
 async function saveOrder() {

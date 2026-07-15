@@ -1,8 +1,11 @@
 <template>
   <div class="publish-view">
+    <!-- Loading state -->
+    <div v-if="checking" class="publish-loading" style="text-align:center;padding:60px;color:var(--muted)">加载中...</div>
+
     <!-- 前置校验: 无作品时拦截 -->
     <EmptyState
-      v-if="!hasWorks"
+      v-else-if="!hasWorks"
       icon="📱"
       title="暂无已确权作品"
       description="内容分发需要先上传作品并完成 IP 登记确权"
@@ -379,7 +382,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -393,6 +396,7 @@ const RevenueCharts = defineAsyncComponent(() => import('@/components/common/Rev
 const router = useRouter()
 const appStore = useAppStore()
 const hasWorks = ref(false)
+const checking = ref(true)
 const goToWorks = () => router.push('/app/works')
 
 const activeTab = ref('products')
@@ -486,6 +490,14 @@ async function loadRevenueSummary() {
 
 // ─── Product CRUD ───
 async function createProduct() {
+  if (!productForm.value.title?.trim()) {
+    ;(window as any).$toast?.show('请输入商品标题', 'warning')
+    return
+  }
+  if (!productForm.value.price || productForm.value.price <= 0) {
+    ;(window as any).$toast?.show('价格必须大于0', 'warning')
+    return
+  }
   try {
     await publishApi.createProduct(productForm.value)
     showProductModal.value = false
@@ -602,6 +614,14 @@ function downloadFeed() {
 
 // ─── Revenue ───
 async function addRevenue() {
+  if (!revenueForm.value.platform?.trim()) {
+    ;(window as any).$toast?.show('请输入平台名称', 'warning')
+    return
+  }
+  if (!revenueForm.value.amount || revenueForm.value.amount <= 0) {
+    ;(window as any).$toast?.show('金额必须大于0', 'warning')
+    return
+  }
   try {
     await publishApi.addRevenue(revenueForm.value)
     showRevenueModal.value = false
@@ -641,11 +661,27 @@ function copyToClipboard(text: string) {
   })
 }
 
-onMounted(() => {
-  hasWorks.value = appStore.workCount > 0
+onMounted(async () => {
+  if (appStore.workCount > 0) {
+    hasWorks.value = true
+    checking.value = false
+  } else {
+    try {
+      const res = await worksApi.list({ page_size: 1 })
+      hasWorks.value = (res.data.data?.items?.length || res.data.data?.length || 0) > 0
+    } catch {
+      hasWorks.value = false
+    } finally {
+      checking.value = false
+    }
+  }
   loadProducts(); loadRevenue(); loadPlatforms()
   loadDescribeStyles(); loadFeedPlatforms(); loadRevenueSummary()
   loadSchedules(); loadAnalytics()
+})
+
+watch(() => appStore.workCount, (val) => {
+  hasWorks.value = val > 0
 })
 
 // ─── Schedule (P2) ───
@@ -654,6 +690,14 @@ async function loadSchedules() {
 }
 
 async function createSchedule() {
+  if (!scheduleForm.value.platform?.trim()) {
+    ;(window as any).$toast?.show('请输入平台名称', 'warning')
+    return
+  }
+  if (!scheduleForm.value.scheduled_time) {
+    ;(window as any).$toast?.show('请选择排期时间', 'warning')
+    return
+  }
   try {
     await publishApi.createSchedule(scheduleForm.value)
     showScheduleModal.value = false
@@ -681,6 +725,14 @@ async function loadAnalytics() {
 }
 
 async function addAnalytics() {
+  if (!analyticsForm.value.platform?.trim()) {
+    ;(window as any).$toast?.show('请输入平台名称', 'warning')
+    return
+  }
+  if (!analyticsForm.value.date) {
+    ;(window as any).$toast?.show('请选择日期', 'warning')
+    return
+  }
   try {
     await publishApi.addAnalytics(analyticsForm.value)
     showAnalyticsModal.value = false

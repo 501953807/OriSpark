@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index, JSON, Float
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index, JSON, Float, Numeric, Integer
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -22,11 +22,25 @@ class CommissionProject(Base):
     description = Column(Text, nullable=True)
     client_name = Column(String(200), nullable=True)
     status = Column(String(20), default="brief")  # brief/proposal/production/delivery/settlement
-    milestones = Column(JSON, nullable=True)  # [{title, description, due_date, completed, completed_at}]
     payment_terms = Column(JSON, nullable=True)  # [{stage, percentage, amount, due_date}]
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    milestones = relationship(
+        "CommissionMilestone",
+        back_populates="project",
+        cascade="all, delete-orphan",
+    )
+    payments = relationship(
+        "CommissionPayment",
+        back_populates="project",
+        cascade="all, delete-orphan",
+    )
+    revisions = relationship(
+        "CommissionRevision",
+        back_populates="project",
+        cascade="all, delete-orphan",
+    )
     orders = relationship(
         "CommissionOrder",
         back_populates="project",
@@ -86,4 +100,84 @@ class CommissionMessage(Base):
     __table_args__ = (
         Index("idx_msg_project", "project_id"),
         Index("idx_msg_sender", "sender_id"),
+    )
+
+
+class CommissionMilestone(Base):
+    """委托项目里程碑."""
+    __tablename__ = "commission_milestones"
+
+    id = Column(String(32), primary_key=True, default=generate_uuid)
+    commission_id = Column(
+        String(32),
+        ForeignKey("commission_projects.id"),
+        nullable=False,
+    )
+    name = Column(String(200), nullable=False)
+    status = Column(String(20), default="pending")  # pending|in_progress|completed|overdue
+    due_date = Column(DateTime, nullable=True)
+    description = Column(Text, nullable=True)
+    order_index = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    project = relationship("CommissionProject", back_populates="milestones")
+
+    __table_args__ = (
+        Index("idx_ms_comp", "commission_id"),
+        Index("idx_ms_status", "status"),
+    )
+
+
+class CommissionPayment(Base):
+    """委托收款记录."""
+    __tablename__ = "commission_payments"
+
+    id = Column(String(32), primary_key=True, default=generate_uuid)
+    commission_id = Column(
+        String(32),
+        ForeignKey("commission_projects.id"),
+        nullable=False,
+    )
+    milestone_id = Column(
+        String(32),
+        ForeignKey("commission_milestones.id"),
+        nullable=True,
+    )
+    amount = Column(Numeric(10, 2), nullable=False)
+    method = Column(String(50))  # bank_transfer|wechat|alipay|cash|check
+    status = Column(String(20), default="pending")  # pending|received|partial|overdue
+    paid_at = Column(DateTime, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    project = relationship("CommissionProject", back_populates="payments")
+
+    __table_args__ = (
+        Index("idx_pay_comp", "commission_id"),
+        Index("idx_pay_status", "status"),
+    )
+
+
+class CommissionRevision(Base):
+    """委托修改/反馈记录."""
+    __tablename__ = "commission_revisions"
+
+    id = Column(String(32), primary_key=True, default=generate_uuid)
+    commission_id = Column(
+        String(32),
+        ForeignKey("commission_projects.id"),
+        nullable=False,
+    )
+    description = Column(Text, nullable=False)
+    client_feedback = Column(Text, nullable=True)
+    files = Column(JSON, nullable=True)  # uploaded file paths
+    created_by = Column(String(50), nullable=False)  # 'artist' or 'client'
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    project = relationship("CommissionProject", back_populates="revisions")
+
+    __table_args__ = (
+        Index("idx_rev_comp", "commission_id"),
+        Index("idx_rev_created_by", "created_by"),
     )

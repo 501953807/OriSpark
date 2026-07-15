@@ -11,6 +11,8 @@ Features:
   - 增强 Orders CRUD (含订单类型/样品管理)
   - 变现仪表盘
 """
+import logging
+
 
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -23,7 +25,35 @@ from app.models.publish import Product, RevenueRecord, ProductPublishing
 from app.models.monetization import ProductTemplate, MonetizationChannel, Campaign, License
 from app.models.listings import DesignListing, DesignTemplateCompatibility
 from app.schemas.common import ApiResponse
+from app.schemas.supply import (
+    SpecValidateRequest,
+    SpecValidateBatchRequest,
+    ProductCreate,
+    ProductUpdate,
+    ChannelCreate,
+    CampaignCreate,
+    CampaignUpdate,
+    LicenseCreate,
+    SupplyPartnerCreate,
+    SupplyOrderCreate,
+    OrderStatusUpdate,
+    OrderSampleAction,
+    RevenueCreate,
+    ReminderCreate,
+    PublishToPodRequest,
+    FundingGoalRequest,
+    FactoryPriceCompareRequest,
+    PrintfulMockupRequest,
+    ProductMockupRequest,
+    DigitalProductValidateRequest,
+    MonetizationAdvisorRequest,
+    ListingCreate,
+    ListingUpdate,
+    DesignCompatRequest,
+    RemediationRequest,
+)
 from app.utils.crypto import encrypt, decrypt
+from app.deps import require_auth
 from app.services.seed_data import (
     PRODUCT_CATEGORIES, MATERIAL_CATEGORIES, MONETIZATION_PATHS, PLATFORMS,
     get_categories_by_material, get_category_by_id, get_monetization_path,
@@ -82,33 +112,19 @@ def list_platforms():
 # ============================================================================
 
 @router.post("/supply/spec-validate", response_model=ApiResponse)
-def validate_design_for_category(data: dict):
-    """校验设计稿是否满足指定产品规格 — P1.5.3-P1.5.4.
-
-    Body:
-        category_id: str — 产品品类 ID (from seed data)
-        dpi: int (optional) — 设计稿 DPI
-        width_px: int (optional) — 宽度(像素)
-        height_px: int (optional) — 高度(像素)
-        color_mode: str (optional) — 'sRGB' / 'CMYK'
-        file_format: str (optional) — 'PNG' / 'JPEG' / 'PDF'
-        has_transparency: bool (optional) — 是否有透明背景
-    """
-    category_id = data.get("category_id")
-    if not category_id:
-        raise HTTPException(status_code=400, detail="缺少 category_id")
-
-    template = get_category_by_id(category_id)
+def validate_design_for_category(data: SpecValidateRequest):
+    """校验设计稿是否满足指定产品规格 — P1.5.3-P1.5.4."""
+    template = get_category_by_id(data.category_id)
     if not template:
-        raise HTTPException(status_code=400, detail=f"未知品类: {category_id}")
+        raise HTTPException(status_code=400, detail=f"未知品类: {data.category_id}")
 
     design_spec = {
-        "dpi": data.get("dpi"),
-        "width_px": data.get("width_px"),
-        "height_px": data.get("height_px"),
-        "color_mode": data.get("color_mode"),
-        "file_format": data.get("file_format"),
-        "has_transparency": data.get("has_transparency"),
+        "dpi": data.dpi,
+        "width_px": data.width_px,
+        "height_px": data.height_px,
+        "color_mode": data.color_mode,
+        "file_format": data.file_format,
+        "has_transparency": data.has_transparency,
     }
 
     report = validate_design_spec(template, **{k: v for k, v in design_spec.items() if v is not None})
@@ -153,29 +169,23 @@ def validate_design_for_category(data: dict):
 
 
 @router.post("/supply/spec-validate-batch", response_model=ApiResponse)
-def validate_design_for_multiple_categories(data: dict):
-    """校验设计稿是否满足多个产品品类规格 — P1.5.4.
-
-    Body:
-        category_ids: list[str] — 产品品类 ID 列表
-        dpi, width_px, height_px, color_mode, file_format, has_transparency (optional)
-    """
-    category_ids = data.get("category_ids", [])
-    if not category_ids:
+def validate_design_for_multiple_categories(data: SpecValidateBatchRequest):
+    """校验设计稿是否满足多个产品品类规格 — P1.5.4."""
+    if not data.category_ids:
         raise HTTPException(status_code=400, detail="缺少 category_ids")
 
-    templates = [get_category_by_id(cid) for cid in category_ids]
+    templates = [get_category_by_id(cid) for cid in data.category_ids]
     templates = [t for t in templates if t is not None]
     if not templates:
         raise HTTPException(status_code=400, detail="找不到任何有效品类")
 
     design_spec = {
-        "dpi": data.get("dpi"),
-        "width_px": data.get("width_px"),
-        "height_px": data.get("height_px"),
-        "color_mode": data.get("color_mode"),
-        "file_format": data.get("file_format"),
-        "has_transparency": data.get("has_transparency"),
+        "dpi": data.dpi,
+        "width_px": data.width_px,
+        "height_px": data.height_px,
+        "color_mode": data.color_mode,
+        "file_format": data.file_format,
+        "has_transparency": data.has_transparency,
     }
     clean_spec = {k: v for k, v in design_spec.items() if v is not None}
 
@@ -249,30 +259,34 @@ def list_products(
     ])
 
 
-@router.post("/supply/products", response_model=ApiResponse)
-def create_product(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/products", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_product(data: ProductCreate, db: Session = Depends(get_db)):
     """创建商品 — P1.5.2 增强 (关联作品+变现路径+品类+平台)."""
     product = Product(
-        work_id=data.get("work_id"),
-        title=data.get("title"),
-        description=data.get("description"),
-        price=data.get("price", 0),
-        cost=data.get("cost", 0),
-        currency=data.get("currency", "CNY"),
-        category=data.get("category"),
-        monetization_path=data.get("monetization_path"),
-        material_category=data.get("material_category"),
-        platform=data.get("platform"),
-        specifications=data.get("specifications"),
-        design_variant_path=data.get("design_variant_path"),
-        mockup_image_path=data.get("mockup_image_path"),
-        images=data.get("images"),
-        platform_status=data.get("platform_status", "draft"),
-        status=data.get("status", "active"),
+        work_id=data.work_id,
+        title=data.title,
+        description=data.description,
+        price=data.price,
+        cost=data.cost,
+        currency=data.currency,
+        category=data.category,
+        monetization_path=data.monetization_path,
+        material_category=data.material_category,
+        platform=data.platform,
+        specifications=data.specifications,
+        design_variant_path=data.design_variant_path,
+        mockup_image_path=data.mockup_image_path,
+        images=data.images,
+        platform_status=data.platform_status,
+        status=data.status,
     )
     db.add(product)
-    db.commit()
-    db.refresh(product)
+    try:
+        db.commit()
+        db.refresh(product)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="商品已创建", data={"id": product.id})
 
@@ -317,25 +331,22 @@ def get_product(product_id: str, db: Session = Depends(get_db)):
     })
 
 
-@router.patch("/supply/products/{product_id}", response_model=ApiResponse)
-def update_product(product_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/supply/products/{product_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_product(product_id: str, data: ProductUpdate, db: Session = Depends(get_db)):
     """更新商品 — P1.5.2."""
     p = db.query(Product).filter(Product.id == product_id).first()
     if not p:
         raise HTTPException(status_code=404, detail="商品不存在")
 
-    updatable = [
-        "title", "description", "price", "cost", "category",
-        "monetization_path", "material_category", "platform",
-        "specifications", "design_variant_path", "mockup_image_path",
-        "images", "platform_status", "platform_product_id",
-        "platform_product_url", "status",
-    ]
-    for key in updatable:
-        if key in data:
-            setattr(p, key, data[key])
+    updatable_data = data.model_dump(exclude_none=True)
+    for key, value in updatable_data.items():
+        setattr(p, key, value)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="商品已更新")
 
 
@@ -370,21 +381,25 @@ def list_channels(
     ])
 
 
-@router.post("/supply/channels", response_model=ApiResponse)
-def create_channel(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/channels", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_channel(data: ChannelCreate, db: Session = Depends(get_db)):
     """添加变现渠道."""
     channel = MonetizationChannel(
-        name=data.get("name"),
-        channel_type=data.get("channel_type"),
-        platform=data.get("platform"),
-        platform_store_id=data.get("platform_store_id"),
-        platform_store_url=data.get("platform_store_url"),
-        credentials_encrypted=encrypt(data["credentials"]) if data.get("credentials") else None,
-        status=data.get("status", "active"),
+        name=data.name,
+        channel_type=data.channel_type,
+        platform=data.platform,
+        platform_store_id=data.platform_store_id,
+        platform_store_url=data.platform_store_url,
+        credentials_encrypted=encrypt(data.credentials) if data.credentials else None,
+        status=data.status,
     )
     db.add(channel)
-    db.commit()
-    db.refresh(channel)
+    try:
+        db.commit()
+        db.refresh(channel)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="渠道已添加", data={"id": channel.id})
 
@@ -425,50 +440,53 @@ def list_campaigns(
     ])
 
 
-@router.post("/supply/campaigns", response_model=ApiResponse)
-def create_campaign(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/campaigns", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_campaign(data: CampaignCreate, db: Session = Depends(get_db)):
     """创建众筹项目."""
     campaign = Campaign(
-        title=data.get("title"),
-        description=data.get("description"),
-        platform=data.get("platform"),
-        platform_campaign_id=data.get("platform_campaign_id"),
-        platform_url=data.get("platform_url"),
-        goal_amount=data.get("goal_amount", 0),
-        currency=data.get("currency", "CNY"),
-        raised_amount=data.get("raised_amount", 0),
-        backer_count=data.get("backer_count", 0),
-        reward_tiers=data.get("reward_tiers", []),
-        launch_date=data.get("launch_date"),
-        end_date=data.get("end_date"),
-        estimated_delivery_date=data.get("estimated_delivery_date"),
-        related_product_ids=data.get("related_product_ids"),
-        related_work_ids=data.get("related_work_ids"),
-        status=data.get("status", "draft"),
+        title=data.title,
+        description=data.description,
+        platform=data.platform,
+        platform_campaign_id=data.platform_campaign_id,
+        platform_url=data.platform_url,
+        goal_amount=data.goal_amount,
+        currency=data.currency,
+        raised_amount=data.raised_amount,
+        backer_count=data.backer_count,
+        reward_tiers=data.reward_tiers,
+        launch_date=data.launch_date,
+        end_date=data.end_date,
+        estimated_delivery_date=data.estimated_delivery_date,
+        related_product_ids=data.related_product_ids,
+        related_work_ids=data.related_work_ids,
+        status=data.status,
     )
     db.add(campaign)
-    db.commit()
-    db.refresh(campaign)
+    try:
+        db.commit()
+        db.refresh(campaign)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="众筹项目已创建", data={"id": campaign.id})
 
 
-@router.patch("/supply/campaigns/{campaign_id}", response_model=ApiResponse)
-def update_campaign(campaign_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/supply/campaigns/{campaign_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_campaign(campaign_id: str, data: CampaignUpdate, db: Session = Depends(get_db)):
     """更新众筹进度."""
     c = db.query(Campaign).filter(Campaign.id == campaign_id).first()
     if not c:
         raise HTTPException(status_code=404, detail="众筹项目不存在")
 
-    updatable = [
-        "title", "description", "raised_amount", "backer_count",
-        "status", "actual_delivery_date", "platform_url",
-    ]
-    for key in updatable:
-        if key in data:
-            setattr(c, key, data[key])
+    for key, value in data.model_dump(exclude_none=True).items():
+        setattr(c, key, value)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="众筹项目已更新")
 
 
@@ -530,24 +548,28 @@ def list_license_templates():
     return ApiResponse(data=templates)
 
 
-@router.post("/supply/licenses", response_model=ApiResponse)
-def create_license(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/licenses", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_license(data: LicenseCreate, db: Session = Depends(get_db)):
     """创建授权条款."""
     license_record = License(
-        work_id=data.get("work_id"),
-        license_type=data.get("license_type"),
-        platform=data.get("platform"),
-        allowed_uses=data.get("allowed_uses"),
-        restrictions=data.get("restrictions"),
-        price=data.get("price", 0),
-        currency=data.get("currency", "CNY"),
-        platform_listing_id=data.get("platform_listing_id"),
-        platform_listing_url=data.get("platform_listing_url"),
-        status=data.get("status", "active"),
+        work_id=data.work_id,
+        license_type=data.license_type,
+        platform=data.platform,
+        allowed_uses=data.allowed_uses,
+        restrictions=data.restrictions,
+        price=data.price,
+        currency=data.currency,
+        platform_listing_id=data.platform_listing_id,
+        platform_listing_url=data.platform_listing_url,
+        status=data.status,
     )
     db.add(license_record)
-    db.commit()
-    db.refresh(license_record)
+    try:
+        db.commit()
+        db.refresh(license_record)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="授权已创建", data={"id": license_record.id})
 
@@ -603,32 +625,36 @@ def list_partners(
     return ApiResponse(data=_filter_output(partners))
 
 
-@router.post("/supply/partners", response_model=ApiResponse)
-def create_partner(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/partners", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_partner(data: SupplyPartnerCreate, db: Session = Depends(get_db)):
     """创建合作伙伴 — P1.5.9 增强 (含制造能力)."""
     partner = Partner(
-        name=data.get("name"),
-        company_name=data.get("company_name"),
-        type=data.get("type", "manufacturer"),
-        contact_person=data.get("contact_person"),
-        phone=encrypt(data["phone"]) if data.get("phone") else None,
-        email=data.get("email"),
-        address=data.get("address"),
-        website=data.get("website"),
-        categories=data.get("categories", []),
-        product_categories=data.get("product_categories"),
-        material_capabilities=data.get("material_capabilities"),
-        moq_per_category=data.get("moq_per_category"),
-        typical_lead_time_days=data.get("typical_lead_time_days"),
-        price_range=data.get("price_range"),
-        moq=data.get("moq"),
-        rating=data.get("rating", 0),
-        tags=data.get("tags", []),
-        notes=data.get("notes"),
+        name=data.name,
+        company_name=data.company_name,
+        type=data.type,
+        contact_person=data.contact_person,
+        phone=encrypt(data.phone) if data.phone else None,
+        email=data.email,
+        address=data.address,
+        website=data.website,
+        categories=data.categories or [],
+        product_categories=data.product_categories,
+        material_capabilities=data.material_capabilities,
+        moq_per_category=data.moq_per_category,
+        typical_lead_time_days=data.typical_lead_time_days,
+        price_range=data.price_range,
+        moq=data.moq,
+        rating=data.rating,
+        tags=data.tags or [],
+        notes=data.notes,
     )
     db.add(partner)
-    db.commit()
-    db.refresh(partner)
+    try:
+        db.commit()
+        db.refresh(partner)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="联系人已创建", data={"id": partner.id})
 
@@ -687,77 +713,76 @@ def list_orders(
     ])
 
 
-@router.post("/supply/orders", response_model=ApiResponse)
-def create_order(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/orders", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_order(data: SupplyOrderCreate, db: Session = Depends(get_db)):
     """创建订单 — P1.5.10 增强 (含 order_type + 样品管理)."""
     import uuid
     order_number = f"ORD-{uuid.uuid4().hex[:8].upper()}"
 
-    total = data.get("total_amount", 0)
-    deposit_percent = data.get("deposit_percent", 30)
-    deposit_paid = data.get("deposit_paid", 0)
-    shipping_cost = data.get("shipping_cost", 0)
+    total = data.total_amount
+    deposit_percent = data.deposit_percent
+    deposit_paid = data.deposit_paid
+    shipping_cost = data.shipping_cost
 
     order = Order(
         order_number=order_number,
-        order_type=data.get("order_type", "custom_mfg"),
-        partner_id=data.get("partner_id"),
-        campaign_id=data.get("campaign_id"),
-        product_id=data.get("product_id"),
-        product_name=data.get("product_name"),
-        product_category=data.get("product_category"),
-        quantity=data.get("quantity", 1),
-        specifications=data.get("specifications"),
-        design_file_path=data.get("design_file_path"),
-        unit_price=data.get("unit_price", 0),
+        order_type=data.order_type,
+        partner_id=data.partner_id,
+        campaign_id=data.campaign_id,
+        product_id=data.product_id,
+        product_name=data.product_name,
+        product_category=data.product_category,
+        quantity=data.quantity,
+        specifications=data.specifications,
+        design_file_path=data.design_file_path,
+        unit_price=data.unit_price,
         total_amount=total,
         deposit_percent=deposit_percent,
         deposit_paid=deposit_paid,
         balance_due=total - deposit_paid,
         shipping_cost=shipping_cost,
-        status=data.get("status", "draft"),
-        expected_date=data.get("expected_date"),
-        sample_requested=data.get("sample_requested", 0),
-        notes=data.get("notes"),
+        status=data.status,
+        expected_date=data.expected_date,
+        sample_requested=data.sample_requested,
+        notes=data.notes,
     )
     db.add(order)
-    db.commit()
-    db.refresh(order)
+    try:
+        db.commit()
+        db.refresh(order)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="订单已创建", data={"id": order.id, "order_number": order_number})
 
 
-@router.patch("/supply/orders/{order_id}/status", response_model=ApiResponse)
-def update_order_status(order_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/supply/orders/{order_id}/status", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_order_status(order_id: str, data: OrderStatusUpdate, db: Session = Depends(get_db)):
     """更新订单状态 — P1.5.10."""
     o = db.query(Order).filter(Order.id == order_id).first()
     if not o:
         raise HTTPException(status_code=404, detail="订单不存在")
 
-    if "status" in data:
-        o.status = data["status"]
-    if "tracking_number" in data:
-        o.tracking_number = data["tracking_number"]
-    if "actual_date" in data:
-        o.actual_date = data["actual_date"]
-    if "notes" in data:
-        o.notes = data["notes"]
+    for key, value in data.model_dump(exclude_none=True).items():
+        setattr(o, key, value)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="订单状态已更新")
 
 
-@router.post("/supply/orders/{order_id}/sample", response_model=ApiResponse)
-def manage_order_sample(order_id: str, data: dict, db: Session = Depends(get_db)):
-    """样品管理 — P1.5.10.
-
-    Body: { action: "request" / "receive" / "approve" / "reject" }
-    """
+@router.post("/supply/orders/{order_id}/sample", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def manage_order_sample(order_id: str, data: OrderSampleAction, db: Session = Depends(get_db)):
+    """样品管理 — P1.5.10."""
     o = db.query(Order).filter(Order.id == order_id).first()
     if not o:
         raise HTTPException(status_code=404, detail="订单不存在")
 
-    action = data.get("action", "request")
+    action = data.action
     if action == "request":
         o.sample_requested = 1
     elif action == "receive":
@@ -769,7 +794,11 @@ def manage_order_sample(order_id: str, data: dict, db: Session = Depends(get_db)
         o.sample_approved = 0
         o.sample_received = 0
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"样品状态已更新 (action={action})")
 
 
@@ -804,26 +833,29 @@ def list_revenue(
     ])
 
 
-@router.post("/supply/revenue", response_model=ApiResponse)
-def create_revenue(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/revenue", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_revenue(data: RevenueCreate, db: Session = Depends(get_db)):
     """手动录入收入 (P1.6.9: 支持 source/refund_amount/platform_fee/net_revenue)."""
-    from datetime import date as date_type
     revenue = RevenueRecord(
-        product_id=data.get("product_id"),
-        platform=data.get("platform"),
-        amount=data.get("amount", 0),
-        currency=data.get("currency", "CNY"),
-        date=data.get("date", date_type.today()),
-        order_count=data.get("order_count", 1),
-        source=data.get("source", "manual"),
-        refund_amount=data.get("refund_amount", 0),
-        platform_fee=data.get("platform_fee", 0),
-        net_revenue=data.get("net_revenue", 0),
-        notes=data.get("notes"),
+        product_id=data.product_id,
+        platform=data.platform,
+        amount=data.amount,
+        currency=data.currency,
+        date=data.resolved_date,
+        order_count=data.order_count,
+        source=data.source,
+        refund_amount=data.refund_amount,
+        platform_fee=data.platform_fee,
+        net_revenue=data.net_revenue,
+        notes=data.notes,
     )
     db.add(revenue)
-    db.commit()
-    db.refresh(revenue)
+    try:
+        db.commit()
+        db.refresh(revenue)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="收入已记录", data={"id": revenue.id})
 
@@ -975,18 +1007,22 @@ def list_reminders(
     ])
 
 
-@router.post("/supply/reminders", response_model=ApiResponse)
-def create_reminder(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/reminders", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_reminder(data: ReminderCreate, db: Session = Depends(get_db)):
     """创建提醒."""
     reminder = Reminder(
-        type=data.get("type", "order"),
-        related_id=data.get("related_id", ""),
-        title=data.get("title"),
-        remind_at=data.get("remind_at"),
+        type=data.type,
+        related_id=data.related_id,
+        title=data.title,
+        remind_at=data.remind_at,
     )
     db.add(reminder)
-    db.commit()
-    db.refresh(reminder)
+    try:
+        db.commit()
+        db.refresh(reminder)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="提醒已创建", data={"id": reminder.id})
 
@@ -995,23 +1031,18 @@ def create_reminder(data: dict, db: Session = Depends(get_db)):
 # 9.11 POD 平台发布 — P2.5.1-P2.5.2
 # ============================================================================
 
-@router.post("/supply/publish-to-pod", response_model=ApiResponse)
-async def publish_to_pod(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/publish-to-pod", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+async def publish_to_pod(data: PublishToPodRequest, db: Session = Depends(get_db)):
     """发布设计到 POD 平台 — P2.5.1-P2.5.2.
 
     支持的平台: printful, redbubble, yingge, yunda
-
-    Body:
-        platform: str — 目标平台 ID
-        product_data: {title, description, design_file_path, category, price}
-        action: str — 'publish' / 'preview' / 'cost_estimate'
     """
     from app.gateway.printful import PrintfulGateway
     from app.gateway.redbubble import RedbubbleGateway
 
-    platform = data.get("platform", "")
-    product_data = data.get("product_data", {})
-    action = data.get("action", "publish")
+    platform = data.platform
+    product_data = data.product_data
+    action = data.action
 
     if platform == "printful":
         gw = PrintfulGateway()
@@ -1247,22 +1278,15 @@ def list_reward_tier_templates():
     return ApiResponse(data=templates)
 
 
-@router.post("/supply/campaigns/calculate-goal", response_model=ApiResponse)
-def calculate_funding_goal(data: dict, db: Session = Depends(get_db)):
-    """计算建议众筹目标金额 — P2.5.3.
-
-    Body:
-        tiers: list[{name, price, estimated_backers}]
-        manufacturing_cost: float
-        shipping_cost: float
-        platform_fee_pct: float (default 8.0)
-        buffer_pct: float (default 15.0)
-    """
-    tiers = data.get("tiers", [])
-    manufacturing_cost = data.get("manufacturing_cost", 0)
-    shipping_cost = data.get("shipping_cost", 0)
-    platform_fee_pct = data.get("platform_fee_pct", 8.0)
-    buffer_pct = data.get("buffer_pct", 15.0)
+@router.post("/supply/campaigns/calculate-goal", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def calculate_funding_goal(data: FundingGoalRequest, db: Session = Depends(get_db)):
+    """计算建议众筹目标金额 — P2.5.3."""
+    tiers = data.tiers
+    manufacturing_cost = data.manufacturing_cost
+    shipping_cost = data.shipping_cost
+    platform_fee_pct = data.platform_fee_pct
+    buffer_pct = data.buffer_pct
+    currency = data.currency
 
     total_estimated_revenue = 0
     tier_projection = []
@@ -1302,7 +1326,7 @@ def calculate_funding_goal(data: dict, db: Session = Depends(get_db)):
         "break_even": round(break_even, 2),
         "suggested_goal": round(max(suggested_goal, break_even * 1.1), 2),
         "profit_at_suggested_goal": round(suggested_goal - total_costs - suggested_goal * (platform_fee_pct / 100), 2),
-        "currency": data.get("currency", "CNY"),
+        "currency": currency,
         "parameters": {
             "platform_fee_pct": platform_fee_pct,
             "buffer_pct": buffer_pct,
@@ -1458,22 +1482,15 @@ Price includes lifetime access to all files."""
 # 9.15 工厂比价工具 — P2.5.7
 # ============================================================================
 
-@router.post("/supply/factory-price-compare", response_model=ApiResponse)
-def factory_price_compare(data: dict, db: Session = Depends(get_db)):
-    """工厂报价对比工具 — P2.5.7.
-
-    Body:
-        product_category: str — 产品品类 (t_shirt, pin, mug, etc.)
-        quantity: int — 计划生产数量
-        specifications: dict (optional) — 规格要求 (颜色数、尺寸等)
-        partner_ids: list[str] (optional) — 指定对比的工厂 ID，默认全部匹配
-    """
+@router.post("/supply/factory-price-compare", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def factory_price_compare(data: FactoryPriceCompareRequest, db: Session = Depends(get_db)):
+    """工厂报价对比工具 — P2.5.7."""
     from app.services.seed_data import get_category_by_id
 
-    product_category = data.get("product_category", "")
-    quantity = data.get("quantity", 1)
-    specifications = data.get("specifications", {})
-    partner_ids = data.get("partner_ids", [])
+    product_category = data.product_category
+    quantity = data.quantity
+    specifications = data.specifications
+    partner_ids = data.partner_ids
 
     # Find matching partners by category
     query = db.query(Partner).filter(
@@ -1555,22 +1572,17 @@ def factory_price_compare(data: dict, db: Session = Depends(get_db)):
 
 
 @router.post("/supply/mockup/printful", response_model=ApiResponse)
-async def generate_printful_mockup(data: dict):
+async def generate_printful_mockup(data: PrintfulMockupRequest):
     """Printful Mockup API 照片级效果图 — P1 增强.
 
     通过 Printful Mockup Generator API 生成照片级产品效果图。
     API 不可用时返回 503 + 降级提示。
-
-    Body:
-        product_id: str — 产品 ID
-        design_file_id: str — 设计稿文件 ID
-        colors: list[str] — 颜色列表 (e.g., ["white", "black"])
     """
     from app.gateway.printful import PrintfulGateway
 
-    product_id = data.get("product_id")
-    design_file_id = data.get("design_file_id")
-    colors = data.get("colors", ["white"])
+    product_id = data.product_id
+    design_file_id = data.design_file_id
+    colors = data.colors
 
     if not product_id:
         raise HTTPException(status_code=400, detail="缺少 product_id")
@@ -1621,23 +1633,14 @@ async def generate_printful_mockup(data: dict):
 # ============================================================================
 
 @router.post("/supply/generate-mockup", response_model=ApiResponse)
-async def generate_product_mockup(data: dict):
-    """AI 产品效果图生成 — P2.5.8.
-
-    通过 Ollama + PIL 生成产品效果预览图。
-
-    Body:
-        work_id: str (optional) — 源作品 ID
-        category_id: str — 产品品类 ID
-        prompt: str (optional) — AI 生成提示词
-        style: str (optional) — 'realistic' / 'cartoon' / 'minimal'
-    """
+async def generate_product_mockup(data: ProductMockupRequest):
+    """AI 产品效果图生成 — P2.5.8."""
     from app.gateway.ollama import OllamaGateway
     from app.services.seed_data import get_category_by_id
 
-    category_id = data.get("category_id", "")
-    prompt_override = data.get("prompt", "")
-    style = data.get("style", "realistic")
+    category_id = data.category_id
+    prompt_override = data.prompt
+    style = data.style
 
     template = get_category_by_id(category_id)
     if not template:
@@ -1770,23 +1773,14 @@ def list_digital_product_formats():
 
 
 @router.post("/supply/digital-product/validate", response_model=ApiResponse)
-def validate_digital_product(data: dict):
-    """校验数字产品是否符合目标平台要求 — P2.5.15.
-
-    Body:
-        product_type: str — brushes / templates / fonts / textures / stickers_digital
-        target_platform: str — gumroad / creative_market / envato / etsy
-        file_formats: list[str]
-        file_count: int
-        file_size_mb: float
-        has_preview: bool
-    """
-    product_type = data.get("product_type", "")
-    target_platform = data.get("target_platform", "")
-    file_formats = data.get("file_formats", [])
-    file_count = data.get("file_count", 0)
-    file_size_mb = data.get("file_size_mb", 0)
-    has_preview = data.get("has_preview", False)
+def validate_digital_product(data: DigitalProductValidateRequest):
+    """校验数字产品是否符合目标平台要求 — P2.5.15."""
+    product_type = data.product_type
+    target_platform = data.target_platform
+    file_formats = data.file_formats
+    file_count = data.file_count
+    file_size_mb = data.file_size_mb
+    has_preview = data.has_preview
 
     # Get format requirements
     formats = None
@@ -1797,8 +1791,8 @@ def validate_digital_product(data: dict):
                 if target_platform in f_info.get("platforms", {}):
                     formats = f_info["platforms"][target_platform]
                     break
-    except Exception:
-        pass
+    except Exception as e:
+        logging.getLogger(__name__).exception("Error in _fetch_supply_categories: %s", str(e))
 
     if not formats:
         raise HTTPException(status_code=400, detail=f"未知产品类型或目标平台: {product_type}/{target_platform}")
@@ -1936,24 +1930,14 @@ def aggregated_revenue(db: Session = Depends(get_db)):
 
 
 @router.post("/supply/monetization-advisor", response_model=ApiResponse)
-async def monetization_advisor(data: dict):
-    """AI 变现策略顾问 — P2.5.12.
-
-    分析创作者作品并提供变现路径建议。
-
-    Body:
-        work_id: str (optional) — 作品 ID
-        work_type: str — 作品类型
-        creator_type: str — 创作者类型 (illustrator/photographer/video_creator/crafter/musician/writer)
-        work_title: str — 作品标题
-        current_paths: list[str] — 当前使用的变现路径
-    """
+async def monetization_advisor(data: MonetizationAdvisorRequest):
+    """AI 变现策略顾问 — P2.5.12."""
     from app.gateway.ollama import OllamaGateway
 
-    work_title = data.get("work_title", "")
-    work_type = data.get("work_type", "")
-    creator_type = data.get("creator_type", "")
-    current_paths = data.get("current_paths", [])
+    work_title = data.work_title
+    work_type = data.work_type
+    creator_type = data.creator_type
+    current_paths = data.current_paths
 
     # 根据创作者类型调整默认推荐路径
     creator_path_weights: dict[str, list[str]] = {
@@ -2056,29 +2040,33 @@ def list_listings(
     ])
 
 
-@router.post("/supply/listings", response_model=ApiResponse)
-def create_listing(data: dict, db: Session = Depends(get_db)):
+@router.post("/supply/listings", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_listing(data: ListingCreate, db: Session = Depends(get_db)):
     """创建商品 — P2: 设计稿 × 产品模板 × 定价."""
     listing = DesignListing(
-        work_id=data.get("work_id"),
-        product_template_id=data.get("product_template_id"),
-        title=data.get("title", "未命名商品"),
-        description=data.get("description"),
-        price=data.get("price", 0),
-        cost=data.get("cost", 0),
-        currency=data.get("currency", "CNY"),
-        monetization_path=data.get("monetization_path"),
-        variant_sku=data.get("variant_sku"),
-        variant_name=data.get("variant_name"),
-        spec_validation=data.get("spec_validation"),
-        spec_validated_at=datetime.utcnow() if data.get("spec_validation") else None,
-        mockup_image_path=data.get("mockup_image_path"),
-        design_file_path=data.get("design_file_path"),
-        status=data.get("status", "draft"),
+        work_id=data.work_id,
+        product_template_id=data.product_template_id,
+        title=data.title,
+        description=data.description,
+        price=data.price,
+        cost=data.cost,
+        currency=data.currency,
+        monetization_path=data.monetization_path,
+        variant_sku=data.variant_sku,
+        variant_name=data.variant_name,
+        spec_validation=data.spec_validation,
+        spec_validated_at=datetime.utcnow() if data.spec_validation else None,
+        mockup_image_path=data.mockup_image_path,
+        design_file_path=data.design_file_path,
+        status=data.status,
     )
     db.add(listing)
-    db.commit()
-    db.refresh(listing)
+    try:
+        db.commit()
+        db.refresh(listing)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="商品已创建", data={"id": listing.id})
 
@@ -2150,32 +2138,36 @@ def get_listing_detail(listing_id: str, db: Session = Depends(get_db)):
     })
 
 
-@router.patch("/supply/listings/{listing_id}", response_model=ApiResponse)
-def update_listing(listing_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/supply/listings/{listing_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_listing(listing_id: str, data: ListingUpdate, db: Session = Depends(get_db)):
     """更新商品信息."""
     listing = db.query(DesignListing).filter(DesignListing.id == listing_id).first()
     if not listing:
         raise HTTPException(status_code=404, detail="商品不存在")
 
-    updatable = ["title", "description", "price", "cost", "currency",
-                 "monetization_path", "variant_sku", "variant_name",
-                 "mockup_image_path", "status", "spec_validation"]
-    for key in updatable:
-        if key in data:
-            setattr(listing, key, data[key])
+    for key, value in data.model_dump(exclude_none=True).items():
+        setattr(listing, key, value)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="商品已更新")
 
 
-@router.delete("/supply/listings/{listing_id}", response_model=ApiResponse)
+@router.delete("/supply/listings/{listing_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_listing(listing_id: str, db: Session = Depends(get_db)):
     """软删除商品."""
     listing = db.query(DesignListing).filter(DesignListing.id == listing_id).first()
     if not listing:
         raise HTTPException(status_code=404, detail="商品不存在")
     listing.status = "discontinued"
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="商品已下架")
 
 
@@ -2184,29 +2176,20 @@ def delete_listing(listing_id: str, db: Session = Depends(get_db)):
 # ============================================================================
 
 @router.post("/supply/spec-validate-compat", response_model=ApiResponse)
-def validate_design_compatibility(data: dict):
-    """兼容产品推荐 — P2.
-
-    Given a design spec, return ALL product templates ranked by compatibility.
-    Used when spec check fails on one template: "which OTHER products would work?"
-
-    Body:
-        dpi, width_px, height_px, color_mode, file_format, has_transparency (optional)
-        exclude_category_id: optional category to exclude from results
-        limit: max results (default 20)
-    """
+def validate_design_compatibility(data: DesignCompatRequest):
+    """兼容产品推荐 — P2."""
     design_spec = {
-        "dpi": data.get("dpi"),
-        "width_px": data.get("width_px"),
-        "height_px": data.get("height_px"),
-        "color_mode": data.get("color_mode"),
-        "file_format": data.get("file_format"),
-        "has_transparency": data.get("has_transparency"),
+        "dpi": data.dpi,
+        "width_px": data.width_px,
+        "height_px": data.height_px,
+        "color_mode": data.color_mode,
+        "file_format": data.file_format,
+        "has_transparency": data.has_transparency,
     }
     clean_spec = {k: v for k, v in design_spec.items() if v is not None}
 
-    exclude_id = data.get("exclude_category_id")
-    limit = data.get("limit", 20)
+    exclude_id = data.exclude_category_id
+    limit = data.limit
 
     compatible = get_compatible_templates(
         clean_spec, PRODUCT_CATEGORIES,
@@ -2253,16 +2236,9 @@ def validate_design_compatibility(data: dict):
 
 
 @router.post("/supply/spec-validate-remediation", response_model=ApiResponse)
-def get_remediation_suggestions(data: dict):
-    """修复建议 — P2.
-
-    Given a design spec and a failed category, return actionable remediation steps.
-
-    Body:
-        dpi, width_px, height_px, color_mode, file_format, has_transparency
-        category_id: the category that failed validation
-    """
-    category_id = data.get("category_id")
+def get_remediation_suggestions(data: RemediationRequest):
+    """修复建议 — P2."""
+    category_id = data.category_id
     if not category_id:
         raise HTTPException(status_code=400, detail="缺少 category_id")
 
@@ -2271,12 +2247,12 @@ def get_remediation_suggestions(data: dict):
         raise HTTPException(status_code=400, detail=f"未知品类: {category_id}")
 
     design_spec = {
-        "dpi": data.get("dpi"),
-        "width_px": data.get("width_px"),
-        "height_px": data.get("height_px"),
-        "color_mode": data.get("color_mode"),
-        "file_format": data.get("file_format"),
-        "has_transparency": data.get("has_transparency"),
+        "dpi": data.dpi,
+        "width_px": data.width_px,
+        "height_px": data.height_px,
+        "color_mode": data.color_mode,
+        "file_format": data.file_format,
+        "has_transparency": data.has_transparency,
     }
     clean_spec = {k: v for k, v in design_spec.items() if v is not None}
 

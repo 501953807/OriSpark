@@ -1,7 +1,7 @@
 #!/bin/bash
 # OriStudio 一键启动脚本
-# 用法: ./start.sh [--frontend-port 5173] [--backend-port 8765]
-# 或:  前端端口=5173 后端端口=8765 ./start.sh
+# 用法: ./start.sh [--frontend-port 5174] [--backend-port 8001]
+# 或:  前端端口=5174 后端端口=8001 ./start.sh
 
 set -e
 
@@ -11,7 +11,7 @@ FRONTEND_DIR="$DIR/frontend"
 
 # ---------- 默认端口 ----------
 FRONTEND_PORT="${FRONTEND_PORT:-5174}"
-BACKEND_PORT="${BACKEND_PORT:-8766}"
+BACKEND_PORT="${BACKEND_PORT:-8001}"
 
 # ---------- 解析命令行参数 ----------
 while [[ $# -gt 0 ]]; do

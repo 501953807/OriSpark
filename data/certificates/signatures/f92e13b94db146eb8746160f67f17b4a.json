@@ -1,0 +1,6 @@
+{
+  "signature": "3045022100bc4028b68ae0456ae552b3a381ab57c679c7d9367eeb68a3aca7348ca664c06302200116fb538e9586f4aa90e68cf0a90022fc89a84ddd6b421290bc26591efb9beb",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzIBcetCkJljUFz/Eo0in2bfKatQw\nK1rOdS9DPLzA0lIKBkL3Ien0QF69Ub2O344Mcls/id2cw9XSgVRuCp6Gmw==\n-----END PUBLIC KEY-----\n",
+  "timestamp": "2026-07-05T09:00:58.877885+00:00",
+  "algorithm": "ECDSA-secp256r1+SHA256"
+}

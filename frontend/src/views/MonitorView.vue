@@ -149,7 +149,7 @@ async function handleBatchScan() {
   }
 }
 
-async function handleResult(id: string, status: string, reason?: string) {
+async function handleResult(id: string, status: 'pending_review' | 'infringing' | 'ignored' | 'whitelisted', reason?: string) {
   try {
     await monitorStore.updateResult(id, { status, ignore_reason: reason })
     await monitorStore.fetchResults()

@@ -40,6 +40,8 @@ def _verify_token(token: str) -> Optional[str]:
     P3.5.5: 检查 token 是否在黑名单中。
     Moved here to break circular import (was in auth.py).
     """
+    import hmac as _hmac  # noqa: F811
+
     if token in _token_blacklist:
         return None
 

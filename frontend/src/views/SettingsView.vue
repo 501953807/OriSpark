@@ -163,7 +163,7 @@
             <div class="storage-fill" :style="{ width: storagePercent + '%' }"></div>
           </div>
           <div class="storage-text">
-            已用 {{ formatBytes(storageInfo.breakdown?.workspace + storageInfo.breakdown?.database || 0) }} / 可用 {{ formatBytes(storageInfo.free_space) }}
+            已用 {{ formatBytes((storageInfo.breakdown?.workspace ?? 0) + (storageInfo.breakdown?.database ?? 0)) }} / 可用 {{ formatBytes(storageInfo.free_space ?? 0) }}
           </div>
         </div>
 
@@ -637,7 +637,6 @@ const sections = [
   { key: 'plugins', icon: '🧩', label: '插件管理' },
   { key: 'password', icon: '🔑', label: '密码管理' },
   { key: 'security', icon: '🛡️', label: '账户安全' },
-  { key: 'notifications', icon: '🔔', label: '通知渠道' },
   { key: 'notif-prefs', icon: '📢', label: '通知偏好' },
   { key: 'mcp', icon: '🔌', label: 'MCP 服务' },
   { key: 'export', icon: '📤', label: '数据导出' },
@@ -666,7 +665,10 @@ async function fetchProfile() {
 async function saveProfile() {
   profileSaving.value = true
   try {
-    await settingsStore.updateSettings({ username: profile.value.name, bio: profile.value.bio })
+    await client.patch('/auth/me', {
+      username: profile.value.name,
+      bio: profile.value.bio,
+    })
     ;(window as any).$toast?.show('个人资料已保存', 'success')
   } catch {
     ;(window as any).$toast?.show('保存失败', 'error')
@@ -763,9 +765,7 @@ async function refreshHealth() {
     ])
     healthData.value = hRes.data.data
     serviceStatus.value = sRes.data.data
-  } catch (e) {
-    console.error('Failed to load health data', e)
-  }
+  } catch { /* toast handled by interceptor */ }
 }
 
 // Backup
@@ -907,6 +907,14 @@ async function loadPlugins() {
 }
 
 async function registerPlugin() {
+  if (!pluginForm.value.name.trim()) {
+    ;(window as any).$toast?.show('请输入插件名称', 'error')
+    return
+  }
+  if (!/^[a-z0-9_-]+$/.test(pluginForm.value.name.trim())) {
+    ;(window as any).$toast?.show('插件名称只能包含小写字母、数字、下划线和连字符', 'error')
+    return
+  }
   try {
     const hooks = pluginForm.value.hooks_str.split(',').map(h => h.trim()).filter(Boolean)
     await systemApi.registerPlugin({
@@ -982,8 +990,12 @@ async function changePassword() {
     return
   }
   try {
-    await client.patch('/auth/me', { password: newPassword.value })
+    await client.post('/auth/change-password', {
+      current_password: currentPassword.value,
+      new_password: newPassword.value,
+    })
     ;(window as any).$toast?.show('密码已修改', 'success')
+    currentPassword.value = ''
     newPassword.value = ''
     newPasswordConfirm.value = ''
     passwordStrength.value = null
@@ -1163,6 +1175,28 @@ const inAppNotifPrefs = ref([
 
 const notifFrequency = ref('realtime')
 
+// Load saved notification preferences from server
+async function loadNotifPrefs() {
+  try {
+    const resp = await client.get('/system/notification/prefs')
+    const prefs = resp.data.data
+    if (prefs) {
+      // Apply saved preferences to the UI arrays
+      ;(prefs.email || []).forEach((p: { key: string; enabled: boolean }) => {
+        const item = emailNotifPrefs.value.find(e => e.key === p.key)
+        if (item) item.enabled = p.enabled
+      })
+      ;(prefs.in_app || []).forEach((p: { key: string; enabled: boolean }) => {
+        const item = inAppNotifPrefs.value.find(e => e.key === p.key)
+        if (item) item.enabled = p.enabled
+      })
+      if (prefs.frequency) notifFrequency.value = prefs.frequency
+    }
+  } catch {
+    // Use defaults if loading fails
+  }
+}
+
 async function saveNotifPrefs() {
   try {
     await systemApi.updateNotifPrefs({
@@ -1223,9 +1257,7 @@ async function loadDictGroups() {
   try {
     const res = await systemApi.dictGroups()
     dictGroups.value = res.data.data || []
-  } catch (err) {
-    console.error('Failed to load dict groups', err)
-  } finally {
+  } catch { /* toast handled by interceptor */ } finally {
     dictLoading.value = false
   }
 }
@@ -1239,9 +1271,7 @@ async function loadDictGroupItems() {
   try {
     const res = await systemApi.dictGroupItems(selectedDictGroup.value)
     dictGroupItems.value = res.data.data?.items || []
-  } catch (err) {
-    console.error('Failed to load dict items', err)
-  } finally {
+  } catch { /* toast handled by interceptor */ } finally {
     dictLoading.value = false
   }
 }
@@ -1271,6 +1301,7 @@ onMounted(() => {
   refreshMcpInfo()
   loadLinkedAccounts()
   loadSessions()
+  loadNotifPrefs()
 })
 </script>
 

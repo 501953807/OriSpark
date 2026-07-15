@@ -4,6 +4,7 @@ Phase 3: 手工艺人询价单+样品+质检
 
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -13,6 +14,38 @@ from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
 router = APIRouter()
+
+
+class CreateRFQPayload(BaseModel):
+    user_id: str = ""
+    title: str
+    description: Optional[str] = None
+    materials: Optional[list] = None
+    quantity: Optional[int] = None
+    deadline: Optional[str] = None
+    status: str = "draft"
+
+
+class UpdateRFQPayload(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    materials: Optional[list] = None
+    quantity: Optional[int] = None
+    deadline: Optional[str] = None
+    status: Optional[str] = None
+
+
+class CreateSamplePayload(BaseModel):
+    status: str = "requested"
+    notes: Optional[str] = None
+
+
+class CreateQualityReportPayload(BaseModel):
+    aql_level: str = "S-3"
+    defects: Optional[list] = None
+    passed: int = 0
+    total_inspected: int = 0
+    inspector_notes: Optional[str] = None
 
 
 # ============================================================================
@@ -51,22 +84,22 @@ def list_rfqs(
 
 
 @router.post("/factory/rfq", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_rfq(payload: dict, db: Session = Depends(get_db)):
+def create_rfq(payload: CreateRFQPayload, db: Session = Depends(get_db)):
     """创建询价请求."""
-    title = payload.get("title")
-    if not title:
-        raise HTTPException(status_code=400, detail="title is required")
     rfq = RFQRequest(
-        user_id=payload.get("user_id", ""),
-        title=title,
-        description=payload.get("description"),
-        materials=payload.get("materials"),
-        quantity=payload.get("quantity"),
-        deadline=payload.get("deadline"),
-        status=payload.get("status", "draft"),
+        user_id=payload.user_id,
+        title=payload.title,
+        description=payload.description,
+        materials=payload.materials,
+        quantity=payload.quantity,
+        deadline=payload.deadline,
+        status=payload.status,
     )
-    db.add(rfq)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(rfq)
     return ApiResponse(data=_rfq_to_dict(rfq), message="询价请求创建成功")
 
@@ -81,15 +114,19 @@ def get_rfq(rfq_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/factory/rfq/{rfq_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_rfq(rfq_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_rfq(rfq_id: str, payload: UpdateRFQPayload, db: Session = Depends(get_db)):
     """更新询价请求."""
     rfq = db.query(RFQRequest).filter(RFQRequest.id == rfq_id).first()
     if not rfq:
         raise HTTPException(status_code=404, detail="询价请求不存在")
-    for key in ("title", "description", "materials", "quantity", "deadline", "status"):
-        if key in payload:
-            setattr(rfq, key, payload[key])
-    db.commit()
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(rfq, key, value)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(rfq)
     return ApiResponse(data=_rfq_to_dict(rfq), message="询价请求更新成功")
 
@@ -101,7 +138,11 @@ def delete_rfq(rfq_id: str, db: Session = Depends(get_db)):
     if not rfq:
         raise HTTPException(status_code=404, detail="询价请求不存在")
     db.delete(rfq)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True}, message="询价请求已删除")
 
 
@@ -132,18 +173,22 @@ def list_samples(rfq_id: str, status: Optional[str] = None, db: Session = Depend
 
 
 @router.post("/factory/rfq/{rfq_id}/samples", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_sample(rfq_id: str, payload: dict, db: Session = Depends(get_db)):
+def create_sample(rfq_id: str, payload: CreateSamplePayload, db: Session = Depends(get_db)):
     """创建样品记录."""
     rfq = db.query(RFQRequest).filter(RFQRequest.id == rfq_id).first()
     if not rfq:
         raise HTTPException(status_code=404, detail="询价请求不存在")
     sample = Sample(
         rfq_id=rfq_id,
-        status=payload.get("status", "requested"),
-        notes=payload.get("notes"),
+        status=payload.status,
+        notes=payload.notes,
     )
     db.add(sample)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(sample)
     return ApiResponse(data=_sample_to_dict(sample), message="样品记录创建成功")
 
@@ -163,21 +208,25 @@ def get_quality_report(sample_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/factory/sample/{sample_id}/quality-report", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_quality_report(sample_id: str, payload: dict, db: Session = Depends(get_db)):
+def create_quality_report(sample_id: str, payload: CreateQualityReportPayload, db: Session = Depends(get_db)):
     """创建质检报告."""
     sample = db.query(Sample).filter(Sample.id == sample_id).first()
     if not sample:
         raise HTTPException(status_code=404, detail="样品不存在")
     qr = QualityReport(
         sample_id=sample_id,
-        aql_level=payload.get("aql_level", "S-3"),
-        defects=payload.get("defects"),
-        passed=payload.get("passed", 0),
-        total_inspected=payload.get("total_inspected", 0),
-        inspector_notes=payload.get("inspector_notes"),
+        aql_level=payload.aql_level,
+        defects=payload.defects,
+        passed=payload.passed,
+        total_inspected=payload.total_inspected,
+        inspector_notes=payload.inspector_notes,
     )
     db.add(qr)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(qr)
     return ApiResponse(data=_qr_to_dict(qr), message="质检报告创建成功")
 

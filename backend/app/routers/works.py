@@ -1,6 +1,8 @@
 """作品管理 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
 Phase 1.1: 自动元数据提取, Phase 1.3: 视频缩略图修正, Phase 1.5: 存证状态友好化
 端点: 18 (works)"""
+import logging
+
 
 import os
 import uuid
@@ -12,6 +14,10 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Q
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from sqlalchemy import func, or_, Text, cast, String
+
+
+class RenameTagPayload(BaseModel):
+    new_tag: str
 
 from app.database import get_db
 from app.models.work import Work, WorkTag, Project
@@ -56,8 +62,8 @@ def _get_allowed_extensions(db: Session) -> set:
         dict_exts = get_dict_values("file_extensions", db)
         if dict_exts:
             return set(dict_exts)
-    except Exception:
-        pass
+    except Exception as e:
+        logging.getLogger(__name__).exception("Error in _get_allowed_extensions: %s", str(e))
     return ALLOWED_EXTENSIONS
 
 
@@ -265,8 +271,8 @@ async def create_work(
                 parent = file_path.parent
                 if parent.exists() and not any(parent.iterdir()):
                     parent.rmdir()
-            except OSError:
-                pass
+            except Exception as e:
+                logging.getLogger(__name__).exception("Error in create_work cleanup: %s", str(e))
             raise HTTPException(
                 status_code=409,
                 detail=f"作品已存在: {existing.title} (SHA-256 相同)",
@@ -336,9 +342,13 @@ async def create_work(
     for tag_name in all_tags:
         work.tags.append(WorkTag(tag=tag_name))
 
-    db.add(work)
-    db.commit()
-    db.refresh(work)
+    try:
+        db.add(work)
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data=_work_to_response(work))
 
@@ -498,8 +508,12 @@ def update_work(work_id: str, data: WorkUpdate, user_id: str = Depends(require_a
         for tag_name in tags_data:
             db.add(WorkTag(work_id=work_id, tag=tag_name))
 
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data=_work_to_response(work))
 
 
@@ -512,7 +526,11 @@ def delete_work(work_id: str, user_id: str = Depends(require_auth), db: Session 
     from datetime import datetime, timezone
     work.status = "trashed"
     work.deleted_at = datetime.now(timezone.utc)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="作品已移入回收站")
 
 
@@ -526,7 +544,11 @@ def recompute_hash(work_id: str, user_id: str = Depends(require_auth), db: Sessi
 
     sha256_hash = compute_sha256(work.file_path)
     work.sha256 = sha256_hash
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"sha256": sha256_hash})
 
 
@@ -545,8 +567,8 @@ def get_preview_url(work_id: str, user_id: str = Depends(require_auth), db: Sess
         try:
             with open(work.file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in get_preview_url: %s", str(e))
 
     data["text_content"] = content
     return ApiResponse(data=data)
@@ -574,7 +596,11 @@ def add_tag(work_id: str, data: WorkTagCreate, user_id: str = Depends(require_au
     if existing:
         return ApiResponse(message="标签已存在")
     db.add(WorkTag(work_id=work_id, tag=data.tag))
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="标签已添加")
 
 
@@ -584,13 +610,17 @@ def remove_tag(work_id: str, tag_id: str, user_id: str = Depends(require_auth), 
     if not tag:
         raise HTTPException(status_code=404, detail="标签不存在")
     db.delete(tag)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="标签已移除")
 
 
 @router.patch("/tags/{old_tag}", response_model=ApiResponse)
-def rename_tag(old_tag: str, data: dict = Body(...), user_id: str = Depends(require_auth), db: Session = Depends(get_db)):
-    new_tag = data.get("new_tag", "").strip()
+def rename_tag(old_tag: str, data: RenameTagPayload = Body(...), user_id: str = Depends(require_auth), db: Session = Depends(get_db)):
+    new_tag = data.new_tag.strip()
     if not new_tag:
         raise HTTPException(status_code=422, detail="标签名不能为空")
 
@@ -599,7 +629,11 @@ def rename_tag(old_tag: str, data: dict = Body(...), user_id: str = Depends(requ
     for wt in affected:
         wt.tag = new_tag
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"标签已重命名 ({len(affected)} 个作品已更新)")
 
 
@@ -609,14 +643,18 @@ def delete_global_tag(tag_name: str, user_id: str = Depends(require_auth), db: S
     for wt in affected:
         db.delete(wt)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"标签已删除 ({len(affected)} 个作品已移除)")
 
 
 # -- 标签联想 --
 
 @router.get("/tags/suggest")
-def suggest_tags(query: str = Query(...), db: Session = Depends(get_db)):
+def suggest_tags(query: str = Query(...), user_id: str = Depends(require_auth), db: Session = Depends(get_db)):
     """标签智能联想."""
     from app.services.auto_tag_service import suggest_tags
     suggestions = suggest_tags(query)
@@ -670,8 +708,12 @@ def create_hash_only_work(data: "HashOnlyUpload", user_id: str = Depends(require
         work.tags.append(WorkTag(tag=tag_name))
 
     db.add(work)
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data=_work_to_response(work))
 
 
@@ -752,8 +794,12 @@ async def create_lowres_work(
         work.tags.append(WorkTag(tag=tag_name))
 
     db.add(work)
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data=_work_to_response(work))
 
 
@@ -822,8 +868,12 @@ async def replace_work_file(
     work.thumbnail_path = thumbnail_path
     work.import_mode = "full"
 
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(
         message=f"文件已替换并创建版本快照 v{version_num}",
         data=_work_to_response(work),
@@ -885,8 +935,12 @@ def fork_work(work_id: str, user_id: str = Depends(require_auth), db: Session = 
         fork.tags.append(WorkTag(tag=tag.tag))
 
     db.add(fork)
-    db.commit()
-    db.refresh(fork)
+    try:
+        db.commit()
+        db.refresh(fork)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(
         message=f"已 Fork 作品 {original.title}",
         data=_work_to_response(fork),
@@ -907,8 +961,12 @@ def update_work_rights(work_id: str, data: "RightsUpdate", user_id: str = Depend
     if data.license_type is not None:
         work.license_type = data.license_type
 
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(
         message="版权信息已更新",
         data=_work_to_response(work),
@@ -1253,7 +1311,11 @@ async def import_folder(
         except Exception as e:
             errors.append({"filename": f.filename, "error": str(e)})
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data={
         "imported": imported,
@@ -1307,8 +1369,12 @@ async def import_project_package(
     )
 
     db.add(work)
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message="项目包已导入",
@@ -1344,7 +1410,11 @@ async def batch_cull(
         if data.color_label is not None:
             work.color_label = data.color_label
         updated += 1
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"已更新 {updated} 个作品", data={"updated": updated})
 
 
@@ -1376,8 +1446,12 @@ async def process_raw(
     # Stub: generate a UUID for the processed variant and record it
     variant_id = uuid.uuid4().hex[:32]
     work.raw_processed_variant_id = variant_id
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"RAW 处理任务已创建 (variant: {variant_id})",
@@ -1445,6 +1519,10 @@ async def single_cull(
     else:
         raise HTTPException(status_code=422, detail=f"Unknown action: {data.action}")
 
-    db.commit()
-    db.refresh(work)
+    try:
+        db.commit()
+        db.refresh(work)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"Cull state updated ({action})", data=_work_to_response(work))

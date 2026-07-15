@@ -97,6 +97,22 @@
           </div>
 
           <!-- Type-Specific Fields -->
+          <template v-if="work?.creator_type === 'illustrator'">
+            <div class="section-label">插画信息</div>
+            <div class="form-group">
+              <label>创作工具</label>
+              <input v-model="form.creation_tool" class="form-input" placeholder="如: Procreate, Photoshop, Clip Studio Paint" />
+            </div>
+            <div class="form-group">
+              <label>风格</label>
+              <input v-model="form.illustration_style" class="form-input" placeholder="如: 扁平/水彩/赛博朋克" />
+            </div>
+            <div class="form-group">
+              <label>AIGC 工具</label>
+              <input v-model="form.ai_tool" class="form-input" placeholder="如: Midjourney, Stable Diffusion" />
+            </div>
+          </template>
+
           <template v-if="work?.creator_type === 'photographer'">
             <div class="section-label">摄影参数</div>
             <div class="form-group">
@@ -183,6 +199,7 @@ const props = defineProps<{
     rights?: Record<string, any> | null
     license_type?: string | null
     file_type?: string
+    creator_type?: string | null
     synopsis?: string | null
     completion_date?: string | null
     current_stage?: string | null
@@ -214,6 +231,7 @@ const form = reactive({
   creation_location: '',
   project_id: '',
   tags: [] as WorkTag[],
+  creator_type: '',
   // Photographer
   camera_model: '',
   lens: '',
@@ -226,6 +244,9 @@ const form = reactive({
   word_count: null as number | null,
   chapter_count: null as number | null,
   genre: '',
+  // Illustrator
+  illustration_style: '',
+  ai_tool: '',
 })
 
 watch(() => props.work, (w) => {
@@ -236,6 +257,7 @@ watch(() => props.work, (w) => {
     form.completion_date = w.completion_date || ''
     form.current_stage = w.current_stage || ''
     form.copyright_year = w.copyright_year || null
+    form.creator_type = w.creator_type || ''
 
     // Rights from top-level rights JSON
     const rights = w.rights || {}
@@ -261,6 +283,8 @@ watch(() => props.work, (w) => {
     form.word_count = cm.word_count ?? null
     form.chapter_count = cm.chapter_count ?? null
     form.genre = cm.genre || ''
+    form.illustration_style = cm.illustration_style || ''
+    form.ai_tool = cm.ai_tool || ''
 
     // Tags
     form.tags = (w.tags || []).map(t => ({ ...t }))
@@ -313,6 +337,8 @@ function handleSave() {
   if (form.word_count !== null) metadata.word_count = form.word_count
   if (form.chapter_count !== null) metadata.chapter_count = form.chapter_count
   if (form.genre) metadata.genre = form.genre
+  if (form.illustration_style) metadata.illustration_style = form.illustration_style
+  if (form.ai_tool) metadata.ai_tool = form.ai_tool
 
   emit('save', {
     title: form.title,

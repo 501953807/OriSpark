@@ -234,11 +234,7 @@ async function loadTiers() {
       features_str: typeof t.features === 'string' ? t.features : JSON.stringify(t.features, null, 2),
     }))
   } catch {
-    tiers.value = [
-      { id: 'tier-free', name: '免费', description: '基础功能', price: 0, currency: 'CNY', billing_period: 'monthly', features: '["基础浏览"]' as any, features_str: '["基础浏览"]', subscriber_count: 1280, is_active: true },
-      { id: 'tier-pro', name: '专业', description: '创作者必备', price: 49, currency: 'CNY', billing_period: 'monthly', features: '["高清下载","无限存储","API 访问"]' as any, features_str: '["高清下载","无限存储","API 访问"]', subscriber_count: 320, is_active: true },
-      { id: 'tier-enterprise', name: '企业', description: '团队方案', price: 199, currency: 'CNY', billing_period: 'monthly', features: '["全部功能","优先支持","定制方案"]' as any, features_str: '["全部功能","优先支持","定制方案"]', subscriber_count: 45, is_active: true },
-    ]
+    tiers.value = []
   }
   loading.value = false
 }
@@ -249,11 +245,7 @@ async function loadSubscribers() {
     const items = res.data.data || []
     subscribers.value = items.map((s: any) => ({ ...s, status: s.status || 'active' }))
   } catch {
-    subscribers.value = [
-      { id: 's1', user_id: 'usr-001', tier_name: '专业', status: 'active', subscribed_at: '2026-01-15T00:00:00Z', expires_at: '2027-01-15T00:00:00Z' },
-      { id: 's2', user_id: 'usr-002', tier_name: '企业', status: 'active', subscribed_at: '2026-03-01T00:00:00Z', expires_at: '2027-03-01T00:00:00Z' },
-      { id: 's3', user_id: 'usr-003', tier_name: '专业', status: 'expired', subscribed_at: '2025-06-01T00:00:00Z', expires_at: '2026-06-01T00:00:00Z' },
-    ] as Subscriber[]
+    subscribers.value = []
   }
 }
 
@@ -274,6 +266,10 @@ function editTier(t: SubscriptionTier) {
 async function saveTier() {
   if (!tierForm.value.name.trim()) {
     ;(window as any).$toast?.show('请输入等级名称', 'error')
+    return
+  }
+  if ((tierForm.value.price ?? 0) <= 0) {
+    ;(window as any).$toast?.show('价格必须大于零', 'error')
     return
   }
   saving.value = true

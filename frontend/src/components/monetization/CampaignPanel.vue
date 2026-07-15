@@ -192,8 +192,7 @@ async function loadCampaigns() {
 }
 
 function editCampaign(c: Camp) {
-  // Placeholder — expand in future iteration
-  alert('编辑功能待实现: ' + c.title)
+  ;(window as any).$toast?.show('编辑众筹功能将在后续版本中实现', 'info')
 }
 
 async function createCampaign() {

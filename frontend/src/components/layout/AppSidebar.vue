@@ -44,9 +44,9 @@
 
       <!-- 经营管理 -->
       <div v-if="!isCollapsed" class="sb-section-title">经营管理</div>
-      <router-link to="/app/business" class="sb-link" active-class="active" title="经营数据：业务收入统计与数据分析" aria-label="经营数据">
+      <router-link to="/app/business" class="sb-link" active-class="active" title="经营管理：业务收入统计与数据分析" aria-label="经营管理">
         <span class="sb-icon" aria-hidden="true">📈</span>
-        <span v-if="!isCollapsed">经营数据</span>
+        <span v-if="!isCollapsed">经营管理</span>
       </router-link>
       <router-link to="/app/recycle" class="sb-link" active-class="active" title="回收站：已删除作品的临时存放区，保留30天" aria-label="回收站">
         <span class="sb-icon" aria-hidden="true">🗑️</span>

@@ -93,7 +93,11 @@ def create_release(
         distribution_status=payload.distribution_status,
     )
     db.add(release)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(release)
 
     return ApiResponse(
@@ -133,7 +137,11 @@ def update_release(
         setattr(release, field, value)
 
     release.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(release)
 
     return ApiResponse(
@@ -153,7 +161,11 @@ def delete_release(
         raise HTTPException(status_code=404, detail="音乐发行不存在")
 
     db.delete(release)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data=None, message="音乐发行已删除")
 
@@ -214,7 +226,11 @@ def create_album(
         duration_seconds=payload.duration_seconds,
     )
     db.add(album)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(album)
 
     return ApiResponse(
@@ -281,7 +297,11 @@ def create_split_sheet(
         status=payload.status,
     )
     db.add(sheet)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(sheet)
 
     return ApiResponse(
@@ -309,10 +329,54 @@ def update_split_sheet(
         sheet.status = "signed"
 
     sheet.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(sheet)
 
     return ApiResponse(
         data=SplitSheetSchema.model_validate(sheet),
         message="分成协议已更新",
     )
+
+
+@router.delete("/musician/albums/{album_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_album(
+    album_id: str,
+    db: Session = Depends(get_db),
+):
+    """删除专辑."""
+    album = db.query(Album).filter(Album.id == album_id).first()
+    if not album:
+        raise HTTPException(status_code=404, detail="专辑不存在")
+
+    db.delete(album)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    return ApiResponse(data=None, message="专辑已删除")
+
+
+@router.delete("/musician/split-sheets/{sheet_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_split_sheet(
+    sheet_id: str,
+    db: Session = Depends(get_db),
+):
+    """删除分成协议."""
+    sheet = db.query(SplitSheet).filter(SplitSheet.id == sheet_id).first()
+    if not sheet:
+        raise HTTPException(status_code=404, detail="分成协议不存在")
+
+    db.delete(sheet)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    return ApiResponse(data=None, message="分成协议已删除")

@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training
+from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
 from app.middleware.logging import LoggingMiddleware
@@ -107,6 +107,8 @@ app.include_router(craftsman.router, prefix="/api", tags=["Craftsman"])
 app.include_router(musician.router, prefix="/api", tags=["Musician"])
 app.include_router(writer.router, prefix="/api", tags=["Writer"])
 app.include_router(certification.router, prefix="/api", tags=["Certification"])
+app.include_router(ai_training.router, prefix="/api", tags=["ai-training"])
+app.include_router(ip_commercialization.router, prefix="/api", tags=["ip-commercialization"])
 app.include_router(ws_router, tags=["WebSocket"])
 
 # Phase 0: 新路由

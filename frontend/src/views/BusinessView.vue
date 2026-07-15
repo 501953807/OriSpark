@@ -36,7 +36,7 @@
       <div v-else class="partner-grid">
         <div v-for="p in partners" :key="p.id" class="partner-card">
           <div class="partner-name">{{ p.name || p.company_name }}</div>
-          <div class="partner-type">类型: {{ p.type || p.partner_type || '-' }}</div>
+          <div class="partner-type">类型: {{ p.type || '-' }}</div>
           <div v-if="p.rating" class="partner-rating">⭐ {{ p.rating }}/5</div>
         </div>
       </div>
@@ -68,7 +68,37 @@
     </div>
 
     <!-- Analytics Tab -->
-    <div v-if="activeTab === 'analytics'" class="tab-content"><p style="color: var(--muted); text-align: center; padding: 48px 0;">📊 收入趋势、产品分布、影响力分析图表 (ECharts)</p></div>
+    <div v-if="activeTab === 'analytics'" class="tab-content">
+      <div class="analytics-period">
+        <select v-model="analyticsPeriod" class="form-select form-select-sm" @change="loadAnalyticsSummary">
+          <option value="month">本月</option>
+          <option value="quarter">本季度</option>
+          <option value="year">本年</option>
+          <option value="all">全部</option>
+        </select>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="analytics-summary" v-if="analyticsSummary.total_revenue !== undefined">
+        <div class="a-stat"><div class="a-stat-value">¥{{ analyticsSummary.total_revenue?.toFixed(2) || '0' }}</div><div class="a-stat-label">总收入</div></div>
+        <div class="a-stat"><div class="a-stat-value">{{ analyticsSummary.order_count || 0 }}</div><div class="a-stat-label">订单数</div></div>
+        <div class="a-stat"><div class="a-stat-value">{{ analyticsSummary.avg_order_value?.toFixed(2) || '0' }}</div><div class="a-stat-label">客单价</div></div>
+        <div class="a-stat"><div class="a-stat-value">{{ analyticsSummary.platform_count || 0 }}</div><div class="a-stat-label">活跃平台</div></div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid" v-if="analyticsRevenues.length">
+        <div class="chart-card">
+          <h3>📊 按来源类型</h3>
+          <div ref="sourceChartRef" style="height:260px"></div>
+        </div>
+        <div class="chart-card">
+          <h3>📈 月度趋势</h3>
+          <div ref="monthChartRef" style="height:260px"></div>
+        </div>
+      </div>
+      <EmptyState v-else icon="📊" title="暂无分析数据" description="收入数据将在此处生成可视化图表" />
+    </div>
 
     <!-- Add Revenue Modal -->
     <div v-if="showAddRevenue" class="modal-overlay" @click.self="showAddRevenue = false">
@@ -87,9 +117,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick, watch } from 'vue'
 import { useBusinessStore } from '@/stores/useBusinessStore'
+import type { RevenueRecord } from '@/types/business'
 import EmptyState from '@/components/common/EmptyState.vue'
+import * as echarts from 'echarts'
 
 const store = useBusinessStore()
 const revenues = computed(() => store.revenues)
@@ -105,6 +137,114 @@ const partnerFilter = ref('')
 const orderFilter = ref('')
 const csvInputRef = ref<HTMLInputElement>()
 
+// ─── Analytics ───
+const analyticsPeriod = ref('month')
+const sourceChartRef = ref<HTMLElement>()
+const monthChartRef = ref<HTMLElement>()
+let sourceChart: echarts.ECharts | null = null
+let monthChart: echarts.ECharts | null = null
+
+const analyticsRevenues = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = now.getMonth()
+  return revenues.value.filter((r: RevenueRecord) => {
+    const d = new Date(r.date || r.created_at)
+    if (analyticsPeriod.value === 'month') return d.getFullYear() === year && d.getMonth() === month
+    if (analyticsPeriod.value === 'quarter') {
+      const q = Math.floor(month / 3)
+      const dq = Math.floor(d.getMonth() / 3)
+      return d.getFullYear() === year && dq === q
+    }
+    if (analyticsPeriod.value === 'year') return d.getFullYear() === year
+    return true
+  })
+})
+
+const analyticsSummary = computed(() => {
+  const revs = analyticsRevenues.value
+  const total = revs.reduce((s: number, r: RevenueRecord) => s + (Number(r.amount) || 0), 0)
+  const bySource: Record<string, number> = {}
+  revs.forEach((r: RevenueRecord) => {
+    const src = r.source_type || r.channel || 'other'
+    bySource[src] = (bySource[src] || 0) + (Number(r.amount) || 0)
+  })
+  const platformCount = new Set(revs.map((r: RevenueRecord) => r.source_type || r.channel)).size
+  return {
+    total_revenue: total,
+    order_count: revs.length,
+    avg_order_value: revs.length ? total / revs.length : 0,
+    platform_count: platformCount,
+    by_source: bySource,
+  }
+})
+
+function renderCharts() {
+  // Source pie chart
+  if (sourceChartRef.value) {
+    if (sourceChart) sourceChart.dispose()
+    sourceChart = echarts.init(sourceChartRef.value)
+    const sourceLabels: Record<string, string> = { commission: '约稿', pod: 'POD', licensing: '授权', royalty: '版税', other: '其他' }
+    sourceChart.setOption({
+      tooltip: { trigger: 'item' },
+      series: [{
+        type: 'pie',
+        radius: ['45%', '75%'],
+        itemStyle: { borderRadius: 8, borderColor: 'oklch(100% 0 0)', borderWidth: 2 },
+        data: Object.entries(analyticsSummary.value.by_source || {}).map(([name, value]) => ({
+          name: sourceLabels[name] || name, value,
+        })),
+        label: { show: true, formatter: '{b}\n¥{c}' },
+      }],
+    })
+  }
+  // Monthly bar chart
+  if (monthChartRef.value) {
+    if (monthChart) monthChart.dispose()
+    monthChart = echarts.init(monthChartRef.value)
+    const byMonth: Record<string, number> = {}
+    analyticsRevenues.value.forEach((r: RevenueRecord) => {
+      const m = (r.date || r.created_at || '').slice(0, 7)
+      if (m) byMonth[m] = (byMonth[m] || 0) + (Number(r.amount) || 0)
+    })
+    const months = Object.keys(byMonth).sort()
+    monthChart.setOption({
+      tooltip: { trigger: 'axis' },
+      xAxis: { type: 'category', data: months, axisLabel: { fontSize: 11 } },
+      yAxis: { type: 'value', axisLabel: { formatter: '¥{value}' } },
+      series: [{
+        type: 'bar',
+        data: months.map(m => byMonth[m]),
+        itemStyle: {
+          borderRadius: [6, 6, 0, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'oklch(56% 0.12 170)' },
+            { offset: 1, color: 'oklch(62% 0.16 260)' },
+          ]),
+        },
+      }],
+      grid: { top: 10, right: 10, bottom: 20, left: 50 },
+    })
+  }
+}
+
+watch(() => analyticsRevenues.value.length, async () => {
+  await nextTick()
+  renderCharts()
+}, { immediate: true })
+
+onMounted(async () => {
+  await Promise.all([store.fetchRevenues(), store.fetchPartners(), store.fetchOrders(), store.fetchNotifications(), store.fetchUnreadCount(), store.fetchDashboard()])
+  window.addEventListener('resize', () => {
+    sourceChart?.resize()
+    monthChart?.resize()
+  })
+})
+
+async function loadAnalyticsSummary() {
+  await store.fetchRevenueSummary({ period: analyticsPeriod.value })
+}
+
 const tabs = [
   { key: 'revenue', label: '收入', icon: '💰' },
   { key: 'partners', label: '合作伙伴', icon: '👥' },
@@ -116,8 +256,8 @@ const tabs = [
 const revForm = reactive({ amount: '', source_type: 'commission', date: new Date().toISOString().slice(0, 10), notes: '' })
 
 const stats = computed(() => ({
-  totalRevenue: store.revenues.reduce((s: number, r: any) => s + (Number(r.amount) || 0), 0),
-  monthlyRevenue: store.revenues.filter((r: any) => (r.date || r.created_at || '').slice(0, 7) === new Date().toISOString().slice(0, 7)).reduce((s: number, r: any) => s + (Number(r.amount) || 0), 0),
+  totalRevenue: store.revenues.reduce((s: number, r: RevenueRecord) => s + (Number(r.amount) || 0), 0),
+  monthlyRevenue: store.revenues.filter((r: RevenueRecord) => (r.date || r.created_at || '').slice(0, 7) === new Date().toISOString().slice(0, 7)).reduce((s: number, r: RevenueRecord) => s + (Number(r.amount) || 0), 0),
   productCount: 0,
   partnerCount: store.partners.length,
 }))
@@ -136,7 +276,6 @@ async function handleCsvImport(e: Event) {
   try { const res = await store.importCsv(fd); (window as any).$toast?.show?.('success', `导入完成: ${res.data?.imported || 0} 条`) } catch { (window as any).$toast?.show?.('error', 'CSV 导入失败') }
 }
 
-onMounted(async () => { await Promise.all([store.fetchRevenues(), store.fetchPartners(), store.fetchOrders(), store.fetchNotifications(), store.fetchUnreadCount(), store.fetchDashboard()]) })
 </script>
 
 <style scoped>
@@ -185,4 +324,13 @@ onMounted(async () => { await Promise.all([store.fetchRevenues(), store.fetchPar
 .modal-card input, .modal-card select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-size: 0.9rem; margin-top: 4px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 @media (max-width: 767px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+.analytics-period { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+.form-select-sm { padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 0.82rem; }
+.analytics-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.a-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+.a-stat-value { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+.a-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+.charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+.chart-card h3 { margin: 0 0 12px; font-size: 0.92rem; color: var(--fg); }
 </style>

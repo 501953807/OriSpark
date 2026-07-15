@@ -5,7 +5,7 @@
       <StatCard icon="🎨" label="作品总数" :value="stats?.total_works ?? 0" to="/app/works" color="green" />
       <StatCard icon="🔒" label="已存证" :value="stats?.total_notarized ?? 0" to="/app/notary" color="purple" />
       <StatCard icon="🛡️" label="侵权告警" :value="stats?.infringement_alerts ?? 0" to="/app/monitor" color="orange" />
-      <StatCard icon="💰" label="本月收入" :value="`¥${(stats?.monthly_revenue ?? 0).toFixed(0)}`" color="blue" />
+      <StatCard icon="💰" label="本月收入" :value="`¥${fmtMoney(stats?.monthly_revenue ?? 0)}`" color="blue" />
     </div>
 
     <!-- Business Overview -->
@@ -28,6 +28,27 @@
           <span class="overview-label">待处理订单</span>
           <span class="overview-value">{{ overview.pending_orders }}</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Analytics Charts -->
+    <div class="charts-section">
+      <div class="chart-card card">
+        <div class="chart-header">
+          <h3 class="chart-title">收入趋势</h3>
+          <span class="chart-subtitle">最近 12 个月</span>
+        </div>
+        <RevenueChart :data="dashboardStore.revenue" />
+      </div>
+
+      <div class="chart-card card">
+        <div class="chart-header">
+          <h3 class="chart-title">作品创建趋势</h3>
+          <span class="chart-subtitle">
+            最近 30 天 · 平均 {{ dashboardStore.trends?.avg_daily ?? 0 }}/日
+          </span>
+        </div>
+        <TrendChart :data="dashboardStore.trends" />
       </div>
     </div>
 
@@ -94,6 +115,8 @@ import StatCard from '@/components/common/StatCard.vue'
 import StatusBadge from '@/components/common/StatusBadge.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
+import RevenueChart from '@/components/dashboard/RevenueChart.vue'
+import TrendChart from '@/components/dashboard/TrendChart.vue'
 import { useDashboardStore } from '@/stores/useDashboardStore'
 import { storeToRefs } from 'pinia'
 
@@ -129,7 +152,7 @@ function fmtMoney(n: number): string {
 
 onMounted(async () => {
   try {
-    await dashboardStore.fetchStats()
+    await dashboardStore.refreshAll()
     // Load business overview from supply dashboard API
     try {
       const { supplyApi } = await import('@/api/supply')
@@ -202,6 +225,34 @@ onMounted(async () => {
 .overview-label { font-size: 0.75rem; color: var(--muted); }
 .overview-value { font-size: 1.1rem; font-weight: 700; margin-top: 4px; }
 
+/* Analytics Charts */
+.charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 1024px) { .charts-section { grid-template-columns: 1fr; } }
+.chart-card {
+  overflow: hidden;
+}
+.chart-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 20px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.chart-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+}
+.chart-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Panels */
 .panels-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

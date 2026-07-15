@@ -1,8 +1,11 @@
 <template>
   <div class="supply-view">
+    <!-- Loading state -->
+    <div v-if="checking" class="supply-loading" style="text-align:center;padding:60px;color:var(--muted)">加载中...</div>
+
     <!-- 前置校验: 无作品时拦截 -->
     <EmptyState
-      v-if="!hasWorks"
+      v-else-if="!hasWorks"
       icon="💰"
       title="暂无已确权作品"
       description="商业转化需要先上传作品并完成 IP 登记确权"
@@ -56,8 +59,8 @@
             :class="['work-card', { selected: designer.work_id === w.id }]"
             @click="selectWork(w)"
           >
-            <div class="work-thumb" v-if="w.thumbnail_path">
-              <img :src="`/api/files/${w.thumbnail_path}`" alt="" />
+            <div class="work-thumb" v-if="w.thumbnail_url">
+              <img :src="w.thumbnail_url" alt="" />
             </div>
             <div class="work-thumb-placeholder" v-else>🎨</div>
             <div class="work-info">
@@ -373,49 +376,7 @@
         </div>
       </div>
 
-      <!-- Step 5: Pricing & Publish (legacy, replaced by Steps 5-6 above) -->
-      <div v-if="false" class="wizard-panel card">
-        <h3>Step 5: 定价与发布</h3>
-
-        <div class="form-group">
-          <label>商品标题</label>
-          <input v-model="designer.product_title" class="form-input" placeholder="输入商品名称" />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>售价 (¥)</label>
-            <input v-model.number="designer.price" type="number" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>成本 (¥)</label>
-            <input v-model.number="designer.cost" type="number" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>预估利润</label>
-            <div class="profit-preview">¥{{ Math.max(0, (designer.price || 0) - (designer.cost || 0)) }}</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>目标平台</label>
-          <select v-model="designer.platform" class="form-input">
-            <option value="">-- 选择平台 --</option>
-            <option v-for="p in platforms" :key="p.id" :value="p.id">{{ p.name }} ({{ p.region }})</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>描述</label>
-          <textarea v-model="designer.description" class="form-input" rows="3" placeholder="商品描述"></textarea>
-        </div>
-
-        <div class="wizard-actions">
-          <button class="btn btn-secondary" @click="wizardStep = 3">← 上一步</button>
-          <button class="btn btn-primary" @click="publishProduct" :disabled="publishing">
-            {{ publishing ? '发布中...' : '创建商品' }}
-          </button>
-        </div>
-      </div>
+      <!-- Step 5: Pricing & Publish (legacy, removed) -->
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -921,7 +882,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -934,6 +895,7 @@ import { worksApi } from '@/api/works'
 const router = useRouter()
 const appStore = useAppStore()
 const hasWorks = ref(false)
+const checking = ref(true)
 const goToWorks = () => router.push('/app/works')
 
 const activeTab = ref('designer')
@@ -1087,8 +1049,6 @@ function handleCompatibleSelect(templateId: string) {
     runSpecCheck()
   }
 }
-function orderTypeLabel(t: string) { return { custom_mfg: '定制制造', pod_bulk: 'POD批量', crowdfunding_fulfillment: '众筹履约', sample: '样品' }[t] || t }
-function partnerTypeLabel(t: string) { return { manufacturer: '制造商', supplier: '供应商', pod_platform: 'POD平台', fulfillment: '仓储物流' }[t] || t }
 
 const filteredCategories = computed(() => {
   if (!selectedMaterial.value) return []
@@ -1107,10 +1067,10 @@ const needsErrorBlock = computed(() => {
 
 // ── Data Loaders ──
 async function loadMonetizationPaths() {
-  try { const r = await supplyApi.monetizationPaths(); monetizationPaths.value = r.data.data } catch (e: any) { console.error('loadMonetizationPaths failed:', e?.message || e) }
+  try { const r = await supplyApi.monetizationPaths(); monetizationPaths.value = r.data.data } catch { /* toast handled by interceptor */ }
 }
 async function loadPlatforms() {
-  try { const r = await supplyApi.platforms(); platforms.value = r.data.data } catch (e: any) { console.error('loadPlatforms failed:', e?.message || e) }
+  try { const r = await supplyApi.platforms(); platforms.value = r.data.data } catch { /* toast handled by interceptor */ }
 }
 async function loadCategories() {
   try {
@@ -1119,10 +1079,10 @@ async function loadCategories() {
     allCategories.value = r.data.data.categories_by_material
       ? Object.values(r.data.data.categories_by_material).flatMap((g: any) => g.categories || [])
       : []
-  } catch (e: any) { console.error('loadCategories failed:', e?.message || e) }
+  } catch { /* toast handled by interceptor */ }
 }
 async function loadWorks() {
-  try { const r = await worksApi.list(); works.value = r.data.data?.items || [] } catch (e: any) { console.error('loadWorks failed:', e?.message || e) }
+  try { const r = await worksApi.list(); works.value = r.data.data?.items || [] } catch { /* toast handled by interceptor */ }
 }
 async function loadProducts() {
   try {
@@ -1131,16 +1091,16 @@ async function loadProducts() {
     if (productFilter.material_category) params.material_category = productFilter.material_category
     const r = await supplyApi.products(params)
     products.value = r.data.data
-  } catch (e: any) { console.error('loadProducts failed:', e?.message || e) }
+  } catch { /* toast handled by interceptor */ }
 }
 async function loadCampaigns() {
-  try { const r = await supplyApi.campaigns(); campaigns.value = r.data.data } catch (e: any) { console.error('loadCampaigns failed:', e?.message || e) }
+  try { const r = await supplyApi.campaigns(); campaigns.value = r.data.data } catch { /* toast handled by interceptor */ }
 }
 async function loadLicenses() {
-  try { const r = await supplyApi.licenses(); licenses.value = r.data.data } catch (e: any) { console.error('loadLicenses failed:', e?.message || e) }
+  try { const r = await supplyApi.licenses(); licenses.value = r.data.data } catch { /* toast handled by interceptor */ }
 }
 async function loadReminders() {
-  try { const r = await supplyApi.reminders(); reminders.value = r.data.data } catch (e: any) { console.error('loadReminders failed:', e?.message || e) }
+  try { const r = await supplyApi.reminders(); reminders.value = r.data.data } catch { /* toast handled by interceptor */ }
 }
 
 // ── Wizard Actions ──
@@ -1189,6 +1149,22 @@ async function runSpecCheck() {
 }
 
 async function publishProduct() {
+  if (!designer.work_id) {
+    ;(window as any).$toast?.show('请先选择作品', 'warning')
+    return
+  }
+  if (!designer.product_title?.trim()) {
+    ;(window as any).$toast?.show('请输入商品标题', 'warning')
+    return
+  }
+  if (!designer.price || designer.price <= 0) {
+    ;(window as any).$toast?.show('价格必须大于0', 'warning')
+    return
+  }
+  if (!designer.monetization_path) {
+    ;(window as any).$toast?.show('请选择变现路径', 'warning')
+    return
+  }
   publishing.value = true
   try {
     // P2: Also create a DesignListing record
@@ -1241,12 +1217,29 @@ async function publishProduct() {
 // ── Campaign ──
 async function createCampaign() {
   const f = campaignForm.value
-  const tiers = f.tiers.filter((t: any) => t.name && t.price > 0)
-  await supplyApi.createCampaign({ title: f.title, platform: f.platform, goal_amount: f.goal_amount, description: f.description, reward_tiers: tiers })
-  showCampaignModal.value = false
-  campaignForm.value = { title: '', platform: 'modian', goal_amount: 0, description: '', tiers: [{ name: '', price: 0, limit: 0 }] }
-  ;(window as any).$toast?.show('众筹项目已创建', 'success')
-  loadCampaigns()
+  if (!f.title?.trim()) {
+    ;(window as any).$toast?.show('请输入项目名称', 'warning')
+    return
+  }
+  if (!f.platform?.trim()) {
+    ;(window as any).$toast?.show('请输入平台名称', 'warning')
+    return
+  }
+  if (!f.goal_amount || f.goal_amount <= 0) {
+    ;(window as any).$toast?.show('目标金额必须大于0', 'warning')
+    return
+  }
+  try {
+    const f = campaignForm.value
+    const tiers = f.tiers.filter((t: any) => t.name && t.price > 0)
+    await supplyApi.createCampaign({ title: f.title, platform: f.platform, goal_amount: f.goal_amount, description: f.description, reward_tiers: tiers })
+    showCampaignModal.value = false
+    campaignForm.value = { title: '', platform: 'modian', goal_amount: 0, description: '', tiers: [{ name: '', price: 0, limit: 0 }] }
+    ;(window as any).$toast?.show('众筹项目已创建', 'success')
+    loadCampaigns()
+  } catch (e) {
+    ;(window as any).$toast?.show('创建众筹项目失败', 'error')
+  }
 }
 
 async function exportCampaignReport(campaignId: string) {
@@ -1290,11 +1283,24 @@ async function calculateGoal() {
 // ── License ──
 async function createLicense() {
   const f = licenseForm.value
-  await supplyApi.createLicense({ license_type: f.license_type, platform: f.platform, price: f.price })
-  showLicenseModal.value = false
-  licenseForm.value = { license_type: 'single_use', platform: '', price: 0 }
-  ;(window as any).$toast?.show('授权已创建', 'success')
-  loadLicenses()
+  if (!f.platform?.trim()) {
+    ;(window as any).$toast?.show('请输入平台名称', 'warning')
+    return
+  }
+  if (!f.price || f.price <= 0) {
+    ;(window as any).$toast?.show('授权价格必须大于0', 'warning')
+    return
+  }
+  try {
+    const f = licenseForm.value
+    await supplyApi.createLicense({ license_type: f.license_type, platform: f.platform, price: f.price })
+    showLicenseModal.value = false
+    licenseForm.value = { license_type: 'single_use', platform: '', price: 0 }
+    ;(window as any).$toast?.show('授权已创建', 'success')
+    loadLicenses()
+  } catch (e) {
+    ;(window as any).$toast?.show('创建授权失败', 'error')
+  }
 }
 
 async function exportLicense(licenseId: string, format: string) {
@@ -1439,9 +1445,21 @@ function updateProfit() {
 // ── Creator type (from localStorage / onboarding) ──
 const creatorType = ref('')
 
-onMounted(() => {
+onMounted(async () => {
   // 前置校验: 检查是否有作品
-  hasWorks.value = appStore.workCount > 0
+  if (appStore.workCount > 0) {
+    hasWorks.value = true
+    checking.value = false
+  } else {
+    try {
+      const res = await worksApi.list({ page_size: 1 })
+      hasWorks.value = (res.data.data?.items?.length || res.data.data?.length || 0) > 0
+    } catch {
+      hasWorks.value = false
+    } finally {
+      checking.value = false
+    }
+  }
   // Restore creator_type from localStorage
   const saved = localStorage.getItem('oristudio-creator-type')
   if (saved) creatorType.value = saved
@@ -1459,6 +1477,10 @@ onMounted(() => {
   loadAggregatedRevenue()
   // Load POD platforms
   loadPodPlatforms()
+})
+
+watch(() => appStore.workCount, (val) => {
+  hasWorks.value = val > 0
 })
 
 async function loadOnboardingStatus() {

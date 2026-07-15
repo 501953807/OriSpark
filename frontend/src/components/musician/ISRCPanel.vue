@@ -181,6 +181,10 @@ function getStatusLabel(status: 'not-applied' | 'applied' | 'assigned'): string 
   }
 }
 
+const emit = defineEmits<{
+  applied: [payload: { title: string; artist: string; genre: string; format: ReleaseFormat; duration_seconds: number }]
+}>()
+
 async function handleApply() {
   if (!isValidForm.value) return
 
@@ -211,10 +215,6 @@ async function handleApply() {
     submitting.value = false
   }
 }
-
-const emit = defineEmits<{
-  applied: [payload: { title: string; artist: string; genre: string; format: ReleaseFormat; duration_seconds: number }]
-}>()
 </script>
 
 <style scoped>

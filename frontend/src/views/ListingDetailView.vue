@@ -116,6 +116,15 @@ Central hub for a single listing. Shows:
         </div>
       </div>
     </div>
+
+    <div v-else-if="!loading" class="detail-empty">
+      <p>商品不存在或已被删除</p>
+      <router-link to="/app/supply" class="btn btn-primary btn-sm">返回商业转化</router-link>
+    </div>
+
+    <div v-else-if="loading" class="detail-empty">
+      <p>加载中...</p>
+    </div>
   </div>
 </template>
 
@@ -131,6 +140,7 @@ const route = useRoute()
 const listingId = computed(() => route.params.id as string)
 
 const listing = ref<ListingDetail | null>(null)
+const loading = ref(true)
 const activeTab = ref('publication')
 const showEditModal = ref(false)
 const saving = ref(false)
@@ -183,11 +193,14 @@ function formatDate(d: string): string {
 }
 
 async function loadDetail() {
+  loading.value = true
   try {
     const { data } = await supplyApi.getListing(listingId.value)
     listing.value = data as ListingDetail
   } catch {
-    // Error toast
+    listing.value = null
+  } finally {
+    loading.value = false
   }
 }
 
@@ -220,7 +233,7 @@ async function saveEdit() {
 
 function duplicateListing() {
   if (!listing.value) return
-  alert(`复制商品: ${listing.value.title} (功能待实现)`)
+  ;(window as any).$toast?.show('复制商品功能将在后续版本中实现', 'info')
 }
 
 async function deleteListing() {
@@ -238,11 +251,11 @@ function handlePublish(id: string) {
 }
 
 function handleCreateCampaign(_data: any) {
-  alert('创建众筹功能待实现')
+  ;(window as any).$toast?.show('创建众筹功能将在后续版本中实现', 'info')
 }
 
 function handleCreateLicense(_data: any) {
-  alert('创建授权功能待实现')
+  ;(window as any).$toast?.show('创建授权功能将在后续版本中实现', 'info')
 }
 
 onMounted(loadDetail)
@@ -353,5 +366,15 @@ onMounted(loadDetail)
 .btn-save {
   padding: 6px 16px; border: none; border-radius: var(--radius-sm);
   background: var(--accent); color: #fff; cursor: pointer; font-size: .82rem;
+}
+
+.detail-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.detail-empty p {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
 }
 </style>

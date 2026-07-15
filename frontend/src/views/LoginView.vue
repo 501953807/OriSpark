@@ -75,9 +75,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import client from '@/api/client'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const router = useRouter()
+const auth = useAuthStore()
 const mode = ref<'login' | 'register'>('login')
 const loading = ref(false)
 const errorMsg = ref('')
@@ -88,26 +89,22 @@ async function handleSubmit() {
   loading.value = true
 
   try {
-    const endpoint = mode.value === 'login' ? '/auth/login' : '/auth/register'
-    const payload = mode.value === 'login'
-      ? { email: form.value.email, password: form.value.password }
-      : form.value
+    const success = mode.value === 'login'
+      ? await auth.login({ email: form.value.email, password: form.value.password })
+      : await auth.register({ username: form.value.username, email: form.value.email, password: form.value.password })
 
-    const resp = await client.post(endpoint, payload)
-    const data = resp.data.data
-
-    localStorage.setItem('oristudio-token', data.token)
-    localStorage.setItem('oristudio-user', JSON.stringify(data.user))
-
-    const onboarded = localStorage.getItem('oristudio-onboarded')
-    if (!onboarded) {
-      router.push('/onboarding')
+    if (success) {
+      const onboarded = localStorage.getItem('oristudio-onboarded')
+      if (!onboarded) {
+        router.push('/onboarding')
+      } else {
+        router.push('/app')
+      }
     } else {
-      router.push('/app')
+      errorMsg.value = auth.error || (mode.value === 'login' ? '登录失败' : '注册失败')
     }
-  } catch (err: any) {
-    const detail = err.response?.data?.detail
-    errorMsg.value = detail || '登录失败，请检查网络连接'
+  } catch (err: unknown) {
+    errorMsg.value = err instanceof Error ? err.message : '操作失败'
   } finally {
     loading.value = false
   }

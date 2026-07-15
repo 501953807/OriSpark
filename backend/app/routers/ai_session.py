@@ -1,22 +1,58 @@
 """AI 创作会话 API 路由 — Phase 0."""
 
-from typing import Optional
+from typing import Optional, Union
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.work import Work
 from app.models.ai_session import AiCreationSession
 from app.schemas.common import ApiResponse
+from app.deps import require_auth
 
 router = APIRouter(prefix="/api/works", tags=["ai-sessions"])
 
 
-@router.post("/{work_id}/ai-session", response_model=ApiResponse)
+class AiSessionCreate(BaseModel):
+    tool_name: str
+    prompt: Optional[str] = None
+    tool_version: Optional[str] = None
+    prompt_history: Optional[str] = None
+    seed: Optional[int] = None
+    parameters: Optional[dict] = None
+    negative_prompt: Optional[str] = None
+    model_name: Optional[str] = None
+    lora_names: Optional[list[str]] = None
+    output_images: Optional[Union[int, list[str]]] = None
+    human_interventions: Optional[list[str]] = None
+
+
+class AiSessionResponse(BaseModel):
+    id: str
+    work_id: str
+    tool_name: str
+    tool_version: Optional[str] = None
+    prompt: Optional[str] = None
+    prompt_history: Optional[str] = None
+    seed: Optional[int] = None
+    parameters: Optional[dict] = None
+    negative_prompt: Optional[str] = None
+    model_name: Optional[str] = None
+    lora_names: Optional[list[str]] = None
+    output_images: Optional[Union[int, list[str]]] = None
+    human_interventions: Optional[list[str]] = None
+    created_at: str
+    updated_at: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+
+@router.post("/{work_id}/ai-session", response_model=ApiResponse[AiSessionResponse], dependencies=[Depends(require_auth)])
 def create_ai_session(
     work_id: str,
-    data: dict,
+    data: AiSessionCreate,
     db: Session = Depends(get_db),
 ):
     """记录 AI 创作会话."""
@@ -24,35 +60,55 @@ def create_ai_session(
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    if "tool_name" not in data or "prompt" not in data:
-        raise HTTPException(status_code=400, detail="tool_name 和 prompt 为必填项")
-
     session = AiCreationSession(
         work_id=work_id,
-        tool_name=data["tool_name"],
-        tool_version=data.get("tool_version"),
-        prompt=data["prompt"],
-        prompt_history=data.get("prompt_history"),
-        seed=data.get("seed"),
-        parameters=data.get("parameters"),
-        negative_prompt=data.get("negative_prompt"),
-        model_name=data.get("model_name"),
-        lora_names=data.get("lora_names"),
-        output_images=data.get("output_images"),
-        human_interventions=data.get("human_interventions"),
+        tool_name=data.tool_name,
+        tool_version=data.tool_version,
+        prompt=data.prompt,
+        prompt_history=data.prompt_history,
+        seed=data.seed,
+        parameters=data.parameters,
+        negative_prompt=data.negative_prompt,
+        model_name=data.model_name,
+        lora_names=data.lora_names,
+        output_images=data.output_images,
+        human_interventions=data.human_interventions,
     )
     db.add(session)
 
     work.ai_assisted = True
     tools = work.ai_tools_used or []
-    if not any(t.get("name") == data["tool_name"] for t in tools):
-        tools.append({"name": data["tool_name"], "version": data.get("tool_version")})
+    if not any(t.get("name") == data.tool_name for t in tools):
+        tools.append({"name": data.tool_name, "version": data.tool_version})
     work.ai_tools_used = tools
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(session)
 
-    return ApiResponse(message="创作会话记录成功", data={"id": session.id})
+    return ApiResponse(
+        message="AI 创作会话已记录",
+        data=AiSessionResponse(
+            id=session.id,
+            work_id=session.work_id,
+            tool_name=session.tool_name,
+            tool_version=session.tool_version,
+            prompt=session.prompt,
+            prompt_history=session.prompt_history,
+            seed=session.seed,
+            parameters=session.parameters,
+            negative_prompt=session.negative_prompt,
+            model_name=session.model_name,
+            lora_names=session.lora_names,
+            output_images=session.output_images,
+            human_interventions=session.human_interventions,
+            created_at=session.created_at.isoformat() if session.created_at else None,
+            updated_at=session.updated_at.isoformat() if session.updated_at else None,
+        ),
+    )
 
 
 @router.get("/{work_id}/ai-sessions", response_model=ApiResponse[list])
@@ -76,23 +132,31 @@ def list_ai_sessions(
         data=[
             {
                 "id": s.id,
+                "work_id": s.work_id,
                 "tool_name": s.tool_name,
                 "tool_version": s.tool_version,
                 "prompt": s.prompt,
+                "prompt_history": s.prompt_history,
                 "seed": s.seed,
+                "parameters": s.parameters,
+                "negative_prompt": s.negative_prompt,
                 "model_name": s.model_name,
+                "lora_names": s.lora_names,
+                "output_images": s.output_images,
+                "human_interventions": s.human_interventions,
                 "created_at": s.created_at.isoformat() if s.created_at else None,
+                "updated_at": s.updated_at.isoformat() if s.updated_at else None,
             }
             for s in sessions
         ],
     )
 
 
-@router.patch("/{work_id}/ai-session/{session_id}", response_model=ApiResponse)
+@router.patch("/{work_id}/ai-session/{session_id}", response_model=ApiResponse[AiSessionResponse], dependencies=[Depends(require_auth)])
 def update_ai_session(
     work_id: str,
     session_id: str,
-    data: dict,
+    data: AiSessionCreate,
     db: Session = Depends(get_db),
 ):
     """编辑创作会话记录."""
@@ -106,15 +170,20 @@ def update_ai_session(
 
     for key in ["prompt", "tool_version", "parameters", "negative_prompt", "model_name",
                 "lora_names", "output_images", "human_interventions"]:
-        if key in data:
-            setattr(session, key, data[key])
+        val = getattr(data, key, None)
+        if val is not None:
+            setattr(session, key, val)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(session)
     return ApiResponse(message="会话记录更新成功")
 
 
-@router.delete("/{work_id}/ai-session/{session_id}", response_model=ApiResponse)
+@router.delete("/{work_id}/ai-session/{session_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_ai_session(
     work_id: str,
     session_id: str,
@@ -130,5 +199,9 @@ def delete_ai_session(
         raise HTTPException(status_code=404, detail="会话记录不存在")
 
     db.delete(session)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="会话记录已删除")

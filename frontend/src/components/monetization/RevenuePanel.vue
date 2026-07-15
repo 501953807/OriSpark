@@ -110,25 +110,26 @@ Supports manual entry and CSV import hint.
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useBusinessStore } from '@/stores/useBusinessStore'
+import type { RevenueRecord } from '@/types/business'
 
 interface Props {
   listingId: string
 }
 defineProps<Props>()
 
-interface RevRecord {
-  id: string
-  amount: number
-  date: string | null
-  platform: string
-  net_revenue?: number
+interface RevRecord extends RevenueRecord {
   source?: string
   notes?: string
+  platform?: string
+  net_revenue?: number
 }
 
-const revenues = ref<RevRecord[]>([])
+const businessStore = useBusinessStore()
 const saving = ref(false)
 const showAddRevenue = ref(false)
+
+const revenues = computed(() => businessStore.revenues as unknown as RevRecord[])
 
 const form = ref({
   amount: 0, platform: 'printful', date: new Date().toISOString().split('T')[0],
@@ -186,28 +187,23 @@ function sourceLabel(s?: string): string {
 async function saveRevenue() {
   saving.value = true
   try {
-    // Would call supplyApi.addRevenue(...)
-    const record: RevRecord = {
-      id: `rev_${Date.now()}`,
+    await businessStore.addRevenue({
       amount: form.value.amount,
       date: form.value.date,
       platform: form.value.platform,
-      net_revenue: form.value.amount * 0.7,
       source: form.value.source,
       notes: form.value.notes,
-    }
-    revenues.value.unshift(record)
+    })
     showAddRevenue.value = false
   } catch {
-    // Error toast
+    ;(window as any).$toast?.show('保存收入失败', 'error')
   } finally {
     saving.value = false
   }
 }
 
 onMounted(() => {
-  // Load from API
-  revenues.value = []
+  businessStore.fetchRevenues()
 })
 </script>
 

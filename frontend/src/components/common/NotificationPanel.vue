@@ -80,9 +80,7 @@ async function markAllRead() {
     await systemApi.markAllRead()
     notifications.value.forEach(n => { n.is_read = true })
     unreadCount.value = 0
-  } catch (err) {
-    console.error('[NotifPanel] Failed to mark all read:', err)
-  }
+  } catch { /* toast handled by interceptor */ }
 }
 
 async function onClickNotif(n: any) {
@@ -91,9 +89,7 @@ async function onClickNotif(n: any) {
       await systemApi.markRead(n.id)
       n.is_read = true
       unreadCount.value = Math.max(0, unreadCount.value - 1)
-    } catch (err) {
-      console.error('[NotifPanel] Failed to mark read:', err)
-    }
+    } catch { /* toast handled by interceptor */ }
   }
   // 可扩展: 点击跳转到关联页面
 }
@@ -131,8 +127,8 @@ onMounted(() => {
     try {
       const res = await systemApi.unreadCount()
       unreadCount.value = res.data.data?.count || 0
-    } catch { /* ignore */ }
-  }, 30_000) // 每30秒轮询
+    } catch { /* backend offline — silent */ }
+  }, 120_000) // 每2分钟轮询（后端离线时减少噪音）
 })
 
 onUnmounted(() => {

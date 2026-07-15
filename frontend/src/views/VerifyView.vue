@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import client from '@/api/client'
 
 const certId = ref('')
 const verifying = ref(false)
@@ -64,10 +65,9 @@ async function verify() {
   if (!certId.value.trim()) return
   verifying.value = true
   try {
-    const resp = await fetch(`/api/notary/verify/${certId.value.trim()}`)
-    const data = await resp.json()
+    const resp = await client.get(`/notary/verify/${certId.value.trim()}`)
     verified.value = true
-    result.value = data.data || { valid: false, error: data.message }
+    result.value = resp.data.data || { valid: false, error: resp.data.message }
   } catch {
     verified.value = true
     result.value = { valid: false, error: '验证服务不可用' }

@@ -113,6 +113,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { systemApi } from '@/api/system'
+import { worksApi } from '@/api/works'
 
 interface CullWork {
   id: string
@@ -263,30 +264,26 @@ function onKeyDown(e: KeyboardEvent) {
   }
 }
 
-function fadeWorkData() {
-  works.value = [
-    { id: 'w1', title: '自然风光-云海日出', thumbnail: '', cull_status: 'pending', rating: null, color_label: '' },
-    { id: 'w2', title: '人像-室内写真01', thumbnail: '', cull_status: 'keep', rating: 5, color_label: 'green' },
-    { id: 'w3', title: '建筑-城市夜景', thumbnail: '', cull_status: 'pending', rating: null, color_label: '' },
-    { id: 'w4', title: '动物-野生动物抓拍', thumbnail: '', cull_status: 'reject', rating: 2, color_label: 'red' },
-    { id: 'w5', title: '美食-餐厅菜品', thumbnail: '', cull_status: 'pending', rating: null, color_label: 'yellow' },
-    { id: 'w6', title: '街头-街拍纪实', thumbnail: '', cull_status: 'keep', rating: 4, color_label: 'green' },
-    { id: 'w7', title: '产品-珠宝拍摄', thumbnail: '', cull_status: 'pending', rating: null, color_label: '' },
-    { id: 'w8', title: '风景-海滩日落', thumbnail: '', cull_status: 'keep', rating: 5, color_label: 'blue' },
-    { id: 'w9', title: '静物-茶器摆拍', thumbnail: '', cull_status: 'reject', rating: 1, color_label: 'red' },
-    { id: 'w10', title: '活动-演唱会现场', thumbnail: '', cull_status: 'pending', rating: null, color_label: '' },
-    { id: 'w11', title: '航拍-山区全景', thumbnail: '', cull_status: 'keep', rating: 4, color_label: 'green' },
-    { id: 'w12', title: '微距-昆虫特写', thumbnail: '', cull_status: 'pending', rating: null, color_label: 'yellow' },
-  ] as CullWork[]
-  ;(window as any).__worksRef = works.value
+async function loadWorks() {
+  try {
+    const res = await worksApi.list({ status: 'active' })
+    const items = res.data.data?.items || res.data.data || []
+    works.value = (items as any[]).map((w: any) => ({
+      id: w.id,
+      title: w.title || w.file_name,
+      thumbnail: w.thumbnail_url || w.thumbnail_path || '',
+      cull_status: w.cull_status || 'pending',
+      rating: w.cull_rating ?? null,
+      color_label: w.color_label || '',
+    })) as CullWork[]
+  } catch {
+    works.value = []
+  }
 }
 
 onMounted(async () => {
   loading.value = true
-  try {
-    // API not available for listing, use mock data
-  } catch { /* use mock */ }
-  fadeWorkData()
+  await loadWorks()
   loading.value = false
   window.addEventListener('keydown', onKeyDown)
 })

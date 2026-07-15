@@ -4,6 +4,7 @@ Phase 2: 摄影师水印预设管理
 
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -14,6 +15,42 @@ from app.schemas.common import ApiResponse, SuccessResponse
 from app.deps import require_auth
 
 router = APIRouter()
+
+
+class CreatePresetPayload(BaseModel):
+    name: str
+    watermark_type: str
+    config: dict = Field(default_factory=dict)
+    description: Optional[str] = None
+    is_default: bool = False
+    created_by: Optional[str] = None
+
+    @field_validator("watermark_type")
+    @classmethod
+    def validate_watermark_type(cls, v: str) -> str:
+        if v not in ("text", "image", "tiled"):
+            raise ValueError("Invalid watermark_type")
+        return v
+
+
+class UpdatePresetPayload(BaseModel):
+    name: Optional[str] = None
+    watermark_type: Optional[str] = None
+    config: Optional[dict] = None
+    description: Optional[str] = None
+    is_default: Optional[bool] = None
+    created_by: Optional[str] = None
+
+
+class ApplyWatermarkPayload(BaseModel):
+    work_path: str
+    preset_id: str
+    output_path: str
+
+
+class PreviewWatermarkPayload(BaseModel):
+    config: Optional[dict] = Field(default_factory=dict)
+    image_path: str
 
 
 # ============================================================================
@@ -64,30 +101,26 @@ def list_presets(
     response_model=ApiResponse[dict],
     dependencies=[Depends(require_auth)],
 )
-def create_preset(payload: dict, db: Session = Depends(get_db)):
+def create_preset(payload: CreatePresetPayload, db: Session = Depends(get_db)):
     """创建水印预设."""
-    name = payload.get("name")
-    watermark_type = payload.get("watermark_type")
-    config = payload.get("config", {})
-    if not name:
-        raise HTTPException(status_code=400, detail="name is required")
-    if watermark_type not in ("text", "image", "tiled"):
-        raise HTTPException(status_code=400, detail="Invalid watermark_type")
-
-    valid, error = watermark_service.validate_config({**config, "watermark_type": watermark_type})
+    config = payload.config or {}
+    valid, error = watermark_service.validate_config({**config, "watermark_type": payload.watermark_type})
     if not valid:
         raise HTTPException(status_code=400, detail=error)
-
     preset = WatermarkPreset(
-        name=name,
-        description=payload.get("description"),
-        watermark_type=watermark_type,
+        name=payload.name,
+        description=payload.description,
+        watermark_type=payload.watermark_type,
         config=config,
-        is_default=payload.get("is_default", False),
-        created_by=payload.get("created_by"),
+        is_default=payload.is_default,
+        created_by=payload.created_by,
     )
     db.add(preset)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(preset)
     return ApiResponse(data=_preset_to_dict(preset), message="预设创建成功")
 
@@ -97,24 +130,21 @@ def create_preset(payload: dict, db: Session = Depends(get_db)):
     response_model=ApiResponse[dict],
     dependencies=[Depends(require_auth)],
 )
-def update_preset(preset_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_preset(preset_id: str, payload: UpdatePresetPayload, db: Session = Depends(get_db)):
     """更新水印预设."""
     preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == preset_id).first()
     if not preset:
         raise HTTPException(status_code=404, detail="预设不存在")
 
-    name = payload.get("name", preset.name)
-    watermark_type = payload.get("watermark_type", preset.watermark_type)
-    config = payload.get("config", preset.config) or {}
-    valid, error = watermark_service.validate_config({**config, "watermark_type": watermark_type})
-    if not valid:
-        raise HTTPException(status_code=400, detail=error)
-
-    for key in ("name", "description", "watermark_type", "config", "is_default"):
-        if key in payload:
-            setattr(preset, key, payload[key])
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(preset, key, value)
     preset.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(preset)
     return ApiResponse(data=_preset_to_dict(preset), message="预设更新成功")
 
@@ -130,7 +160,11 @@ def delete_preset(preset_id: str, db: Session = Depends(get_db)):
     if not preset:
         raise HTTPException(status_code=404, detail="预设不存在")
     db.delete(preset)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True, "message": "预设已删除"})
 
 
@@ -144,20 +178,13 @@ def delete_preset(preset_id: str, db: Session = Depends(get_db)):
     response_model=ApiResponse[dict],
     dependencies=[Depends(require_auth)],
 )
-def apply_watermark(payload: dict, db: Session = Depends(get_db)):
+def apply_watermark(payload: ApplyWatermarkPayload, db: Session = Depends(get_db)):
     """将预设应用到作品."""
-    work_path = payload.get("work_path")
-    preset_id = payload.get("preset_id")
-    output_path = payload.get("output_path")
-
-    if not preset_id or not work_path or not output_path:
-        raise HTTPException(status_code=400, detail="work_path, preset_id, output_path are required")
-
-    preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == preset_id).first()
+    preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == payload.preset_id).first()
     if not preset:
         raise HTTPException(status_code=404, detail="预设不存在")
 
-    success = watermark_service.apply_watermark(work_path, preset.config, output_path)
+    success = watermark_service.apply_watermark(payload.work_path, preset.config, payload.output_path)
     if not success:
         raise HTTPException(status_code=500, detail="水印应用失败")
 
@@ -174,13 +201,8 @@ def apply_watermark(payload: dict, db: Session = Depends(get_db)):
     response_model=ApiResponse[dict],
     dependencies=[Depends(require_auth)],
 )
-def preview_watermark(payload: dict = Body(...)):
+def preview_watermark(payload: PreviewWatermarkPayload):
     """生成水印预览图."""
-    config = payload.get("config", {})
-    image_path = payload.get("image_path", "")
-
-    if not image_path:
-        raise HTTPException(status_code=400, detail="image_path is required")
-
-    preview_path = watermark_service.generate_watermark_preview(config, image_path)
+    config = payload.config or {}
+    preview_path = watermark_service.generate_watermark_preview(config, payload.image_path)
     return ApiResponse(data={"preview_path": preview_path}, message="预览生成成功")

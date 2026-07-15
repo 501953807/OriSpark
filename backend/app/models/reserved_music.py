@@ -18,37 +18,8 @@ def _uid():
 
 
 # =============================================================================
-# albums — 专辑/EP/Single (12.3.2)
+# album_tracks — 专辑音轨 (12.3.2)
 # =============================================================================
-
-
-class Album(Base):
-    """专辑表.
-
-    音乐人发布的专辑/EP/单曲集合.
-    v4 激活.
-    """
-    __tablename__ = "albums"
-
-    id = Column(String(32), primary_key=True, default=_uid)
-    user_id = Column(String(32), nullable=False)
-    title = Column(String(500), nullable=False)
-    album_type = Column(String(20), nullable=False)  # album/ep/single
-    isrc = Column(String(20), nullable=True)  # 国际标准录音编码
-    cover_work_id = Column(String(32), nullable=True)  # 引用works表的封面
-    label = Column(String(200), nullable=True)
-    release_date = Column(DateTime, nullable=True)
-    genre = Column(String(50), nullable=True)
-    total_tracks = Column(Integer, default=0)
-    duration_seconds = Column(Integer, default=0)
-    is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    __table_args__ = (
-        Index("idx_album_user", "user_id"),
-        Index("idx_album_type", "album_type"),
-    )
 
 
 class AlbumTrack(Base):

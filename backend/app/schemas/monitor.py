@@ -335,4 +335,43 @@ class TextPlagiarismScanResponse(BaseModel):
     top_n: int = 20
 
 
+# --- P3 Video Fingerprint Infringement Scan ---
+
+class VideoFingerprintScanRequest(BaseModel):
+    """Request for video fingerprint infringement scan."""
+    video_path: str = Field(..., description="Absolute path to the video file to scan")
+    frame_interval: int = Field(default=2, ge=1, le=30, description="Seconds between extracted frames")
+    threshold: int = Field(default=10, ge=1, le=32, description="Max hamming distance per frame to count as a match")
+
+
+class VideoMatchResponse(BaseModel):
+    """Single video fingerprint match result."""
+    match_id: str
+    similarity: float
+    matched_frames: int
+    first_match_frame: int
+    source_url: Optional[str] = None
+    source_title: Optional[str] = None
+
+
+class VideoMatchesResponse(BaseModel):
+    matches: list[VideoMatchResponse]
+    total_frames_processed: int = 0
+    threshold: int = 10
+
+
+class ContentIdSubmitRequest(BaseModel):
+    """Submit a work to YouTube Content ID (stub)."""
+    work_id: str = Field(..., description="Work ID to submit")
+    platform: str = Field(default="youtube", description="Content ID platform (youtube/vimeo/etc)")
+
+
+class ContentIdSubmitResponse(BaseModel):
+    submission_id: str
+    work_id: str
+    platform: str
+    status: str  # submitted/pending/rejected
+    message: str
+
+
 # --- P1.3.7: Scan Priority Scoring ---

@@ -1,12 +1,23 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { dashboardApi } from '@/api/dashboard'
+import type { RevenueSummary, TrendsSummary, DashboardStats, RecentWork } from '@/api/dashboard'
 import { useAppStore } from './useAppStore'
 
 export const useDashboardStore = defineStore('dashboard', () => {
-  const stats = ref<any>(null)
-  const recentWorks = ref<any[]>([])
+  const stats = ref<DashboardStats | null>(null)
+  const recentWorks = ref<RecentWork[]>([])
   const loading = ref(false)
+
+  // Revenue data
+  const revenue = ref<RevenueSummary | null>(null)
+
+  // Trend data
+  const trends = ref<TrendsSummary | null>(null)
+
+  // ---------------------------------------------------------------------
+  // Actions
+  // ---------------------------------------------------------------------
 
   async function fetchStats() {
     loading.value = true
@@ -27,15 +38,51 @@ export const useDashboardStore = defineStore('dashboard', () => {
   }
 
   async function fetchRecent() {
-    const res = await dashboardApi.recent()
-    recentWorks.value = res.data.data
+    try {
+      const res = await dashboardApi.recent()
+      recentWorks.value = res.data.data
+    } catch (e) {
+      console.error('fetchRecent failed:', e)
+    }
+  }
+
+  async function fetchRevenue() {
+    try {
+      const res = await dashboardApi.revenue()
+      revenue.value = res.data.data
+    } catch (e) {
+      console.error('fetchRevenue failed:', e)
+    }
+  }
+
+  async function fetchTrends() {
+    try {
+      const res = await dashboardApi.trends()
+      trends.value = res.data.data
+    } catch (e) {
+      console.error('fetchTrends failed:', e)
+    }
+  }
+
+  async function refreshAll() {
+    loading.value = true
+    try {
+      await Promise.all([fetchStats(), fetchRevenue(), fetchTrends()])
+    } finally {
+      loading.value = false
+    }
   }
 
   return {
     stats,
     recentWorks,
     loading,
+    revenue,
+    trends,
     fetchStats,
     fetchRecent,
+    fetchRevenue,
+    fetchTrends,
+    refreshAll,
   }
 })

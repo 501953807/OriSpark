@@ -2,45 +2,38 @@
   <div class="view-page">
     <div class="page-header">
       <h1>委托管理</h1>
-      <button class="btn btn-primary btn-sm" @click="showNewModal = true; editingCommission = null; resetCommissionForm()">+ 新建委托</button>
-    </div>
-
-    <div class="kanban-board">
-      <div
-        v-for="col in columns"
-        :key="col.key"
-        class="kanban-column"
-        :class="{ 'drag-over': colDragOver === col.key }"
-        @dragover="onDragOver($event, col.key)"
-        @dragleave="colDragOver = null"
-        @drop="onDrop($event, col.key)"
-      >
-        <div class="column-header">
-          <span class="column-title">{{ col.label }}</span>
-          <span class="column-count">{{ getColumnItems(col.key).length }}</span>
-        </div>
-
-        <div class="column-items">
-          <div
-            v-for="item in getColumnItems(col.key)"
-            :key="item.id"
-            class="kanban-card"
-            draggable="true"
-            @dragstart="onDragStart($event, item)"
-            @click="viewDetail(item)"
-          >
-            <div class="card-priority" :class="'priority-' + (item.priority || 'normal')"></div>
-            <div class="card-title">{{ item.client_name || item.title || '未命名' }}</div>
-            <div v-if="item.work_title" class="card-work">{{ item.work_title }}</div>
-            <div class="card-meta">
-              <span class="card-amount">{{ item.currency === 'CNY' ? '¥' : '$' }}{{ item.amount }}</span>
-              <span v-if="item.due_date" class="card-due">截止: {{ item.due_date }}</span>
-            </div>
-            <div v-if="item.description" class="card-desc">{{ item.description }}</div>
-          </div>
-        </div>
+      <div class="header-actions">
+        <button class="btn btn-outline btn-sm" @click="fetchDashboard">仪表盘</button>
+        <button class="btn btn-primary btn-sm" @click="showNewModal = true; editingCommission = null; resetCommissionForm()">+ 新建委托</button>
       </div>
     </div>
+
+    <div v-if="dashboard" class="dashboard-bar">
+      <div class="dash-stat">
+        <span class="dash-num">{{ dashboard.active_count }}</span>
+        <span class="dash-label">活跃项目</span>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-num">{{ dashboard.pending_payment }}</span>
+        <span class="dash-label">待收款</span>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-num">¥{{ dashboard.monthly_revenue }}</span>
+        <span class="dash-label">本月收入</span>
+      </div>
+      <div class="dash-stat">
+        <span class="dash-num">¥{{ dashboard.avg_ticket }}</span>
+        <span class="dash-label">平均客单价</span>
+      </div>
+    </div>
+
+    <!-- Kanban board via extracted component -->
+    <CommissionKanban
+      :commissions="store.commissions"
+      :loading="loading"
+      @select="viewDetail"
+      @status-update="handleStatusUpdate"
+    />
 
     <!-- New / Edit Commission Modal -->
     <div v-if="showNewModal" class="modal-overlay" @click.self="showNewModal = false">
@@ -55,7 +48,7 @@
         </div>
         <div class="form-group">
           <label>作品标题</label>
-          <input v-model="commissionForm.work_title" class="form-input" placeholder="相关作品" />
+          <input v-model="commissionForm.title" class="form-input" placeholder="相关作品" />
         </div>
         <div class="form-row-2">
           <div class="form-group">
@@ -83,12 +76,6 @@
           </select>
         </div>
         <div class="form-group">
-          <label>状态</label>
-          <select v-model="commissionForm.status" class="form-select">
-            <option v-for="c in columns" :key="c.key" :value="c.key">{{ c.label }}</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label>描述</label>
           <textarea v-model="commissionForm.description" class="form-textarea" rows="3" placeholder="备注信息"></textarea>
         </div>
@@ -111,7 +98,7 @@
         <div class="detail-grid">
           <div class="detail-item">
             <span class="detail-label">客户</span>
-            <span class="detail-value">{{ selectedCommission.client_name }}</span>
+            <span class="detail-value">{{ selectedCommission.client_name || '-' }}</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">作品</span>
@@ -124,7 +111,7 @@
           <div class="detail-item">
             <span class="detail-label">状态</span>
             <span class="detail-value">
-              <span class="badge-status" :class="'status-' + (selectedCommission.status || 'pending')">{{ statusLabel(selectedCommission.status) }}</span>
+              <span class="badge-status" :class="'status-' + selectedCommission.status">{{ statusLabel(selectedCommission.status) }}</span>
             </span>
           </div>
           <div class="detail-item">
@@ -153,51 +140,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { systemApi } from '@/api/system'
+import { useCommissionStore } from '@/stores/useCommissionStore'
+import CommissionKanban from '@/components/commission/CommissionKanban.vue'
+import type { CommissionProject } from '@/types/commission'
 
-interface Commission {
-  id: string
-  client_name: string
-  title: string
-  work_title: string
-  amount: number
-  currency: string
-  status: string
-  due_date: string
-  priority: string
-  description: string
-}
+const router = useRouter()
+const store = useCommissionStore()
 
-const columns = [
-  { key: 'pending', label: '待接单' },
-  { key: 'in_progress', label: '进行中' },
-  { key: 'review', label: '待审核' },
-  { key: 'completed', label: '已完成' },
-  { key: 'canceled', label: '已取消' },
-]
-
-const commissions = ref<Commission[]>([])
 const loading = ref(false)
 const saving = ref(false)
-const colDragOver = ref<string | null>(null)
-const draggedItem = ref<Commission | null>(null)
 
 const showNewModal = ref(false)
-const editingCommission = ref<Commission | null>(null)
-const selectedCommission = ref<Commission | null>(null)
+const editingCommission = ref<CommissionProject | null>(null)
+const selectedCommission = ref<CommissionProject | null>(null)
 
 const commissionForm = ref({
-  client_name: '', work_title: '', amount: 0, currency: 'CNY',
-  status: 'pending', due_date: '', priority: 'normal', description: '',
+  client_name: '',
+  title: '',
+  amount: 0,
+  currency: 'CNY',
+  status: 'brief',
+  due_date: '',
+  priority: 'normal',
+  description: '',
 })
 
+const dashboard = computed(() => store.dashboard)
+
+const STATUS_LABELS: Record<string, string> = {
+  brief: '需求',
+  proposal: '提案',
+  production: '制作中',
+  delivery: '交付',
+  settlement: '已结款',
+}
+
 function statusLabel(s: string): string {
-  const map: Record<string, string> = {
-    pending: '待接单', in_progress: '进行中', review: '待审核',
-    completed: '已完成', canceled: '已取消',
-  }
-  return map[s] || s
+  return STATUS_LABELS[s] || s
 }
 
 function priorityLabel(p?: string): string {
@@ -205,18 +187,29 @@ function priorityLabel(p?: string): string {
   return map[p || 'normal'] || '普通'
 }
 
-function getColumnItems(status: string): Commission[] {
-  return commissions.value.filter((c) => c.status === status)
-}
-
 function resetCommissionForm() {
   commissionForm.value = {
-    client_name: '', work_title: '', amount: 0, currency: 'CNY',
-    status: 'pending', due_date: '', priority: 'normal', description: '',
+    client_name: '',
+    title: '',
+    amount: 0,
+    currency: 'CNY',
+    status: 'brief',
+    due_date: '',
+    priority: 'normal',
+    description: '',
   }
 }
 
-function viewDetail(item: Commission) {
+async function fetchDashboard() {
+  try {
+    await store.fetchDashboard()
+    ;(window as any).$toast?.show('仪表盘数据已加载', 'success')
+  } catch {
+    ;(window as any).$toast?.show('仪表盘数据加载失败', 'error')
+  }
+}
+
+function viewDetail(item: CommissionProject) {
   selectedCommission.value = item
 }
 
@@ -224,49 +217,39 @@ function editFromDetail() {
   if (!selectedCommission.value) return
   editingCommission.value = selectedCommission.value
   commissionForm.value = {
-    client_name: selectedCommission.value.client_name,
-    work_title: selectedCommission.value.work_title,
-    amount: selectedCommission.value.amount,
-    currency: selectedCommission.value.currency,
-    status: selectedCommission.value.status,
-    due_date: selectedCommission.value.due_date,
-    priority: selectedCommission.value.priority,
-    description: selectedCommission.value.description,
+    client_name: selectedCommission.value.client_name || '',
+    title: selectedCommission.value.title || '',
+    amount: 0,
+    currency: 'CNY',
+    status: selectedCommission.value.status || 'brief',
+    due_date: selectedCommission.value.created_at || '',
+    priority: 'normal',
+    description: selectedCommission.value.description || '',
   }
   selectedCommission.value = null
   showNewModal.value = true
 }
 
-function onDragStart(e: DragEvent, item: Commission) {
-  draggedItem.value = item
-  e.dataTransfer!.effectAllowed = 'move'
-}
-
-function onDragOver(e: DragEvent, status: string) {
-  e.preventDefault()
-  e.dataTransfer!.dropEffect = 'move'
-  colDragOver.value = status
-}
-
-async function onDrop(e: DragEvent, targetStatus: string) {
-  e.preventDefault()
-  colDragOver.value = null
-  if (!draggedItem.value) return
+async function handleStatusUpdate(payload: {
+  commissionId: string
+  fromStatus: string
+  toStatus: string
+  commission: CommissionProject
+}) {
   try {
-    await systemApi.updateCommission(draggedItem.value.id, { status: targetStatus })
-    const idx = commissions.value.findIndex((c) => c.id === draggedItem.value!.id)
-    if (idx >= 0) commissions.value[idx].status = targetStatus
-    ;(window as any).$toast?.show(`已移至「${statusLabel(targetStatus)}」`, 'success')
-  } catch (err: any) {
-    const detail = err.response?.data?.detail
-    if (detail && typeof detail === 'string' && detail.startsWith('http')) {
-      // URL-based error from API -- still show toast
-      ;(window as any).$toast?.show(detail.substring(0, 80), 'error')
-    } else {
-      ;(window as any).$toast?.show('移动失败', 'error')
-    }
+    await store.updateCommissionStatus(payload.commissionId, payload.toStatus)
+    const toLabel = STATUS_LABELS[payload.toStatus] || payload.toStatus
+    const fromLabel = STATUS_LABELS[payload.fromStatus] || payload.fromStatus
+    ;(window as any).$toast?.show(
+      `已从「${fromLabel}」移至「${toLabel}」`,
+      'success'
+    )
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : '状态更新失败'
+    ;(window as any).$toast?.show(msg, 'error')
+    // Roll back: re-fetch to restore correct state
+    await store.fetchCommissions()
   }
-  draggedItem.value = null
 }
 
 async function saveCommission() {
@@ -274,60 +257,50 @@ async function saveCommission() {
     ;(window as any).$toast?.show('请输入客户名称', 'error')
     return
   }
+  if (!commissionForm.value.title.trim()) {
+    ;(window as any).$toast?.show('请输入相关作品', 'error')
+    return
+  }
   saving.value = true
   try {
-    const data = { ...commissionForm.value }
+    const data = {
+      client_name: commissionForm.value.client_name,
+      title: commissionForm.value.title,
+      description: commissionForm.value.description,
+      status: commissionForm.value.status,
+    }
     if (editingCommission.value) {
       await systemApi.updateCommission(editingCommission.value.id, data)
+      await store.fetchCommissions()
       ;(window as any).$toast?.show('委托已更新', 'success')
     } else {
       const res = await systemApi.createCommission(data)
       const created = res.data.data
-      if (created) commissions.value.unshift(created)
-      else {
-        commissions.value.unshift({
-          ...data,
-          id: 'new-' + Date.now(),
-          title: '',
-        } as Commission)
+      if (created) {
+        await store.fetchCommissions()
       }
       ;(window as any).$toast?.show('委托已创建', 'success')
     }
     showNewModal.value = false
     editingCommission.value = null
     resetCommissionForm()
-  } catch (e: any) {
-    const msg = e.response?.data?.detail || '保存失败'
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '保存失败'
     ;(window as any).$toast?.show(typeof msg === 'string' ? msg : String(msg), 'error')
   } finally {
     saving.value = false
   }
 }
 
-function loadMockData() {
-  commissions.value = [
-    { id: 'c1', client_name: '张三', title: '', work_title: '婚礼摄影', amount: 5000, currency: 'CNY', status: 'pending', due_date: '2026-07-15', priority: 'normal', description: '婚礼全程跟拍，交付精修照片200张' },
-    { id: 'c2', client_name: 'XX 科技公司', title: '', work_title: '产品宣传照', amount: 12000, currency: 'CNY', status: 'in_progress', due_date: '2026-06-30', priority: 'high', description: '新产品发布会宣传素材拍摄' },
-    { id: 'c3', client_name: '李四', title: '', work_title: '旅行游记', amount: 3000, currency: 'CNY', status: 'review', due_date: '2026-07-01', priority: 'normal', description: '' },
-    { id: 'c4', client_name: '王五', title: '', work_title: '人像写真', amount: 2000, currency: 'CNY', status: 'completed', due_date: '2026-06-01', priority: 'normal', description: '' },
-    { id: 'c5', client_name: 'A 品牌方', title: '', work_title: '品牌手册', amount: 28000, currency: 'CNY', status: 'in_progress', due_date: '2026-08-01', priority: 'urgent', description: '年度品牌形象手册拍摄及后期' },
-    { id: 'c6', client_name: '赵六', title: '', work_title: '家庭合影', amount: 1500, currency: 'CNY', status: 'canceled', due_date: '2026-06-20', priority: 'normal', description: '客户临时取消' },
-  ] as Commission[]
-}
-
 onMounted(async () => {
   loading.value = true
   try {
-    const res = await systemApi.commissions()
-    const items = res.data.data || []
-    commissions.value = items.map((c: any) => ({
-      ...c,
-      title: c.title || c.work_title || '',
-    }))
+    await store.fetchCommissions()
   } catch {
-    loadMockData()
+    store.commissions = []
+  } finally {
+    loading.value = false
   }
-  loading.value = false
 })
 </script>
 
@@ -335,52 +308,17 @@ onMounted(async () => {
 .view-page { display: flex; flex-direction: column; gap: 16px; }
 
 .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
 
-/* Kanban Board */
-.kanban-board { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; min-height: 500px; }
-.kanban-column {
-  flex: 0 0 240px; min-width: 200px;
-  background: oklch(98% 0.003 240);
-  border: 1px solid var(--border); border-radius: var(--radius);
-  display: flex; flex-direction: column;
-  transition: border-color 0.2s, background 0.2s;
+/* Dashboard Bar */
+.dashboard-bar {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px;
 }
-.kanban-column.drag-over {
-  border-color: var(--accent);
-  background: oklch(56% 0.12 170 / 0.04);
-}
-.column-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 14px; border-bottom: 1px solid var(--border);
-}
-.column-title { font-weight: 700; font-size: 0.9rem; }
-.column-count {
-  font-size: 0.75rem; background: var(--border); color: var(--muted);
-  padding: 1px 8px; border-radius: 10px; font-weight: 600;
-}
-.column-items {
-  flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 10px;
-  overflow-y: auto;
-}
-
-/* Kanban Cards */
-.kanban-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 12px; cursor: grab; transition: all 0.15s;
-  border-left: 3px solid transparent;
-}
-.kanban-card:hover { box-shadow: 0 2px 10px oklch(0 0 0 / 0.06); transform: translateY(-1px); }
-.kanban-card:active { cursor: grabbing; }
-.card-priority { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 8px; }
-.priority-normal { background: var(--border); }
-.priority-high { background: #f59e0b; }
-.priority-urgent { background: #ef4444; }
-.card-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
-.card-work { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
-.card-meta { display: flex; align-items: center; justify-content: space-between; }
-.card-amount { font-weight: 700; font-size: 0.95rem; color: var(--accent); }
-.card-due { font-size: 0.75rem; color: var(--muted); }
-.card-desc { font-size: 0.8rem; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.dash-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.dash-num { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+.dash-label { font-size: 0.75rem; color: var(--muted); }
 
 /* Forms */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -413,11 +351,11 @@ onMounted(async () => {
 .badge-status {
   font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; font-weight: 600;
 }
-.status-pending { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
-.status-in_progress { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
-.status-review { background: oklch(58% 0.16 280 / 0.1); color: var(--purple); }
-.status-completed { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
-.status-canceled { background: var(--border); color: var(--muted); }
+.status-inquiry { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
+.status-confirmed { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
+.status-production { background: oklch(58% 0.16 280 / 0.1); color: var(--purple); }
+.status-delivery { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
+.status-settlement { background: var(--border); color: var(--muted); }
 .priority-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }

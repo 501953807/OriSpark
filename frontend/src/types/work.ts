@@ -46,6 +46,9 @@ export interface Work {
   cull_status?: 'pending' | 'pass' | 'fail' | 'hold' | null
   cull_rating?: number | null
   color_label?: string | null
+  // AI-assisted creation fields
+  ai_assisted?: boolean
+  ai_tools_used?: Array<{ name: string; version?: string }>
 }
 
 export interface WorkListParams {

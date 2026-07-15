@@ -10,11 +10,10 @@
 
       <div class="creator-grid">
         <div v-for="ct in creatorTypes" :key="ct.key"
-          :class="['creator-card', { selected: selectedCreator === ct.key, highlighted: ct.key === 'illustrator', disabled: ct.status !== 'full' }]"
+          :class="['creator-card', { selected: selectedCreator === ct.key, highlighted: ct.key === 'illustrator' }]"
           @click="selectCreator(ct.key)"
         >
           <span v-if="ct.key === 'illustrator'" class="creator-recommend">✨ 推荐</span>
-          <span v-else-if="ct.status === 'basic'" class="creator-badge">🚧 规划中</span>
           <span class="creator-icon">{{ ct.icon }}</span>
           <strong>{{ ct.label }}</strong>
           <p>{{ ct.shortDesc }}</p>
@@ -112,28 +111,28 @@ const creatorTypes = [
   },
   {
     key: 'photographer', icon: '📷', label: '摄影师',
-    shortDesc: '摄影后期、图库销售、预设包', status: 'basic',
-    statusText: '🚧 规划中 — v2 将提供完整支持（RAW/选片/水印/图库API）',
+    shortDesc: '摄影后期、图库销售、预设包', status: 'full',
+    statusText: '✅ v2 完整支持 — RAW/选片/水印/图库API/GPS',
   },
   {
-    key: 'video_creator', icon: '🎬', label: '视频作者',
-    shortDesc: '短视频、动画、品牌商单', status: 'basic',
-    statusText: '🚧 规划中 — v3 将提供完整支持（工程文件/视频指纹/商单流程）',
+    key: 'video', icon: '🎬', label: '视频创作者',
+    shortDesc: '短视频、动画、品牌商单', status: 'full',
+    statusText: '✅ v3 完整支持 — 工程文件/视频指纹/商单流程',
   },
   {
-    key: 'crafter', icon: '🖐', label: '手工艺人',
-    shortDesc: '陶瓷、木器、布艺、首饰', status: 'basic',
-    statusText: '🚧 规划中 — v3 将提供完整支持（原件/库存/批次/Etsy API）',
+    key: 'craftsman', icon: '🖐', label: '手工艺人',
+    shortDesc: '陶瓷、木器、布艺、首饰', status: 'full',
+    statusText: '✅ v3b 完整支持 — 原件/库存/批次/询价/Etsy',
   },
   {
     key: 'musician', icon: '🎵', label: '音乐人',
-    shortDesc: '原创音乐、配乐、采样包', status: 'basic',
-    statusText: '🚧 规划中 — v4 将提供完整支持（ISRC/发行/Split Sheets）',
+    shortDesc: '原创音乐、配乐、采样包', status: 'full',
+    statusText: '✅ v4 完整支持 — ISRC/发行/Split Sheets/分发',
   },
   {
     key: 'writer', icon: '✍️', label: '文字作者',
-    shortDesc: '小说、剧本、商业撰稿', status: 'basic',
-    statusText: '🚧 规划中 — v4 将提供完整支持（章节/EPUB/抄袭检测）',
+    shortDesc: '小说、剧本、商业撰稿', status: 'full',
+    statusText: '✅ v4 完整支持 — 文章/书籍/手稿/出版',
   },
 ]
 

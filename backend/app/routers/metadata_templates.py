@@ -3,7 +3,10 @@ Phase 2: 摄影师批量元数据模板
 端点: 9 (metadata_templates)"""
 
 from datetime import datetime
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -13,6 +16,44 @@ from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
 router = APIRouter()
+
+
+class CreateTemplatePayload(BaseModel):
+    name: str
+    description: Optional[str] = None
+    fields: Optional[list] = None
+    is_default: bool = False
+
+
+class UpdateTemplatePayload(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    fields: Optional[list] = None
+    is_default: Optional[bool] = None
+
+
+class AddFieldPayload(BaseModel):
+    field_key: str
+    label: str
+    field_type: str = "string"
+    required: bool = False
+    default_value: Optional[str] = None
+    choices: Optional[list] = None
+    sort_order: int = 0
+
+
+class UpdateFieldPayload(BaseModel):
+    field_key: Optional[str] = None
+    label: Optional[str] = None
+    field_type: Optional[str] = None
+    required: Optional[bool] = None
+    default_value: Optional[str] = None
+    choices: Optional[list] = None
+    sort_order: Optional[int] = None
+
+
+class ApplyTemplatePayload(BaseModel):
+    work_id: str
 
 # 默认模板种子
 _DEFAULT_TEMPLATES = [
@@ -86,7 +127,11 @@ def seed_default_templates(db: Session) -> None:
                 sort_order=i,
             )
             db.add(field)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
 
 # ============================================================================
@@ -119,34 +164,40 @@ def list_templates(
 
 
 @router.post("/metadata-templates", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_template(payload: dict, db: Session = Depends(get_db)):
+def create_template(payload: CreateTemplatePayload, db: Session = Depends(get_db)):
     """创建元数据模板."""
-    name = payload.get("name")
-    if not name:
-        raise HTTPException(status_code=400, detail="name is required")
     template = MetadataTemplate(
-        name=name,
-        description=payload.get("description"),
-        fields=payload.get("fields"),
-        is_default=payload.get("is_default", False),
+        name=payload.name,
+        description=payload.description,
+        fields=payload.fields,
+        is_default=payload.is_default,
     )
     db.add(template)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(template)
     return ApiResponse(data=_template_to_dict(template), message="模板创建成功")
 
 
 @router.put("/metadata-templates/{template_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_template(template_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_template(template_id: str, payload: UpdateTemplatePayload, db: Session = Depends(get_db)):
     """更新元数据模板."""
     template = db.query(MetadataTemplate).filter(MetadataTemplate.id == template_id).first()
     if not template:
         raise HTTPException(status_code=404, detail="模板不存在")
-    for key in ("name", "description", "fields", "is_default"):
-        if key in payload:
-            setattr(template, key, payload[key])
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(template, key, value)
     template.updated_at = datetime.utcnow()
-    db.commit()
+    template.updated_at = datetime.utcnow()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(template)
     return ApiResponse(data=_template_to_dict(template), message="模板更新成功")
 
@@ -158,7 +209,11 @@ def delete_template(template_id: str, db: Session = Depends(get_db)):
     if not template:
         raise HTTPException(status_code=404, detail="模板不存在")
     db.delete(template)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True}, message="模板已删除")
 
 
@@ -182,42 +237,45 @@ def list_fields(template_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/metadata-templates/{template_id}/fields", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def add_field(template_id: str, payload: dict, db: Session = Depends(get_db)):
+def add_field(template_id: str, payload: AddFieldPayload, db: Session = Depends(get_db)):
     """向模板添加字段."""
     if not db.query(MetadataTemplate).filter(MetadataTemplate.id == template_id).first():
         raise HTTPException(status_code=404, detail="模板不存在")
-    field_key = payload.get("field_key")
-    label = payload.get("label")
-    field_type = payload.get("field_type", "string")
-    if not field_key or not label:
-        raise HTTPException(status_code=400, detail="field_key and label are required")
     field = TemplateField(
         template_id=template_id,
-        field_key=field_key,
-        label=label,
-        field_type=field_type,
-        required=payload.get("required", False),
-        default_value=payload.get("default_value"),
-        choices=payload.get("choices"),
-        sort_order=payload.get("sort_order", 0),
+        field_key=payload.field_key,
+        label=payload.label,
+        field_type=payload.field_type,
+        required=payload.required,
+        default_value=payload.default_value,
+        choices=payload.choices,
+        sort_order=payload.sort_order,
     )
     db.add(field)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(field)
     return ApiResponse(data=_field_to_dict(field), message="字段添加成功")
 
 
 @router.put("/metadata-templates/{template_id}/fields/{field_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_field(template_id: str, field_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_field(template_id: str, field_id: str, payload: UpdateFieldPayload, db: Session = Depends(get_db)):
     """更新模板字段."""
     field = db.query(TemplateField).filter(TemplateField.id == field_id).first()
     if not field or field.template_id != template_id:
         raise HTTPException(status_code=404, detail="字段不存在")
-    for key in ("field_key", "label", "field_type", "required", "default_value", "choices", "sort_order"):
-        if key in payload:
-            setattr(field, key, payload[key])
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(field, key, value)
     field.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(field)
     return ApiResponse(data=_field_to_dict(field), message="字段更新成功")
 
@@ -229,7 +287,11 @@ def delete_field(template_id: str, field_id: str, db: Session = Depends(get_db))
     if not field or field.template_id != template_id:
         raise HTTPException(status_code=404, detail="字段不存在")
     db.delete(field)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True}, message="字段已删除")
 
 
@@ -239,9 +301,9 @@ def delete_field(template_id: str, field_id: str, db: Session = Depends(get_db))
 
 
 @router.post("/metadata-templates/{template_id}/apply", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def apply_template(template_id: str, payload: dict, db: Session = Depends(get_db)):
+def apply_template(template_id: str, payload: ApplyTemplatePayload, db: Session = Depends(get_db)):
     """将模板应用到作品."""
-    work_id = payload.get("work_id")
+    work_id = payload.work_id
     if not work_id:
         raise HTTPException(status_code=400, detail="work_id is required")
     template = db.query(MetadataTemplate).filter(MetadataTemplate.id == template_id).first()

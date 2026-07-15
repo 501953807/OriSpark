@@ -20,15 +20,20 @@
 
     <LoadingSpinner v-if="loading" text="加载中..." />
 
-    <div v-else-if="work" class="detail-content">
+    <div v-else-if="!work" class="detail-empty">
+      <p>作品不存在或已被删除</p>
+      <router-link to="/app/works" class="btn btn-primary btn-sm">返回作品列表</router-link>
+    </div>
+
+    <div v-else class="detail-content">
       <!-- ===== Main body: Preview + Grouped Info ===== -->
       <div class="detail-body">
         <!-- Left: Preview -->
         <div class="detail-preview">
           <div class="preview-inner">
-            <img v-if="work.file_type === 'image' && work.file_path" :src="work.file_path" :alt="work.title" />
-            <audio v-else-if="work.file_type === 'audio'" controls :src="work.file_path" />
-            <video v-else-if="work.file_type === 'video'" controls :src="work.file_path" />
+            <img v-if="work.file_type === 'image' && work.file_url" :src="work.file_url" :alt="work.title" />
+            <audio v-else-if="work.file_type === 'audio'" controls :src="work.file_url || undefined" />
+            <video v-else-if="work.file_type === 'video'" controls :src="work.file_url || undefined" />
             <div v-else class="preview-fallback">
               <span class="preview-icon">📄</span>
               <p>{{ work.file_name || work.title }}</p>
@@ -114,7 +119,17 @@
           </section>
 
           <!-- Group 5.5: Creator Type Specific Info -->
-          <CreatorTypeInfo :work="work" />
+          <CreatorTypeInfo
+            v-if="work?.creator_type"
+            :visible="true"
+            :creator-type="work.creator_type"
+            :work-data="work"
+          />
+
+          <!-- Group 5.6: AI Generation Panel -->
+          <section class="info-group">
+            <AIGenerationPanel :work-id="work.id" />
+          </section>
 
           <!-- Group 6: Synopsis -->
           <section class="info-group" v-if="work.synopsis || work.description">
@@ -281,6 +296,7 @@ import { monitorApi } from '@/api/monitor'
 import type { Work } from '@/types/work'
 import { getAllStages, getStagesForFileType, getStageColor as getStageColorUtil } from '@/composables/useWorkStages'
 import CreatorTypeInfo from '@/components/work/CreatorTypeInfo.vue'
+import AIGenerationPanel from '@/components/ai/AIGenerationPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -401,18 +417,20 @@ const stageCount = computed(() => {
 
 async function loadWork() {
   const id = route.params.id as string
-  work.value = await workStore.fetchWork(id)
   try {
-    const res = await worksApi.listVersions(id)
-    versions.value = res.data.data || []
-  } catch { versions.value = [] }
-  try {
-    const nr = await notaryApi.list({ work_id: id })
-    notaryCount.value = nr.data.data?.total || 0
-  } catch { notaryCount.value = 0 }
-
-  // Auto-expand the last stage with content
-  autoExpandLastStage()
+    work.value = await workStore.fetchWork(id)
+    try {
+      const res = await worksApi.listVersions(id)
+      versions.value = res.data.data || []
+    } catch { versions.value = [] }
+    try {
+      const nr = await notaryApi.list({ work_id: id })
+      notaryCount.value = nr.data.data?.total || 0
+    } catch { notaryCount.value = 0 }
+    autoExpandLastStage()
+  } finally {
+    loading.value = false
+  }
 }
 
 /** Select a stage and load its content */
@@ -1074,5 +1092,16 @@ onUnmounted(() => {
 .expand-enter-from, .expand-leave-to {
   opacity: 0;
   transform: translateY(-8px);
+}
+
+/* Empty state */
+.detail-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.detail-empty p {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
 }
 </style>

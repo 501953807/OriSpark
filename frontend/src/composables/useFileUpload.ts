@@ -15,7 +15,9 @@ export function useFileUpload(options?: {
       const valid = list.filter(f => f.size <= (options.maxSize || Infinity))
       files.value.push(...valid)
       if (valid.length < list.length) {
-        console.warn(`${list.length - valid.length} files exceeded max size`)
+        if ((window as any).$toast) {
+          ;(window as any).$toast.show(`${list.length - valid.length} 文件超出大小限制，已跳过`, 'error', 3000)
+        }
       }
     } else {
       files.value.push(...list)

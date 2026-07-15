@@ -64,11 +64,12 @@ const emit = defineEmits<{
 // Panel registry — lazy-loaded via defineAsyncComponent
 // ------------------------------------------------------------------
 const panelMap: Record<string, string> = {
-  photographer: '@/components/work/PhotographerExifPanel.vue',
-  musician:     '@/components/work/MusicMetadataPanel.vue',
-  writer:       '@/components/work/WriterStatsPanel.vue',
-  video:        '@/components/work/VideoMetadataPanel.vue',
-  craftsman:    '@/components/work/CraftsmanInfoPanel.vue',
+  illustrator:    '@/components/work/IllustratorPanel.vue',
+  photographer:   '@/components/work/PhotographerExifPanel.vue',
+  musician:       '@/components/work/MusicMetadataPanel.vue',
+  writer:         '@/components/work/WriterStatsPanel.vue',
+  video:          '@/components/work/VideoMetadataPanel.vue',
+  craftsman:      '@/components/work/CraftsmanInfoPanel.vue',
 }
 
 // We use shallowRef per type to avoid SSR hydration issues with dynamic imports

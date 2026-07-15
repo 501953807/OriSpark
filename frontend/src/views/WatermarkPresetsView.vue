@@ -223,8 +223,8 @@ async function loadPresets() {
     }))
   } catch {
     presets.value = [
-      { id: 'mock-1', name: '默认文字水印', description: '透明度 50% 的文字水印', watermark_type: 'text', config: { text: '© OriStudio' }, config_str: '{"text":"&copy; OriStudio"}', is_default: true, created_at: '2026-01-15T10:00:00Z' },
-      { id: 'mock-2', name: 'Logo 角标', description: '右下角半透明 Logo', watermark_type: 'image', config: { position: 'bottom-right' }, config_str: '{"position":"bottom-right"}', is_default: false, created_at: '2026-02-01T14:00:00Z' },
+      { id: 'mock-1', name: '默认文字水印', description: '透明度 50% 的文字水印', watermark_type: 'text', config: { text: '© OriStudio' }, config_str: '{"text":"&copy; OriStudio"}', is_default: true, created_at: '2026-01-15T10:00:00Z' } as any,
+      { id: 'mock-2', name: 'Logo 角标', description: '右下角半透明 Logo', watermark_type: 'image', config: { position: 'bottom-right' }, config_str: '{"position":"bottom-right"}', is_default: false, created_at: '2026-02-01T14:00:00Z' } as any,
     ]
   } finally {
     loading.value = false

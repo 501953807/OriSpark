@@ -41,11 +41,15 @@ const pending = computed(() => notary.records.filter((r:any) => r.status === 'pe
 function getWorkTitle(id: string) { return work.works.find((w:any) => w.id === id)?.title || id.slice(0,10) }
 function batchNotarize(platform: string) {
   const unverified = work.works.filter((w:any) => !w.is_verified)
-  if (unverified.length === 0) { alert('所有作品已存证'); return }
+  if (unverified.length === 0) { ;(window as any).$toast?.show('所有作品已存证', 'info'); return }
   notary.batchNotarize(unverified.map((w:any) => w.id), platform).then(() => notary.fetchRecords())
 }
 function confirm(id: string) { notary.confirmRecord(id).then(() => notary.fetchRecords()) }
-function viewCert(r: any) { alert(`证书: ${r.certificates?.[0]?.cert_path || '生成中...'}`) }
+function viewCert(r: any) {
+  const path = r.certificates?.[0]?.cert_path
+  if (path) window.open(path, '_blank')
+  else ;(window as any).$toast?.show('证书生成中...', 'info')
+}
 onMounted(async () => { await Promise.all([notary.fetchRecords(), notary.fetchPlatforms(), work.fetchWorks()]) })
 </script>
 <style scoped>

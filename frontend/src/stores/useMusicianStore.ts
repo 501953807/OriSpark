@@ -100,6 +100,17 @@ export const useMusicianStore = defineStore('musician', () => {
     }
   }
 
+  async function deleteAlbum(id: string): Promise<boolean> {
+    try {
+      await musicianApi.deleteAlbum(id)
+      albums.value = albums.value.filter((a) => a.id !== id)
+      return true
+    } catch (e: unknown) {
+      errorMsg.value = e instanceof Error ? e.message : '删除专辑失败'
+      return false
+    }
+  }
+
   async function fetchSplitSheets(releaseId?: string) {
     loading.value = true
     errorMsg.value = ''
@@ -135,6 +146,17 @@ export const useMusicianStore = defineStore('musician', () => {
     } catch (e: unknown) {
       errorMsg.value = e instanceof Error ? e.message : '更新分成协议失败'
       return null
+    }
+  }
+
+  async function deleteSplitSheet(id: string): Promise<boolean> {
+    try {
+      await musicianApi.deleteSplitSheet(id)
+      splitSheets.value = splitSheets.value.filter((s) => s.id !== id)
+      return true
+    } catch (e: unknown) {
+      errorMsg.value = e instanceof Error ? e.message : '删除分成协议失败'
+      return false
     }
   }
 
@@ -181,11 +203,13 @@ export const useMusicianStore = defineStore('musician', () => {
     createRelease,
     updateRelease,
     deleteRelease,
+    deleteAlbum,
     fetchAlbums,
     createAlbum,
     fetchSplitSheets,
     createSplitSheet,
     updateSplitSheet,
+    deleteSplitSheet,
     computeStats,
     fetchAll,
   }

@@ -18,6 +18,6 @@ COPY . .
 # 创建数据目录
 RUN mkdir -p data/{certificates,thumbnails,backups,logs,config,workspace}
 
-EXPOSE 8765
+EXPOSE 8001
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8765"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]

@@ -314,7 +314,7 @@ function formatDate(iso: string): string {
   color: var(--fg);
 }
 
-.status-uploadin g {
+.status-uploading {
   background: #f59e0b;
   color: #fff;
   animation: pulse-badge 1.5s ease-in-out infinite;

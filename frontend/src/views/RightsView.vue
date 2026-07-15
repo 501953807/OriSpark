@@ -1,8 +1,11 @@
 <template>
   <div class="rights-view">
+    <!-- Loading state -->
+    <div v-if="checking" class="rights-loading" style="text-align:center;padding:60px;color:var(--muted)">加载中...</div>
+
     <!-- 前置校验: 无作品时拦截 -->
     <EmptyState
-      v-if="!hasWorks"
+      v-else-if="!hasWorks"
       icon="🛡️"
       title="暂无已确权作品"
       description="权利保护需要先上传作品并完成 IP 登记确权"
@@ -23,22 +26,46 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
 import EmptyState from '@/components/common/EmptyState.vue'
 import NotaryPanel from './rights/NotaryPanel.vue'
 import MonitorPanel from './rights/MonitorPanel.vue'
+import { worksApi } from '@/api/works'
 
 const router = useRouter()
 const appStore = useAppStore()
 const tab = ref('notary')
 const hasWorks = ref(false)
+const checking = ref(true)
 
 const goToWorks = () => router.push('/app/works')
 
+async function checkWorks() {
+  try {
+    const res = await worksApi.list({ page_size: 1 })
+    hasWorks.value = (res.data.data?.items?.length || res.data.data?.length || 0) > 0
+  } catch {
+    // Fallback to appStore if API fails
+    hasWorks.value = appStore.workCount > 0
+  } finally {
+    checking.value = false
+  }
+}
+
 onMounted(() => {
-  hasWorks.value = appStore.workCount > 0
+  // Use appStore if already populated, otherwise fetch from API
+  if (appStore.workCount > 0) {
+    hasWorks.value = true
+    checking.value = false
+  } else {
+    checkWorks()
+  }
+})
+
+watch(() => appStore.workCount, (val) => {
+  hasWorks.value = val > 0
 })
 </script>
 <style scoped>

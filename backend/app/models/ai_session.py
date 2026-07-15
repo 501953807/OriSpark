@@ -18,7 +18,7 @@ class AiCreationSession(Base):
     work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=False)
     tool_name = Column(String(100), nullable=False)
     tool_version = Column(String(50), nullable=True)
-    prompt = Column(Text, nullable=False)
+    prompt = Column(Text, nullable=True)
     prompt_history = Column(JSON, nullable=True)
     seed = Column(Integer, nullable=True)
     parameters = Column(JSON, nullable=True)
@@ -28,6 +28,7 @@ class AiCreationSession(Base):
     output_images = Column(JSON, nullable=True)
     human_interventions = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     __table_args__ = (
         Index("idx_ai_session_work", "work_id"),

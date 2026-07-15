@@ -1,5 +1,7 @@
 <template>
   <div class="risk-warning-view">
+    <LoadingSpinner v-if="store.loading" text="加载中..." />
+    <template v-else>
     <h2>风险预警中心</h2>
     <p class="subtitle">检测提示词、参考图、模型、商标四个维度的侵权风险</p>
 
@@ -59,26 +61,27 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import type { RiskWarning } from '@/types/risk_warning'
 import { useRiskWarningStore } from '@/stores/useRiskWarningStore'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 
 const store = useRiskWarningStore()
-const warnings = ref<RiskWarning[]>([])
 const checking = ref(false)
 const severityFilter = ref('')
 const checkForm = ref({ workTitle: '', prompt: '', modelName: '' })
 
-const uncheckedCount = computed(() => warnings.value.filter(w => !w.dismissed).length)
-const highCount = computed(() => warnings.value.filter(w => w.severity === 'high').length)
+const warnings = computed(() => store.warnings)
+const uncheckedCount = computed(() => store.warnings.filter(w => !w.dismissed).length)
+const highCount = computed(() => store.warnings.filter(w => w.severity === 'high').length)
 
 const filteredWarnings = computed(() => {
-  if (!severityFilter.value) return warnings.value
-  return warnings.value.filter(w => w.severity === severityFilter.value)
+  if (!severityFilter.value) return store.warnings
+  return store.warnings.filter(w => w.severity === severityFilter.value)
 })
 
 function severityLabel(sev: string): string {
@@ -98,7 +101,8 @@ async function runCheck() {
       model_name: checkForm.value.modelName,
     })
     if (results) {
-      warnings.value = [...warnings.value, ...(results as any)]
+      // Prepend new warnings to the store list
+      store.warnings = [...(results as any[]), ...store.warnings]
     }
   } finally {
     checking.value = false
@@ -110,7 +114,7 @@ async function dismiss(id: string) {
 }
 
 onMounted(async () => {
-  // Load any existing warnings from server
+  await store.fetchAll()
 })
 </script>
 

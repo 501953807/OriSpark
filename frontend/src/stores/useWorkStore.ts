@@ -28,45 +28,76 @@ export const useWorkStore = defineStore('work', () => {
       const res = await worksApi.list(filters.value)
       works.value = res.data.data.items
       total.value = res.data.data.total
-      // Update sidebar badge
       const appStore = useAppStore()
       appStore.workCount = total.value
+    } catch (e) {
+      console.error('fetchWorks failed:', e)
     } finally {
       loading.value = false
     }
   }
 
   async function fetchWork(id: string) {
-    const res = await worksApi.get(id)
-    currentWork.value = res.data.data
-    return currentWork.value
+    try {
+      const res = await worksApi.get(id)
+      currentWork.value = res.data.data
+      return currentWork.value
+    } catch (e) {
+      console.error(`fetchWork(${id}) failed:`, e)
+      throw e
+    }
   }
 
   async function uploadWork(formData: FormData) {
-    const res = await worksApi.create(formData)
-    await fetchWorks()
-    return res.data.data
+    try {
+      const res = await worksApi.create(formData)
+      await fetchWorks()
+      return res.data.data
+    } catch (e) {
+      console.error('uploadWork failed:', e)
+      throw e
+    }
   }
 
   async function updateWork(id: string, data: Partial<Work>) {
-    const res = await worksApi.update(id, data)
-    await fetchWorks()
-    return res.data.data
+    try {
+      const res = await worksApi.update(id, data)
+      await fetchWorks()
+      return res.data.data
+    } catch (e) {
+      console.error(`updateWork(${id}) failed:`, e)
+      throw e
+    }
   }
 
   async function deleteWork(id: string) {
-    await worksApi.delete(id)
-    await fetchWorks()
+    try {
+      await worksApi.delete(id)
+      await fetchWorks()
+    } catch (e) {
+      console.error(`deleteWork(${id}) failed:`, e)
+      throw e
+    }
   }
 
   async function restoreWork(id: string) {
-    await worksApi.restore(id)
-    await fetchWorks()
+    try {
+      await worksApi.restore(id)
+      await fetchWorks()
+    } catch (e) {
+      console.error(`restoreWork(${id}) failed:`, e)
+      throw e
+    }
   }
 
   async function permanentDeleteWork(id: string) {
-    await worksApi.permanentDelete(id)
-    await fetchWorks()
+    try {
+      await worksApi.permanentDelete(id)
+      await fetchWorks()
+    } catch (e) {
+      console.error(`permanentDeleteWork(${id}) failed:`, e)
+      throw e
+    }
   }
 
   async function fetchTrashedWorks() {
@@ -75,22 +106,34 @@ export const useWorkStore = defineStore('work', () => {
       const res = await worksApi.trash(filters.value)
       works.value = res.data.data.items
       total.value = res.data.data.total
+    } catch (e) {
+      console.error('fetchTrashedWorks failed:', e)
     } finally {
       loading.value = false
     }
   }
 
   async function emptyTrash() {
-    await worksApi.emptyTrash()
-    await fetchWorks()
+    try {
+      await worksApi.emptyTrash()
+      await fetchWorks()
+    } catch (e) {
+      console.error('emptyTrash failed:', e)
+      throw e
+    }
   }
 
   async function recomputeHash(id: string) {
-    const res = await worksApi.recomputeHash(id)
-    return res.data.data
+    try {
+      const res = await worksApi.recomputeHash(id)
+      return res.data.data
+    } catch (e) {
+      console.error(`recomputeHash(${id}) failed:`, e)
+      throw e
+    }
   }
 
-  function setFilter(key: string, value: any) {
+  function setFilter<K extends keyof WorkListParams>(key: K, value: WorkListParams[K]) {
     filters.value = { ...filters.value, [key]: value, page: 1 }
     fetchWorks()
   }

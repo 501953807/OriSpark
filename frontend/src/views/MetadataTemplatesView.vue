@@ -185,8 +185,8 @@ async function loadTemplates() {
     templates.value = items.map((t: any) => ({ ...t, field_count: t.field_count || 0 }))
   } catch {
     templates.value = [
-      { id: 'mock-1', name: '电商产品', description: '适用于电商商品展示', field_count: 3, is_default: true, created_at: '2026-01-01T00:00:00Z' },
-      { id: 'mock-2', name: '摄影作品', description: '摄影作品元数据', field_count: 2, is_default: false, created_at: '2026-02-01T00:00:00Z' },
+      { id: 'mock-1', name: '电商产品', description: '适用于电商商品展示', field_count: 3, is_default: true, created_at: '2026-01-01T00:00:00Z' } as any,
+      { id: 'mock-2', name: '摄影作品', description: '摄影作品元数据', field_count: 2, is_default: false, created_at: '2026-02-01T00:00:00Z' } as any,
     ]
   } finally {
     loading.value = false
@@ -204,13 +204,13 @@ async function loadFields(templateId: string) {
   } catch {
     fields.value = templateId === 'mock-1'
       ? [
-          { id: 'f1', template_id: templateId, key: 'category', label: '分类', field_type: 'select', required: true, default_value: null, options: '服装,数码', options_str: '服装\n数码', sort_order: 0 },
-          { id: 'f2', template_id: templateId, key: 'brand', label: '品牌', field_type: 'text', required: false, default_value: '', options: null, options_str: '', sort_order: 1 },
-          { id: 'f3', template_id: templateId, key: 'price', label: '价格', field_type: 'number', required: false, default_value: '0', options: null, options_str: '', sort_order: 2 },
+          { id: 'f1', template_id: templateId, key: 'category', label: '分类', field_type: 'select', required: true, default_value: null, options: '服装,数码', options_str: '服装\n数码', sort_order: 0 } as any,
+          { id: 'f2', template_id: templateId, key: 'brand', label: '品牌', field_type: 'text', required: false, default_value: '', options: null, options_str: '', sort_order: 1 } as any,
+          { id: 'f3', template_id: templateId, key: 'price', label: '价格', field_type: 'number', required: false, default_value: '0', options: null, options_str: '', sort_order: 2 } as any,
         ]
       : [
-          { id: 'f1', template_id: templateId, key: 'camera', label: '相机型号', field_type: 'text', required: false, default_value: '', options: null, options_str: '', sort_order: 0 },
-          { id: 'f2', template_id: templateId, key: 'shoot_date', label: '拍摄日期', field_type: 'date', required: true, default_value: null, options: null, options_str: '', sort_order: 1 },
+          { id: 'f1', template_id: templateId, key: 'camera', label: '相机型号', field_type: 'text', required: false, default_value: '', options: null, options_str: '', sort_order: 0 } as any,
+          { id: 'f2', template_id: templateId, key: 'shoot_date', label: '拍摄日期', field_type: 'date', required: true, default_value: null, options: null, options_str: '', sort_order: 1 } as any,
         ]
   }
 }

@@ -172,10 +172,9 @@ function editListing(id: string) {
 }
 
 function duplicateListing(id: string) {
-  // Clone listing with new ID
   const orig = listings.value.find(l => l.id === id)
   if (!orig) return
-  alert(`复制商品: ${orig.title} (功能待实现)`)
+  ;(window as any).$toast?.show('复制商品功能将在后续版本中实现', 'info')
 }
 
 function publishListing(id: string) {

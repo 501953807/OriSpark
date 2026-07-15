@@ -14,6 +14,8 @@ Features:
 - P1.3.7: 扫描优先级评分
 """
 
+import logging
+
 import hashlib
 import math
 import os
@@ -21,10 +23,12 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import require_auth
 from app.models.work import Work
 from app.models.monitor import MonitorTask, MonitorResult, EvidencePackage
 from app.models.video_fingerprint import VideoFrameFingerprint
@@ -68,6 +72,10 @@ from app.services.hasher import compute_sha256
 router = APIRouter()
 
 
+class WhoisLookupPayload(BaseModel):
+    domain: str
+
+
 # ============================================================
 # 原有端点: 监测任务 CRUD
 # ============================================================
@@ -94,7 +102,11 @@ def list_monitor_tasks(
     return ApiResponse(data=[MonitorTaskResponse.model_validate(t) for t in tasks])
 
 
-@router.post("/monitor/tasks", response_model=ApiResponse[MonitorTaskResponse])
+@router.post(
+    "/monitor/tasks",
+    response_model=ApiResponse[MonitorTaskResponse],
+    dependencies=[Depends(require_auth)],
+)
 def create_monitor_task(data: MonitorTaskCreate, db: Session = Depends(get_db)):
     """创建监测任务."""
     work = db.query(Work).filter(Work.id == data.work_id).first()
@@ -119,13 +131,21 @@ def create_monitor_task(data: MonitorTaskCreate, db: Session = Depends(get_db)):
     )
 
     db.add(task)
-    db.commit()
-    db.refresh(task)
+    try:
+        db.commit()
+        db.refresh(task)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data=MonitorTaskResponse.model_validate(task))
 
 
-@router.post("/monitor/tasks/{task_id}/scan", response_model=ApiResponse)
+@router.post(
+    "/monitor/tasks/{task_id}/scan",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def trigger_scan(task_id: str, db: Session = Depends(get_db)):
     """手动触发扫描."""
     task = db.query(MonitorTask).filter(MonitorTask.id == task_id).first()
@@ -171,7 +191,11 @@ def trigger_scan(task_id: str, db: Session = Depends(get_db)):
     task.quota_used_today += 1
     task.status = "active"
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     # P1.7.14: Push notification after scan completes
     if new_results:
@@ -186,8 +210,8 @@ def trigger_scan(task_id: str, db: Session = Depends(get_db)):
                 related_module="monitor",
                 related_id=task.id,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in push_notification: %s", str(e))
 
     return ApiResponse(
         message=f"扫描完成，发现 {len(new_results)} 个新匹配"
@@ -196,7 +220,11 @@ def trigger_scan(task_id: str, db: Session = Depends(get_db)):
     )
 
 
-@router.post("/monitor/scan", response_model=ApiResponse)
+@router.post(
+    "/monitor/scan",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def batch_scan(data: ScanRequest, db: Session = Depends(get_db)):
     """批量手动扫描 (带去重)."""
     now = datetime.now(timezone.utc)
@@ -249,7 +277,11 @@ def batch_scan(data: ScanRequest, db: Session = Depends(get_db)):
         task.last_run = now
         task.quota_used_today += 1
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     # P1.7.14: Push notification after batch scan completes
     if total_results > 0:
@@ -264,8 +296,8 @@ def batch_scan(data: ScanRequest, db: Session = Depends(get_db)):
                 related_module="monitor",
                 related_id=None,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in push_notification (batch): %s", str(e))
 
     return ApiResponse(
         message=f"批量扫描完成，发现 {total_results} 个新匹配"
@@ -299,7 +331,11 @@ def list_monitor_results(
     return ApiResponse(data=[MonitorResultResponse.model_validate(r) for r in results])
 
 
-@router.patch("/monitor/results/{result_id}", response_model=ApiResponse[MonitorResultResponse])
+@router.patch(
+    "/monitor/results/{result_id}",
+    response_model=ApiResponse[MonitorResultResponse],
+    dependencies=[Depends(require_auth)],
+)
 def update_result(result_id: str, data: ResultUpdateRequest, db: Session = Depends(get_db)):
     """更新监测结果状态 (含白名单学习触发)."""
     result = db.query(MonitorResult).filter(MonitorResult.id == result_id).first()
@@ -312,8 +348,12 @@ def update_result(result_id: str, data: ResultUpdateRequest, db: Session = Depen
     for key, value in update_data.items():
         setattr(result, key, value)
 
-    db.commit()
-    db.refresh(result)
+    try:
+        db.commit()
+        db.refresh(result)
+    except Exception:
+        db.rollback()
+        raise
 
     # P2.3.12: 白名单学习 - 当用户标记为忽略/白名单时记录域名
     if result.status in ("ignored", "whitelisted") and old_status != result.status:
@@ -322,7 +362,11 @@ def update_result(result_id: str, data: ResultUpdateRequest, db: Session = Depen
     return ApiResponse(data=MonitorResultResponse.model_validate(result))
 
 
-@router.post("/monitor/results/{result_id}/evidence", response_model=ApiResponse)
+@router.post(
+    "/monitor/results/{result_id}/evidence",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def generate_evidence_package(result_id: str, data: EvidencePackageCreate, db: Session = Depends(get_db)):
     """生成维权证据包."""
     result = db.query(MonitorResult).filter(MonitorResult.id == result_id).first()
@@ -338,7 +382,11 @@ def generate_evidence_package(result_id: str, data: EvidencePackageCreate, db: S
     )
 
     db.add(evidence)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message="证据包生成任务已创建",
@@ -416,7 +464,11 @@ def get_scan_quota():
 # P2.3.1-P2.3.2: 本地视觉指纹嵌入
 # ============================================================
 
-@router.post("/monitor/fingerprints", response_model=ApiResponse[FingerprintResponse])
+@router.post(
+    "/monitor/fingerprints",
+    response_model=ApiResponse[FingerprintResponse],
+    dependencies=[Depends(require_auth)],
+)
 def compute_fingerprints(data: FingerprintRequest, db: Session = Depends(get_db)):
     """计算并存储作品的感知哈希指纹.
 
@@ -462,7 +514,11 @@ def compute_fingerprints(data: FingerprintRequest, db: Session = Depends(get_db)
                 hash_size=16 if hash_type != "phash" else 32,
             ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Perceptual hashes computed for work {data.work_id}",
@@ -470,7 +526,11 @@ def compute_fingerprints(data: FingerprintRequest, db: Session = Depends(get_db)
     )
 
 
-@router.post("/monitor/fingerprints/compare", response_model=ApiResponse[FingerprintCompareResponse])
+@router.post(
+    "/monitor/fingerprints/compare",
+    response_model=ApiResponse[FingerprintCompareResponse],
+    dependencies=[Depends(require_auth)],
+)
 def compare_fingerprints(data: FingerprintCompareRequest, db: Session = Depends(get_db)):
     """比对两个作品的指纹相似度.
 
@@ -526,7 +586,11 @@ def compare_fingerprints(data: FingerprintCompareRequest, db: Session = Depends(
 # P2.3.3-P2.3.4: 品牌监测 (Brand Watches)
 # ============================================================
 
-@router.post("/monitor/brand-watches", response_model=ApiResponse[BrandWatchResponse])
+@router.post(
+    "/monitor/brand-watches",
+    response_model=ApiResponse[BrandWatchResponse],
+    dependencies=[Depends(require_auth)],
+)
 def create_brand_watch(data: BrandWatchCreate, db: Session = Depends(get_db)):
     """注册品牌监测.
 
@@ -540,8 +604,12 @@ def create_brand_watch(data: BrandWatchCreate, db: Session = Depends(get_db)):
         notes=data.notes,
     )
     db.add(brand)
-    db.commit()
-    db.refresh(brand)
+    try:
+        db.commit()
+        db.refresh(brand)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Brand watch created for '{data.brand_name}'",
@@ -572,7 +640,11 @@ def get_brand_watch(brand_id: str, db: Session = Depends(get_db)):
     return ApiResponse(data=BrandWatchResponse.model_validate(brand))
 
 
-@router.patch("/monitor/brand-watches/{brand_id}", response_model=ApiResponse[BrandWatchResponse])
+@router.patch(
+    "/monitor/brand-watches/{brand_id}",
+    response_model=ApiResponse[BrandWatchResponse],
+    dependencies=[Depends(require_auth)],
+)
 def update_brand_watch(brand_id: str, data: BrandWatchUpdate, db: Session = Depends(get_db)):
     """更新品牌监测."""
     brand = db.query(BrandWatch).filter(BrandWatch.id == brand_id).first()
@@ -583,15 +655,23 @@ def update_brand_watch(brand_id: str, data: BrandWatchUpdate, db: Session = Depe
     for key, value in update_data.items():
         setattr(brand, key, value)
 
-    db.commit()
-    db.refresh(brand)
+    try:
+        db.commit()
+        db.refresh(brand)
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(
         message=f"Brand watch updated: {brand.brand_name}",
         data=BrandWatchResponse.model_validate(brand),
     )
 
 
-@router.delete("/monitor/brand-watches/{brand_id}", response_model=ApiResponse)
+@router.delete(
+    "/monitor/brand-watches/{brand_id}",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def delete_brand_watch(brand_id: str, db: Session = Depends(get_db)):
     """删除品牌监测."""
     brand = db.query(BrandWatch).filter(BrandWatch.id == brand_id).first()
@@ -599,7 +679,11 @@ def delete_brand_watch(brand_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="品牌监测不存在")
 
     db.delete(brand)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"Brand watch '{brand.brand_name}' deleted")
 
 
@@ -607,7 +691,11 @@ def delete_brand_watch(brand_id: str, db: Session = Depends(get_db)):
 # P2.3.5-P2.3.6: 品牌扫描 + 域名监测
 # ============================================================
 
-@router.post("/monitor/brands/{brand_id}/scan", response_model=ApiResponse)
+@router.post(
+    "/monitor/brands/{brand_id}/scan",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def trigger_brand_scan(brand_id: str, db: Session = Depends(get_db)):
     """触发品牌扫描 — 在注册的电商平台上搜索品牌商品.
 
@@ -657,7 +745,11 @@ def trigger_brand_scan(brand_id: str, db: Session = Depends(get_db)):
     db.add_all(new_scans)
     brand.last_scan_at = now
     brand.total_matches += len(new_scans)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Brand scan complete for '{brand.brand_name}': "
@@ -688,7 +780,11 @@ def get_brand_scan_results(
     return ApiResponse(data=[BrandScanResultResponse.model_validate(r) for r in results])
 
 
-@router.post("/monitor/domains/watch", response_model=ApiResponse[DomainWatchResponse])
+@router.post(
+    "/monitor/domains/watch",
+    response_model=ApiResponse[DomainWatchResponse],
+    dependencies=[Depends(require_auth)],
+)
 def register_domain_watch(data: DomainWatchCreate, db: Session = Depends(get_db)):
     """注册域名监测.
 
@@ -711,8 +807,12 @@ def register_domain_watch(data: DomainWatchCreate, db: Session = Depends(get_db)
         watch_type=data.watch_type,
     )
     db.add(watch)
-    db.commit()
-    db.refresh(watch)
+    try:
+        db.commit()
+        db.refresh(watch)
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Domain watch registered for {domain}",
@@ -734,7 +834,11 @@ def list_domain_watches(
     return ApiResponse(data=[DomainWatchResponse.model_validate(w) for w in watches])
 
 
-@router.delete("/monitor/domains/watch/{watch_id}", response_model=ApiResponse)
+@router.delete(
+    "/monitor/domains/watch/{watch_id}",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def delete_domain_watch(watch_id: str, db: Session = Depends(get_db)):
     """删除域名监测."""
     watch = db.query(DomainWatch).filter(DomainWatch.id == watch_id).first()
@@ -742,7 +846,11 @@ def delete_domain_watch(watch_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="域名监测不存在")
 
     db.delete(watch)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"Domain watch for '{watch.domain}' deleted")
 
 
@@ -750,8 +858,12 @@ def delete_domain_watch(watch_id: str, db: Session = Depends(get_db)):
 # P2.3.6: WHOIS Lookup (Stub)
 # ============================================================
 
-@router.post("/monitor/domains/whois-lookup", response_model=ApiResponse)
-def whois_lookup(data: dict):
+@router.post(
+    "/monitor/domains/whois-lookup",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
+def whois_lookup(data: WhoisLookupPayload, db: Session = Depends(get_db)):
     """P2.3.6: WHOIS 信息查询 (Stub).
 
     接收域名名称，返回结构化 Mock WHOIS 数据。
@@ -760,7 +872,7 @@ def whois_lookup(data: dict):
     Body:
         domain: str — 域名名称，如 "example.com"
     """
-    domain = data.get("domain", "").strip().lower()
+    domain = data.domain.strip().lower()
     if not domain:
         raise HTTPException(status_code=400, detail="domain 为必填项")
 
@@ -898,7 +1010,11 @@ def get_dmca_template(work_id: str, db: Session = Depends(get_db)):
 # P2.3.10: 代码抄袭检测
 # ============================================================
 
-@router.post("/monitor/check/code", response_model=ApiResponse[CodeSimilarityResponse])
+@router.post(
+    "/monitor/check/code",
+    response_model=ApiResponse[CodeSimilarityResponse],
+    dependencies=[Depends(require_auth)],
+)
 def check_code_similarity(data: CodeSimilarityRequest):
     """检测两个代码片段的相似度.
 
@@ -965,7 +1081,11 @@ def list_whitelist_suggestions(db: Session = Depends(get_db)):
     )
 
 
-@router.post("/monitor/whitelist-suggestions/action", response_model=ApiResponse)
+@router.post(
+    "/monitor/whitelist-suggestions/action",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
 def handle_whitelist_action(data: WhitelistActionRequest, db: Session = Depends(get_db)):
     """处理白名单建议 (接受/拒绝)."""
     if data.action not in ("accept", "decline"):
@@ -1036,8 +1156,8 @@ def get_infringement_timeline(work_id: str, db: Session = Depends(get_db)):
                 "status": bsr.status,
                 "notes": bsr.notes,
             })
-    except Exception:
-        pass
+    except Exception as e:
+        logging.getLogger(__name__).exception("Error in generate_copyright_infringement: %s", str(e))
 
     timeline_entries = []
     for r in results:
@@ -1078,7 +1198,11 @@ def get_infringement_timeline(work_id: str, db: Session = Depends(get_db)):
 # ============================================================
 
 
-@router.post("/monitor/delta", response_model=ApiResponse[DeltaDetectionResponse])
+@router.post(
+    "/monitor/delta",
+    response_model=ApiResponse[DeltaDetectionResponse],
+    dependencies=[Depends(require_auth)],
+)
 def delta_detection(data: DeltaDetectionRequest, db: Session = Depends(get_db)):
     """Delta 检测 — 预扫描哈希比对 (P1.3.3).
 
@@ -1103,7 +1227,11 @@ def delta_detection(data: DeltaDetectionRequest, db: Session = Depends(get_db)):
         if not current_hash and os.path.exists(work.file_path):
             current_hash = compute_sha256(work.file_path)
             work.sha256 = current_hash
-            db.commit()
+            try:
+                db.commit()
+            except Exception:
+                db.rollback()
+                raise
 
         # 查找该作品最近一次扫描结果的 URL hash 作为 "上次扫描指纹"
         previous_hash = None
@@ -1167,7 +1295,11 @@ def delta_detection(data: DeltaDetectionRequest, db: Session = Depends(get_db)):
             scan_needed=scan_needed,
         ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Delta detection: {works_changed} changed, {works_unchanged} unchanged, "
@@ -1254,7 +1386,7 @@ def get_quota_rotation_status(db: Session = Depends(get_db)):
     )
 
 
-@router.post("/monitor/quota/rotate", response_model=ApiResponse)
+@router.post("/monitor/quota/rotate", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def trigger_quota_rotation(platform: str = Query(...), db: Session = Depends(get_db)):
     """手动触发配额轮转 — 获取下一个可用平台 (P1.3.5).
 
@@ -1420,7 +1552,11 @@ def _calculate_priority_score(work, db: Session) -> tuple[float, dict]:
     return round(total, 1), factors
 
 
-@router.post("/monitor/tasks/{task_id}/recalculate-priority", response_model=ApiResponse[PriorityScoreResult])
+@router.post(
+    "/monitor/tasks/{task_id}/recalculate-priority",
+    response_model=ApiResponse[PriorityScoreResult],
+    dependencies=[Depends(require_auth)],
+)
 def recalculate_task_priority(task_id: str, db: Session = Depends(get_db)):
     """为指定监测任务重新计算优先级评分 (P1.3.7).
 
@@ -1436,7 +1572,11 @@ def recalculate_task_priority(task_id: str, db: Session = Depends(get_db)):
 
     score, factors = _calculate_priority_score(work, db)
     task.priority_score = score
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Priority score for task {task_id}: {score}/100",
@@ -1494,7 +1634,11 @@ def list_task_priorities(
                 factors=factors,
             ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Found {len(results)} tasks with priority >= {min_score}",
@@ -1509,6 +1653,7 @@ def list_task_priorities(
 @router.post(
     "/monitor/scan-video-fingerprint",
     response_model=ApiResponse[VideoFingerprintScanResponse],
+    dependencies=[Depends(require_auth)],
 )
 def scan_video_fingerprint(task_id: str, db: Session = Depends(get_db)):
     """Scan for video fingerprint matches against monitor database.
@@ -1638,7 +1783,11 @@ def scan_video_fingerprint(task_id: str, db: Session = Depends(get_db)):
 
     matches.sort(key=lambda m: m.similarity, reverse=True)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Video fingerprint scan complete: {len(matches)} matches from {total_compared} works",
@@ -1657,6 +1806,7 @@ def scan_video_fingerprint(task_id: str, db: Session = Depends(get_db)):
 @router.post(
     "/monitor/generate-audio-fingerprint",
     response_model=ApiResponse[AudioFingerprintGenerateResponse],
+    dependencies=[Depends(require_auth)],
 )
 def generate_audio_fingerprint(task_id: str, db: Session = Depends(get_db)):
     """Extract audio metadata and create a spectral fingerprint for monitoring.
@@ -1706,7 +1856,11 @@ def generate_audio_fingerprint(task_id: str, db: Session = Depends(get_db)):
 
     # Store in custom_metadata
     work.custom_metadata = {**(work.custom_metadata or {}), "audio_fingerprint": spectral_signature}
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message="Audio fingerprint generated and stored",
@@ -1723,6 +1877,7 @@ def generate_audio_fingerprint(task_id: str, db: Session = Depends(get_db)):
 @router.post(
     "/monitor/scan-audio-fingerprint",
     response_model=ApiResponse[AudioScanResponse],
+    dependencies=[Depends(require_auth)],
 )
 def scan_audio_fingerprint(task_id: str, top_n: int = 20, db: Session = Depends(get_db)):
     """Scan for audio fingerprint matches across all works with audio fingerprints.
@@ -1835,7 +1990,11 @@ def scan_audio_fingerprint(task_id: str, top_n: int = 20, db: Session = Depends(
         )
         db.add(monitor_result)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message=f"Audio fingerprint scan: {len(matches)} matches from {total_compared} works",
@@ -1889,12 +2048,12 @@ def list_audio_matches(
             try:
                 spectral_sim = float(notes.split("spectral_sim=")[1].split("%")[0].strip(","))
             except ValueError:
-                pass
+                logging.getLogger(__name__).exception("Error in parse_audio_match_notes (spectral_sim): %s", str(e))
         if "duration_diff=" in notes:
             try:
                 dur_diff = float(notes.split("duration_diff=")[1].split("s")[0].strip(","))
             except ValueError:
-                pass
+                logging.getLogger(__name__).exception("Error in parse_audio_match_notes (dur_diff): %s", str(e))
 
         matches.append(AudioMatch(
             matched_work_id=m_work_id,
@@ -1968,6 +2127,7 @@ def _cosine_similarity_sparse(vec_a: dict[str, float], vec_b: dict[str, float]) 
 @router.post(
     "/monitor/scan-text",
     response_model=ApiResponse[TextPlagiarismScanResponse],
+    dependencies=[Depends(require_auth)],
 )
 def scan_text_plagiarism(
     work_ids: list[str] = Query(
@@ -2088,7 +2248,11 @@ def scan_text_plagiarism(
         new_results.append(result)
 
     db.add_all(new_results)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     response_matches = []
     for source_id, matched_id, sim, shared_terms in top_matches:
@@ -2149,7 +2313,7 @@ def list_text_matches(
             try:
                 shared_terms = int(notes.split("shared_terms=")[1].split(",")[0])
             except (ValueError, IndexError):
-                pass
+                logging.getLogger(__name__).exception("Error in parse_text_match_notes: %s", str(e))
 
         matches.append({
             "result_id": r.id,

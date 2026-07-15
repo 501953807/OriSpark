@@ -3,6 +3,7 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -10,29 +11,38 @@ from app.models.work import Work
 from app.models.risk_warning import RiskWarning
 from app.schemas.common import ApiResponse
 from app.services.risk_warning_service import RiskWarningService
+from app.deps import require_auth
 
 router = APIRouter(prefix="/api/risk-warning", tags=["risk-warning"])
+
+
+class RiskCheckRequest(BaseModel):
+    user_id: Optional[str] = "local"
+    work_id: Optional[str] = None
+    prompt: Optional[str] = None
+    reference_images: Optional[list[str]] = None
+    model_name: Optional[str] = None
+    work_title: Optional[str] = ""
 
 
 def _get_service() -> RiskWarningService:
     return RiskWarningService()
 
 
-@router.post("/check", response_model=ApiResponse[list])
+@router.post("/check", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
 async def check_risk_warning(
-    data: dict,
+    data: RiskCheckRequest,
     db: Session = Depends(get_db),
 ):
     """统一风险检测入口."""
     service = _get_service()
-    user_id = data.get("user_id", "local")
     results = await service.check_all(
-        user_id=user_id,
-        work_id=data.get("work_id"),
-        prompt=data.get("prompt"),
-        reference_images=data.get("reference_images"),
-        model_name=data.get("model_name"),
-        work_title=data.get("work_title", ""),
+        user_id=data.user_id,
+        work_id=data.work_id,
+        prompt=data.prompt,
+        reference_images=data.reference_images,
+        model_name=data.model_name,
+        work_title=data.work_title,
     )
 
     return ApiResponse(
@@ -86,7 +96,39 @@ def get_work_warnings(
     )
 
 
-@router.patch("/{warning_id}/dismiss", response_model=ApiResponse)
+@router.get("", response_model=ApiResponse[list])
+def list_all_warnings(
+    dismissed: Optional[bool] = None,
+    severity: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """获取所有风险预警记录."""
+    query = db.query(RiskWarning)
+    if dismissed is not None:
+        query = query.filter(RiskWarning.dismissed == dismissed)
+    if severity:
+        query = query.filter(RiskWarning.severity == severity)
+
+    warnings = query.order_by(RiskWarning.created_at.desc()).all()
+
+    return ApiResponse(
+        data=[
+            {
+                "id": w.id,
+                "warning_type": w.warning_type,
+                "severity": w.severity,
+                "title": w.title,
+                "matched_entity": w.matched_entity,
+                "confidence": w.confidence,
+                "dismissed": w.dismissed,
+                "created_at": w.created_at.isoformat() if w.created_at else None,
+            }
+            for w in warnings
+        ],
+    )
+
+
+@router.patch("/{warning_id}/dismiss", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def dismiss_warning(
     warning_id: str,
     db: Session = Depends(get_db),
@@ -99,6 +141,10 @@ def dismiss_warning(
     warning.dismissed = True
     from datetime import datetime
     warning.dismissed_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="已标记为查看")

@@ -35,12 +35,12 @@ const work = useWorkStore()
 const engine = ref('baidu')
 const tasks = computed(() => monitor.tasks || [])
 const results = computed(() => monitor.results || [])
-const pending = computed(() => (monitor.results || []).filter((r:any) => r.status === 'pending_review').length)
-const infringing = computed(() => (monitor.results || []).filter((r:any) => r.status === 'infringing').length)
+const pending = computed(() => (monitor.results || []).filter((r: any) => r.status === 'pending_review').length)
+const infringing = computed(() => (monitor.results || []).filter((r: any) => r.status === 'infringing').length)
 function startScan() {
-  monitor.batchScan(work.works.map((w:any) => w.id), engine.value).then(() => monitor.fetchResults())
+  monitor.batchScan(work.works.map((w: any) => w.id), engine.value).then(() => monitor.fetchResults())
 }
-function judge(id: string, status: string) { monitor.updateResult(id, status).then(() => monitor.fetchResults()) }
+function judge(id: string, status: 'pending_review' | 'infringing' | 'ignored' | 'whitelisted') { monitor.updateResult(id, { status }).then(() => monitor.fetchResults()) }
 onMounted(async () => { await Promise.all([monitor.fetchTasks(), monitor.fetchResults(), work.fetchWorks()]) })
 </script>
 <style scoped>

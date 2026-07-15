@@ -6,24 +6,26 @@
       </button>
     </div>
 
-    <!-- Full-screen disclaimer modal (only on first entry, dismissed by accepting) -->
-    <div v-if="!disclaimersAccepted" class="disclaimer-fullscreen-modal" @click.self="void 0">
-      <div class="disclaimer-modal-card">
-        <h2>⚖️ 法律声明与免责条款</h2>
-        <p class="disclaimer-intro">使用前请阅读并同意以下声明：</p>
-        <div class="disclaimer-list">
-          <div v-for="(msg, i) in disclaimerMessages" :key="i" class="disclaimer-item">
-            <span class="disclaimer-num">#{{ i + 1 }}</span>
-            <span>{{ msg }}</span>
-          </div>
+    <!-- Disclaimer banner (top of page, always visible after initial acceptance) -->
+    <div v-if="!disclaimersAccepted" class="disclaimer-banner card">
+      <div class="disclaimer-banner-header">
+        <strong>⚖️ 法律声明与免责条款</strong>
+        <button class="btn btn-sm btn-secondary" @click="showDisclaimerDetails = !showDisclaimerDetails">
+          {{ showDisclaimerDetails ? '收起' : '详情' }}
+        </button>
+      </div>
+      <div v-if="showDisclaimerDetails" class="disclaimer-list">
+        <div v-for="(msg, i) in disclaimerMessages" :key="i" class="disclaimer-item">
+          <span class="disclaimer-num">#{{ i + 1 }}</span>
+          <span>{{ msg }}</span>
         </div>
-        <div class="disclaimer-footer">
-          <label class="disclaimer-checkbox-label">
-            <input type="checkbox" v-model="dismissDisclaimers" />
-            <span>本次登录不再提示</span>
-          </label>
-          <button class="btn btn-primary btn-lg" @click="acceptDisclaimers">我已阅读并同意</button>
-        </div>
+      </div>
+      <div class="disclaimer-footer">
+        <label class="disclaimer-checkbox-label">
+          <input type="checkbox" v-model="dismissDisclaimers" />
+          <span>本次登录不再提示</span>
+        </label>
+        <button class="btn btn-primary" @click="acceptDisclaimers">我已阅读并同意</button>
       </div>
     </div>
 
@@ -52,14 +54,15 @@
       <template v-if="currentGuidelines">
         <!-- 版权指引 (如有) -->
         <div v-if="currentGuidelines.copyright" class="guideline-card card">
-          <div class="gl-header">
+          <div class="gl-header" @click="guidelineCollapsed = !guidelineCollapsed" style="cursor:pointer">
             <span class="gl-icon">©️</span>
             <div>
               <h3>{{ currentGuidelines.copyright?.title || '著作权登记指引' }}</h3>
               <p class="gl-subtitle">{{ currentGuidelines.copyright?.description || '' }}</p>
             </div>
+            <span class="gl-toggle">{{ guidelineCollapsed ? '▶' : '▼' }}</span>
           </div>
-          <div class="gl-body">
+          <div v-show="!guidelineCollapsed" class="gl-body">
             <!-- Forms info for US -->
             <div v-if="currentGuidelines.copyright?.forms" class="gl-section">
               <h4>📝 申请表格类型</h4>
@@ -1037,6 +1040,7 @@ import client from '@/api/client'
 // ─── Phase 0.1: 免责声明强制确认 ─────────────
 const disclaimersAccepted = ref(localStorage.getItem('ipr_disclaimer_accepted') === 'true')
 const dismissDisclaimers = ref(false)
+const showDisclaimerDetails = ref(true)
 const disclaimerMessages = [
   '1. 不构成律师-客户关系：OriStudio 是软件工具，不是律师事务所。使用本软件不建立律师-客户特权关系。',
   '2. 不构成法律建议：系统提供的IP登记指引、分类推荐、费用估算仅供参考，不构成正式法律意见。做法律决策前应咨询持证律师。',
@@ -1125,17 +1129,7 @@ async function doTrademarkSearch() {
     const res = await iprApi.similaritySearch(params)
     similarityResult.value = res.data.data
   } catch {
-    // Fallback to mock data for demo
-    similarityResult.value = {
-      total: 3,
-      risk_level: 'warning',
-      risk_label: '中等风险 — 建议人工复核',
-      results: [
-        { id: 's1', trademark_name: '相似商标A', class_no: 16, score: 75 },
-        { id: 's2', trademark_name: '近似商标B', class_no: 41, score: 52 },
-        { id: 's3', trademark_name: '相关商标C', class_no: 16, score: 38 },
-      ],
-    }
+    similarityResult.value = { total: 0, risk_level: 'none', risk_label: '查询失败', results: [] }
   }
 }
 
@@ -1149,6 +1143,7 @@ const globalJurisdictions = [
   { code: 'kr', flag: '🇰🇷', label: '韩国' },
 ]
 const guidelineJurisdiction = ref('cn')
+const guidelineCollapsed = ref(false)
 const guidelinesData = ref<Record<string, any>>({})
 
 const currentGuidelines = computed(() => {
@@ -1408,6 +1403,23 @@ function editRecord(r: any) {
 }
 
 async function saveRecord() {
+  const f = form.value
+  if (!f.ip_type) {
+    ;(window as any).$toast?.show('请选择知识产权类型', 'warning')
+    return
+  }
+  if (!f.jurisdiction) {
+    ;(window as any).$toast?.show('请选择管辖区域', 'warning')
+    return
+  }
+  if (!f.application_no?.trim() && !f.registration_no?.trim()) {
+    ;(window as any).$toast?.show('请输入申请号或注册号', 'warning')
+    return
+  }
+  if (!f.status) {
+    ;(window as any).$toast?.show('请选择状态', 'warning')
+    return
+  }
   try {
     if (editingRecord.value) {
       await iprApi.update(editingRecord.value.id, form.value)
@@ -1659,6 +1671,7 @@ onMounted(() => {
 .gl-icon { font-size:2rem; }
 .gl-header h3 { margin:0; font-size:1.1rem; }
 .gl-subtitle { color:var(--muted); font-size:.85rem; margin:4px 0 0; }
+.gl-toggle { font-size:.75rem; color:var(--muted); transition:transform .15s; margin-left:auto; }
 .gl-body { display:flex; flex-direction:column; gap:16px; }
 .gl-section h4 { font-size:.9rem; margin:0 0 8px; }
 .gl-section ul { padding-left:20px; font-size:.85rem; color:var(--muted); line-height:1.8; }
@@ -1945,28 +1958,27 @@ onMounted(() => {
 .calc-fx-note p { font-size:.78rem; color:var(--muted); margin:0; }
 .calc-fx-disclaimer { font-size:.72rem !important; color:var(--orange) !important; margin-top:4px !important; }
 
-/* ── Full-screen disclaimer modal ──────────────── */
-.disclaimer-fullscreen-modal {
-  position: fixed; inset: 0; z-index: 9999;
-  background: oklch(0 0 0 / .55);
-  backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
+/* ── Inline disclaimer banner ──────────────────── */
+.disclaimer-banner {
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  border: 1px solid oklch(72% 0.18 40 / 0.15);
+  border-radius: var(--radius-md);
+  background: oklch(72% 0.18 40 / 0.04);
 }
-.disclaimer-modal-card {
-  background: var(--surface);
-  border-radius: var(--radius-xl);
-  padding: 36px;
-  max-width: 640px;
-  width: 92%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 16px 64px oklch(0 0 0 / .2);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.disclaimer-banner-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
 }
-.disclaimer-modal-card h2 { margin: 0; font-size: 1.2rem; }
-.disclaimer-intro { font-size: .85rem; color: var(--muted); margin: 0; }
+.disclaimer-banner-header strong { font-size: .92rem; }
+.disclaimer-banner .disclaimer-list {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px; background: oklch(96% .003 240);
+  border-radius: var(--radius-sm);
+  max-height: 30vh; overflow-y: auto;
+}
+.disclaimer-banner .disclaimer-footer {
+  margin-top: 12px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
 .disclaimer-list {
   display: flex; flex-direction: column; gap: 10px;
   padding: 16px; background: oklch(96% .003 240);

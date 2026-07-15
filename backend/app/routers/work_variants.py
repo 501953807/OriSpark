@@ -136,7 +136,11 @@ def create_group(payload: GroupCreate, db: Session = Depends(get_db)):
         description=payload.description,
     )
     db.add(group)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(group)
     return ApiResponse(data=_group_to_dict(group), message="变体组创建成功")
 
@@ -151,7 +155,11 @@ def update_group(group_id: str, payload: GroupUpdate, db: Session = Depends(get_
         if key in payload.model_fields_set:
             setattr(group, key, getattr(payload, key))
     group.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(group)
     return ApiResponse(data=_group_to_dict(group), message="变体组更新成功")
 
@@ -163,7 +171,11 @@ def delete_group(group_id: str, db: Session = Depends(get_db)):
     if not group:
         raise HTTPException(status_code=404, detail="变体组不存在")
     db.delete(group)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True, "message": "变体组已删除"})
 
 
@@ -205,7 +217,11 @@ def add_variant(group_id: str, payload: VariantCreate, db: Session = Depends(get
         sort_order=payload.sort_order,
     )
     db.add(variant)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(variant)
     return ApiResponse(data=_variant_to_dict(variant), message="变体创建成功")
 
@@ -232,7 +248,11 @@ def update_variant(
         w = payload.width if payload.width is not None else variant.width
         h = payload.height if payload.height is not None else variant.height
         variant.aspect_ratio = _calc_aspect_ratio(w, h)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(variant)
     return ApiResponse(data=_variant_to_dict(variant), message="变体更新成功")
 
@@ -247,7 +267,11 @@ def delete_variant(group_id: str, variant_id: str, db: Session = Depends(get_db)
     if not variant:
         raise HTTPException(status_code=404, detail="变体不存在")
     db.delete(variant)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True, "message": "变体已删除"})
 
 
@@ -328,7 +352,11 @@ def generate_variants(payload: GenerateVariantsRequest, db: Session = Depends(ge
         variants_created += 1
 
     if variants_created > 0:
-        db.commit()
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
     else:
         db.refresh(group)
 

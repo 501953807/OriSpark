@@ -70,7 +70,12 @@ async function loadProjects() {
   try {
     const res = await worksApi.listProjects()
     projects.value = res.data.data || []
-  } finally { loading.value = false }
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '加载项目失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  } finally {
+    loading.value = false
+  }
 }
 
 function editProject(p: any) {
@@ -80,23 +85,37 @@ function editProject(p: any) {
 }
 
 async function saveProject() {
-  if (editing.value) {
-    await worksApi.updateProject(editing.value.id, form.value)
-  } else {
-    await worksApi.createProject(form.value)
+  if (!form.value.name.trim()) {
+    ;(window as any).$toast?.show('请输入项目名称', 'error')
+    return
   }
-  showCreate.value = false
-  editing.value = null
-  form.value = { name: '', description: '' }
-  ;(window as any).$toast?.show('项目已保存', 'success')
-  loadProjects()
+  try {
+    if (editing.value) {
+      await worksApi.updateProject(editing.value.id, form.value)
+    } else {
+      await worksApi.createProject(form.value)
+    }
+    showCreate.value = false
+    editing.value = null
+    form.value = { name: '', description: '' }
+    ;(window as any).$toast?.show('项目已保存', 'success')
+    loadProjects()
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '保存项目失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  }
 }
 
 async function deleteProject(p: any) {
   if (!confirm(`确定删除项目"${p.name}"？作品不会被删除。`)) return
-  await worksApi.deleteProject(p.id)
-  ;(window as any).$toast?.show('项目已删除', 'info')
-  loadProjects()
+  try {
+    await worksApi.deleteProject(p.id)
+    ;(window as any).$toast?.show('项目已删除', 'info')
+    loadProjects()
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '删除项目失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  }
 }
 
 onMounted(() => loadProjects())

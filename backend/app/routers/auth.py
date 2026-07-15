@@ -92,7 +92,11 @@ def _migrate_json_users(db: Session):
         migrated += 1
 
     if migrated > 0:
-        db.commit()
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
         # 迁移后重命名旧文件备份
         USERS_FILE.rename(USERS_FILE.with_suffix(".json.bak"))
 
@@ -181,7 +185,11 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
         provider="email",
     ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     token = _create_token(user.id)
     return ApiResponse(data={
@@ -213,7 +221,11 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         success=True,
     ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     token = _create_token(user.id)
     return ApiResponse(data={
@@ -294,7 +306,11 @@ def update_user_profile(
         if field in updates and updates[field] is not None:
             setattr(user, field, updates[field])
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data=_user_to_dict(user), message="资料已更新")
 
 
@@ -440,7 +456,11 @@ def unbind_provider(
     else:
         raise HTTPException(status_code=400, detail=f"不支持的认证提供方: {provider}")
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message=f"已解绑 {provider} 账号")
 
 
@@ -497,20 +517,21 @@ def list_sessions(
 
 # -- v3 Onboarding --
 
+class CompleteOnboardingRequest(BaseModel):
+    creator_type: str
+
+
 @router.post("/auth/complete-onboarding", response_model=ApiResponse)
 def complete_onboarding(
-    data: dict,
+    data: CompleteOnboardingRequest,
     user_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
-    """完成 Onboarding 向导, 持久化 creator_type 和默认配置.
-
-    body: {creator_type: "illustrator"}
-    """
+    """完成 Onboarding 向导, 持久化 creator_type 和默认配置."""
     if user_id == "local":
         raise HTTPException(status_code=401, detail="请先登录")
 
-    creator_type = data.get("creator_type")
+    creator_type = data.creator_type
     VALID_CREATOR_TYPES = (
         "illustrator", "photographer", "video_creator",
         "crafter", "musician", "writer",
@@ -556,7 +577,11 @@ def complete_onboarding(
             description="用户默认分发平台列表",
         ))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data={
         "creator_type": creator_type,

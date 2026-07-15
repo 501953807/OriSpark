@@ -183,3 +183,26 @@ class DashboardStatsResponse(BaseModel):
     by_jurisdiction: dict[str, int]
     upcoming_renewals: list[RenewalItem]
     total_annual_cost: float
+
+
+# ── 智能助手 (Generate/Export/Fee) ──────────────────────
+
+class GenerateRequest(BaseModel):
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+    fields: dict = {}
+
+
+class ExportRequest(BaseModel):
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+    lawyer_consulted: Optional[str] = None
+
+
+class FeeCalculatorRequest(BaseModel):
+    ip_type: str = "trademark"
+    jurisdictions: list[str] = []
+    classes: list[int] = []
+    design_count: int = 1
+    wipo_designations: list[str] = []
+    is_color: bool = False

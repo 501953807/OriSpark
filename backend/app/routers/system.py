@@ -17,6 +17,8 @@ Features:
 - 数据导出 (P2.7.14)
 - 危险区 (P2.7.15): 账号注销/数据清除
 """
+import logging
+
 
 import json
 import os
@@ -35,6 +37,7 @@ from pathlib import Path
 from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, Form, Header, Request
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -48,6 +51,101 @@ from app.models.system import (
 from app.models.system import User as UserModel
 from app.schemas.common import ApiResponse, SuccessResponse
 from app.deps import get_current_user_id, require_auth
+
+
+# ================================================================
+# -- Pydantic validated request schemas --
+# ================================================================
+
+class SystemSettingsUpdate(BaseModel):
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[str] = None
+    smtp_user: Optional[str] = None
+    smtp_password: Optional[str] = None
+    smtp_from: Optional[str] = None
+    smtp_tls: Optional[str] = None
+    wechat_appid: Optional[str] = None
+    wechat_appsecret: Optional[str] = None
+    wechat_template_id: Optional[str] = None
+    banquanjia_api_key: Optional[str] = None
+    banquanjia_api_secret: Optional[str] = None
+    antchain_api_key: Optional[str] = None
+    antchain_api_secret: Optional[str] = None
+    zhixinchain_api_key: Optional[str] = None
+    zhixinchain_api_secret: Optional[str] = None
+    baidu_vision_api_key: Optional[str] = None
+    google_vision_api_key: Optional[str] = None
+    backup_schedule_cron: Optional[str] = None
+    backup_schedule_enabled: Optional[bool] = None
+    backup_schedule_encrypted: Optional[bool] = None
+
+
+class DictionaryItemCreate(BaseModel):
+    group_key: str
+    item_key: str
+    item_value: str = ""
+    item_value_en: Optional[str] = None
+    extra: Optional[dict] = None
+    is_active: bool = True
+    sort_order: int = 99
+
+
+class DictionaryItemUpdate(BaseModel):
+    item_key: Optional[str] = None
+    item_value: Optional[str] = None
+    item_value_en: Optional[str] = None
+    extra: Optional[dict] = None
+    is_active: Optional[bool] = None
+    sort_order: Optional[int] = None
+
+
+class WechatTemplateMessage(BaseModel):
+    touser: str
+    template_id: Optional[str] = None
+    url: Optional[str] = None
+    miniprogram: Optional["MiniProgram"] = None
+    message_data: dict
+
+
+class MiniProgram(BaseModel):
+    appid: Optional[str] = ""
+    pagepath: Optional[str] = ""
+
+
+class PluginRegister(BaseModel):
+    name: str
+    display_name: Optional[str] = None
+    version: str = "1.0.0"
+    description: Optional[str] = None
+    author: Optional[str] = None
+    enabled: bool = True
+    hooks: Optional[list] = []
+    config: Optional[dict] = {}
+    entry_point: Optional[str] = None
+    priority: int = 0
+
+
+class PluginUpdate(BaseModel):
+    display_name: Optional[str] = None
+    version: Optional[str] = None
+    enabled: Optional[bool] = None
+    hooks: Optional[list] = None
+    config: Optional[dict] = None
+    priority: Optional[int] = None
+    description: Optional[str] = None
+
+
+class DesignVariantInput(BaseModel):
+    base_description: str
+    target_categories: list[str]
+    style_preferences: Optional[dict] = {}
+    language: str = "zh"
+
+
+class DisclaimerAcceptanceInput(BaseModel):
+    disclaimer_key: str
+    context: str = ""
+
 
 router = APIRouter()
 
@@ -82,8 +180,8 @@ def get_settings(db: Session = Depends(get_db)):
     return ApiResponse(data=result)
 
 
-@router.patch("/system/settings", response_model=ApiResponse)
-def update_settings(settings: dict, db: Session = Depends(get_db)):
+@router.patch("/system/settings", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_settings(settings: SystemSettingsUpdate, db: Session = Depends(get_db)):
     """更新系统设置.
 
     P3.5.1: 敏感字段 (API keys/passwords) 自动 AES 加密存储。
@@ -98,7 +196,7 @@ def update_settings(settings: dict, db: Session = Depends(get_db)):
 
     from app.utils.crypto import encrypt as aes_encrypt
 
-    for key, value in settings.items():
+    for key, value in settings.model_dump(exclude_none=True).items():
         setting = db.query(SystemSetting).filter(SystemSetting.key == key).first()
         stored_value = str(value) if value is not None else None
         # P3.5.1: AES encrypt sensitive keys before storing
@@ -109,7 +207,11 @@ def update_settings(settings: dict, db: Session = Depends(get_db)):
         else:
             db.add(SystemSetting(key=key, value=stored_value))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to update settings: {str(e)}")
     return ApiResponse(message="设置已更新")
 
 
@@ -163,7 +265,7 @@ def _aes_decrypt_file(src: Path, dst: Path, key: bytes = None) -> None:
         dst.write_bytes(result)
 
 
-@router.post("/system/backup", response_model=ApiResponse)
+@router.post("/system/backup", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def create_backup(
     include_files: bool = True,
     encrypted: bool = False,
@@ -215,7 +317,11 @@ def create_backup(
         status="completed",
     )
     db.add(record)
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to create backup record: {str(e)}")
 
     return ApiResponse(
         message=f"备份创建成功: {backup_path.name}",
@@ -229,7 +335,7 @@ def create_backup(
     )
 
 
-@router.post("/system/backup/schedule", response_model=ApiResponse)
+@router.post("/system/backup/schedule", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def create_scheduled_backup(
     cron_expr: str = Query(default="0 2 * * *", description="Cron 表达式"),
     include_files: bool = True,
@@ -244,7 +350,11 @@ def create_scheduled_backup(
     db.add(SystemSetting(key="backup_schedule_cron", value=cron_expr))
     db.add(SystemSetting(key="backup_schedule_enabled", value="true"))
     db.add(SystemSetting(key="backup_schedule_encrypted", value=str(encrypted).lower()))
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to create backup schedule: {str(e)}")
 
     return ApiResponse(
         message=f"定时备份已配置: {cron_expr}",
@@ -286,7 +396,7 @@ def list_backups(db: Session = Depends(get_db)):
     ])
 
 
-@router.post("/system/restore", response_model=ApiResponse)
+@router.post("/system/restore", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def restore_backup(backup_id: str, db: Session = Depends(get_db)):
     """从备份恢复."""
     record = db.query(BackupRecord).filter(BackupRecord.id == backup_id).first()
@@ -328,7 +438,11 @@ def restore_backup(backup_id: str, db: Session = Depends(get_db)):
             shutil.copy2(source_file, db_path)
 
         record.restored_from = str(backup_path)
-        db.commit()
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
         return ApiResponse(message="数据已从备份恢复，请重启服务以生效")
 
     except HTTPException:
@@ -337,7 +451,7 @@ def restore_backup(backup_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"恢复失败: {str(e)}")
 
 
-@router.delete("/system/backups/{backup_id}", response_model=ApiResponse)
+@router.delete("/system/backups/{backup_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_backup(backup_id: str, db: Session = Depends(get_db)):
     """删除备份记录."""
     record = db.query(BackupRecord).filter(BackupRecord.id == backup_id).first()
@@ -349,8 +463,12 @@ def delete_backup(backup_id: str, db: Session = Depends(get_db)):
     if backup_path.exists():
         backup_path.unlink()
 
-    db.delete(record)
-    db.commit()
+    try:
+        db.delete(record)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete backup: {str(e)}")
     return ApiResponse(message="备份记录已删除")
 
 
@@ -688,13 +806,13 @@ def export_dict(db: Session = Depends(get_db)):
     return ApiResponse(data=export_data)
 
 
-@router.post("/system/dict/items", response_model=ApiResponse)
+@router.post("/system/dict/items", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def create_dict_item(
-    item_data: dict,
+    item: DictionaryItemCreate,
     db: Session = Depends(get_db),
 ):
     """添加自定义字典条目 (仅可扩展分组)."""
-    group_key = item_data.get("group_key")
+    group_key = item.group_key
     if not group_key:
         raise HTTPException(status_code=400, detail="group_key 是必填项")
 
@@ -706,33 +824,37 @@ def create_dict_item(
 
     existing = db.query(DictionaryItem).filter(
         DictionaryItem.group_key == group_key,
-        DictionaryItem.item_key == item_data.get("item_key"),
+        DictionaryItem.item_key == item.item_key,
     ).first()
     if existing:
-        raise HTTPException(status_code=400, detail=f"条目 '{item_data.get('item_key')}' 已存在")
+        raise HTTPException(status_code=400, detail=f"条目 '{item.item_key}' 已存在")
 
     import hashlib
     import uuid as _uuid
-    item = DictionaryItem(
+    dict_item = DictionaryItem(
         id=hashlib.md5(str(_uuid.uuid4()).encode()).hexdigest()[:16],
         group_key=group_key,
-        item_key=item_data.get("item_key", ""),
-        item_value=item_data.get("item_value", ""),
-        item_value_en=item_data.get("item_value_en"),
-        extra=item_data.get("extra"),
-        is_active=item_data.get("is_active", True),
-        sort_order=item_data.get("sort_order", 99),
+        item_key=item.item_key,
+        item_value=item.item_value,
+        item_value_en=item.item_value_en,
+        extra=item.extra,
+        is_active=item.is_active,
+        sort_order=item.sort_order,
     )
-    db.add(item)
-    db.commit()
-    db.refresh(item)
-    return ApiResponse(data=_dict_item_to_dict(item), message="条目已创建")
+    db.add(dict_item)
+    try:
+        db.commit()
+        db.refresh(dict_item)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to create dictionary item: {str(e)}")
+    return ApiResponse(data=_dict_item_to_dict(dict_item), message="条目已创建")
 
 
-@router.patch("/system/dict/items/{item_id}", response_model=ApiResponse)
+@router.patch("/system/dict/items/{item_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def update_dict_item(
     item_id: str,
-    updates: dict,
+    updates: DictionaryItemUpdate,
     db: Session = Depends(get_db),
 ):
     """更新字典条目."""
@@ -742,15 +864,20 @@ def update_dict_item(
 
     updatable_fields = ["item_key", "item_value", "item_value_en", "extra", "is_active", "sort_order"]
     for field in updatable_fields:
-        if field in updates:
-            setattr(item, field, updates[field])
+        value = getattr(updates, field, None)
+        if value is not None:
+            setattr(item, field, value)
 
-    db.commit()
-    db.refresh(item)
+    try:
+        db.commit()
+        db.refresh(item)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to update dictionary item: {str(e)}")
     return ApiResponse(data=_dict_item_to_dict(item), message="条目已更新")
 
 
-@router.delete("/system/dict/items/{item_id}", response_model=ApiResponse)
+@router.delete("/system/dict/items/{item_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_dict_item(
     item_id: str,
     db: Session = Depends(get_db),
@@ -764,8 +891,12 @@ def delete_dict_item(
     if group and not group.is_extensible:
         raise HTTPException(status_code=403, detail="内置字典条目不可删除")
 
-    db.delete(item)
-    db.commit()
+    try:
+        db.delete(item)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete dictionary item: {str(e)}")
     return ApiResponse(message="条目已删除")
 
 
@@ -833,7 +964,7 @@ def get_unread_count(
     return ApiResponse(data={"count": count})
 
 
-@router.patch("/notifications/{notif_id}/read", response_model=ApiResponse)
+@router.patch("/notifications/{notif_id}/read", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def mark_notification_read(
     notif_id: str,
     db: Session = Depends(get_db),
@@ -845,11 +976,15 @@ def mark_notification_read(
 
     notif.is_read = True
     notif.read_at = datetime.now(timezone.utc)
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to mark notification as read: {str(e)}")
     return ApiResponse(message="已标记为已读")
 
 
-@router.post("/notifications/read-all", response_model=ApiResponse)
+@router.post("/notifications/read-all", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def mark_all_read(
     authorization: Optional[str] = Header(None),
     db: Session = Depends(get_db),
@@ -860,7 +995,11 @@ def mark_all_read(
         Notification.user_id == user_id,
         Notification.is_read == False,
     ).update({"is_read": True, "read_at": datetime.now(timezone.utc)})
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to mark all notifications as read: {str(e)}")
     return ApiResponse(message="所有通知已标记为已读")
 
 
@@ -894,8 +1033,11 @@ def push_notification(
         channel=channel,
         is_read=False,
     )
-    db.add(notif)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     if websocket_push:
         try:
@@ -911,8 +1053,8 @@ def push_notification(
                     "created_at": notif.created_at.isoformat() if notif.created_at else None,
                 },
             }))
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in get_disclaimers: %s", str(e))
 
     return notif
 
@@ -935,7 +1077,7 @@ def _get_smtp_config(db: Session) -> dict:
     return cfg
 
 
-@router.post("/system/notification/email/test", response_model=ApiResponse)
+@router.post("/system/notification/email/test", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def test_email_notification(
     recipient: str = Query(..., description="测试接收邮箱"),
     db: Session = Depends(get_db),
@@ -979,7 +1121,7 @@ def test_email_notification(
         raise HTTPException(status_code=500, detail=f"邮件发送失败: {str(e)}")
 
 
-@router.post("/system/notification/email/send", response_model=ApiResponse)
+@router.post("/system/notification/email/send", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def send_email_notification(
     recipient: str = Query(...),
     subject: str = Query(...),
@@ -1031,7 +1173,7 @@ def _get_wechat_config(db: Session) -> dict:
     return cfg
 
 
-@router.post("/system/notification/wechat/test", response_model=ApiResponse)
+@router.post("/system/notification/wechat/test", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def test_wechat_notification(
     db: Session = Depends(get_db),
 ):
@@ -1116,9 +1258,9 @@ def test_wechat_notification(
         raise HTTPException(status_code=500, detail=f"微信接口调用失败: {str(e)}")
 
 
-@router.post("/system/notification/wechat/send", response_model=ApiResponse)
+@router.post("/system/notification/wechat/send", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def send_wechat_template_message(
-    data: dict,
+    data: WechatTemplateMessage,
     db: Session = Depends(get_db),
 ):
     """发送微信模板消息 — P2.7.6.
@@ -1129,36 +1271,16 @@ def send_wechat_template_message(
         touser: str — 接收者 openid
         template_id: str (可选) — 模板 ID，默认使用系统配置的模板
         url: str (可选) — 跳转链接
-        miniprogram: dict (可选) — 跳转小程序 {appid, pagepath}
+        miniprogram: MiniProgram (可选) — 跳转小程序 {appid, pagepath}
         message_data: dict — 模板数据字段
-
-    示例:
-        {
-            "touser": "oOPENIDxxxx",
-            "url": "https://oristudio.app/works/xxx",
-            "miniprogram": null,
-            "message_data": {
-                "first": {"value": "您的作品已通过审核！"},
-                "keyword1": {"value": "星空猫"},
-                "keyword2": {"value": "2025-01-15"},
-                "keyword3": {"value": "已通过"},
-                "remark": {"value": "点击查看详情"}
-            }
-        }
     """
     cfg = _get_wechat_config(db)
     if not cfg.get("wechat_appid") or not cfg.get("wechat_appsecret"):
         raise HTTPException(status_code=400, detail="请先在系统设置中配置微信 AppID 和 AppSecret")
 
-    touser = data.get("touser")
-    if not touser:
-        raise HTTPException(status_code=400, detail="缺少 touser (接收者 openid)")
-
-    message_data = data.get("message_data", {})
-    if not message_data:
-        raise HTTPException(status_code=400, detail="缺少 message_data (模板数据字段)")
-
-    template_id = data.get("template_id") or cfg.get("wechat_template_id")
+    touser = data.touser
+    message_data = data.message_data
+    template_id = data.template_id or cfg.get("wechat_template_id")
     if not template_id:
         raise HTTPException(status_code=400, detail="缺少 template_id，请在系统设置或请求中配置")
 
@@ -1168,15 +1290,16 @@ def send_wechat_template_message(
         "template_id": template_id,
     }
 
-    url = data.get("url")
-    miniprogram = data.get("miniprogram")
+    url = data.url
+    miniprogram = data.miniprogram
 
     if url:
         template_payload["url"] = url
-    if miniprogram and isinstance(miniprogram, dict):
+    if miniprogram and isinstance(miniprogram, (dict, MiniProgram)):
+        mp_dict = miniprogram if isinstance(miniprogram, dict) else miniprogram.model_dump()
         template_payload["miniprogram"] = {
-            "appid": miniprogram.get("appid", ""),
-            "pagepath": miniprogram.get("pagepath", ""),
+            "appid": mp_dict.get("appid", ""),
+            "pagepath": mp_dict.get("pagepath", ""),
         }
 
     # 格式化 data 字段
@@ -1369,37 +1492,42 @@ def list_plugins(db: Session = Depends(get_db)):
     ])
 
 
-@router.post("/system/plugins", response_model=ApiResponse)
-def register_plugin(data: dict, db: Session = Depends(get_db)):
+@router.post("/system/plugins", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def register_plugin(plugin: PluginRegister, db: Session = Depends(get_db)):
     """注册新插件."""
-    existing = db.query(Plugin).filter(Plugin.name == data.get("name")).first()
+    existing = db.query(Plugin).filter(Plugin.name == plugin.name).first()
     if existing:
-        raise HTTPException(status_code=400, detail=f"插件 '{data['name']}' 已注册")
+        raise HTTPException(status_code=400, detail=f"插件 '{plugin.name}' 已注册")
 
     import hashlib as _hashlib
     import uuid as _uuid
-    plugin = Plugin(
+    disp_name = plugin.display_name or plugin.name
+    plugin_data = Plugin(
         id=_hashlib.md5(str(_uuid.uuid4()).encode()).hexdigest()[:16],
-        name=data.get("name", "unknown"),
-        display_name=data.get("display_name", data.get("name", "Unknown")),
-        version=data.get("version", "1.0.0"),
-        description=data.get("description"),
-        author=data.get("author"),
-        enabled=data.get("enabled", True),
-        hooks=data.get("hooks", []),
-        config=data.get("config", {}),
-        entry_point=data.get("entry_point"),
-        priority=data.get("priority", 0),
+        name=plugin.name,
+        display_name=disp_name,
+        version=plugin.version,
+        description=plugin.description,
+        author=plugin.author,
+        enabled=plugin.enabled,
+        hooks=plugin.hooks,
+        config=plugin.config,
+        entry_point=plugin.entry_point,
+        priority=plugin.priority,
     )
-    db.add(plugin)
-    db.commit()
-    db.refresh(plugin)
+    db.add(plugin_data)
+    try:
+        db.commit()
+        db.refresh(plugin_data)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to register plugin: {str(e)}")
 
-    return ApiResponse(message=f"插件 '{plugin.display_name}' 已注册", data={"id": plugin.id})
+    return ApiResponse(message=f"插件 '{plugin_data.display_name}' 已注册", data={"id": plugin_data.id})
 
 
-@router.patch("/system/plugins/{plugin_id}", response_model=ApiResponse)
-def update_plugin(plugin_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/system/plugins/{plugin_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_plugin(plugin_id: str, data: PluginUpdate, db: Session = Depends(get_db)):
     """更新插件 (启用/禁用、配置)."""
     plugin = db.query(Plugin).filter(Plugin.id == plugin_id).first()
     if not plugin:
@@ -1407,22 +1535,31 @@ def update_plugin(plugin_id: str, data: dict, db: Session = Depends(get_db)):
 
     updatable = ["display_name", "version", "enabled", "hooks", "config", "priority", "description"]
     for field in updatable:
-        if field in data:
-            setattr(plugin, field, data[field])
+        value = getattr(data, field, None)
+        if value is not None:
+            setattr(plugin, field, value)
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to update plugin: {str(e)}")
     return ApiResponse(message=f"插件 '{plugin.display_name}' 已更新")
 
 
-@router.delete("/system/plugins/{plugin_id}", response_model=ApiResponse)
+@router.delete("/system/plugins/{plugin_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_plugin(plugin_id: str, db: Session = Depends(get_db)):
     """删除插件."""
     plugin = db.query(Plugin).filter(Plugin.id == plugin_id).first()
     if not plugin:
         raise HTTPException(status_code=404, detail="插件不存在")
 
-    db.delete(plugin)
-    db.commit()
+    try:
+        db.delete(plugin)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete plugin: {str(e)}")
     return ApiResponse(message="插件已删除")
 
 
@@ -1430,7 +1567,7 @@ def delete_plugin(plugin_id: str, db: Session = Depends(get_db)):
 # -- P2.7.11: 邮箱验证 --
 # ================================================================
 
-@router.post("/system/email/verify/send", response_model=ApiResponse)
+@router.post("/system/email/verify/send", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def send_verification_email(
     email: str = Query(...),
     db: Session = Depends(get_db),
@@ -1488,10 +1625,14 @@ def send_verification_email(
             server.send_message(msg)
             server.quit()
             email_sent = True
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in send_verification_email: %s", str(e))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to send verification email: {str(e)}")
 
     return ApiResponse(
         message="验证码已发送" if email_sent else f"验证码已生成(未配置邮件服务): {code}",
@@ -1499,7 +1640,7 @@ def send_verification_email(
     )
 
 
-@router.post("/system/email/verify/confirm", response_model=ApiResponse)
+@router.post("/system/email/verify/confirm", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def confirm_verification_email(
     email: str = Query(...),
     code: str = Query(...),
@@ -1528,7 +1669,11 @@ def confirm_verification_email(
         if user:
             user.email_verified = True
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to confirm email verification: {str(e)}")
     return ApiResponse(message="邮箱验证成功")
 
 
@@ -1536,7 +1681,7 @@ def confirm_verification_email(
 # -- P2.7.12: 密码重置 --
 # ================================================================
 
-@router.post("/system/password/reset/request", response_model=ApiResponse)
+@router.post("/system/password/reset/request", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def request_password_reset(
     email: str = Query(...),
     db: Session = Depends(get_db),
@@ -1567,7 +1712,7 @@ def request_password_reset(
             msg["From"] = cfg.get("smtp_from") or cfg.get("smtp_user") or "noreply@oristudio.local"
             msg["To"] = email
             msg["Subject"] = "[OriStudio] 密码重置"
-            reset_url = f"http://localhost:8765/reset-password?token={reset_token}"
+            reset_url = f"http://localhost:8001/reset-password?token={reset_token}"
             body = f"""
             <html><body>
             <h2>OriStudio 密码重置</h2>
@@ -1591,10 +1736,14 @@ def request_password_reset(
             server.send_message(msg)
             server.quit()
             email_sent = True
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in request_password_reset: %s", str(e))
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to request password reset: {str(e)}")
 
     return ApiResponse(
         message="如果该邮箱已注册，重置邮件已发送",
@@ -1602,7 +1751,7 @@ def request_password_reset(
     )
 
 
-@router.post("/system/password/reset/confirm", response_model=ApiResponse)
+@router.post("/system/password/reset/confirm", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def confirm_password_reset(
     token: str = Query(...),
     new_password: str = Query(...),
@@ -1636,7 +1785,11 @@ def confirm_password_reset(
     user.password_updated_at = datetime.now(timezone.utc)
 
     reset.used = True
-    db.commit()
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to confirm password reset: {str(e)}")
 
     return ApiResponse(message="密码已重置，请使用新密码登录")
 
@@ -1702,7 +1855,7 @@ def check_password_strength(password: str = Query(...)):
 # -- P2.7.14: 头像上传 --
 # ================================================================
 
-@router.post("/system/avatar/upload", response_model=ApiResponse)
+@router.post("/system/avatar/upload", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 async def upload_avatar(
     file: UploadFile = File(...),
     authorization: Optional[str] = Header(None),
@@ -1730,13 +1883,12 @@ async def upload_avatar(
 
     avatar_url = f"/api/files/avatars/{avatar_name}"
 
-    # 更新用户头像
-    uid = get_current_user_id(authorization)
-    if uid != "local":
-        user = db.query(UserModel).filter(UserModel.id == uid).first()
-        if user:
-            user.avatar_url = avatar_url
-            db.commit()
+    try:
+        user.avatar_url = avatar_url
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(
         message="头像已上传",
@@ -1824,7 +1976,7 @@ def export_all_data(
 # -- P2.7.15: 危险区 (账号注销/数据清除) --
 # ================================================================
 
-@router.post("/system/danger/delete-account", response_model=ApiResponse)
+@router.post("/system/danger/delete-account", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_account(
     confirmation: str = Query(..., description="输入 'DELETE' 确认删除"),
     authorization: Optional[str] = Header(None),
@@ -1858,11 +2010,15 @@ def delete_account(
     user.wechat_openid = None
     user.douyin_openid = None
 
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(message="账号已注销")
 
 
-@router.post("/system/danger/clear-data", response_model=ApiResponse)
+@router.post("/system/danger/clear-data", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def clear_all_data(
     confirmation: str = Query(..., description="输入 'CLEAR ALL' 确认清除所有数据"),
     db: Session = Depends(get_db),
@@ -1893,11 +2049,15 @@ def clear_all_data(
     for table in tables_in_order:
         try:
             db.query(table).delete()
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in clear_all_data: %s", str(e))
 
-    db.query(SystemSetting).delete()
-    db.commit()
+    try:
+        db.query(SystemSetting).delete()
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     # 清除文件
     for d in ["workspace", "certificates", "thumbnails", "backups", "avatars"]:
@@ -1997,7 +2157,7 @@ def get_storage_trends(
                     and f.stat().st_mtime < day_end.timestamp()
                 )
             except OSError:
-                pass
+                logging.getLogger(__name__).exception("Error in get_storage_trends: %s", str(e))
 
         trends.append({
             "date": day.isoformat(),
@@ -2126,6 +2286,35 @@ def disable_totp(
     return ApiResponse(message="TOTP 已禁用")
 
 
+@router.get("/system/notification/prefs", response_model=ApiResponse)
+def get_notification_prefs(
+    user_id: str = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
+    """获取用户通知偏好设置."""
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    prefs = user.notification_prefs if user and user.notification_prefs else {}
+    return ApiResponse(data=prefs)
+
+
+@router.post("/system/notification/prefs", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_notification_prefs(
+    payload: dict,
+    user_id: str = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
+    """更新用户通知偏好设置."""
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    current = user.notification_prefs or {}
+    current.update(payload)
+    user.notification_prefs = current
+    db.commit()
+    db.refresh(user)
+    return ApiResponse(data=current, message="通知偏好已更新")
+
+
 # ================================================================
 # -- P3.6.8: AI 设计自适应 (Design Variant Auto-Adaptation) --
 # ================================================================
@@ -2133,25 +2322,17 @@ def disable_totp(
 _proto_variants_cache: dict[str, list[dict]] = {}
 
 
-@router.post("/system/design/variants", response_model=ApiResponse)
-def generate_design_variants(data: dict, db: Session = Depends(get_db)):
+@router.post("/system/design/variants", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def generate_design_variants(data: DesignVariantInput, db: Session = Depends(get_db)):
     """根据产品描述自动生成不同品类/场景的设计变体。
 
     P3.6.8: AI 驱动的设计自适应 — 根据 target_category 生成适配尺寸、
     配色方案和布局建议。目前使用规则模板，后续可接入 Ollama/OpenAI。
-
-    Request body:
-    {
-        "base_description": "一只可爱的橙色猫咪插画",
-        "target_categories": ["t_shirt", "mug", "poster", "sticker"],
-        "style_preferences": {"color_scheme": "vibrant", "mood": "playful"},
-        "language": "zh"
-    }
     """
-    base_desc = data.get("base_description", "")
-    target_categories = data.get("target_categories", [])
-    style_prefs = data.get("style_preferences", {})
-    language = data.get("language", "zh")
+    base_desc = data.base_description
+    target_categories = data.target_categories
+    style_prefs = data.style_preferences
+    language = data.language
 
     if not base_desc or not target_categories:
         raise HTTPException(status_code=400, detail="base_description 和 target_categories 为必填")
@@ -2376,7 +2557,11 @@ def _seed_disclaimers(db: Session):
             display_mode=seed["display_mode"],
             trigger_pages=seed["trigger_pages"],
         ))
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
 
 @router.get("/system/disclaimers", response_model=ApiResponse)
@@ -2407,9 +2592,9 @@ def get_disclaimers(
     })
 
 
-@router.post("/system/disclaimers/accept", response_model=ApiResponse)
+@router.post("/system/disclaimers/accept", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def accept_disclaimer(
-    data: dict,
+    data: DisclaimerAcceptanceInput,
     authorization: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
@@ -2419,8 +2604,8 @@ def accept_disclaimer(
     if uid != "local":
         user_id = uid
 
-    disclaimer_key = data.get("disclaimer_key")
-    context = data.get("context", "")
+    disclaimer_key = data.disclaimer_key
+    context = data.context
 
     disclaimer = db.query(Disclaimer).filter(
         Disclaimer.disclaimer_key == disclaimer_key
@@ -2433,8 +2618,12 @@ def accept_disclaimer(
         disclaimer_id=disclaimer.id,
         context=context,
     )
-    db.add(acceptance)
-    db.commit()
+    try:
+        db.add(acceptance)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(data={
         "disclaimer_key": disclaimer_key,

@@ -222,7 +222,7 @@ function viewContract(lic: LicRecord) {
   if (lic.contractUrl) {
     window.open(lic.contractUrl, '_blank')
   } else {
-    alert('合约文件待生成')
+    ;(window as any).$toast?.show('合约文件尚未生成', 'info')
   }
 }
 

@@ -38,6 +38,30 @@ class DashboardStats(BaseModel):
     upcoming_reminders: list[dict] = []
 
 
+class RevenueByMonth(BaseModel):
+    month: str
+    revenue: float
+    currency: str = "USD"
+
+
+class WorkTrend(BaseModel):
+    date: str
+    count: int
+
+
+class DashboardStatsResponse(BaseModel):
+    total_works: int = 0
+    total_notarized: int = 0
+    infringement_alerts: int = 0
+    monthly_revenue: float = 0.0
+    total_revenue_12m: float = 0.0
+    revenue_by_month: list[RevenueByMonth] = []
+    recent_works: list[dict] = []
+    daily_trends: list[WorkTrend] = []
+    total_works_30d: int = 0
+    avg_daily_works: float = 0.0
+
+
 class ErrorResponse(BaseModel):
     success: bool = False
     message: str
@@ -47,3 +71,15 @@ class ErrorResponse(BaseModel):
 class SuccessResponse(BaseModel):
     success: bool = True
     message: str = "ok"
+
+
+class RevenueSummary(BaseModel):
+    total_revenue: float = 0.0
+    revenue_by_month: list[RevenueByMonth] = []
+    currency: str = "USD"
+
+
+class TrendsSummary(BaseModel):
+    daily_trends: list[WorkTrend] = []
+    total_works_30d: int = 0
+    avg_daily: float = 0.0

@@ -1,19 +1,25 @@
 <template>
   <router-view v-slot="{ Component }">
-    <error-boundary>
+    <ErrorBoundary>
       <component :is="Component" />
-    </error-boundary>
+    </ErrorBoundary>
   </router-view>
+  <ToastContainer />
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import ToastContainer from './components/common/ToastContainer.vue'
+import ErrorBoundary from './components/common/ErrorBoundary.vue'
+import { setToast } from './api/client'
 
 const hasError = ref(false)
 
-onErrorCaptured((err, instance, info) => {
-  console.error('[ErrorBoundary]', err, info)
-  hasError.value = true
-  return false // 阻止向上传播
+onMounted(() => {
+  // Wire up toast to API client interceptor
+  const w = window as any
+  if (w.$toast) {
+    setToast(w.$toast)
+  }
 })
 </script>

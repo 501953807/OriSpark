@@ -4,6 +4,7 @@ Phase 3: 视频创作者字幕管理
 
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -13,6 +14,36 @@ from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
 router = APIRouter()
+
+
+class CreateSubtitlePayload(BaseModel):
+    work_id: str
+    language: str
+    format: str = "srt"
+    content: Optional[str] = None
+    file_path: Optional[str] = None
+    is_default: bool = False
+    word_count: Optional[int] = None
+    duration_seconds: Optional[int] = None
+
+
+class UpdateSubtitlePayload(BaseModel):
+    language: Optional[str] = None
+    format_type: Optional[str] = None
+    content: Optional[str] = None
+    file_path: Optional[str] = None
+    is_default: Optional[bool] = None
+    word_count: Optional[int] = None
+    duration_seconds: Optional[int] = None
+
+
+class CreateFormatPayload(BaseModel):
+    extension: str
+    mime_type: str
+    category: str = "other"
+    name_zh: Optional[str] = None
+    supports_metadata: bool = False
+    is_active: bool = True
 
 
 # ============================================================================
@@ -52,24 +83,24 @@ def list_subtitles(
 
 
 @router.post("/subtitles", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_subtitle(payload: dict, db: Session = Depends(get_db)):
+def create_subtitle(payload: CreateSubtitlePayload, db: Session = Depends(get_db)):
     """创建字幕."""
-    work_id = payload.get("work_id")
-    language = payload.get("language")
-    if not work_id or not language:
-        raise HTTPException(status_code=400, detail="work_id and language are required")
     subtitle = Subtitle(
-        work_id=work_id,
-        language=language,
-        format_type=payload.get("format", "srt"),
-        content=payload.get("content"),
-        file_path=payload.get("file_path"),
-        is_default=payload.get("is_default", False),
-        word_count=payload.get("word_count"),
-        duration_seconds=payload.get("duration_seconds"),
+        work_id=payload.work_id,
+        language=payload.language,
+        format_type=payload.format,
+        content=payload.content,
+        file_path=payload.file_path,
+        is_default=payload.is_default,
+        word_count=payload.word_count,
+        duration_seconds=payload.duration_seconds,
     )
     db.add(subtitle)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(subtitle)
     return ApiResponse(data=_to_dict(subtitle), message="字幕创建成功")
 
@@ -84,16 +115,20 @@ def get_subtitle(subtitle_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/subtitles/{subtitle_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_subtitle(subtitle_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_subtitle(subtitle_id: str, payload: UpdateSubtitlePayload, db: Session = Depends(get_db)):
     """更新字幕."""
     subtitle = db.query(Subtitle).filter(Subtitle.id == subtitle_id).first()
     if not subtitle:
         raise HTTPException(status_code=404, detail="字幕不存在")
-    for key in ("language", "format_type", "content", "file_path", "is_default", "word_count", "duration_seconds"):
-        if key in payload:
-            setattr(subtitle, key, payload[key])
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(subtitle, key, value)
     subtitle.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(subtitle)
     return ApiResponse(data=_to_dict(subtitle), message="字幕更新成功")
 
@@ -105,7 +140,11 @@ def delete_subtitle(subtitle_id: str, db: Session = Depends(get_db)):
     if not subtitle:
         raise HTTPException(status_code=404, detail="字幕不存在")
     db.delete(subtitle)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True}, message="字幕已删除")
 
 
@@ -133,22 +172,22 @@ def list_formats(db: Session = Depends(get_db)):
 
 
 @router.post("/subtitles/formats", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_format(payload: dict, db: Session = Depends(get_db)):
+def create_format(payload: CreateFormatPayload, db: Session = Depends(get_db)):
     """注册新的文件格式."""
-    extension = payload.get("extension")
-    mime_type = payload.get("mime_type")
-    if not extension or not mime_type:
-        raise HTTPException(status_code=400, detail="extension and mime_type are required")
     fmt = ProjectFileFormat(
-        extension=extension.lower().lstrip("."),
-        mime_type=mime_type,
-        category=payload.get("category", "other"),
-        name_zh=payload.get("name_zh"),
-        supports_metadata=payload.get("supports_metadata", False),
-        is_active=True,
+        extension=payload.extension.lower().lstrip("."),
+        mime_type=payload.mime_type,
+        category=payload.category,
+        name_zh=payload.name_zh,
+        supports_metadata=payload.supports_metadata,
+        is_active=payload.is_active,
     )
     db.add(fmt)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(fmt)
     return ApiResponse(data=_format_to_dict(fmt), message="格式注册成功")
 

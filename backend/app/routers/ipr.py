@@ -1,11 +1,16 @@
 """IP 登记指引 API 路由 — 对应: docs/modules-v3/03-ip-registration.md
 Phase 0.2: 合规改造(多推荐+置信度+免责声明+律师审核步骤)
 端点: 24 (ipr)"""
+import logging
+
 
 from datetime import date, datetime, timedelta
 from typing import Optional
 
+from pydantic import BaseModel, Field
+
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -17,8 +22,92 @@ from app.models.ipr import (
 from app.models.work import Work, WorkTag
 from app.models.notary import NotaryRecord
 from app.schemas.common import ApiResponse
+from app.deps import require_auth
+from sqlalchemy.exc import SQLAlchemyError
+
 
 router = APIRouter()
+
+
+class CreateIPRegistrationPayload(BaseModel):
+    work_id: Optional[str] = None
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+    application_no: Optional[str] = None
+    registration_no: Optional[str] = None
+    filing_date: Optional[str] = None
+    registration_date: Optional[str] = None
+    expiration_date: Optional[str] = None
+    next_action_date: Optional[str] = None
+    next_action_type: Optional[str] = None
+    status: str = "draft"
+    category_info: Optional[dict] = None
+    official_fee: float = 0
+    total_cost: float = 0
+    agent_name: Optional[str] = None
+    agent_fee: float = 0
+    official_url: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class UpdateIPRegistrationPayload(BaseModel):
+    work_id: Optional[str] = None
+    ip_type: Optional[str] = None
+    jurisdiction: Optional[str] = None
+    application_no: Optional[str] = None
+    registration_no: Optional[str] = None
+    filing_date: Optional[str] = None
+    registration_date: Optional[str] = None
+    expiration_date: Optional[str] = None
+    next_action_date: Optional[str] = None
+    next_action_type: Optional[str] = None
+    status: Optional[str] = None
+    category_info: Optional[dict] = None
+    official_fee: Optional[float] = None
+    total_cost: Optional[float] = None
+    agent_name: Optional[str] = None
+    agent_fee: Optional[float] = None
+    official_url: Optional[str] = None
+    notes: Optional[str] = None
+    reminder_date: Optional[str] = None
+
+
+class RecommendClassesPayload(BaseModel):
+    tags: list[str] = []
+    description: str = ""
+    creator_type: Optional[str] = None
+
+
+class PrefillApplicationPayload(BaseModel):
+    work_id: str
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+
+
+class ValidateApplicationPayload(BaseModel):
+    ip_type: str = "copyright"
+    fields: dict = {}
+
+
+class GenerateApplicationPayload(BaseModel):
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+    fields: dict = {}
+
+
+class ExportApplicationPayload(BaseModel):
+    ip_type: str = "copyright"
+    jurisdiction: str = "cn"
+    lawyer_consulted: str
+
+
+class FeeCalculatorPayload(BaseModel):
+    ip_type: str = "trademark"
+    jurisdictions: list[str] = []
+    classes: list[int] = []
+    design_count: int = 1
+    wipo_designations: list[str] = []
+    is_color: bool = False
 
 
 def _get_ip_types(db: Session) -> list[str]:
@@ -28,8 +117,8 @@ def _get_ip_types(db: Session) -> list[str]:
         dict_types = get_dict_values("ip_types", db)
         if dict_types:
             return dict_types
-    except Exception:
-        pass
+    except Exception as e:
+        logging.getLogger(__name__).exception("Error in _get_ip_types: %s", str(e))
     return ["copyright", "trademark", "design_patent", "utility_patent", "invention_patent"]
 
 
@@ -1352,7 +1441,11 @@ def _seed_nice_classes(db: Session):
                 common_for_creators=item.get("common_for_creators", []),
                 updated_year=item.get("updated_year", 2026),
             ))
-        db.commit()
+        try:
+            db.commit()
+        except SQLAlchemyError:
+            db.rollback()
+            raise
 
 
 # ─── P2.4.8-P2.4.9: 申请模板数据 ──────────────────────────────
@@ -1721,7 +1814,11 @@ def _seed_application_templates(db: Session):
                 legal_basis=item.get("legal_basis"),
                 is_active=True,
             ))
-        db.commit()
+        try:
+            db.commit()
+        except SQLAlchemyError:
+            db.rollback()
+            raise
 
 
 # ─── IP 登记记录 CRUD ─────────────────────────────────────────
@@ -1765,32 +1862,36 @@ def list_ip_registrations(
     ])
 
 
-@router.post("/ipr/registrations", response_model=ApiResponse)
-def create_ip_registration(data: dict, db: Session = Depends(get_db)):
+@router.post("/ipr/registrations", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_ip_registration(data: CreateIPRegistrationPayload, db: Session = Depends(get_db)):
     """创建 IP 登记记录."""
     record = IPRegistration(
-        work_id=data.get("work_id"),
-        ip_type=data.get("ip_type", "copyright"),
-        jurisdiction=data.get("jurisdiction", "cn"),
-        application_no=data.get("application_no"),
-        registration_no=data.get("registration_no"),
-        filing_date=_parse_date(data.get("filing_date")),
-        registration_date=_parse_date(data.get("registration_date")),
-        expiration_date=_parse_date(data.get("expiration_date")),
-        next_action_date=_parse_date(data.get("next_action_date")),
-        next_action_type=data.get("next_action_type"),
-        status=data.get("status", "draft"),
-        category_info=data.get("category_info"),
-        official_fee=data.get("official_fee", 0),
-        total_cost=data.get("total_cost", 0),
-        agent_name=data.get("agent_name"),
-        agent_fee=data.get("agent_fee", 0),
-        official_url=data.get("official_url"),
-        notes=data.get("notes"),
+        work_id=data.work_id,
+        ip_type=data.ip_type,
+        jurisdiction=data.jurisdiction,
+        application_no=data.application_no,
+        registration_no=data.registration_no,
+        filing_date=_parse_date(data.filing_date),
+        registration_date=_parse_date(data.registration_date),
+        expiration_date=_parse_date(data.expiration_date),
+        next_action_date=_parse_date(data.next_action_date),
+        next_action_type=data.next_action_type,
+        status=data.status,
+        category_info=data.category_info,
+        official_fee=data.official_fee,
+        total_cost=data.total_cost,
+        agent_name=data.agent_name,
+        agent_fee=data.agent_fee,
+        official_url=data.official_url,
+        notes=data.notes,
     )
     db.add(record)
-    db.commit()
-    db.refresh(record)
+    try:
+        db.commit()
+        db.refresh(record)
+    except SQLAlchemyError:
+        db.rollback()
+        raise
     return ApiResponse(message="IP 登记记录已创建", data={"id": record.id})
 
 
@@ -1824,8 +1925,8 @@ def get_ip_registration(record_id: str, db: Session = Depends(get_db)):
     })
 
 
-@router.patch("/ipr/registrations/{record_id}", response_model=ApiResponse)
-def update_ip_registration(record_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/ipr/registrations/{record_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_ip_registration(record_id: str, data: UpdateIPRegistrationPayload, db: Session = Depends(get_db)):
     """更新 IP 登记进度 (P1.7.14: 状态变更时推送通知)."""
     record = db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
     if not record:
@@ -1833,25 +1934,26 @@ def update_ip_registration(record_id: str, data: dict, db: Session = Depends(get
 
     old_status = record.status
 
-    updatable = [
-        "work_id", "ip_type", "jurisdiction", "application_no", "registration_no",
-        "status", "category_info", "official_fee", "total_cost", "agent_name",
-        "agent_fee", "official_url", "notes", "reminder_date",
-        "next_action_date", "next_action_type",
-    ]
-    for key in updatable:
-        if key in data:
-            setattr(record, key, data[key])
+    update_data = data.model_dump(exclude_unset=True)
 
-    # 处理日期字段
-    for date_field in ["filing_date", "registration_date", "expiration_date"]:
-        if date_field in data:
-            setattr(record, date_field, _parse_date(data[date_field]))
+    # Parse date fields
+    for key in ["filing_date", "registration_date", "expiration_date"]:
+        if key in update_data and update_data[key] is not None:
+            setattr(record, key, _parse_date(update_data[key]))
+            # Remove from update_data so they're not set as strings
+            update_data.pop(key, None)
 
-    db.commit()
+    for key, value in update_data.items():
+        setattr(record, key, value)
+
+    try:
+        db.commit()
+    except SQLAlchemyError:
+        db.rollback()
+        raise
 
     # P1.7.14: Push notification on status change
-    new_status = data.get("status")
+    new_status = update_data.get("status")
     if new_status and new_status != old_status:
         try:
             from app.routers.system import push_notification
@@ -1874,20 +1976,24 @@ def update_ip_registration(record_id: str, data: dict, db: Session = Depends(get
                 related_module="ipr",
                 related_id=record.id,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error in update_ip_registration_status: %s", str(e))
 
     return ApiResponse(message="已更新")
 
 
-@router.delete("/ipr/registrations/{record_id}", response_model=ApiResponse)
+@router.delete("/ipr/registrations/{record_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_ip_registration(record_id: str, db: Session = Depends(get_db)):
     """删除 IP 登记记录."""
     record = db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
     if not record:
         raise HTTPException(status_code=404, detail="记录不存在")
     db.delete(record)
-    db.commit()
+    try:
+        db.commit()
+    except SQLAlchemyError:
+        db.rollback()
+        raise
     return ApiResponse(message="已删除")
 
 
@@ -2035,14 +2141,14 @@ def get_class_goods(class_no: int, db: Session = Depends(get_db)):
     })
 
 
-@router.post("/ipr/recommend/classes", response_model=ApiResponse)
-def recommend_classes(data: dict, db: Session = Depends(get_db)):
+@router.post("/ipr/recommend/classes", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def recommend_classes(data: RecommendClassesPayload, db: Session = Depends(get_db)):
     """基于作品标签/描述推荐商标类别 (P1.4.3, 合规修订: 多推荐+置信度, 最少3条)."""
     _seed_nice_classes(db)
 
-    tags = data.get("tags", [])
-    description = data.get("description", "")
-    creator_type = data.get("creator_type")
+    tags = data.tags
+    description = data.description
+    creator_type = data.creator_type
 
     # 从标签匹配 (关键词→类别+置信度)
     matched: dict = {}  # class_no -> confidence_score
@@ -2203,12 +2309,12 @@ def get_application_template(template_id: str, db: Session = Depends(get_db)):
 # ─── 智能申请助手 ─────────────────────────────────────────────
 
 
-@router.post("/ipr/assistant/prefill", response_model=ApiResponse)
-def prefill_application(data: dict, db: Session = Depends(get_db)):
+@router.post("/ipr/assistant/prefill", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def prefill_application(data: PrefillApplicationPayload, db: Session = Depends(get_db)):
     """从作品数据预填申请表单 (P1.4.5-1.4.9)."""
-    work_id = data.get("work_id")
-    ip_type = data.get("ip_type", "copyright")
-    jurisdiction = data.get("jurisdiction", "cn")
+    work_id = data.work_id
+    ip_type = data.ip_type
+    jurisdiction = data.jurisdiction
 
     if not work_id:
         raise HTTPException(status_code=400, detail="work_id 是必填项")
@@ -2252,11 +2358,11 @@ def prefill_application(data: dict, db: Session = Depends(get_db)):
     })
 
 
-@router.post("/ipr/assistant/validate", response_model=ApiResponse)
-def validate_application(data: dict):
+@router.post("/ipr/assistant/validate", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def validate_application(data: ValidateApplicationPayload):
     """校验申请表单完整性和格式."""
-    ip_type = data.get("ip_type", "copyright")
-    fields_data = data.get("fields", {})
+    ip_type = data.ip_type
+    fields_data = data.fields
 
     issues = []
     required_fields = []
@@ -2325,12 +2431,12 @@ def validate_application(data: dict):
     })
 
 
-@router.post("/ipr/assistant/generate", response_model=ApiResponse)
-def generate_application(data: dict):
+@router.post("/ipr/assistant/generate", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def generate_application(data: GenerateApplicationPayload):
     """生成申请表信息(不实际生成PDF, 返回预览数据)."""
-    ip_type = data.get("ip_type", "copyright")
-    jurisdiction = data.get("jurisdiction", "cn")
-    fields = data.get("fields", {})
+    ip_type = data.ip_type
+    jurisdiction = data.jurisdiction
+    fields = data.fields
 
     # 构造预览数据
     preview = {
@@ -2351,16 +2457,16 @@ def generate_application(data: dict):
     return ApiResponse(data=preview)
 
 
-@router.post("/ipr/assistant/export", response_model=ApiResponse)
-def export_application(data: dict, db: Session = Depends(get_db)):
+@router.post("/ipr/assistant/export", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def export_application(data: ExportApplicationPayload, db: Session = Depends(get_db)):
     """导出申请材料预览(不实际生成ZIP, 返回清单).
 
     P3 UPL合规: 必须记录 lawyer_consulted 选择 (A/B/C).
     强制要求: 未完成律师审核确认(A或B)禁止导出.
     """
-    ip_type = data.get("ip_type", "copyright")
-    jurisdiction = data.get("jurisdiction", "cn")
-    lawyer_consulted = data.get("lawyer_consulted")  # A/B/C
+    ip_type = data.ip_type
+    jurisdiction = data.jurisdiction
+    lawyer_consulted = data.lawyer_consulted  # A/B/C
 
     # Mandatory: lawyer consultation confirmation required before export
     if not lawyer_consulted or lawyer_consulted not in ("A", "B"):
@@ -2395,7 +2501,7 @@ def export_application(data: dict, db: Session = Depends(get_db)):
 # ─── P1.4.8: Application package ZIP export ─────────────────
 
 
-@router.post("/ipr/registrations/{record_id}/export-package", response_model=ApiResponse)
+@router.post("/ipr/registrations/{record_id}/export-package", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def export_application_package(record_id: str, db: Session = Depends(get_db)):
     """P1.4.8: 生成申请材料 ZIP 包.
 
@@ -2962,8 +3068,8 @@ def get_trademark_gazette_info(jurisdiction: str):
     return ApiResponse(data=guide)
 
 
-@router.post("/ipr/fee-calculator", response_model=ApiResponse)
-def fee_calculator(data: dict):
+@router.post("/ipr/fee-calculator", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def fee_calculator(data: FeeCalculatorPayload):
     """IP 费用计算器: 计算各辖区商标/版权/外观设计的官方费用.
 
     Request body:
@@ -2974,12 +3080,12 @@ def fee_calculator(data: dict):
         wipo_designations: ["eu", "us"]  (仅WIPO时需要指定国家)
         is_color: bool  (WIPO商标彩色加收CHF 250)
     """
-    ip_type = data.get("ip_type", "trademark")
-    jurisdictions = data.get("jurisdictions", [])
-    classes = data.get("classes", [])
-    design_count = data.get("design_count", 1)
-    wipo_designations = data.get("wipo_designations", [])
-    is_color = data.get("is_color", False)
+    ip_type = data.ip_type
+    jurisdictions = data.jurisdictions
+    classes = data.classes
+    design_count = data.design_count
+    wipo_designations = data.wipo_designations
+    is_color = data.is_color
 
     if not jurisdictions:
         raise HTTPException(status_code=400, detail="jurisdictions 是必填项, 至少指定一个辖区")

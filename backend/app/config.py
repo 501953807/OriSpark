@@ -29,14 +29,14 @@ class Settings(BaseSettings):
 
     # 服务器
     HOST: str = "127.0.0.1"
-    PORT: int = 8765
+    PORT: int = 8001
 
     # CORS (开发时允许前端 dev server)
     CORS_ORIGINS: list[str] = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:8765",
-        "http://127.0.0.1:8765",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+        "http://localhost:8001",
+        "http://127.0.0.1:8001",
     ]
 
     # 工作区

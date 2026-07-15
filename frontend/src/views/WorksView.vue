@@ -37,25 +37,37 @@
         <button class="btn btn-secondary" @click="viewMode = viewMode === 'grid' ? 'list' : 'grid'">
           {{ viewMode === 'grid' ? '📋' : '🔲' }}
         </button>
-        <button v-if="selectedWorks.length > 0" class="btn btn-secondary" @click="enterMultiSelect">
-          多选 ({{ selectedWorks.length }})
-        </button>
         <button class="btn btn-primary" @click="showImportModal = true">
           📤 导入作品
         </button>
       </div>
     </div>
 
-    <!-- Batch toolbar (multi-select mode) -->
-    <div v-if="multiSelectMode" class="batch-toolbar">
-      <span>{{ selectedWorks.length }} 已选</span>
-      <select v-model="batchProjectId" class="filter-select">
-        <option :value="null">-- 分配项目 --</option>
-        <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
-      </select>
-      <button class="btn btn-primary btn-sm" @click="handleBatchAssign">批量分配</button>
-      <button class="btn btn-secondary btn-sm" @click="exitMultiSelect">取消</button>
-    </div>
+    <!-- Floating batch toolbar -->
+    <Teleport to="body">
+      <div v-if="selectionCount > 0" class="floating-batch-bar">
+        <div class="batch-inner">
+          <label class="batch-select-all">
+            <input type="checkbox" :checked="isPageAllSelected && selectionCount === filteredWorksCount && filteredWorksCount > 0" @change="toggleSelectPage" />
+            <span>本页全选</span>
+          </label>
+          <span class="batch-count">{{ selectionCount }} 已选</span>
+          <div class="batch-actions">
+            <select v-model="batchProjectId" class="batch-project-select" title="批量分配项目">
+              <option :value="null">📁 分配项目</option>
+              <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" @click="handleBatchAssign" :disabled="!batchProjectId">确认分配</button>
+            <button class="btn btn-primary btn-sm" @click="showBatchEdit = true">批量编辑</button>
+            <button class="btn btn-danger btn-sm" @click="handleBatchDelete">批量删除</button>
+            <button class="btn btn-secondary btn-sm" @click="selectAllPage = !selectAllPage">
+              {{ selectAllPage ? '取消全选' : '全选本页' }}
+            </button>
+          </div>
+          <button class="batch-dismiss" @click="clearSelection" title="取消选择">&times;</button>
+        </div>
+      </div>
+    </Teleport>
 
     <!-- Stats bar -->
     <div class="works-stats">
@@ -87,11 +99,12 @@
         v-for="work in workStore.works"
         :key="work.id"
         class="work-grid-card card"
-        @click="!multiSelectMode && $router.push(`/app/works/${work.id}`)"
+        :class="{ selected: selectedIdSet.has(work.id) }"
+        @click="!selectedIdSet.has(work.id) && $router.push(`/app/works/${work.id}`)"
       >
-        <!-- Multi-select checkbox -->
-        <div v-if="multiSelectMode" class="card-checkbox">
-          <input type="checkbox" :checked="selectedWorks.includes(work.id)" @click.stop @change="toggleSelect(work.id)" />
+        <!-- Selection checkbox -->
+        <div class="card-checkbox" @click.stop>
+          <input type="checkbox" :checked="selectedIdSet.has(work.id)" @change="toggleSelect(work.id)" />
         </div>
         <div class="card-thumb">
           <LazyImage v-if="work.thumbnail_url" :src="work.thumbnail_url" :alt="work.title" />
@@ -123,11 +136,12 @@
             v-for="work in visibleListWorks"
             :key="work.id"
             class="work-list-row"
-            @click="!multiSelectMode && $router.push(`/app/works/${work.id}`)"
+            :class="{ selected: selectedIdSet.has(work.id) }"
+            @click="!selectedIdSet.has(work.id) && $router.push(`/app/works/${work.id}`)"
           >
-            <!-- Multi-select checkbox -->
-            <div v-if="multiSelectMode" class="list-checkbox">
-              <input type="checkbox" :checked="selectedWorks.includes(work.id)" @click.stop @change="toggleSelect(work.id)" />
+            <!-- Selection checkbox -->
+            <div class="list-checkbox" @click.stop>
+              <input type="checkbox" :checked="selectedIdSet.has(work.id)" @change="toggleSelect(work.id)" />
             </div>
             <div class="list-thumb">
               <img v-if="work.thumbnail_url" :src="work.thumbnail_url" :alt="work.title" loading="lazy" />
@@ -185,11 +199,39 @@
       @save="handleSave"
       @delete="handleDelete"
     />
+
+    <!-- Batch edit dialog -->
+    <BatchEditDialog
+      :visible="showBatchEdit"
+      :work-ids="selectedIds"
+      @close="showBatchEdit = false"
+      @saved="onBatchSaved"
+    />
+
+    <!-- Batch delete confirmation -->
+    <div v-if="showBatchDeleteConfirm" class="modal-overlay">
+      <div class="modal-card animate-scale-in" style="max-width:420px">
+        <div class="modal-header">
+          <h3>确认批量删除</h3>
+          <button class="modal-close-btn" @click="showBatchDeleteConfirm = false">&times;</button>
+        </div>
+        <p class="delete-confirm-text">
+          确定要删除选中的 <strong>{{ selectedIds.length }}</strong> 个作品吗？
+          此操作不可恢复，作品将移入回收站。
+        </p>
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" @click="showBatchDeleteConfirm = false">取消</button>
+          <button class="btn btn-danger" :disabled="batchDeleting" @click="confirmBatchDelete">
+            {{ batchDeleting ? '删除中…' : '确认删除' }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import SearchBar from '@/components/common/SearchBar.vue'
 import FileDropZone from '@/components/common/FileDropZone.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
@@ -197,6 +239,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import StatusBadge from '@/components/common/StatusBadge.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import WorkEditPanel from '@/components/work/WorkEditPanel.vue'
+import BatchEditDialog from '@/components/work/BatchEditDialog.vue'
 import { useWorkStore } from '@/stores/useWorkStore'
 import { worksApi } from '@/api/works'
 import { getStageColor, getAllStages } from '@/composables/useWorkStages'
@@ -215,10 +258,20 @@ const uploading = ref(false)
 const allowDuplicate = ref(false)
 const editingWork = ref<Work | null>(null)
 
-// Multi-select
-const multiSelectMode = ref(false)
-const selectedWorks = ref<string[]>([])
+// Batch selection state
+const selectedIds = ref<string[]>([])
+const selectAllPage = ref(false)
+const showBatchEdit = ref(false)
+const showBatchDeleteConfirm = ref(false)
+const batchDeleting = ref(false)
 const batchProjectId = ref<string | null>(null)
+
+// Whether all items on the current page are selected
+const isPageAllSelected = computed(() => {
+  if (filteredWorksCount.value === 0) return false
+  const pageIds = workStore.works.map(w => w.id)
+  return pageIds.every(id => selectedIds.value.includes(id))
+})
 
 const allStages = getAllStages()
 
@@ -226,6 +279,12 @@ const fileTypeEmoji: Record<string, string> = {
   image: '🖼️', audio: '🎵', video: '🎬',
   document: '📄', design: '🎨', code: '💻',
 }
+
+// Count of works currently displayed (after filters + pagination)
+const filteredWorksCount = computed(() => workStore.works.length)
+
+// Which IDs are currently selected
+const selectedIdSet = computed(() => new Set(selectedIds.value))
 
 function truncate(str: string, maxLen: number): string {
   return str.length > maxLen ? str.slice(0, maxLen) + '…' : str
@@ -252,36 +311,74 @@ function handleProjectFilter() {
   workStore.setFilter('project_id', projectFilter.value || undefined)
 }
 
-function enterMultiSelect() {
-  multiSelectMode.value = true
-}
+const selectionCount = computed(() => selectedIds.value.length)
 
-function exitMultiSelect() {
-  multiSelectMode.value = false
-  selectedWorks.value = []
-  batchProjectId.value = null
+function isSelected(id: string): boolean {
+  return selectedIds.value.includes(id)
 }
 
 function toggleSelect(id: string) {
-  const idx = selectedWorks.value.indexOf(id)
-  if (idx >= 0) selectedWorks.value.splice(idx, 1)
-  else selectedWorks.value.push(id)
+  const idx = selectedIds.value.indexOf(id)
+  if (idx >= 0) selectedIds.value.splice(idx, 1)
+  else selectedIds.value.push(id)
+}
+
+function toggleSelectPage() {
+  const pageIds = workStore.works.map(w => w.id)
+  const allSelected = pageIds.every(id => selectedIds.value.includes(id))
+  if (allSelected) {
+    selectedIds.value = selectedIds.value.filter(id => !pageIds.includes(id))
+  } else {
+    for (const id of pageIds) {
+      if (!selectedIds.value.includes(id)) {
+        selectedIds.value.push(id)
+      }
+    }
+  }
+}
+
+function clearSelection() {
+  selectedIds.value = []
+  selectAllPage.value = false
 }
 
 async function handleBatchAssign() {
-  if (selectedWorks.value.length === 0) return
-  if (!batchProjectId.value) {
-    ;(window as any).$toast?.show('请选择一个项目', 'warning')
-    return
-  }
+  if (selectedIds.value.length === 0) return
   try {
-    await worksApi.batchEdit(selectedWorks.value, { project_id: batchProjectId.value })
-    ;(window as any).$toast?.show(`已将 ${selectedWorks.value.length} 个作品分配到项目`, 'success')
-    exitMultiSelect()
+    await worksApi.batchEdit(selectedIds.value, { project_id: batchProjectId.value })
+    ;(window as any).$toast?.show(`已将 ${selectedIds.value.length} 个作品分配到项目`, 'success')
+    clearSelection()
     await workStore.fetchWorks()
   } catch {
     ;(window as any).$toast?.show('批量分配失败', 'error')
   }
+}
+
+async function handleBatchDelete() {
+  if (selectedIds.value.length === 0) return
+  showBatchDeleteConfirm.value = true
+}
+
+async function confirmBatchDelete() {
+  batchDeleting.value = true
+  try {
+    await worksApi.batchDelete(selectedIds.value)
+    ;(window as any).$toast?.show(
+      `${selectedIds.value.length} 个作品已移入回收站`,
+      'info',
+    )
+    clearSelection()
+    await workStore.fetchWorks()
+  } catch {
+    ;(window as any).$toast?.show('批量删除失败', 'error')
+  } finally {
+    batchDeleting.value = false
+    showBatchDeleteConfirm.value = false
+  }
+}
+
+function onBatchSaved() {
+  clearSelection()
 }
 
 async function loadProjects() {
@@ -425,6 +522,49 @@ onUnmounted(() => {
 }
 .filter-chip button { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 1rem; }
 
+/* Floating batch bar */
+.floating-batch-bar {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 10000;
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+.batch-inner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 18px;
+  background: oklch(15% 0.02 240 / 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid oklch(100% 0 0 / 0.12);
+  border-radius: 16px;
+  color: #fff; font-size: 0.85rem;
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.25);
+  white-space: nowrap;
+}
+.batch-select-all {
+  display: flex; align-items: center; gap: 4px; cursor: pointer;
+  font-size: 0.78rem; opacity: 0.75; flex-shrink: 0;
+}
+.batch-select-all input { width: 14px; height: 14px; cursor: pointer; }
+.batch-count { font-weight: 700; flex-shrink: 0; }
+.batch-actions { display: flex; gap: 6px; align-items: center; }
+.batch-project-select {
+  padding: 5px 10px; border: 1px solid oklch(100% 0 0 / 0.15);
+  border-radius: 8px; background: oklch(100% 0 0 / 0.1);
+  color: #fff; font-size: 0.8rem; font-family: var(--font-body);
+  cursor: pointer; outline: none;
+}
+.batch-project-select option { background: #1a1a2e; color: #fff; }
+.batch-dismiss {
+  background: none; border: none; color: #fff; font-size: 1.2rem;
+  cursor: pointer; opacity: 0.5; padding: 0 4px; line-height: 1;
+}
+.batch-dismiss:hover { opacity: 1; }
+.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* Batch toolbar */
 .batch-toolbar {
   display: flex; align-items: center; gap: 10px;
@@ -443,6 +583,7 @@ onUnmounted(() => {
 }
 .work-grid-card { cursor: pointer; overflow: hidden; padding: 0; position: relative; }
 .work-grid-card.selected { outline: 2px solid var(--accent); }
+.work-grid-card input[type="checkbox"] { accent-color: var(--accent); }
 .card-thumb {
   height: 180px; position: relative; overflow: hidden;
   background: oklch(95% 0.003 240);
@@ -493,6 +634,7 @@ onUnmounted(() => {
 }
 .card-checkbox input {
   width: 20px; height: 20px; cursor: pointer;
+  accent-color: var(--accent);
 }
 
 /* List view */
@@ -517,6 +659,7 @@ onUnmounted(() => {
 }
 .list-checkbox input {
   width: 18px; height: 18px; cursor: pointer;
+  accent-color: var(--accent);
 }
 .list-thumb {
   width: 44px; height: 44px; border-radius: var(--radius-sm);
@@ -555,6 +698,8 @@ onUnmounted(() => {
 .import-options { padding: 12px 0; }
 .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+.modal-footer-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.delete-confirm-text { font-size: 0.92rem; line-height: 1.6; color: var(--fg); }
 
 /* Edit panel */
 .edit-overlay { position: fixed; inset: 0; background: oklch(0 0 0 / 0.3); z-index: 9998; }

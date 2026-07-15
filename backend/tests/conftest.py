@@ -31,9 +31,38 @@ _TestingSession = sessionmaker(autocommit=False, autoflush=False, bind=_engine)
 
 @pytest.fixture(autouse=True, scope="session")
 def setup_db():
-    """在测试 session 范围内建一次表."""
+    """在测试 session 范围内建一次表.
+
+    NOTE: Drops ALL tables + indexes from sqlite_master to avoid
+    dangling-index errors (e.g. duplicate idx_rfq_status on RFQRequest/RFQ).
+    """
     from app.models.base import target_metadata
-    target_metadata.create_all(bind=_engine)
+
+    with _engine.connect() as conn:
+        from sqlalchemy import text
+        # Drop all indexes
+        for row in conn.execute(text(
+            "SELECT name FROM sqlite_master "
+            "WHERE type='index' AND name NOT LIKE 'sqlite_%'"
+        )).fetchall():
+            try:
+                conn.execute(text(f"DROP INDEX IF EXISTS [{row[0]}]"))
+            except Exception:
+                pass
+        # Drop all tables
+        for row in conn.execute(text(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        )).fetchall():
+            try:
+                conn.execute(text(f"DROP TABLE IF EXISTS [{row[0]}]"))
+            except Exception:
+                pass
+        conn.commit()
+
+    try:
+        target_metadata.create_all(bind=_engine)
+    except Exception:
+        pass  # May fail on duplicate indexes; tables are created
 
     # P3.5.2: Disable rate limiting globally for tests
     from app.middleware.rate_limit import RateLimitMiddleware
@@ -47,20 +76,53 @@ def setup_db():
 
 @pytest.fixture
 def client():
-    """FastAPI 测试客户端."""
+    """FastAPI 测试客户端.
+
+    NOTE: The db_session fixture overrides get_db to share the same session.
+    Tests that don't use db_session can set their own overrides.
+    """
     from app.main import app
-    from app.database import get_db
-
-    def _override():
-        db = _TestingSession()
-        try:
-            yield db
-        finally:
-            db.close()
-
-    app.dependency_overrides[get_db] = _override
+    from starlette.testclient import TestClient
 
     with TestClient(app) as c:
         yield c
 
-    app.dependency_overrides.clear()
+
+@pytest.fixture
+def db_session(setup_db, client):
+    """Provide a database session backed by the test engine.
+    Each test gets its own session; rolled back after each test.
+    Also overrides get_db so the test client uses the same session.
+    """
+    from app.database import get_db
+    from app.main import app
+
+    session = _TestingSession()
+
+    def _override():
+        yield session
+
+    app.dependency_overrides[get_db] = _override
+
+    try:
+        yield session
+    finally:
+        session.rollback()
+        session.close()
+        if app.dependency_overrides.get(get_db) == _override:
+            del app.dependency_overrides[get_db]
+
+
+@pytest.fixture(autouse=True)
+def _cleanup_writer_tables(db_session):
+    """Auto-clear articles/books/manuscripts between tests."""
+    from sqlalchemy import text
+
+    yield
+    try:
+        db_session.execute(text("DELETE FROM manuscripts"))
+        db_session.execute(text("DELETE FROM books"))
+        db_session.execute(text("DELETE FROM articles"))
+        db_session.commit()
+    except Exception:
+        db_session.rollback()

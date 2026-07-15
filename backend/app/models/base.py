@@ -27,9 +27,12 @@ from app.models.system import (
     Plugin, EmailVerification, PasswordReset,
 )
 from app.models.subtitle import Subtitle, ProjectFileFormat
+from app.models.album import Album
+from app.models.music_release import MusicRelease
+from app.models.split_sheet import SplitSheet
 from app.models.video_fingerprint import VideoFingerprintConfig, VideoFrameFingerprint
-from app.models.work_variant import WorkVariantGroup
-from app.models.factory import RFQRequest, Sample, QualityReport
+from app.models.work_variant import WorkVariantGroup, WorkVariant
+from app.models.factory import RFQRequest, Sample, QualityReport, Factory, CraftProduct, RFQ
 
 # 摄影师 v2 预留
 from app.models.reserved_photographer import (
@@ -48,14 +51,26 @@ from app.models.reserved_crafts import (
     PhysicalProduct, MaterialInventory, MaterialTransaction,
     ProductionBatch,
 )
+from app.models.etsy import EtsyListing, EtsyOrder, EtsyShop
 from app.models.quality_inspection import QualityInspection
+
+# 文字作者 (P4)
+from app.models.article import Article
+from app.models.book import Book
+from app.models.manuscript import Manuscript
+
+# Commission 委托管理
+from app.models.commission import (
+    CommissionProject, CommissionOrder, CommissionMessage,
+    CommissionMilestone, CommissionPayment, CommissionRevision,
+)
 
 # 音乐 v4 预留
 from app.models.reserved_music import (
-    Album, AlbumTrack,
     WorkCollaborator,
     DistributionRelease, DistroPlatform,
     SampleClearance,
+    AlbumTrack,
 )
 
 # 文字 v4 预留

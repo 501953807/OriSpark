@@ -365,7 +365,7 @@ async function handleCreateAlbum() {
 
 async function handleDeleteAlbum(id: string) {
   try {
-    await store.deleteRelease(id)
+    await store.deleteAlbum(id)
     ;(window as any).$toast?.show('专辑已删除', 'success')
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : '删除失败'

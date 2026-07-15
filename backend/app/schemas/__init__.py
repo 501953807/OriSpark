@@ -16,7 +16,8 @@ from app.schemas.ipr import (
     IPRegistrationCreate, IPRegistrationUpdate, IPRegistrationResponse,
 )
 from app.schemas.supply import (
-    PartnerCreate, PartnerResponse, OrderCreate, OrderResponse,
+    SupplyPartnerCreate as PartnerCreate,
+    SupplyOrderCreate as OrderCreate,
 )
 from app.schemas.publish import (
     ProductCreate, ProductResponse, PublishRequest, RevenueCreate, RevenueResponse,
@@ -34,7 +35,7 @@ __all__ = [
     "MonitorTaskCreate", "MonitorTaskResponse", "MonitorResultResponse",
     "ScanRequest", "ResultUpdateRequest", "EvidencePackageCreate",
     "IPRegistrationCreate", "IPRegistrationUpdate", "IPRegistrationResponse",
-    "PartnerCreate", "PartnerResponse", "OrderCreate", "OrderResponse",
+    "PartnerCreate", "OrderCreate",
     "ProductCreate", "ProductResponse", "PublishRequest", "RevenueCreate", "RevenueResponse",
     "PaginatedResponse", "ApiResponse", "DashboardStats",
     "ErrorResponse", "SuccessResponse", "PaginationParams",

@@ -120,11 +120,16 @@ function selectAll() {
 }
 
 async function restoreSelected() {
-  for (const id of selectedIds.value) {
-    await workStore.restoreWork(id)
+  try {
+    for (const id of selectedIds.value) {
+      await workStore.restoreWork(id)
+    }
+    selectedIds.value = []
+    ;(window as any).$toast?.show('已恢复所选作品', 'success')
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '恢复失败'
+    ;(window as any).$toast?.show(msg, 'error')
   }
-  selectedIds.value = []
-  ;(window as any).$toast?.show(`已恢复 ${selectedIds.value.length || '所选'} 个作品`, 'success')
 }
 
 const fileTypeEmoji: Record<string, string> = {
@@ -133,20 +138,35 @@ const fileTypeEmoji: Record<string, string> = {
 }
 
 async function handleRestore(work: any) {
-  await workStore.restoreWork(work.id)
-  ;(window as any).$toast?.show('作品已恢复', 'success')
+  try {
+    await workStore.restoreWork(work.id)
+    ;(window as any).$toast?.show('作品已恢复', 'success')
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '恢复失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  }
 }
 
 async function handlePermanentDelete(work: any) {
   if (!confirm(`确定永久删除"${work.title}"？此操作不可恢复。`)) return
-  await workStore.permanentDeleteWork(work.id)
-  ;(window as any).$toast?.show('作品已永久删除', 'info')
+  try {
+    await workStore.permanentDeleteWork(work.id)
+    ;(window as any).$toast?.show('作品已永久删除', 'info')
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '删除失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  }
 }
 
 async function handleEmptyTrash() {
   if (!confirm('确定清空回收站？所有被删除的作品将被永久删除，此操作不可恢复。')) return
-  await workStore.emptyTrash()
-  ;(window as any).$toast?.show('回收站已清空', 'success')
+  try {
+    await workStore.emptyTrash()
+    ;(window as any).$toast?.show('回收站已清空', 'success')
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : '清空失败'
+    ;(window as any).$toast?.show(msg, 'error')
+  }
 }
 
 function formatFileSize(bytes: number): string {

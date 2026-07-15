@@ -3,7 +3,6 @@ import axios from 'axios'
 const client = axios.create({
   baseURL: '/api',
   timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
 })
 
 let toastFn: any = null
@@ -13,6 +12,10 @@ client.interceptors.request.use((config) => {
   const token = localStorage.getItem('oristudio-token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+  // Don't set Content-Type for FormData — let browser set multipart boundary
+  if (!(config.data instanceof FormData)) {
+    config.headers['Content-Type'] = 'application/json'
   }
   return config
 })

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,8 +38,9 @@ const router = createRouter({
         { path: 'works', name: 'works', component: () => import('@/views/WorksView.vue') },
         { path: 'works/:id', name: 'work-detail', component: () => import('@/views/WorkDetailView.vue') },
         { path: 'rights', name: 'rights', component: () => import('@/views/RightsView.vue') },
+        { path: 'risk-warning', name: 'risk-warning', component: () => import('@/views/RiskWarningView.vue') },
         { path: 'notary', redirect: '/app/rights' },
-        { path: 'monitor', redirect: '/app/rights' },
+        { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
         { path: 'supply', name: 'supply', component: () => import('@/views/SupplyView.vue') },
         { path: 'supply/listings', name: 'listings', component: () => import('@/views/ListingListView.vue') },
@@ -72,17 +74,17 @@ const router = createRouter({
   ],
 })
 
-// 路由守卫 (本地模式: 自动跳过登录)
-router.beforeEach((to, from, next) => {
+// 路由守卫 — 集中 auth store 管理
+router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
-    const token = localStorage.getItem('oristudio-token')
-    // 本地模式: 自动生成 token 跳过登录
-    if (!token) {
-      localStorage.setItem('oristudio-token', 'local-' + Date.now())
-      localStorage.setItem('oristudio-user', JSON.stringify({ name: '创作者', role: '本地用户' }))
+    const auth = useAuthStore()
+    if (!auth.isLoggedIn) {
+      // 本地模式: 自动生成 token 跳过登录
+      const fakeToken = 'local-' + Date.now()
+      auth.token = fakeToken
+      auth.user = { id: 'local', username: '创作者', email: 'local@oristudio', role: '本地用户' }
     }
   }
-  next()
 })
 
 export default router

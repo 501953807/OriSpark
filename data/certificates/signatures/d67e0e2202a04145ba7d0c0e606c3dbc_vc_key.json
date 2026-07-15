@@ -1,0 +1,5 @@
+{
+  "did": "did:key:zXwpS2F2oxMrpdsRVzR9PWCtGnC6hPqXnFhzZWfstX9y96pxXAzhmeau21QXijVF1q3yPiZSuKgvaNQpxYSEnXDaCqyc",
+  "private_key_pem": "-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg2rLjPtqwI6hVfWRO\n77fL0WUy8vAooa8IfpKlowpSbd6hRANCAARHWeChEJH0SL9FO3/tFnpRdrhYkEYb\na/vdYp/B4/uoDTgw9BTCL7n50gbqrHKuM8wpoi7AyTWV1at43lgA2STb\n-----END PRIVATE KEY-----\n",
+  "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAER1ngoRCR9Ei/RTt/7RZ6UXa4WJBG\nG2v73WKfweP7qA04MPQUwi+5+dIG6qxyrjPMKaIuwMk1ldWreN5YANkk2w==\n-----END PUBLIC KEY-----\n"
+}

@@ -1,6 +1,9 @@
 import os
+import sys
 import tempfile
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
 
 import pytest
 from sqlalchemy import create_engine

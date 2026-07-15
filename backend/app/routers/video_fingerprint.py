@@ -4,6 +4,8 @@ Phase 3: 视频创作者指纹生成与比对
 
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -13,6 +15,34 @@ from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
 router = APIRouter()
+
+
+class CreateConfigPayload(BaseModel):
+    name: str
+    algorithm: str = "pHash"
+    frame_interval: int = 30
+    threshold: float = 0.85
+    is_active: bool = True
+    settings: dict = Field(default_factory=dict)
+
+
+class UpdateConfigPayload(BaseModel):
+    name: Optional[str] = None
+    algorithm: Optional[str] = None
+    frame_interval: Optional[int] = None
+    threshold: Optional[float] = None
+    is_active: Optional[bool] = None
+    settings: Optional[dict] = None
+
+
+class CreateFramePayload(BaseModel):
+    work_id: str
+    frame_hash: str
+    config_id: Optional[str] = None
+    timestamp_ms: int = 0
+    frame_index: int = 0
+    similarity_score: Optional[float] = None
+    matched_work_id: Optional[str] = None
 
 
 # ============================================================================
@@ -47,22 +77,22 @@ def list_configs(
 
 
 @router.post("/video-fingerprint/configs", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_config(payload: dict, db: Session = Depends(get_db)):
+def create_config(payload: CreateConfigPayload, db: Session = Depends(get_db)):
     """创建视频指纹配置."""
-    name = payload.get("name")
-    algorithm = payload.get("algorithm", "pHash")
-    if not name:
-        raise HTTPException(status_code=400, detail="name is required")
     config = VideoFingerprintConfig(
-        name=name,
-        algorithm=algorithm,
-        frame_interval=payload.get("frame_interval", 30),
-        threshold=payload.get("threshold", 0.85),
-        is_active=payload.get("is_active", True),
-        settings=payload.get("settings", {}),
+        name=payload.name,
+        algorithm=payload.algorithm,
+        frame_interval=payload.frame_interval,
+        threshold=payload.threshold,
+        is_active=payload.is_active,
+        settings=payload.settings,
     )
     db.add(config)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(config)
     return ApiResponse(data=_config_to_dict(config), message="配置创建成功")
 
@@ -77,16 +107,20 @@ def get_config(config_id: str, db: Session = Depends(get_db)):
 
 
 @router.put("/video-fingerprint/configs/{config_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_config(config_id: str, payload: dict, db: Session = Depends(get_db)):
+def update_config(config_id: str, payload: UpdateConfigPayload, db: Session = Depends(get_db)):
     """更新视频指纹配置."""
     config = db.query(VideoFingerprintConfig).filter(VideoFingerprintConfig.id == config_id).first()
     if not config:
         raise HTTPException(status_code=404, detail="配置不存在")
-    for key in ("name", "algorithm", "frame_interval", "threshold", "is_active", "settings"):
-        if key in payload:
-            setattr(config, key, payload[key])
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(config, key, value)
     config.updated_at = datetime.utcnow()
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(config)
     return ApiResponse(data=_config_to_dict(config), message="配置更新成功")
 
@@ -98,7 +132,11 @@ def delete_config(config_id: str, db: Session = Depends(get_db)):
     if not config:
         raise HTTPException(status_code=404, detail="配置不存在")
     db.delete(config)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     return ApiResponse(data={"success": True}, message="配置已删除")
 
 
@@ -137,23 +175,23 @@ def list_frames(
 
 
 @router.post("/video-fingerprint/frames", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_frame(payload: dict, db: Session = Depends(get_db)):
+def create_frame(payload: CreateFramePayload, db: Session = Depends(get_db)):
     """创建视频帧指纹."""
-    work_id = payload.get("work_id")
-    frame_hash = payload.get("frame_hash")
-    if not work_id or not frame_hash:
-        raise HTTPException(status_code=400, detail="work_id and frame_hash are required")
     frame = VideoFrameFingerprint(
-        work_id=work_id,
-        config_id=payload.get("config_id"),
-        frame_hash=frame_hash,
-        timestamp_ms=payload.get("timestamp_ms", 0),
-        frame_index=payload.get("frame_index", 0),
-        similarity_score=payload.get("similarity_score"),
-        matched_work_id=payload.get("matched_work_id"),
+        work_id=payload.work_id,
+        config_id=payload.config_id,
+        frame_hash=payload.frame_hash,
+        timestamp_ms=payload.timestamp_ms,
+        frame_index=payload.frame_index,
+        similarity_score=payload.similarity_score,
+        matched_work_id=payload.matched_work_id,
     )
     db.add(frame)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(frame)
     return ApiResponse(data=_frame_to_dict(frame), message="帧指纹创建成功")
 
@@ -184,3 +222,22 @@ def _frame_to_dict(f: VideoFrameFingerprint) -> dict:
         "matched_work_id": f.matched_work_id,
         "created_at": f.created_at.isoformat() if f.created_at else None,
     }
+
+
+# ============================================================================
+# Video creator stats
+# ============================================================================
+
+@router.get("/video/stats", response_model=ApiResponse)
+def get_video_stats(db: Session = Depends(get_db)):
+    """获取视频创作者统计."""
+    total_frames = db.query(func.count(VideoFrameFingerprint.id)).scalar() or 0
+    total_configs = db.query(func.count(VideoFingerprintConfig.id)).scalar() or 0
+    total_matches = db.query(func.count(VideoFrameFingerprint.matched_work_id)).filter(
+        VideoFrameFingerprint.matched_work_id.isnot(None)
+    ).scalar() or 0
+    return ApiResponse(data={
+        "total_videos": total_configs,
+        "total_frames": total_frames,
+        "total_matches": total_matches,
+    })

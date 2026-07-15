@@ -169,7 +169,16 @@ const filteredIntegrations = computed(() => {
 })
 
 function connectItem(item: any) {
-  ;(window as any).$toast?.show(`连接 ${item.name} 功能将在后续版本中实现`, 'info')
+  const supported: Record<string, string> = {
+    baidu: '百度识图已在侵权监测模块中使用，无需额外配置',
+    google: 'Google Vision 已在侵权监测模块中使用，无需额外配置',
+    ollama: '请在偏好设置 → AI 模型中配置 Ollama 地址',
+  }
+  if (supported[item.key]) {
+    ;(window as any).$toast?.show(supported[item.key], 'info')
+    return
+  }
+  ;(window as any).$toast?.show(`${item.name} 连接功能规划中，敬请期待`, 'info')
 }
 </script>
 

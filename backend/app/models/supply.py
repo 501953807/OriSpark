@@ -113,6 +113,15 @@ class Order(Base):
     shipping_method = Column(String(100), nullable=True)
     tracking_number = Column(String(200), nullable=True)
     notes = Column(Text, nullable=True)
+
+    # ★ Phase 4 Task 1: 手工艺人扩展字段
+    factory_id = Column(String(32), nullable=True)          # 合作工厂
+    sample_status = Column(String(20), default="pending")   # pending/approved/rejected
+    quality_inspection = Column(String(20), default="pending")  # pending/pass/fail
+    production_quantity = Column(Integer, nullable=True)     # 大货数量
+    delivery_date = Column(DateTime, nullable=True)          # 交期
+    etasync_status = Column(String(20), default="idle")      # idle/syncing/synced/error
+
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -127,6 +136,7 @@ class Order(Base):
         Index("idx_order_expected_date", "expected_date"),
         Index("idx_order_type", "order_type"),
         Index("idx_order_campaign", "campaign_id"),
+        Index("idx_order_factory", "factory_id"),
     )
 
 

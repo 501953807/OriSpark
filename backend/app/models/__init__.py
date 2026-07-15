@@ -51,6 +51,7 @@ from app.models.reserved_crafts import (
     ProductionBatch,
 )
 from app.models.quality_inspection import QualityInspection
+from app.models.etsy import EtsyListing, EtsyOrder, EtsyShop
 from app.models.risk_warning import RiskWarning
 from app.models.ai_session import AiCreationSession
 
@@ -111,6 +112,7 @@ __all__ = [
     "MaterialInventory", "MaterialTransaction",
     "ProductionBatch",
     "QualityInspection",
+    "EtsyListing", "EtsyOrder", "EtsyShop",
     "RiskWarning",
     "AiCreationSession",
     # 音乐 v4

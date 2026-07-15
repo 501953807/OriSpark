@@ -16,16 +16,21 @@
     <!-- P3.4.1: Mobile overlay -->
     <div v-if="mobileMenuOpen" class="mobile-overlay" @click="mobileMenuOpen = false" aria-hidden="true"></div>
 
-    <AppSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
+    <DynamicSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
 
     <div
       :id="'main-content'"
       :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
     >
+      <CreatorTypeSwitcher :compact="false" />
       <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <Breadcrumb />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
+        <!-- Creator type switcher above page content -->
+        <div class="switcher-bar">
+          <CreatorTypeSwitcher :compact="true" />
+        </div>
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
@@ -174,23 +179,72 @@
       </div>
     </div>
 
-    <ToastContainer />
+    <!-- P3: Floating help center -->
+    <button
+      class="help-center-btn"
+      aria-label="帮助中心"
+      title="帮助中心"
+      @click="showHelp = !showHelp"
+    >
+      <span class="help-icon">{{ showHelp ? '✕' : '❓' }}</span>
+    </button>
+
+    <!-- Help panel -->
+    <div v-if="showHelp" class="help-panel" @click.self="showHelp = false">
+      <div class="help-header">
+        <h3>💡 帮助中心</h3>
+        <button class="help-close" @click="showHelp = false">×</button>
+      </div>
+      <div class="help-body">
+        <div class="help-section">
+          <h4>业务链顺序</h4>
+          <ol>
+            <li>创意资产 — 上传作品素材</li>
+            <li>IP登记 — 版权确权/商标注册/专利申请</li>
+            <li>权利保护 — 侵权监测与维权投诉</li>
+            <li>内容分发 — 多平台发布管理</li>
+            <li>商业转化 — 授权变现与交易撮合</li>
+            <li>经营管理 — 收入统计与数据分析</li>
+          </ol>
+        </div>
+        <div class="help-section">
+          <h4>常见问题</h4>
+          <details>
+            <summary>如何上传作品？</summary>
+            <p>点击顶部栏「导入作品」按钮，支持拖拽上传、批量 ZIP 导入。</p>
+          </details>
+          <details>
+            <summary>IP登记需要准备什么？</summary>
+            <p>著作权需准备作品样本、创作说明；商标需准备图样和商品类别。</p>
+          </details>
+          <details>
+            <summary>删除的作品能恢复吗？</summary>
+            <p>删除的作品进入回收站保留30天，期间可随时恢复。</p>
+          </details>
+        </div>
+        <div class="help-section">
+          <h4>技术支持</h4>
+          <p style="font-size:.82rem;color:var(--muted)">如需帮助请联系: support@oristudio.app</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import AppSidebar from './AppSidebar.vue'
+import DynamicSidebar from './DynamicSidebar.vue'
+import CreatorTypeSwitcher from './CreatorTypeSwitcher.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
 import Breadcrumb from '@/components/common/Breadcrumb.vue'
-import ToastContainer from '@/components/common/ToastContainer.vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { worksApi } from '@/api/works'
 
 const appStore = useAppStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const mobileMenuOpen = ref(false)
+const showHelp = ref(false)
 const showImportModal = ref(false)
 const importMode = ref<'local' | 'batch' | 'sync'>('local')
 const isDragging = ref(false)
@@ -311,6 +365,10 @@ function retryUpload(index: number) {
 <style scoped>
 .main-content {
   transition: margin-left 0.3s ease;
+}
+.switcher-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.15s ease;
@@ -437,4 +495,72 @@ function retryUpload(index: number) {
 .upload-status { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; }
 .upload-status-text.done { color: var(--accent); }
 .upload-status-text.error { color: var(--red); }
+
+/* Floating help center */
+.help-center-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px oklch(0 0 0 / 0.15);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.help-center-btn:hover { transform: scale(1.1); }
+.help-icon { line-height: 1; }
+.help-panel {
+  position: fixed;
+  bottom: 84px;
+  right: 24px;
+  z-index: 199;
+  width: 360px;
+  max-height: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.help-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.help-header h3 { margin: 0; font-size: 0.95rem; }
+.help-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.3rem; color: var(--muted); padding: 0 4px;
+}
+.help-body {
+  padding: 16px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.help-section { margin-bottom: 16px; }
+.help-section h4 { margin: 0 0 8px; font-size: 0.88rem; }
+.help-section ol { padding-left: 20px; margin: 0; }
+.help-section li { margin-bottom: 2px; }
+.help-section details { margin-bottom: 6px; }
+.help-section summary { cursor: pointer; font-weight: 600; }
+.help-section p { margin: 4px 0 0; }
+@media (max-width: 767px) {
+  .help-panel { width: calc(100vw - 32px); right: 16px; bottom: 76px; }
+  .help-center-btn { bottom: 16px; right: 16px; }
+}
 </style>

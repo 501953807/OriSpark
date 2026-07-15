@@ -2,6 +2,7 @@
 端点: 9 (versions)"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import Optional
 from datetime import datetime
@@ -13,6 +14,7 @@ from app.models.work import Work, WorkVersion, WorkTag, Project
 from app.services.hasher import compute_sha256
 from app.schemas.common import ApiResponse
 from app.schemas.work import ProjectCreate, ProjectResponse
+from app.deps import require_auth
 
 # 使用独立 router 前缀，在 main.py 中挂载到 /api
 router = APIRouter()
@@ -63,7 +65,7 @@ def get_version(work_id: str, version_id: str, db: Session = Depends(get_db)):
     })
 
 
-@router.post("/works/{work_id}/versions", response_model=ApiResponse)
+@router.post("/works/{work_id}/versions", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def create_version(work_id: str, notes: Optional[str] = None, db: Session = Depends(get_db)):
     """创建作品版本快照."""
     work = db.query(Work).filter(Work.id == work_id).first()
@@ -87,7 +89,11 @@ def create_version(work_id: str, notes: Optional[str] = None, db: Session = Depe
         notes=notes,
     )
     db.add(version)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(version)
 
     return ApiResponse(
@@ -96,7 +102,7 @@ def create_version(work_id: str, notes: Optional[str] = None, db: Session = Depe
     )
 
 
-@router.post("/works/{work_id}/rollback/{version_id}", response_model=ApiResponse)
+@router.post("/works/{work_id}/rollback/{version_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def rollback_version(work_id: str, version_id: str, db: Session = Depends(get_db)):
     """回滚到指定版本 (更新作品文件哈希和路径)."""
     work = db.query(Work).filter(Work.id == work_id).first()
@@ -112,7 +118,11 @@ def rollback_version(work_id: str, version_id: str, db: Session = Depends(get_db
 
     # 回滚文件哈希
     work.sha256 = version.file_hash
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message=f"已回滚到版本 {version.version_num}")
 
@@ -138,7 +148,13 @@ def list_projects(db: Session = Depends(get_db)):
     ])
 
 
-@router.post("/projects", response_model=ApiResponse)
+class ProjectUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    cover_work_id: Optional[str] = None
+
+
+@router.post("/projects", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
     """创建项目."""
     project = Project(
@@ -147,28 +163,37 @@ def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
         cover_work_id=data.cover_work_id,
     )
     db.add(project)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     db.refresh(project)
 
     return ApiResponse(data={"id": project.id, "name": project.name})
 
 
-@router.patch("/projects/{project_id}", response_model=ApiResponse)
-def update_project(project_id: str, data: dict, db: Session = Depends(get_db)):
+@router.patch("/projects/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db)):
     """更新项目."""
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="项目不存在")
 
     for key in ["name", "description", "cover_work_id"]:
-        if key in data:
-            setattr(project, key, data[key])
-    db.commit()
+        val = getattr(data, key, None)
+        if val is not None:
+            setattr(project, key, val)
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="项目已更新")
 
 
-@router.delete("/projects/{project_id}", response_model=ApiResponse)
+@router.delete("/projects/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def delete_project(project_id: str, db: Session = Depends(get_db)):
     """删除项目 (关联作品的项目字段置空)."""
     project = db.query(Project).filter(Project.id == project_id).first()
@@ -180,12 +205,16 @@ def delete_project(project_id: str, db: Session = Depends(get_db)):
         {"project_id": None}
     )
     db.delete(project)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
     return ApiResponse(message="项目已删除")
 
 
-@router.post("/works/{work_id}/assign-project/{project_id}", response_model=ApiResponse)
+@router.post("/works/{work_id}/assign-project/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def assign_to_project(work_id: str, project_id: str, db: Session = Depends(get_db)):
     """将作品分配到项目."""
     work = db.query(Work).filter(Work.id == work_id).first()
@@ -197,6 +226,8 @@ def assign_to_project(work_id: str, project_id: str, db: Session = Depends(get_d
         raise HTTPException(status_code=404, detail="项目不存在")
 
     work.project_id = project_id
-    db.commit()
-
-    return ApiResponse(message=f"已分配到项目: {project.name}")
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise

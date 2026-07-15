@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { AiSession } from '@/types/ai_session'
+import type { AiSession } from '@/types/illustrator'
 
 const props = defineProps<{ workId: string }>()
 const emit = defineEmits<{

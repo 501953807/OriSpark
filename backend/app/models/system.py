@@ -156,6 +156,9 @@ class User(Base):
     # 头像 URL (通用)
     avatar_url = Column(Text, nullable=True)
 
+    # 个人简介
+    bio = Column(Text, nullable=True)
+
     # 通知偏好
     notification_prefs = Column(JSON, default=dict)
 
