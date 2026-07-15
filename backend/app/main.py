@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization
+from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
 from app.middleware.logging import LoggingMiddleware
