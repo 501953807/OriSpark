@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { RiskWarning, RiskCheckRequest } from '@/types/risk_warning'
+import type { RiskWarning, RiskCheckRequest, TaxDeadline, BurnoutRisk } from '@/types/risk_warning'
 import { riskWarningApi } from '@/api/risk_warning'
+import { listTaxDeadlines, addTaxDeadline, completeTaxDeadline as apiCompleteTaxDeadline, getBurnoutRisk } from '@/api/riskWarning'
 
 export const useRiskWarningStore = defineStore('riskWarning', () => {
   const warnings = ref<RiskWarning[]>([])
   const loading = ref(false)
+  const taxDeadlines = ref<TaxDeadline[]>([])
+  const burnoutRisk = ref<BurnoutRisk | null>(null)
 
   async function check(data: Record<string, unknown>) {
     loading.value = true
@@ -53,5 +56,38 @@ export const useRiskWarningStore = defineStore('riskWarning', () => {
     }
   }
 
-  return { warnings, loading, check, fetchAll, fetchByWork, dismiss }
+  async function loadTaxDeadlines() {
+    const res = await listTaxDeadlines()
+    taxDeadlines.value = res
+  }
+
+  async function addDeadline(data: { tax_type: string; due_date: string; amount_yuan?: number }) {
+    await addTaxDeadline(data)
+    await loadTaxDeadlines()
+  }
+
+  async function markComplete(id: string) {
+    await apiCompleteTaxDeadline(id)
+    await loadTaxDeadlines()
+  }
+
+  async function loadBurnoutRisk() {
+    const res = await getBurnoutRisk()
+    burnoutRisk.value = res
+  }
+
+  return {
+    warnings,
+    loading,
+    taxDeadlines,
+    burnoutRisk,
+    check,
+    fetchAll,
+    fetchByWork,
+    dismiss,
+    loadTaxDeadlines,
+    addDeadline,
+    markComplete,
+    loadBurnoutRisk,
+  }
 })
