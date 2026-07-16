@@ -6,11 +6,10 @@ from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, 
 from app.database import Base
 
 
-class CopyrightRegistration(Base):
-    __tablename__ = "cr_guide_registrations"
+class GuideRegistration(Base):
     """版权登记记录."""
 
-    __tablename__ = "copyright_registrations"
+    __tablename__ = "guide_registrations"
 
     id = Column(String(32), primary_key=True, default=lambda: uuid.uuid4().hex)
     user_id = Column(String(32), nullable=False, index=True)

@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models.copyright_guide import GuideRegistration
 from app.schemas.copyright_guide import (
     RegistrationCreate, RegistrationUpdate, RegistrationResponse,
-    SchemaGuide as GuideSchema, SchemaSummary,
+    RegistrationGuide, RegistrationSummary,
 )
 from app.services.copyright_guide_service import (
     get_or_create_guides, get_guide, create_registration,
@@ -48,12 +49,12 @@ def update(reg_id: str, data: RegistrationUpdate, db: Session = Depends(get_db))
     """更新登记申请."""
     if not update_registration(db, "current_user", reg_id, data.model_dump(exclude_none=True)):
         raise HTTPException(status_code=404, detail="Registration not found")
-    return db.query(CopyrightRegistration).filter(
-        CopyrightRegistration.id == reg_id,
+    return db.query(GuideRegistration).filter(
+        GuideRegistration.id == reg_id,
     ).first()
 
 
-@router.get("/summary", response_model=SchemaSummary)
+@router.get("/summary", response_model=RegistrationSummary)
 def summary(db: Session = Depends(get_db)):
     """获取登记概览统计."""
     return get_registration_summary(db, "current_user")

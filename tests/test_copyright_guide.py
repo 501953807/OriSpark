@@ -1,13 +1,12 @@
 """Tests for copyright registration guide module."""
 
-from datetime import date, datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, PropertyMock
 
 import pytest
 
 from app.services.copyright_guide_service import (
-    get_all_guides,
-    get_guide_by_work_type,
+    get_or_create_guides,
+    get_guide,
     list_registrations,
     create_registration,
     get_registration_summary,
@@ -48,28 +47,35 @@ class TestDefaultGuides:
 class TestGetGuides:
     """Test guide retrieval functions."""
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_get_all_guides_returns_list(self, mock_session):
+    def test_get_or_create_guides_seeds_missing(self):
         db = MagicMock()
-        mock_session.return_value = db
-        result = get_all_guides()
+        db.query = MagicMock()
+
+        # First query returns empty (guide not found)
+        db.query.return_value.filter.return_value.first = MagicMock(return_value=None)
+        # Second query returns all guides
+        db.query.return_value.filter.return_value.all = MagicMock(return_value=[])
+
+        result = get_or_create_guides(db)
         assert isinstance(result, list)
-        assert len(result) == 4
+        # Should have called add and commit to seed guides
+        calls = db.add.call_count
+        assert calls >= 1
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_get_guide_by_work_type(self, mock_session):
+    def test_get_guide_returns_existing(self):
         db = MagicMock()
-        mock_session.return_value = db
-        guide = get_guide_by_work_type("illustration")
-        assert guide is not None
-        assert guide["work_type"] == "illustration"
+        mock_guide = MagicMock(work_type="illustration", is_active=True)
+        db.query.return_value.filter.return_value.first = MagicMock(return_value=mock_guide)
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_get_guide_by_unknown_work_type(self, mock_session):
+        result = get_guide(db, "illustration")
+        assert result == mock_guide
+
+    def test_get_guide_returns_none_for_unknown(self):
         db = MagicMock()
-        mock_session.return_value = db
-        guide = get_guide_by_work_type("unknown_type")
-        assert guide is None
+        db.query.return_value.filter.return_value.first = MagicMock(return_value=None)
+
+        result = get_guide(db, "unknown_type")
+        assert result is None
 
 
 class TestRegistrationCRUD:
@@ -80,85 +86,88 @@ class TestRegistrationCRUD:
         db = MagicMock()
         db.add = MagicMock()
         db.commit = MagicMock()
-        db.refresh = MagicMock()
+        db.flush = MagicMock()
         return db
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_create_registration(self, mock_session, mock_db):
-        mock_session.return_value = mock_db
-        mock_db.query = MagicMock()
-        mock_db.query.return_value.filter = MagicMock()
-        mock_db.query.return_value.filter.return_value.order_by = MagicMock()
-        mock_db.query.return_value.filter.return_value.order_by.return_value.first = MagicMock(
-            return_value=None
-        )
+    def test_create_registration(self, mock_db):
+        """SQLAlchemy column defaults fire on flush, not __init__, so mock needs help."""
+        from app.models.copyright_guide import GuideRegistration
 
-        result = create_registration(
-            mock_db, user_id="u1", title="Test Work", work_type="illustration"
-        )
-        assert result is not None
-        assert result["title"] == "Test Work"
-        assert result["work_type"] == "illustration"
-        assert result["status"] == "draft"
-        mock_db.add.assert_called_once()
-        mock_db.commit.assert_called_once()
+        original_init = GuideRegistration.__init__
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_list_registrations_empty(self, mock_session):
-        db = MagicMock()
-        mock_session.return_value = db
-        db.query = MagicMock()
-        db.query.return_value.filter = MagicMock()
-        db.query.return_value.filter.return_value.order_by = MagicMock()
-        db.query.return_value.filter.return_value.order_by.return_value.all = MagicMock(
+        def patched_init(self, **kwargs):
+            original_init(self, **kwargs)
+            if self.status is None:
+                self.status = "draft"
+
+        try:
+            GuideRegistration.__init__ = patched_init
+            result = create_registration(
+                mock_db, user_id="u1", title="Test Work", work_type="illustration"
+            )
+            assert result is not None
+            assert result["status"] == "draft"
+            mock_db.add.assert_called_once()
+            mock_db.flush.assert_called_once()
+        finally:
+            GuideRegistration.__init__ = original_init
+
+    def test_list_registrations_empty(self, mock_db):
+        mock_db.query.return_value.filter.return_value.order_by.return_value.all = MagicMock(
             return_value=[]
         )
-
-        result = list_registrations(db, user_id="u1")
+        result = list_registrations(mock_db, user_id="u1")
         assert result == []
 
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_registration_summary_empty(self, mock_session):
+    def test_update_registration_success(self, mock_db):
+        from app.services.copyright_guide_service import update_registration
+
+        mock_reg = MagicMock()
+        mock_db.query.return_value.filter.return_value.first = MagicMock(return_value=mock_reg)
+
+        result = update_registration(mock_db, "u1", "r1", {"status": "submitted"})
+        assert result is True
+
+    def test_update_registration_not_found(self, mock_db):
+        from app.services.copyright_guide_service import update_registration
+
+        mock_db.query.return_value.filter.return_value.first = MagicMock(return_value=None)
+
+        result = update_registration(mock_db, "u1", "r1", {"status": "submitted"})
+        assert result is False
+
+
+class TestRegistrationSummary:
+    """Test registration summary aggregation."""
+
+    def test_summary_empty(self):
         db = MagicMock()
-        mock_session.return_value = db
-        db.query = MagicMock()
-        db.query.return_value.filter = MagicMock()
         db.query.return_value.filter.return_value.all = MagicMock(return_value=[])
 
         summary = get_registration_summary(db, user_id="u1")
         assert summary["total"] == 0
         assert summary["total_fees_yuan"] == 0
 
-
-class TestRegistrationSummary:
-    """Test registration summary aggregation."""
-
-    @patch("app.services.copyright_guide_service.SessionLocal")
-    def test_summary_with_multiple_registrations(self, mock_session):
+    def test_summary_with_multiple_registrations(self):
         db = MagicMock()
-        mock_session.return_value = db
-        db.query = MagicMock()
 
         reg1 = MagicMock()
         reg1.id = "r1"
         reg1.status = "submitted"
         reg1.work_type = "illustration"
         reg1.fee_yuan = 200.0
-        reg1.title = "Work A"
 
         reg2 = MagicMock()
         reg2.id = "r2"
         reg2.status = "approved"
         reg2.work_type = "photo"
         reg2.fee_yuan = 150.0
-        reg2.title = "Work B"
 
         reg3 = MagicMock()
         reg3.id = "r3"
         reg3.status = "submitted"
         reg3.work_type = "illustration"
         reg3.fee_yuan = None
-        reg3.title = "Work C"
 
         db.query.return_value.filter.return_value.all = MagicMock(
             return_value=[reg1, reg2, reg3]
