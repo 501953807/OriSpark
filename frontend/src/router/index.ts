@@ -47,6 +47,7 @@ const router = createRouter({
         { path: 'multimarket', name: 'multimarket', component: () => import('@/views/MultiMarketView.vue') },
         { path: 'enforcement-roi', name: 'enforcement-roi', component: () => import('@/views/EnforcementRoiView.vue') },
         { path: 'private-traffic', name: 'private-traffic', component: () => import('@/views/PrivateTrafficView.vue') },
+        { path: 'growth-stages', name: 'growth-stages', component: () => import('@/views/GrowthStageView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
