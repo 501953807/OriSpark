@@ -54,6 +54,9 @@ from app.models.quality_inspection import QualityInspection
 from app.models.etsy import EtsyListing, EtsyOrder, EtsyShop
 from app.models.risk_warning import RiskWarning
 from app.models.ai_session import AiCreationSession
+from app.models.content_pipeline import (
+    PlatformAccount, ContentTemplate, MultiPlatformSchedule, PublishLog,
+)
 
 from app.models.album import Album
 from app.models.music_release import MusicRelease
@@ -115,6 +118,8 @@ __all__ = [
     "EtsyListing", "EtsyOrder", "EtsyShop",
     "RiskWarning",
     "AiCreationSession",
+    # 多平台内容分发流水线
+    "PlatformAccount", "ContentTemplate", "PublishSchedule", "PublishLog",
     # 音乐 v4
     "Album", "MusicRelease", "SplitSheet", "AlbumTrack",
     "WorkCollaborator",

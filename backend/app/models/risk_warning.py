@@ -3,7 +3,7 @@
 from datetime import datetime, date
 
 from sqlalchemy import (
-    Column, String, Float, Text, DateTime, Boolean, ForeignKey, Index, Date, JSON,
+    Column, String, Float, Text, DateTime, Boolean, ForeignKey, Index, Date, JSON, Integer,
 )
 
 from app.database import Base
