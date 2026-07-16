@@ -137,6 +137,7 @@ from app.routers.enforcement_roi import router as enforcement_roi_router
 from app.routers.private_traffic import router as private_traffic_router
 from app.routers.growth_stage import router as growth_stage_router
 from app.routers.content_pipeline import router as content_pipeline_router
+from app.routers.pod_profit import router as pod_profit_router
 
 app.include_router(risk_router)
 app.include_router(credit_router)
@@ -150,6 +151,7 @@ app.include_router(enforcement_roi_router)
 app.include_router(private_traffic_router)
 app.include_router(growth_stage_router)
 app.include_router(content_pipeline_router)
+app.include_router(pod_profit_router)
 
 
 @app.get("/api/health")

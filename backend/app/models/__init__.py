@@ -57,6 +57,7 @@ from app.models.ai_session import AiCreationSession
 from app.models.content_pipeline import (
     PlatformAccount, ContentTemplate, MultiPlatformSchedule, PublishLog,
 )
+from app.models.pod_profit import PODProduct, PODDesign, PODSale
 
 from app.models.album import Album
 from app.models.music_release import MusicRelease
@@ -119,7 +120,9 @@ __all__ = [
     "RiskWarning",
     "AiCreationSession",
     # 多平台内容分发流水线
-    "PlatformAccount", "ContentTemplate", "PublishSchedule", "PublishLog",
+    "PlatformAccount", "ContentTemplate", "MultiPlatformSchedule", "PublishLog",
+    # POD 利润计算器
+    "PODProduct", "PODDesign", "PODSale",
     # 音乐 v4
     "Album", "MusicRelease", "SplitSheet", "AlbumTrack",
     "WorkCollaborator",
