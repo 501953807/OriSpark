@@ -43,6 +43,7 @@ const router = createRouter({
         { path: 'contract-risk', name: 'contract-risk', component: () => import('@/views/ContractRiskView.vue') },
         { path: 'navigation', name: 'navigation', component: () => import('@/views/CreatorNavigationView.vue') },
         { path: 'insurance', name: 'insurance', component: () => import('@/views/InsuranceMarketView.vue') },
+        { path: 'capability', name: 'capability', component: () => import('@/views/CapabilityAssessmentView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },

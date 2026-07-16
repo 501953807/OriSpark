@@ -131,6 +131,7 @@ from app.routers.revenue import router as revenue_router
 from app.routers.contract_risk import router as contract_risk_router
 from app.routers.navigation import router as navigation_router
 from app.routers.insurance import router as insurance_router
+from app.routers.capability import router as capability_router
 
 app.include_router(risk_router)
 app.include_router(credit_router)
@@ -138,6 +139,7 @@ app.include_router(revenue_router)
 app.include_router(contract_risk_router)
 app.include_router(navigation_router)
 app.include_router(insurance_router)
+app.include_router(capability_router)
 
 
 @app.get("/api/health")
