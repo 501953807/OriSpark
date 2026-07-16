@@ -50,6 +50,8 @@ const router = createRouter({
         { path: 'growth-stages', name: 'growth-stages', component: () => import('@/views/GrowthStageView.vue') },
         { path: 'risk-center', name: 'risk-center', component: () => import('@/views/RiskWarningCenterView.vue') },
         { path: 'content-pipeline', name: 'content-pipeline', component: () => import('@/views/ContentPipelineView.vue') },
+        { path: 'pod-profit', name: 'pod-profit', component: () => import('@/views/PODProfitView.vue') },
+        { path: 'case-studies', name: 'case-studies', component: () => import('@/views/CaseStudyView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
