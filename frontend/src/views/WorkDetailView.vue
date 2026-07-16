@@ -615,6 +615,7 @@ function handleClickOutside(e: MouseEvent) {
   if (!el) showMoreMenu.value = false
 }
 onMounted(() => {
+  loadWork().catch((e) => console.error('WorkDetailView mount error:', e))
   document.addEventListener('click', handleClickOutside)
 })
 onUnmounted(() => {
