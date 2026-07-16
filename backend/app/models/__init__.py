@@ -59,6 +59,7 @@ from app.models.content_pipeline import (
 )
 from app.models.pod_profit import PODProduct, PODDesign, PODSale
 from app.models.case_study import CaseStudy, CaseTag
+from app.models.copyright_guide import CopyrightRegistration, RegistrationGuide
 
 from app.models.album import Album
 from app.models.music_release import MusicRelease

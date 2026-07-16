@@ -52,6 +52,7 @@ const router = createRouter({
         { path: 'content-pipeline', name: 'content-pipeline', component: () => import('@/views/ContentPipelineView.vue') },
         { path: 'pod-profit', name: 'pod-profit', component: () => import('@/views/PODProfitView.vue') },
         { path: 'case-studies', name: 'case-studies', component: () => import('@/views/CaseStudyView.vue') },
+        { path: 'copyright-guide', name: 'copyright-guide', component: () => import('@/views/CopyrightGuideView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
