@@ -128,10 +128,12 @@ app.include_router(ai_generate_router)
 from app.routers.risk import router as risk_router
 from app.routers.credit import router as credit_router
 from app.routers.revenue import router as revenue_router
+from app.routers.contract_risk import router as contract_risk_router
 
 app.include_router(risk_router)
 app.include_router(credit_router)
 app.include_router(revenue_router)
+app.include_router(contract_risk_router)
 
 
 @app.get("/api/health")
