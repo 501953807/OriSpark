@@ -65,6 +65,7 @@ design/
 docs/
 
 # AI Agent tools / Claude Code / Serena / OMC (local dev only)
+.codegraph/
 .claude/
 .omc/
 .serena/

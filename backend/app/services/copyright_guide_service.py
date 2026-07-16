@@ -5,7 +5,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from app.models.copyright_guide import CopyrightRegistration, RegistrationGuide
+from app.models.copyright_guide import GuideRegistration, RegistrationGuide
 
 
 # 预置各作品类型的登记指南
@@ -97,7 +97,7 @@ def create_registration(
     registration_type: str = "domestic",
 ) -> dict:
     """创建新的版权登记申请."""
-    reg = CopyrightRegistration(
+    reg = GuideRegistration(
         user_id=user_id,
         title=title,
         work_type=work_type,
@@ -112,9 +112,9 @@ def update_registration(
     db: Session, user_id: str, reg_id: str, data: dict,
 ) -> bool:
     """更新登记申请状态."""
-    reg = db.query(CopyrightRegistration).filter(
-        CopyrightRegistration.id == reg_id,
-        CopyrightRegistration.user_id == user_id,
+    reg = db.query(GuideRegistration).filter(
+        GuideRegistration.id == reg_id,
+        GuideRegistration.user_id == user_id,
     ).first()
     if not reg:
         return False
@@ -125,17 +125,17 @@ def update_registration(
     return True
 
 
-def list_registrations(db: Session, user_id: str) -> list[CopyrightRegistration]:
+def list_registrations(db: Session, user_id: str) -> list[GuideRegistration]:
     """获取用户的版权登记记录."""
-    return db.query(CopyrightRegistration).filter(
-        CopyrightRegistration.user_id == user_id,
-    ).order_by(CopyrightRegistration.created_at.desc()).all()
+    return db.query(GuideRegistration).filter(
+        GuideRegistration.user_id == user_id,
+    ).order_by(GuideRegistration.created_at.desc()).all()
 
 
 def get_registration_summary(db: Session, user_id: str) -> dict:
     """获取登记概览: 按状态/类型分布."""
-    regs = db.query(CopyrightRegistration).filter(
-        CopyrightRegistration.user_id == user_id,
+    regs = db.query(GuideRegistration).filter(
+        GuideRegistration.user_id == user_id,
     ).all()
 
     by_status = {}

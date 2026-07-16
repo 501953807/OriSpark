@@ -7,6 +7,7 @@ from app.database import Base
 
 
 class CopyrightRegistration(Base):
+    __tablename__ = "cr_guide_registrations"
     """版权登记记录."""
 
     __tablename__ = "copyright_registrations"

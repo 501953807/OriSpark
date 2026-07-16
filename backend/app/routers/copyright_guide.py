@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.copyright_guide import (
     RegistrationCreate, RegistrationUpdate, RegistrationResponse,
-    RegistrationGuide as GuideSchema, RegistrationSummary,
+    SchemaGuide as GuideSchema, SchemaSummary,
 )
 from app.services.copyright_guide_service import (
     get_or_create_guides, get_guide, create_registration,
@@ -53,7 +53,7 @@ def update(reg_id: str, data: RegistrationUpdate, db: Session = Depends(get_db))
     ).first()
 
 
-@router.get("/summary", response_model=RegistrationSummary)
+@router.get("/summary", response_model=SchemaSummary)
 def summary(db: Session = Depends(get_db)):
     """获取登记概览统计."""
     return get_registration_summary(db, "current_user")
