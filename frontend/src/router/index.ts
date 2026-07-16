@@ -41,6 +41,7 @@ const router = createRouter({
         { path: 'risk-warning', name: 'risk-warning', component: () => import('@/views/RiskWarningView.vue') },
         { path: 'revenue', name: 'revenue', component: () => import('@/views/DiversityView.vue') },
         { path: 'contract-risk', name: 'contract-risk', component: () => import('@/views/ContractRiskView.vue') },
+        { path: 'navigation', name: 'navigation', component: () => import('@/views/CreatorNavigationView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
