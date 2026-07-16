@@ -28,12 +28,12 @@ def post_record(body: RevenueRecordCreate, db: Session = Depends(get_db)):
                                 body.currency, body.platform, body.recorded_date,
                                 body.source_description)
         return RevenueRecordSchema(
-            id=record.id, user_id=record.user_id,
-            income_category=record.income_category, amount=record.amount,
+            id=record.id, user_id=record.user_id or "",
+            income_category=record.income_category or "", amount=record.amount,
             currency=record.currency, platform=record.platform,
             source_description=record.source_description,
             recorded_date=record.recorded_date, is_verified=record.is_verified,
-            created_at=record.recorded_at,
+            created_at=record.created_at,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
