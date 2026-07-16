@@ -133,6 +133,7 @@ from app.routers.navigation import router as navigation_router
 from app.routers.insurance import router as insurance_router
 from app.routers.capability import router as capability_router
 from app.routers.multi_market import router as multi_market_router
+from app.routers.enforcement_roi import router as enforcement_roi_router
 
 app.include_router(risk_router)
 app.include_router(credit_router)
@@ -142,6 +143,7 @@ app.include_router(navigation_router)
 app.include_router(insurance_router)
 app.include_router(capability_router)
 app.include_router(multi_market_router)
+app.include_router(enforcement_roi_router)
 
 
 @app.get("/api/health")
