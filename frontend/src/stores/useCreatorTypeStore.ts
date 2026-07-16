@@ -1,5 +1,6 @@
 import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 import type { CreatorType } from '@/types/creator'
 import {
   CREATOR_TYPES,
@@ -27,6 +28,7 @@ function persistToStorage(type: CreatorType): void {
 }
 
 export const useCreatorTypeStore = defineStore('creatorType', () => {
+  const router = useRouter()
   const currentType = ref<CreatorType>(loadFromStorage())
   const history = ref<CreatorType[]>([])
 
@@ -47,6 +49,14 @@ export const useCreatorTypeStore = defineStore('creatorType', () => {
       `已切换到 ${CREATOR_TYPES[type].label}`,
       'success',
     )
+    // Navigate to the type-specific page
+    const routes = CREATOR_TYPES[type].routes
+    // Find a type-specific route (not shared ones like works/rights/monitor/business)
+    const sharedRoutes = new Set(['works', 'rights', 'monitor', 'business'])
+    const specificRoute = routes.find(r => !sharedRoutes.has(r))
+    if (specificRoute) {
+      router.push(`/app/${specificRoute}`)
+    }
   }
 
   function getCurrentType(): CreatorType {

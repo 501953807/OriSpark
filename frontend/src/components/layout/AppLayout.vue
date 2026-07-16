@@ -22,15 +22,10 @@
       :id="'main-content'"
       :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
     >
-      <CreatorTypeSwitcher :compact="false" />
       <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <Breadcrumb />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
-        <!-- Creator type switcher above page content -->
-        <div class="switcher-bar">
-          <CreatorTypeSwitcher :compact="true" />
-        </div>
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
@@ -365,10 +360,6 @@ function retryUpload(index: number) {
 <style scoped>
 .main-content {
   transition: margin-left 0.3s ease;
-}
-.switcher-bar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.15s ease;

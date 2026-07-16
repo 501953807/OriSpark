@@ -428,6 +428,10 @@ async function loadWork() {
       notaryCount.value = nr.data.data?.total || 0
     } catch { notaryCount.value = 0 }
     autoExpandLastStage()
+  } catch (e) {
+    console.error('Failed to load work:', e)
+    ;(window as any).$toast?.show('加载作品失败', 'error')
+    work.value = null
   } finally {
     loading.value = false
   }

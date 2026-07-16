@@ -32,7 +32,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Camera',
     color: '#3B82F6',
     description: '摄影作品管理与图库分发平台',
-    routes: ['photographer'],
+    routes: ['works', 'rights', 'monitor', 'business', 'photographer'],
     features: ['RAW元数据', 'GPS定位', '图库渠道'],
   },
   video: {
@@ -41,7 +41,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Video',
     color: '#EF4444',
     description: '视频创作与版权监控平台',
-    routes: ['video'],
+    routes: ['works', 'rights', 'monitor', 'business', 'video'],
     features: ['指纹扫描', '工程包管理', '平台分发'],
   },
   craftsman: {
@@ -50,7 +50,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Hammer',
     color: '#F59E0B',
     description: '手工艺品制作与销售平台',
-    routes: ['craftsman'],
+    routes: ['works', 'rights', 'monitor', 'business', 'craftsman'],
     features: ['工厂对接', '询价管理', 'Etsy同步'],
   },
   musician: {
@@ -59,7 +59,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Music',
     color: '#10B981',
     description: '音乐创作与发行平台',
-    routes: ['musician'],
+    routes: ['works', 'rights', 'monitor', 'business', 'musician'],
     features: ['ISRC注册', '分成协议', '平台分发'],
   },
   writer: {
@@ -68,7 +68,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Feather',
     color: '#6366F1',
     description: '文字创作与出版管理平台',
-    routes: ['writer'],
+    routes: ['works', 'rights', 'monitor', 'business', 'writer'],
     features: ['文章管理', '书籍创作', '手稿编辑'],
   },
 }
