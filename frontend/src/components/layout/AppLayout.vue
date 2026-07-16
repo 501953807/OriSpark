@@ -16,7 +16,7 @@
     <!-- P3.4.1: Mobile overlay -->
     <div v-if="mobileMenuOpen" class="mobile-overlay" @click="mobileMenuOpen = false" aria-hidden="true"></div>
 
-    <DynamicSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
+    <DynamicSidebar :creator-type="typeStore.currentType" :class="{ 'mobile-visible': mobileMenuOpen }" />
 
     <div
       :id="'main-content'"
@@ -227,16 +227,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import DynamicSidebar from './DynamicSidebar.vue'
-import CreatorTypeSwitcher from './CreatorTypeSwitcher.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
 import Breadcrumb from '@/components/common/Breadcrumb.vue'
 import { useAppStore } from '@/stores/useAppStore'
+import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
 import { worksApi } from '@/api/works'
 
 const appStore = useAppStore()
+const typeStore = useCreatorTypeStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const mobileMenuOpen = ref(false)
 const showHelp = ref(false)

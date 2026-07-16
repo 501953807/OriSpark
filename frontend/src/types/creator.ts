@@ -23,7 +23,7 @@ export const CREATOR_TYPES: Record<CreatorType, CreatorTypeInfo> = {
     icon: 'Palette',
     color: '#8B5CF6',
     description: '数字插画与矢量设计创作平台',
-    routes: ['works', 'rights', 'monitor', 'business'],
+    routes: ['works', 'rights', 'monitor', 'business', 'illustrator'],
     features: ['AIGC防护', '风格分析', '版权登记'],
   },
   photographer: {

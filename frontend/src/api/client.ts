@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const client = axios.create({
   baseURL: '/api',
-  timeout: 30000,
+  timeout: 10000,
 })
 
 let toastFn: any = null
@@ -37,6 +37,10 @@ client.interceptors.response.use(
       message = '服务器内部错误，请稍后重试'
     } else if (status === 413) {
       message = '文件过大，请压缩后重试'
+    } else if (status === 408) {
+      message = '请求超时，请稍后重试'
+    } else if (error.code === 'ECONNABORTED') {
+      message = '请求超时，请稍后重试'
     } else {
       message = detail || `请求错误 (${status})`
     }

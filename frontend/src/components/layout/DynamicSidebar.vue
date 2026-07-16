@@ -163,6 +163,7 @@ const typeInfo = computed(() =>
 
 const iconMap: Record<string, string> = {
   works: '🎨',
+  illustrator: '🖌️',
   rights: '🛡️',
   monitor: '👁️',
   ipr: '📋',
@@ -187,6 +188,7 @@ const iconMap: Record<string, string> = {
 
 const labelMap: Record<string, string> = {
   works: '作品管理',
+  illustrator: '插画工作台',
   rights: '权利保护',
   monitor: '侵权监测',
   ipr: 'IP登记',
