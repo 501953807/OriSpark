@@ -124,6 +124,15 @@ app.include_router(ai_session_router)
 from app.routers.ai_generate import router as ai_generate_router
 app.include_router(ai_generate_router)
 
+# Phase 1: Risk control & credit system
+from app.routers.risk import router as risk_router
+from app.routers.credit import router as credit_router
+from app.routers.revenue import router as revenue_router
+
+app.include_router(risk_router)
+app.include_router(credit_router)
+app.include_router(revenue_router)
+
 
 @app.get("/api/health")
 async def health_check():

@@ -103,7 +103,7 @@ class RevenueRecord(Base):
     id = Column(String(32), primary_key=True, default=generate_uuid)
     product_id = Column(String(32), ForeignKey("products.id", ondelete="SET NULL"), nullable=True)
     listing_id = Column(String(32), ForeignKey("design_listings.id", ondelete="SET NULL"), nullable=True)  # P2
-    platform = Column(String(50), nullable=False)
+    platform = Column(String(50), nullable=True)
     amount = Column(Float, nullable=False, default=0.0)
     currency = Column(String(10), default="CNY")
     date = Column(Date, default=date.today)
@@ -114,6 +114,14 @@ class RevenueRecord(Base):
     refund_amount = Column(Float, default=0.0)
     platform_fee = Column(Float, default=0.0)
     net_revenue = Column(Float, default=0.0)
+
+    # P2: Income diversification analysis
+    income_category = Column(String(50), nullable=True)  # ad_revenue/sponsorship/subscription/tip/ecommerce/affiliate/knowledge_payment/ip_licensing
+    user_id = Column(String(32), nullable=True, index=True)  # creator-level revenue tracking
+    source_description = Column(Text, nullable=True)
+    recorded_date = Column(DateTime, nullable=True)  # actual occurrence date
+    is_verified = Column(Boolean, default=False)
+    extra_metadata = Column(JSON, nullable=True)  # order_id, link, etc.
 
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
