@@ -81,7 +81,7 @@
       </div>
 
       <!-- 空状态 -->
-      <div v-if="!summary && !loading" class="empty">暂无收入数据 — 点击下方添加第一条记录</div>
+      <div v-if="!summary && !store.loading" class="empty">暂无收入数据 — 点击下方添加第一条记录</div>
     </template>
   </div>
 </template>
@@ -100,7 +100,9 @@ const INCOME_CATEGORIES = {
   affiliate: { name: '联盟营销', color: '#DDA0DD' },
   knowledge_payment: { name: '知识付费', color: '#98D8C8' },
   ip_licensing: { name: 'IP授权', color: '#F7DC6F' },
-}
+} as const
+
+const incomeCategories = INCOME_CATEGORIES
 
 const store = useRevenueStore()
 const adding = ref(false)
