@@ -158,6 +158,11 @@ app.include_router(case_study_router)
 app.include_router(copyright_guide_router)
 
 
+
+# Phase 2: Enforcement workflow
+from app.routers.enforcement import router as enforcement_router
+app.include_router(enforcement_router)
+
 @app.get("/api/health")
 async def health_check():
     """健康检查端点."""
