@@ -1,12 +1,12 @@
-import { request } from '@/api/client'
+import client from './client'
 import type { ContractReviewRequest, ContractReviewResult, TransactionCheckResult } from '@/types/contractRisk'
 
 export function reviewContract(data: ContractReviewRequest): Promise<ContractReviewResult> {
-  return request.post('/contract-risk/review', data).then(res => res.data)
+  return client.post('/contract-risk/review', data).then(res => res.data)
 }
 
 export function getHistory(userId: string, limit = 20, page = 1) {
-  return request.get(`/contract-risk/history/${userId}?limit=${limit}&page=${page}`)
+  return client.get(`/contract-risk/history/${userId}?limit=${limit}&page=${page}`)
 }
 
 export function checkTransaction(data: {
@@ -14,5 +14,5 @@ export function checkTransaction(data: {
   contract_template?: string
   custom_terms?: string[]
 }): Promise<TransactionCheckResult> {
-  return request.post('/contract-risk/transaction-check', data).then(res => res.data)
+  return client.post('/contract-risk/transaction-check', data).then(res => res.data)
 }

@@ -2,7 +2,7 @@
   <div class="isrc-panel">
     <!-- Header -->
     <div class="panel-header">
-      <h3 class="panel-title">&#127993; ISRC 注册</h3>
+      <h3 class="panel-title">🏹 ISRC 注册</h3>
       <span class="panel-desc">国际标准录音代码 (International Standard Recording Code)</span>
     </div>
 

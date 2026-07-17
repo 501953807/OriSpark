@@ -121,7 +121,9 @@
         </div>
         <div class="form-group">
           <label>功能列表 (每行一个)</label>
-          <textarea v-model="tierForm.features_str" class="form-textarea" rows="3" placeholder="无限存储&#10;高清下载&#10;API 访问"></textarea>
+          <textarea v-model="tierForm.features_str" class="form-textarea" rows="3" placeholder="无限存储
+高清下载
+API 访问"></textarea>
         </div>
         <div class="form-group">
           <label class="checkbox-label">

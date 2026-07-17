@@ -43,10 +43,10 @@
 
     <div class="card-footer">
       <button class="btn btn-ghost btn-sm" @click="$emit('edit', product)">
-        <span class="icon">&nbsp;&#9998;&nbsp;</span> 编辑
+        <span class="icon">&nbsp;✎&nbsp;</span> 编辑
       </button>
       <button class="btn btn-ghost btn-sm btn-danger" @click="$emit('delete', product)">
-        <span class="icon">&nbsp;&#128465;&nbsp;</span> 删除
+        <span class="icon">&nbsp;🗑&nbsp;</span> 删除
       </button>
     </div>
   </div>

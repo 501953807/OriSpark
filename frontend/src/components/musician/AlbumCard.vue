@@ -8,7 +8,7 @@
           :style="{ backgroundImage: `url(${coverUrl})` }"
         />
         <div v-else class="cover-placeholder">
-          &#127925;
+          🎵
         </div>
 
         <span
@@ -48,10 +48,10 @@
 
     <div class="card-footer">
       <button class="btn btn-ghost btn-sm" @click="$emit('edit', album)">
-        <span class="icon">&#9998;</span> 编辑
+        <span class="icon">✎</span> 编辑
       </button>
       <button class="btn btn-ghost btn-sm btn-danger" @click="$emit('delete', album)">
-        <span class="icon">&#128465;</span> 删除
+        <span class="icon">🗑</span> 删除
       </button>
     </div>
   </div>

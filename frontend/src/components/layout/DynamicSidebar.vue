@@ -126,13 +126,35 @@
       {{ isCollapsed ? '>>' : '<<' }}
     </button>
 
-    <!-- User footer -->
+    <!-- User footer — clickable avatar area -->
     <div v-if="!isCollapsed" class="sb-footer">
-      <div class="sb-avatar">创</div>
-      <div>
-        <div class="sb-user-name">创作者</div>
-        <div class="sb-user-role">本地用户</div>
+      <div class="sb-type-selector" @click="togglePicker">
+        <div class="sb-avatar" :style="{ background: pickerTypeInfo?.color }">创</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">{{ pickerTypeInfo?.label ?? '创作者' }}</div>
+          <div class="sb-user-role">点击切换身份</div>
+        </div>
+        <span class="sb-chevron">{{ pickerOpen ? '▲' : '▼' }}</span>
       </div>
+
+      <!-- Type picker popup -->
+      <Teleport to="body">
+        <div v-if="pickerOpen" class="type-picker-overlay" @click="closePicker"></div>
+        <Transition name="picker-fade">
+          <div v-if="pickerOpen" class="type-picker">
+            <div class="picker-title">选择创作者类型</div>
+            <button
+              v-for="ct in allTypes"
+              :key="ct.type"
+              :class="['picker-item', { active: ct.type === currentType }]"
+              @click="selectType(ct.type)"
+            >
+              <span class="picker-dot" :style="{ background: ct.color }"></span>
+              <span>{{ ct.label }}</span>
+            </button>
+          </div>
+        </Transition>
+      </Teleport>
     </div>
   </aside>
 </template>
@@ -141,6 +163,7 @@
 import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
+import { getAllCreators } from '@/types/creator'
 import type { CreatorType } from '@/types/creator'
 
 const props = defineProps<{
@@ -152,6 +175,24 @@ const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const isHovering = ref(false)
+const pickerOpen = ref(false)
+
+const allTypes = getAllCreators()
+const currentType = computed(() => typeStore.getCurrentType())
+
+const iconEmoji: Record<string, string> = {
+  illustrator: '🖌️',
+  photographer: '📸',
+  video: '🎬',
+  craftsman: '🔨',
+  musician: '🎵',
+  writer: '✒️',
+}
+
+const pickerTypeInfo = computed(() => {
+  const info = typeStore.getTypeInfo(currentType.value)
+  return info ? { ...info, icon: iconEmoji[info.type] ?? '🎨' } : null
+})
 
 const typeInfo = computed(() =>
   props.creatorType
@@ -160,6 +201,19 @@ const typeInfo = computed(() =>
       ? typeStore.getTypeInfo(typeStore.getCurrentType())
       : null,
 )
+
+function togglePicker() {
+  pickerOpen.value = !pickerOpen.value
+}
+
+function closePicker() {
+  pickerOpen.value = false
+}
+
+function selectType(type: CreatorType) {
+  typeStore.switchType(type)
+  pickerOpen.value = false
+}
 
 const iconMap: Record<string, string> = {
   works: '🎨',
@@ -378,30 +432,122 @@ function hasSharedSection(sectionRoute: string): boolean {
 .sb-footer {
   padding: 10px 14px;
   border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Creator type selector (footer) */
+.sb-type-selector {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 6px 8px;
+  margin: -6px -8px;
+  border-radius: var(--radius-sm);
+  user-select: none;
+}
+.sb-type-selector:hover {
+  background: oklch(56% 0.12 170 / 0.06);
 }
 .sb-avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--grad1, #8B5CF6), var(--grad2, #3B82F6));
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
+}
+.sb-user-info {
+  flex: 1;
+  min-width: 0;
 }
 .sb-user-name {
   font-size: 0.82rem;
   font-weight: 600;
+  color: var(--fg);
 }
 .sb-user-role {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--muted);
+}
+.sb-chevron {
+  font-size: 0.6rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* Type picker popup */
+.type-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+.type-picker {
+  position: fixed;
+  bottom: 80px;
+  left: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  padding: 12px;
+  z-index: 200;
+  width: 200px;
+}
+.picker-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  padding: 4px 8px 8px;
+}
+.picker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fg);
+  text-align: left;
+  transition: background 0.15s;
+  font-family: var(--font-body);
+}
+.picker-item:hover {
+  background: oklch(56% 0.12 170 / 0.06);
+}
+.picker-item.active {
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 600;
+}
+.picker-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Picker transitions */
+.picker-fade-enter-active,
+.picker-fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.picker-fade-enter-from,
+.picker-fade-leave-to {
+  opacity: 0;
 }
 </style>

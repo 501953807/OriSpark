@@ -118,14 +118,6 @@
             </div>
           </section>
 
-          <!-- Group 5.5: Creator Type Specific Info -->
-          <CreatorTypeInfo
-            v-if="work?.creator_type"
-            :visible="true"
-            :creator-type="work.creator_type"
-            :work-data="work"
-          />
-
           <!-- Group 5.6: AI Generation Panel -->
           <section class="info-group">
             <AIGenerationPanel :work-id="work.id" />
@@ -295,7 +287,6 @@ import { systemApi } from '@/api/system'
 import { monitorApi } from '@/api/monitor'
 import type { Work } from '@/types/work'
 import { getAllStages, getStagesForFileType, getStageColor as getStageColorUtil } from '@/composables/useWorkStages'
-import CreatorTypeInfo from '@/components/work/CreatorTypeInfo.vue'
 import AIGenerationPanel from '@/components/ai/AIGenerationPanel.vue'
 
 const route = useRoute()

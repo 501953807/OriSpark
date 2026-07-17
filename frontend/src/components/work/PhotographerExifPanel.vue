@@ -60,7 +60,7 @@
 
     <!-- Empty state -->
     <div v-if="!hasAnyExif" class="empty-hint">
-      <span class="hint-icon">&#128247;</span>
+      <span class="hint-icon">📷</span>
       <p>暂无 EXIF 数据</p>
     </div>
   </div>

@@ -27,8 +27,8 @@
           :class="stepClass(order, phase)"
         >
           <div class="step-circle">
-            <span v-if="phaseStatus(order, phase) === 'approved'" class="step-icon">&#10003;</span>
-            <span v-else-if="phaseStatus(order, phase) === 'rejected'" class="step-icon">&#10007;</span>
+            <span v-if="phaseStatus(order, phase) === 'approved'" class="step-icon">✓</span>
+            <span v-else-if="phaseStatus(order, phase) === 'rejected'" class="step-icon">✗</span>
             <span v-else class="step-num">{{ idx + 1 }}</span>
           </div>
           <span class="step-label">{{ phase.label }}</span>

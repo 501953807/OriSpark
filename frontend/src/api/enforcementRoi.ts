@@ -1,8 +1,8 @@
-import { request } from '@/api/client'
+import client from './client'
 import type { DecisionTreeResult, RoiPrediction, DefenseTier, CaseReference, UserCasesSummary } from '@/types/enforcementRoi'
 
 export function getDecisionTree(infringementType: string, lossAmount: number) {
-  return request.get('/enforcement-roi/decision-tree', {
+  return client.get('/enforcement-roi/decision-tree', {
     params: { infringement_type: infringementType, loss_amount: lossAmount },
   }).then(res => res.data as DecisionTreeResult)
 }
@@ -13,17 +13,17 @@ export function predictRoi(data: {
   target_platform: string
   action_type: string
 }) {
-  return request.post('/enforcement-roi/predict', data)
+  return client.post('/enforcement-roi/predict', data)
     .then(res => res.data as RoiPrediction)
 }
 
 export function listDefenseTiers() {
-  return request.get('/enforcement-roi/defense-tiers').then(res => res.data as DefenseTier[])
+  return client.get('/enforcement-roi/defense-tiers').then(res => res.data as DefenseTier[])
 }
 
 export function listCaseReferences(infringementType?: string) {
   const params = infringementType ? { infringement_type: infringementType } : undefined
-  return request.get('/enforcement-roi/cases-reference', { params })
+  return client.get('/enforcement-roi/cases-reference', { params })
     .then(res => res.data as CaseReference[])
 }
 
@@ -38,10 +38,10 @@ export function saveCase(data: {
   outcome: string
   notes?: string
 }) {
-  return request.post('/enforcement-roi/cases', data).then(res => res.data)
+  return client.post('/enforcement-roi/cases', data).then(res => res.data)
 }
 
 export function getUserCases() {
-  return request.get('/enforcement-roi/my-cases')
+  return client.get('/enforcement-roi/my-cases')
     .then(res => res.data as UserCasesSummary)
 }

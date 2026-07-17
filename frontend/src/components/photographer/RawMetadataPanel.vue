@@ -1,7 +1,7 @@
 <template>
   <div class="raw-metadata-panel">
     <div v-if="!props.shot" class="empty-hint">
-      <span class="hint-icon">&#128247;</span>
+      <span class="hint-icon">📷</span>
       <p>请选择一张作品查看详情</p>
     </div>
 
@@ -66,7 +66,7 @@
       <div v-if="props.shot.raw_file_path" class="raw-section">
         <h3 class="section-title">RAW 文件</h3>
         <div class="raw-info">
-          <span class="raw-icon">&#128196;</span>
+          <span class="raw-icon">📄</span>
           <code class="raw-path">{{ props.shot.raw_file_path }}</code>
           <span class="raw-format">{{ getRawFormat(props.shot.raw_file_path) }}</span>
         </div>

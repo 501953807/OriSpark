@@ -23,7 +23,6 @@
       :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
     >
       <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
-      <Breadcrumb />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
         <router-view v-slot="{ Component }">
@@ -231,7 +230,6 @@ import { computed, ref } from 'vue'
 import DynamicSidebar from './DynamicSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
-import Breadcrumb from '@/components/common/Breadcrumb.vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
 import { worksApi } from '@/api/works'

@@ -8,23 +8,23 @@
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-label">&#127981; 总作品</span>
+        <span class="stat-label">🏭 总作品</span>
         <span class="stat-value">{{ statsDisplay.total_products }}</span>
       </div>
       <div class="stat-item stat-active">
-        <span class="stat-label">&#128230; 在售</span>
+        <span class="stat-label">📦 在售</span>
         <span class="stat-value">{{ statsDisplay.active_listings }}</span>
       </div>
       <div class="stat-item stat-factory">
-        <span class="stat-label">&#127970; 合作工厂</span>
+        <span class="stat-label">🏢 合作工厂</span>
         <span class="stat-value">{{ statsDisplay.factory_count }}</span>
       </div>
       <div class="stat-item stat-rfq">
-        <span class="stat-label">&#128203; 询价单</span>
+        <span class="stat-label">📋 询价单</span>
         <span class="stat-value">{{ statsDisplay.rfq_count }}</span>
       </div>
       <div class="stat-item stat-revenue">
-        <span class="stat-label">&#128176; 本月营收</span>
+        <span class="stat-label">💰 本月营收</span>
         <span class="stat-value">¥{{ statsDisplay.monthly_revenue.toLocaleString() }}</span>
       </div>
     </div>
@@ -85,7 +85,7 @@
       </div>
       <!-- Product grid -->
       <div v-if="store.products.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#127981;</span>
+        <span class="empty-icon">🏭</span>
         <p>暂无作品，点击上方按钮创建第一个作品。</p>
       </div>
       <div v-else class="product-grid">
@@ -97,14 +97,14 @@
             </span>
           </div>
           <div class="product-meta">
-            <span v-if="p.material" class="meta-item">&#128301; {{ p.material }}</span>
+            <span v-if="p.material" class="meta-item">🔭 {{ p.material }}</span>
           </div>
           <div class="product-meta">
-            <span class="meta-item">&#128230; MOQ: {{ p.moq }}</span>
-            <span v-if="p.unit_price" class="meta-item">&#128176; &yen;{{ p.unit_price }}</span>
+            <span class="meta-item">📦 MOQ: {{ p.moq }}</span>
+            <span v-if="p.unit_price" class="meta-item">💰 &yen;{{ p.unit_price }}</span>
           </div>
           <div v-if="p.production_time_days" class="product-meta">
-            <span class="meta-item">&#128197; {{ p.production_time_days }} 天</span>
+            <span class="meta-item">📅 {{ p.production_time_days }} 天</span>
           </div>
           <div class="product-actions">
             <button class="btn btn-sm btn-outline" @click="handleDeleteProduct(p.id)">删除</button>
@@ -146,17 +146,17 @@
       </div>
       <!-- Factory list -->
       <div v-if="store.factories.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#127970;</span>
+        <span class="empty-icon">🏢</span>
         <p>暂无合作工厂。</p>
       </div>
       <div v-else class="factory-list">
         <div v-for="f in store.factories" :key="f.id" class="factory-card">
           <div class="factory-info">
             <span class="factory-name">{{ f.name }}</span>
-            <span v-if="f.location" class="factory-location">&#128205; {{ f.location }}</span>
+            <span v-if="f.location" class="factory-location">📍 {{ f.location }}</span>
           </div>
           <div v-if="f.rating != null" class="factory-rating">
-            &#9733; {{ f.rating.toFixed(1) }}
+            ★ {{ f.rating.toFixed(1) }}
           </div>
           <div class="factory-tags">
             <span
@@ -216,7 +216,7 @@
       </div>
       <!-- RFQ list -->
       <div v-if="store.rfqs.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#128203;</span>
+        <span class="empty-icon">📋</span>
         <p>暂无询价单。</p>
       </div>
       <div v-else class="rfq-list">
@@ -230,13 +230,13 @@
           <div v-if="r.description" class="rfq-desc">{{ r.description }}</div>
           <div class="rfq-meta">
             <span v-if="r.quantity_needed" class="meta-item">
-              &#128230; {{ r.quantity_needed }}
+              📦 {{ r.quantity_needed }}
             </span>
             <span v-if="r.target_price" class="meta-item">
-              &#128176; &yen;{{ r.target_price }}
+              💰 &yen;{{ r.target_price }}
             </span>
             <span v-if="r.quoted_factories?.length" class="meta-item">
-              &#127970; {{ r.quoted_factories.length }} 家报价
+              🏢 {{ r.quoted_factories.length }} 家报价
             </span>
           </div>
         </div>
@@ -248,7 +248,7 @@
     <div v-if="activeTab === 'orders'" class="tab-panel">
       <h2 class="section-title">订单跟踪</h2>
       <div v-if="store.orders.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#128202;</span>
+        <span class="empty-icon">📊</span>
         <p>暂无订单，创建询价单并授予工厂后将自动生成订单。</p>
       </div>
       <div v-else class="order-list">
@@ -291,7 +291,7 @@
     </div>
     <!-- Loading overlay -->
     <div v-if="store.loading" class="loading-overlay">
-      <div class="spinner">&#8987; 加载中...</div>
+      <div class="spinner">⌛ 加载中...</div>
     </div>
   </div>
 </template>
@@ -308,10 +308,10 @@ import type {
 const store = useCraftsmanStore()
 // ── Tabs ──────────────────────────────────────────────────────
 const tabs = [
-  { key: 'products', label: '作品', icon: '&#127981;' },
-  { key: 'factories', label: '工厂', icon: '&#127970;' },
-  { key: 'rfqs', label: '询价', icon: '&#128203;' },
-  { key: 'orders', label: '订单', icon: '&#128202;' },
+  { key: 'products', label: '作品', icon: '🏭' },
+  { key: 'factories', label: '工厂', icon: '🏢' },
+  { key: 'rfqs', label: '询价', icon: '📋' },
+  { key: 'orders', label: '订单', icon: '📊' },
 ]
 const activeTab = ref<string>('products')
 // ── Stats ─────────────────────────────────────────────────────

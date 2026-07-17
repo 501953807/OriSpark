@@ -4,7 +4,7 @@
     <div class="panel-header">
       <span class="panel-title">询价管理</span>
       <button class="btn btn-sm btn-primary" @click="toggleForm">
-        <span>&#43;</span> 新建询价
+        <span>+</span> 新建询价
       </button>
     </div>
 

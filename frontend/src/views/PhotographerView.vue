@@ -14,23 +14,23 @@
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-label">&#128247; 总作品</span>
+        <span class="stat-label">📷 总作品</span>
         <span class="stat-value">{{ stats.total_variants }}</span>
       </div>
       <div class="stat-item stat-pass">
-        <span class="stat-label">&#9989; 已通过</span>
+        <span class="stat-label">✅ 已通过</span>
         <span class="stat-value">{{ stats.pass_count }}</span>
       </div>
       <div class="stat-item stat-shortlist">
-        <span class="stat-label">&#128220; 短名单</span>
+        <span class="stat-label">📜 短名单</span>
         <span class="stat-value">{{ stats.shortlist_count }}</span>
       </div>
       <div class="stat-item stat-stock">
-        <span class="stat-label">&#128230; 图库上架</span>
+        <span class="stat-label">📦 图库上架</span>
         <span class="stat-value">{{ stats.stock_channel_count }}</span>
       </div>
       <div class="stat-item stat-sales">
-        <span class="stat-label">&#128176; 本月销售</span>
+        <span class="stat-label">💰 本月销售</span>
         <span class="stat-value">¥{{ salesAmount }}</span>
       </div>
     </div>
@@ -109,7 +109,7 @@
           />
           <EmptyState
             v-else
-            icon="&#128247;"
+            icon="📷"
             title="选择作品查看详情"
             description="点击左侧作品卡片查看 EXIF 数据和编辑备注。"
           />
@@ -139,7 +139,7 @@
           />
           <EmptyState
             v-else
-            icon="&#128230;"
+            icon="📦"
             title="选择作品管理渠道"
             description="从左侧选择作品，然后在此添加图库销售渠道。"
           />

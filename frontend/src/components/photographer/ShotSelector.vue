@@ -15,7 +15,7 @@
 
     <!-- Empty -->
     <div v-else-if="visibleShots.length === 0" class="shot-empty">
-      <span class="empty-icon">&#128247;</span>
+      <span class="empty-icon">📷</span>
       <p>暂无作品</p>
     </div>
 
@@ -42,7 +42,7 @@
           />
           <!-- Selected ring -->
           <div v-if="selectedIds.has(shot.id)" class="select-ring">
-            <span class="check">&#10003;</span>
+            <span class="check">✓</span>
           </div>
           <!-- Status badge -->
           <span :class="['status-badge', `badge-${shot.shot_status}`]">

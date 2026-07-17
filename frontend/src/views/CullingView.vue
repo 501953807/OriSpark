@@ -100,7 +100,7 @@
         </div>
         <!-- Checkbox -->
         <div class="thumb-checkbox" :class="{ checked: selectedIds.includes(work.id) }">
-          <span>&#10003;</span>
+          <span>✅</span>
         </div>
       </div>
     </div>

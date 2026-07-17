@@ -195,13 +195,14 @@ export default defineComponent({
     const draggedId = ref<string | null>(null)
     const draggedData = ref<CommissionProject | null>(null)
 
-    const columns = computed<KanbanColumn[]>(() =>
-      TRANSITIONS.map((col) => ({
+    const columns = computed<KanbanColumn[]>(() => {
+      const items = Array.isArray(props.commissions) ? props.commissions : []
+      return TRANSITIONS.map((col) => ({
         ...col,
         nextTransition: col.nextTransition?.map((req) => {
           let met = false
           // Calculate blockers per-card based on the first item in this column
-          const columnItems = props.commissions.filter((c) => c.status === col.key)
+          const columnItems = items.filter((c) => c.status === col.key)
           const sampleItem = columnItems[0]
           if (sampleItem) {
             const m = sampleItem.milestones
@@ -213,10 +214,11 @@ export default defineComponent({
           return { ...req, met }
         }),
       }))
-    )
+    })
 
     function getColumnItems(key: string): CommissionProject[] {
-      return props.commissions.filter((c) => c.status === key)
+      const items = Array.isArray(props.commissions) ? props.commissions : []
+      return items.filter((c) => c.status === key)
     }
 
     function onDragStart(e: DragEvent, item: CommissionProject) {

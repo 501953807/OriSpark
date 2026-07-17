@@ -38,7 +38,7 @@
 
     <!-- Empty state -->
     <div v-if="!hasAnyData" class="empty-hint">
-      <span class="hint-icon">&#128301;</span>
+      <span class="hint-icon">🔭</span>
       <p>暂无手工艺品数据</p>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="package-panel">
     <!-- Header -->
     <div class="panel-header">
-      <h3 class="panel-title">&#128229; 工程包管理</h3>
+      <h3 class="panel-title">📥 工程包管理</h3>
       <span class="panel-desc">导出项目素材、时间线和特效配置</span>
     </div>
 
@@ -29,7 +29,7 @@
       <!-- Timeline -->
       <div class="asset-group">
         <div class="group-header">
-          <span class="group-icon">&#127909;</span>
+          <span class="group-icon">🎥</span>
           <span class="group-name">时间线</span>
           <span class="group-count">{{ timelineAssets.length }} 项</span>
         </div>
@@ -48,7 +48,7 @@
       <!-- Materials -->
       <div class="asset-group">
         <div class="group-header">
-          <span class="group-icon">&#128247;</span>
+          <span class="group-icon">📷</span>
           <span class="group-name">素材</span>
           <span class="group-count">{{ materialAssets.length }} 项</span>
         </div>
@@ -67,7 +67,7 @@
       <!-- Effects -->
       <div class="asset-group">
         <div class="group-header">
-          <span class="group-icon">&#127796;&#65039;</span>
+          <span class="group-icon">🌴️</span>
           <span class="group-name">特效配置</span>
           <span class="group-count">{{ effectAssets.length }} 项</span>
         </div>
@@ -103,12 +103,12 @@
         <h4 class="section-title">下载历史</h4>
       </div>
       <div v-if="downloadHistory.length === 0" class="empty-history">
-        <span class="empty-icon">&#128449;</span>
+        <span class="empty-icon">🗁</span>
         <p>暂无下载记录</p>
       </div>
       <ul v-else class="history-list">
         <li v-for="(entry, idx) in downloadHistory" :key="idx" class="history-item">
-          <span class="history-icon">&#11015;</span>
+          <span class="history-icon">⬇</span>
           <div class="history-info">
             <span class="history-name">{{ entry.name }}</span>
             <span class="history-meta">{{ entry.date }} · {{ entry.size }}</span>

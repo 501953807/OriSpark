@@ -1,8 +1,8 @@
-import { request } from '@/api/client'
+import client from './client'
 import type { MarketInfo, GeoArbitrageResult, ExpansionPhase, TaxGuide } from '@/types/multiMarket'
 
 export function listMarkets() {
-  return request.get('/multi-market/markets').then(res => res.data as MarketInfo[])
+  return client.get('/multi-market/markets').then(res => res.data as MarketInfo[])
 }
 
 export function calcGeoArbitrage(data: {
@@ -10,12 +10,12 @@ export function calcGeoArbitrage(data: {
   creator_type: string
   monthly_revenue_yuan: number
 }) {
-  return request.post('/multi-market/geo-arbitrage', data)
+  return client.post('/multi-market/geo-arbitrage', data)
     .then(res => res.data as GeoArbitrageResult)
 }
 
 export function listPhases() {
-  return request.get('/multi-market/phases').then(res => res.data as ExpansionPhase[])
+  return client.get('/multi-market/phases').then(res => res.data as ExpansionPhase[])
 }
 
 export function createPlan(data: {
@@ -24,10 +24,10 @@ export function createPlan(data: {
   start_date?: string
   notes?: string
 }) {
-  return request.post('/multi-market/plans', data).then(res => res.data)
+  return client.post('/multi-market/plans', data).then(res => res.data)
 }
 
 export function getTaxGuide(source = 'cn', target = 'us') {
-  return request.get('/multi-market/tax-guide', { params: { source, target } })
+  return client.get('/multi-market/tax-guide', { params: { source, target } })
     .then(res => res.data as TaxGuide)
 }

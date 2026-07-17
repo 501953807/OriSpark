@@ -139,7 +139,7 @@ async function loadPanel(type: string): Promise<unknown> {
   try {
     // Dynamic import — matches the defineAsyncComponent pattern from PublishView.vue
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const mod = await import(`@/${entry.replace(/^\//, '')}`)
+    const mod = await import(entry)
     const comp = mod.default ?? mod
     if (loadedPanels[type]) loadedPanels[type].value = comp
     return comp

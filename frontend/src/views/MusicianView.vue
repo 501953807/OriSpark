@@ -8,23 +8,23 @@
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-label">&#127925; 总发行</span>
+        <span class="stat-label">🎵 总发行</span>
         <span class="stat-value">{{ statsDisplay.total_releases }}</span>
       </div>
       <div class="stat-item stat-albums">
-        <span class="stat-label">&#127911; 专辑</span>
+        <span class="stat-label">🎧 专辑</span>
         <span class="stat-value">{{ statsDisplay.total_albums }}</span>
       </div>
       <div class="stat-item stat-distributed">
-        <span class="stat-label">&#128268; 已分发</span>
+        <span class="stat-label">🔌 已分发</span>
         <span class="stat-value">{{ statsDisplay.distributed_count }}</span>
       </div>
       <div class="stat-item stat-splits">
-        <span class="stat-label">&#128200; 待签署分成</span>
+        <span class="stat-label">📈 待签署分成</span>
         <span class="stat-value">{{ statsDisplay.pending_splits }}</span>
       </div>
       <div class="stat-item stat-revenue">
-        <span class="stat-label">&#128176; 本月营收</span>
+        <span class="stat-label">💰 本月营收</span>
         <span class="stat-value">&yen;{{ statsDisplay.monthly_revenue.toLocaleString() }}</span>
       </div>
     </div>
@@ -83,7 +83,7 @@
       </div>
       <!-- Release list -->
       <div v-if="store.releases.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#127925;</span>
+        <span class="empty-icon">🎵</span>
         <p>暂无音乐发行，点击上方按钮创建第一个发行。</p>
       </div>
       <div v-else class="release-grid">
@@ -95,9 +95,9 @@
             </span>
           </div>
           <div class="release-meta">
-            <span v-if="r.isrc" class="meta-item">&#128218; {{ r.isrc }}</span>
-            <span class="meta-item">&#127926; {{ r.format.toUpperCase() }}</span>
-            <span v-if="r.bpm" class="meta-item">&#9835; {{ r.bpm }} BPM</span>
+            <span v-if="r.isrc" class="meta-item">📚 {{ r.isrc }}</span>
+            <span class="meta-item">🎶 {{ (r.format || '—').toUpperCase() }}</span>
+            <span v-if="r.bpm" class="meta-item">♫ {{ r.bpm }} BPM</span>
           </div>
           <div class="release-meta">
             <span v-if="r.genre" class="meta-item">{{ r.genre }}</span>
@@ -149,13 +149,13 @@
       </div>
       <!-- Album list -->
       <div v-if="store.albums.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#127911;</span>
+        <span class="empty-icon">🎧</span>
         <p>暂无专辑，点击上方按钮创建第一个专辑。</p>
       </div>
       <div v-else class="album-grid">
         <div v-for="a in store.albums" :key="a.id" class="album-card">
           <div class="album-cover-placeholder">
-            <span class="album-icon">&#127911;</span>
+            <span class="album-icon">🎧</span>
           </div>
           <div class="album-info">
             <span class="album-title">{{ a.title || '未命名专辑' }}</span>
@@ -163,7 +163,7 @@
               {{ albumTypeLabel(a.album_type) }}
             </span>
             <div class="album-meta">
-              <span v-if="a.label" class="meta-item">&#127990; {{ a.label }}</span>
+              <span v-if="a.label" class="meta-item">🏶 {{ a.label }}</span>
               <span v-if="a.total_tracks" class="meta-item">{{ a.total_tracks }} 首</span>
               <span v-if="a.release_date" class="meta-item">{{ a.release_date.slice(0, 10) }}</span>
             </div>
@@ -211,7 +211,7 @@
       </div>
       <!-- Split sheet list -->
       <div v-if="store.splitSheets.length === 0 && !store.loading" class="empty-state">
-        <span class="empty-icon">&#128200;</span>
+        <span class="empty-icon">📈</span>
         <p>暂无分成协议。</p>
       </div>
       <div v-else class="split-list">
@@ -224,13 +224,13 @@
           </div>
           <div class="split-meta">
             <span v-if="s.publishing_share != null" class="meta-item">
-              &#9835; 词曲: {{ s.publishing_share }}%
+              ♫ 词曲: {{ s.publishing_share }}%
             </span>
             <span v-if="s.master_share != null" class="meta-item">
-              &#127925; 录音: {{ s.master_share }}%
+              🎵 录音: {{ s.master_share }}%
             </span>
             <span v-if="s.splits?.length" class="meta-item">
-              &#128101; {{ s.splits.length }} 方分成
+              👥 {{ s.splits.length }} 方分成
             </span>
           </div>
         </div>
@@ -238,7 +238,7 @@
     </div>
     <!-- Loading overlay -->
     <div v-if="store.loading" class="loading-overlay">
-      <div class="spinner">&#8987; 加载中...</div>
+      <div class="spinner">⌛ 加载中...</div>
     </div>
   </div>
 </template>
@@ -255,9 +255,9 @@ const store = useMusicianStore()
 
 // ── Tabs ──────────────────────────────────────────────────────
 const tabs = [
-  { key: 'releases', label: '发行', icon: '&#127925;' },
-  { key: 'albums', label: '专辑', icon: '&#127911;' },
-  { key: 'splits', label: '分成协议', icon: '&#128200;' },
+  { key: 'releases', label: '发行', icon: '🎵' },
+  { key: 'albums', label: '专辑', icon: '🎧' },
+  { key: 'splits', label: '分成协议', icon: '📈' },
 ]
 const activeTab = ref<string>('releases')
 

@@ -2,7 +2,7 @@
   <div class="distribution-panel">
     <!-- Header -->
     <div class="panel-header">
-      <h3 class="panel-title">&#128219; 多平台分发</h3>
+      <h3 class="panel-title">📛 多平台分发</h3>
       <span class="panel-desc">一键分发到多个内容平台</span>
     </div>
 
@@ -56,8 +56,8 @@
 
           <!-- Metrics if published -->
           <div v-if="platform.viewCount !== undefined" class="platform-metrics">
-            <span>&#128064; {{ formatNumber(platform.viewCount) }}</span>
-            <span>&#10084;&#65039; {{ formatNumber(platform.likeCount ?? 0) }}</span>
+            <span>👀 {{ formatNumber(platform.viewCount) }}</span>
+            <span>❤️ {{ formatNumber(platform.likeCount ?? 0) }}</span>
           </div>
 
           <!-- Title/description inputs -->

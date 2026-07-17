@@ -1,8 +1,8 @@
-import { request } from '@/api/client'
+import client from './client'
 import type { ProgressDashboard } from '@/types/growthStage'
 
 export function getDashboard() {
-  return request.get('/growth-stages/dashboard').then(res => res.data as ProgressDashboard)
+  return client.get('/growth-stages/dashboard').then(res => res.data as ProgressDashboard)
 }
 
 export function updateMetrics(data: {
@@ -11,9 +11,9 @@ export function updateMetrics(data: {
   total_certificates: number
   credit_score: number
 }) {
-  return request.put('/growth-stages/update', data).then(res => res.data)
+  return client.put('/growth-stages/update', data).then(res => res.data)
 }
 
 export function completeTask(taskId: string) {
-  return request.patch(`/growth-stages/tasks/${taskId}/complete`).then(res => res.data)
+  return client.patch(`/growth-stages/tasks/${taskId}/complete`).then(res => res.data)
 }

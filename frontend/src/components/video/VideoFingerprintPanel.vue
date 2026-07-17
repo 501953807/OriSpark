@@ -2,7 +2,7 @@
   <div class="fingerprint-panel">
     <!-- Header -->
     <div class="panel-header">
-      <h3 class="panel-title">&#128270; 视频指纹侵权扫描</h3>
+      <h3 class="panel-title">🔎 视频指纹侵权扫描</h3>
       <span class="panel-desc">选择视频发起扫描，自动比对全网侵权内容</span>
     </div>
 
@@ -54,7 +54,7 @@
     <!-- Matches list -->
     <div v-if="matches.length > 0" class="matches-section">
       <div class="section-header">
-        <h4 class="section-title">&#128270; 匹配结果 ({{ matches.length }})</h4>
+        <h4 class="section-title">🔎 匹配结果 ({{ matches.length }})</h4>
         <button class="btn btn-xs btn-ghost" @click="sortOrder = sortOrder === 'desc' ? 'asc' : 'desc'">
           排序: {{ sortOrder === 'desc' ? '降序' : '升序' }}
         </button>
@@ -93,7 +93,7 @@
 
     <!-- No matches state -->
     <div v-if="fingerprintResult && matches.length === 0 && !store.fingerprintLoading" class="no-matches">
-      <span class="no-match-icon">&#128994;</span>
+      <span class="no-match-icon">🟢</span>
       <p>未发现匹配的侵权内容</p>
     </div>
   </div>

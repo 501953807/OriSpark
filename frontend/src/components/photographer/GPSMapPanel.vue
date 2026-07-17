@@ -3,14 +3,14 @@
     <div v-if="loading" class="map-loading">加载地图数据...</div>
 
     <div v-else-if="visibleShots.length === 0" class="map-empty">
-      <span class="empty-icon">&#128205;</span>
+      <span class="empty-icon">📍</span>
       <p>暂无带 GPS 信息的作品</p>
     </div>
 
     <template v-else>
       <!-- Map summary -->
       <div class="map-summary">
-        <span>&#128205; {{ visibleShots.length }} 个带 GPS 坐标的作品</span>
+        <span>📍 {{ visibleShots.length }} 个带 GPS 坐标的作品</span>
         <span class="summary-sep">&middot;</span>
         <span>{{ uniqueLocations }} 个独立位置</span>
       </div>
@@ -33,7 +33,7 @@
           @mouseenter="hoveredPinId = shot.id"
           @mouseleave="hoveredPinId = null"
         >
-          <span class="pin-icon">&#128205;</span>
+          <span class="pin-icon">📍</span>
           <!-- Pulse ring for hovered pin -->
           <span v-if="hoveredPinId === shot.id" class="pin-pulse"></span>
         </div>
@@ -70,7 +70,7 @@
           @click="activePinId = shot.id"
         >
           <div class="card-location">
-            <span class="location-icon">&#128205;</span>
+            <span class="location-icon">📍</span>
             <span class="coord-text">
               {{ shot.gps_latitude?.toFixed(4) }}, {{ shot.gps_longitude?.toFixed(4) }}
             </span>

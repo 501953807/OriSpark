@@ -49,7 +49,7 @@
 
     <!-- Empty state -->
     <div v-if="!hasAnyData" class="empty-hint">
-      <span class="hint-icon">&#127925;</span>
+      <span class="hint-icon">🎵</span>
       <p>暂无音乐元数据</p>
     </div>
   </div>

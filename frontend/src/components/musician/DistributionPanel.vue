@@ -2,7 +2,7 @@
   <div class="dist-panel">
     <!-- Header -->
     <div class="panel-header">
-      <h3 class="panel-title">&#128203; 多平台分发</h3>
+      <h3 class="panel-title">📋 多平台分发</h3>
       <span class="panel-desc">一键分发到全球音乐平台</span>
     </div>
 
@@ -42,8 +42,8 @@
 
         <!-- Metrics after distribution -->
         <div v-if="p.state === 'published'" class="platform-metrics">
-          <span>&#128064; {{ formatNumber(p.plays ?? 0) }}</span>
-          <span>&#128176; {{ formatRevenue(p.revenue ?? 0) }}</span>
+          <span>👀 {{ formatNumber(p.plays ?? 0) }}</span>
+          <span>💰 {{ formatRevenue(p.revenue ?? 0) }}</span>
           <span>{{ p.released_at ? formatDate(p.released_at) : '—' }}</span>
         </div>
 

@@ -102,7 +102,7 @@ async function runCheck() {
     })
     if (results) {
       // Prepend new warnings to the store list
-      store.warnings = [...(results as any[]), ...store.warnings]
+      store.warnings.value = [...(results as any[]), ...store.warnings.value]
     }
   } finally {
     checking.value = false

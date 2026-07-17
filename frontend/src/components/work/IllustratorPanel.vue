@@ -76,7 +76,7 @@
 
     <!-- Empty state -->
     <div v-if="!hasAnyInfo" class="empty-hint">
-      <span class="hint-icon">&#127912;</span>
+      <span class="hint-icon">🎨</span>
       <p>暂无插画师专属信息</p>
     </div>
   </div>

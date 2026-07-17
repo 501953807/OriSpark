@@ -1,7 +1,7 @@
 <template>
   <div class="stock-channel-panel">
     <div v-if="!props.shot" class="empty-hint">
-      <span class="hint-icon">&#128230;</span>
+      <span class="hint-icon">📦</span>
       <p>请选择一张作品进行管理</p>
     </div>
 

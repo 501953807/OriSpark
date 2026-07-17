@@ -3,23 +3,23 @@
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-label">&#127912; 总作品</span>
+        <span class="stat-label">🎨 总作品</span>
         <span class="stat-value">{{ workStore.total }}</span>
       </div>
       <div class="stat-item stat-verified">
-        <span class="stat-label">&#128274; 已存证</span>
+        <span class="stat-label">🔒 已存证</span>
         <span class="stat-value">{{ verifiedCount }}</span>
       </div>
       <div class="stat-item stat-pending">
-        <span class="stat-label">&#128203; 待存证</span>
+        <span class="stat-label">📋 待存证</span>
         <span class="stat-value">{{ pendingCount }}</span>
       </div>
       <div class="stat-item stat-images">
-        <span class="stat-label">&#127776; 图片</span>
+        <span class="stat-label">🌠 图片</span>
         <span class="stat-value">{{ imageCount }}</span>
       </div>
       <div class="stat-item stat-designs">
-        <span class="stat-label">&#127912; 设计</span>
+        <span class="stat-label">🎨 设计</span>
         <span class="stat-value">{{ designCount }}</span>
       </div>
     </div>
@@ -42,7 +42,7 @@
         <div v-for="work in workStore.works.slice(0, 8)" :key="work.id" class="work-card">
           <div class="work-thumb">
             <img v-if="work.thumbnail_url" :src="work.thumbnail_url" :alt="work.title" />
-            <div v-else class="work-thumb-placeholder">{{ fileTypeEmoji[work.file_type] || '&#128196;' }}</div>
+            <div v-else class="work-thumb-placeholder">{{ fileTypeEmoji[work.file_type] || '📄' }}</div>
           </div>
           <div class="work-info">
             <span class="work-title">{{ work.title }}</span>
@@ -51,7 +51,7 @@
           <router-link :to="`/app/works/${work.id}`" class="work-link">查看详情 &rarr;</router-link>
         </div>
         <div v-if="!workStore.works.length" class="empty-state">
-          <span class="empty-icon">&#127912;</span>
+          <span class="empty-icon">🎨</span>
           <p>暂无作品，前往作品管理导入你的第一个插画作品。</p>
           <router-link to="/app/works" class="btn btn-primary">进入作品管理</router-link>
         </div>
@@ -61,21 +61,21 @@
     <!-- ========== AIGC 防护 tab ========== -->
     <div v-if="activeTab === 'aigc'" class="tab-panel">
       <div class="panel-content">
-        <h3 class="section-title">&#128737; AIGC 防护中心</h3>
+        <h3 class="section-title">🛡 AIGC 防护中心</h3>
         <p class="section-desc">检测作品是否被 AI 模型训练使用，保护原创插画风格。</p>
         <div class="info-cards">
           <div class="info-card">
-            <span class="info-icon">&#128269;</span>
+            <span class="info-icon">🔍</span>
             <h4>风格检测</h4>
             <p>分析插画风格特征，生成风格指纹用于侵权比对</p>
           </div>
           <div class="info-card">
-            <span class="info-icon">&#128179;</span>
+            <span class="info-icon">💳</span>
             <h4>AI 训练监测</h4>
             <p>监控主流 AI 模型是否使用了你的作品进行训练</p>
           </div>
           <div class="info-card">
-            <span class="info-icon">&#128274;</span>
+            <span class="info-icon">🔒</span>
             <h4>风格保护</h4>
             <p>为你的独特插画风格提供数字存证和维权支持</p>
           </div>
@@ -86,10 +86,10 @@
     <!-- ========== 风格分析 tab ========== -->
     <div v-if="activeTab === 'style'" class="tab-panel">
       <div class="panel-content">
-        <h3 class="section-title">&#127912; 风格分析</h3>
+        <h3 class="section-title">🎨 风格分析</h3>
         <p class="section-desc">自动分析作品的艺术风格、色彩倾向和构图特征。</p>
         <div class="analysis-placeholder">
-          <span class="placeholder-icon">&#128200;</span>
+          <span class="placeholder-icon">📈</span>
           <p>选择作品进行风格分析</p>
           <router-link to="/app/works" class="btn btn-secondary">浏览作品</router-link>
         </div>
@@ -99,21 +99,21 @@
     <!-- ========== 版权登记 tab ========== -->
     <div v-if="activeTab === 'copyright'" class="tab-panel">
       <div class="panel-content">
-        <h3 class="section-title">&#128221; 版权登记</h3>
+        <h3 class="section-title">📝 版权登记</h3>
         <p class="section-desc">快速完成作品著作权登记申请。</p>
         <div class="info-cards">
           <div class="info-card">
-            <span class="info-icon">&#128203;</span>
+            <span class="info-icon">📋</span>
             <h4>在线申请</h4>
             <p>填写作品信息，自动生成申请材料</p>
           </div>
           <div class="info-card">
-            <span class="info-icon">&#128200;</span>
+            <span class="info-icon">📈</span>
             <h4>进度查询</h4>
             <p>实时跟踪登记申请审批进度</p>
           </div>
           <div class="info-card">
-            <span class="info-icon">&#128221;</span>
+            <span class="info-icon">📝</span>
             <h4>证书管理</h4>
             <p>电子证书归档与下载</p>
           </div>
@@ -130,17 +130,17 @@ import { useWorkStore } from '@/stores/useWorkStore'
 const workStore = useWorkStore()
 
 const tabs = [
-  { key: 'overview', label: '作品概览', icon: '&#128203;' },
-  { key: 'aigc', label: 'AIGC 防护', icon: '&#128737;' },
-  { key: 'style', label: '风格分析', icon: '&#127912;' },
-  { key: 'copyright', label: '版权登记', icon: '&#128221;' },
+  { key: 'overview', label: '作品概览', icon: '📋' },
+  { key: 'aigc', label: 'AIGC 防护', icon: '🛡' },
+  { key: 'style', label: '风格分析', icon: '🎨' },
+  { key: 'copyright', label: '版权登记', icon: '📝' },
 ]
 const activeTab = ref<string>('overview')
 
 const fileTypeEmoji: Record<string, string> = {
-  image: '&#127776;',
-  design: '&#127912;',
-  document: '&#128196;',
+  image: '🌠',
+  design: '🎨',
+  document: '📄',
 }
 
 const verifiedCount = computed(() =>

@@ -14,23 +14,23 @@
     <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-label">&#127907; 总视频</span>
+        <span class="stat-label">🎣 总视频</span>
         <span class="stat-value">{{ stats.total_videos }}</span>
       </div>
       <div class="stat-item stat-plays">
-        <span class="stat-label">&#128065; 播放量</span>
+        <span class="stat-label">👁 播放量</span>
         <span class="stat-value">{{ formatPlays(stats.total_plays) }}</span>
       </div>
       <div class="stat-item stat-scan">
-        <span class="stat-label">&#128269; 指纹扫描</span>
+        <span class="stat-label">🔍 指纹扫描</span>
         <span class="stat-value">{{ stats.fingerprint_scans }}</span>
       </div>
       <div class="stat-item stat-infringement">
-        <span class="stat-label">&#9888;&#65039; 侵权</span>
+        <span class="stat-label">⚠️ 侵权</span>
         <span class="stat-value">{{ stats.infringement_count }}</span>
       </div>
       <div class="stat-item stat-revenue">
-        <span class="stat-label">&#128176; 本月收益</span>
+        <span class="stat-label">💰 本月收益</span>
         <span class="stat-value">¥{{ stats.monthly_revenue?.toFixed(0) ?? 0 }}</span>
       </div>
     </div>
@@ -76,7 +76,7 @@
 
       <!-- Video grid -->
       <div v-if="store.videos.length === 0 && !store.loading" class="empty-state">
-        <div class="empty-icon">&#127909;</div>
+        <div class="empty-icon">🎥</div>
         <p>暂无视频作品</p>
       </div>
       <div v-else class="video-grid">
@@ -94,7 +94,7 @@
               loading="lazy"
             />
             <div v-else class="thumb-placeholder">
-              <span>&#127909;</span>
+              <span>🎥</span>
             </div>
             <!-- Duration badge -->
             <span v-if="video.duration_seconds" class="duration-badge">
@@ -115,14 +115,14 @@
           <!-- Actions -->
           <div class="video-actions">
             <button class="btn btn-xs btn-accent" @click="handleScan(video.id)">
-              &#128269; 指纹扫描
+              🔍 指纹扫描
             </button>
             <button
               v-if="video.match_count && video.match_count > 0"
               class="btn btn-xs btn-danger"
               @click="activeTab = 'fingerprint'; selectedVideoId = video.work_id"
             >
-              &#9888;&#65039; {{ video.match_count }} 匹配
+              ⚠️ {{ video.match_count }} 匹配
             </button>
           </div>
         </div>
@@ -163,7 +163,7 @@
             @click="handleFingerprintScan"
           >
             <span v-if="store.fingerprintLoading" class="spinner-small">加载中...</span>
-            <span v-else>&#128269; 发起扫描</span>
+            <span v-else>🔍 发起扫描</span>
           </button>
         </div>
 
@@ -238,10 +238,10 @@ const store = useVideoStore()
 
 // ── Tabs ─────────────────────────────────────────────────────
 const tabs = [
-  { key: 'list', label: '&#127909; 视频列表' },
-  { key: 'fingerprint', label: '&#128269; 指纹扫描' },
-  { key: 'package', label: '&#128230; 工程包' },
-  { key: 'distribute', label: '&#128233; 分发' },
+  { key: 'list', label: '🎥 视频列表' },
+  { key: 'fingerprint', label: '🔍 指纹扫描' },
+  { key: 'package', label: '📦 工程包' },
+  { key: 'distribute', label: '📩 分发' },
 ]
 const activeTab = ref<string>('list')
 
@@ -337,10 +337,10 @@ interface PlatformState {
 }
 
 const platforms = ref<PlatformState[]>([
-  { key: 'bilibili', name: 'B站', icon: '&#128235;', status: 'idle', loading: false },
-  { key: 'douyin', name: '抖音', icon: '&#127916;', status: 'idle', loading: false },
-  { key: 'youtube', name: 'YouTube', icon: '&#9654;', status: 'idle', loading: false },
-  { key: 'wechat', name: '视频号', icon: '&#128172;', status: 'idle', loading: false },
+  { key: 'bilibili', name: 'B站', icon: '📫', status: 'idle', loading: false },
+  { key: 'douyin', name: '抖音', icon: '🎬', status: 'idle', loading: false },
+  { key: 'youtube', name: 'YouTube', icon: '▶', status: 'idle', loading: false },
+  { key: 'wechat', name: '视频号', icon: '💬', status: 'idle', loading: false },
 ])
 
 function statusLabel(s: string): string {

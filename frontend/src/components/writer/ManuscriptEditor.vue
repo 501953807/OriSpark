@@ -3,7 +3,7 @@
     <!-- Panel header -->
     <div class="panel-header">
       <div>
-        <h3 class="panel-title">&#128221; 手稿编辑器</h3>
+        <h3 class="panel-title">📝 手稿编辑器</h3>
         <span class="panel-desc">编辑章节内容、管理版本和状态</span>
       </div>
 

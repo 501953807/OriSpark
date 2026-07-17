@@ -43,7 +43,7 @@
 
     <!-- Empty state -->
     <div v-if="!hasAnyData" class="empty-hint">
-      <span class="hint-icon">&#9998;</span>
+      <span class="hint-icon">✎</span>
       <p>暂无写作数据</p>
     </div>
   </div>

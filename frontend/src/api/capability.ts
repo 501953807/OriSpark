@@ -1,4 +1,4 @@
-import { request } from '@/api/client'
+import client from './client'
 import type {
   CapabilityDimension,
   AssessmentResult,
@@ -8,16 +8,16 @@ import type {
 } from '@/types/capability'
 
 export function listDimensions() {
-  return request.get('/capability/dimensions').then(res => res.data as CapabilityDimension[])
+  return client.get('/capability/dimensions').then(res => res.data as CapabilityDimension[])
 }
 
 export function createAssessment(dimensionScores: Record<string, number>) {
-  return request.post('/capability/assessments', { dimension_scores: dimensionScores })
+  return client.post('/capability/assessments', { dimension_scores: dimensionScores })
     .then(res => res.data as AssessmentResult)
 }
 
 export function calcPremium(skills: string[], yearsExperience: number, workCount: number) {
-  return request.post('/capability/premium', {
+  return client.post('/capability/premium', {
     skills,
     years_experience: yearsExperience,
     work_count: workCount,
@@ -25,7 +25,7 @@ export function calcPremium(skills: string[], yearsExperience: number, workCount
 }
 
 export function predictAIRisk(currentSkills: string[], workType: string, experienceYears: number) {
-  return request.post('/capability/ai-risk', {
+  return client.post('/capability/ai-risk', {
     current_skills: currentSkills,
     work_type: workType,
     experience_years: experienceYears,
@@ -33,6 +33,6 @@ export function predictAIRisk(currentSkills: string[], workType: string, experie
 }
 
 export function getStageRecommendation(score: number) {
-  return request.get('/capability/stage-recommendation', { params: { score } })
+  return client.get('/capability/stage-recommendation', { params: { score } })
     .then(res => res.data as StageRecommendation)
 }
