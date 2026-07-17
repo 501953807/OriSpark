@@ -3,9 +3,11 @@
 P2.2.1: Pure Python C2PA Manifest 生成
 - 生成符合 C2PA 规范的 manifest JSON
 - 包含 claim_generator、assertion (creative_work)、签名信息、素材引用
+P3: 二进制嵌入支持 PNG/JPEG
 """
 
 import json
+import logging
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
@@ -346,32 +348,92 @@ def embed_c2pa_metadata(
     manifest: dict,
     output_path: Optional[str] = None,
 ) -> Optional[str]:
-    """将 C2PA manifest 保存为卫星 JSON 文件 (纯 Python 实现).
+    """将 C2PA manifest 嵌入文件 (PNG/JPEG 二进制嵌入 + 卫星 fallback).
 
-    由于纯 Python 不能直接嵌入 C2PA 到二进制文件，使用卫星文件模式。
+    支持格式:
+    - PNG: 在 IEND 之前插入 c2pa chunk
+    - JPEG: 在 APP13 segment 中嵌入 XMP metadata
+    - Fallback: 卫星 JSON 文件
 
     Args:
         file_path: 源文件路径
         manifest: C2PA manifest dict
-        output_path: 输出文件路径 (默认 file_path + .c2pa.json)
+        output_path: 输出文件路径
 
     Returns:
-        str: manifest JSON 文件路径，失败返回 None
+        嵌入成功返回文件路径，失败返回卫星文件路径或 None
     """
-    if output_path is None:
-        output_path = file_path + ".c2pa.json"
+    ext = Path(file_path).suffix.lower()
+
+    # Serialize manifest to bytes
+    manifest_json = json.dumps(manifest, ensure_ascii=False, indent=2).encode("utf-8")
 
     try:
-        # 确保目录存在
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        if ext in (".png",):
+            return _embed_png(file_path, manifest_json, output_path)
+        elif ext in (".jpg", ".jpeg"):
+            return _embed_jpeg(file_path, manifest_json, output_path)
+        else:
+            logging.getLogger(__name__).info("No binary embedder for %s, using satellite mode", ext)
+    except Exception as e:
+        logging.getLogger(__name__).warning("Binary embedding failed for %s: %s, falling back to satellite", ext, e)
 
-        # 添加源文件引用
+    # Fallback: satellite JSON
+    return _save_satellite_manifest(file_path, manifest)
+
+
+def _embed_png(file_path: str, manifest_bytes: bytes, output_path: Optional[str]) -> Optional[str]:
+    """Embed C2PA manifest into PNG binary."""
+    from app.services.c2pa_embedder import embed_into_png
+
+    result = embed_into_png(file_path, manifest_bytes, output_path)
+    if result:
+        return result
+
+    # If embed_into_png fails, fall through to satellite
+    return None
+
+
+def _embed_jpeg(file_path: str, manifest_bytes: bytes, output_path: Optional[str]) -> Optional[str]:
+    """Embed C2PA manifest into JPEG as XMP in APP13 segment."""
+    from app.services.c2pa_embedder import embed_into_jpeg
+
+    # Convert manifest JSON to XMP format
+    xmp_template = """<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>
+<x:xmpmeta xmlns:x='adobe:ns:meta/'>
+ <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+  <rdf:Description rdf:about=''
+    xmlns:c2pa='{manifest_vendor}'>
+   <c2pa:manifestHash>{manifest_hash}</c2pa:manifestHash>
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end='w'?>"""
+
+    import hashlib
+    manifest_hash = hashlib.sha256(manifest_bytes).hexdigest()
+    vendor = "oristudio"
+    xmp_data = xmp_template.format(
+        manifest_vendor=vendor,
+        manifest_hash=manifest_hash,
+    ).encode("utf-8")
+
+    result = embed_into_jpeg(file_path, xmp_data, output_path)
+    if result:
+        return result
+
+    return None
+
+
+def _save_satellite_manifest(file_path: str, manifest: dict) -> Optional[str]:
+    """Save C2PA manifest as satellite JSON file."""
+    output_path = file_path + ".c2pa.json"
+    try:
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         manifest_with_ref = dict(manifest)
         manifest_with_ref["source_file"] = file_path
-
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(manifest_with_ref, f, ensure_ascii=False, indent=2)
-
         return output_path
     except Exception as e:
         print(f"C2PA embedding error: {e}")

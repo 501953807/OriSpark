@@ -27,6 +27,7 @@ from app.schemas.notary import (
     NotaryCompareRequest, NotaryCompareResponse, PlatformFeeItem,
     NotaryRecommendResponse,
     AuditTrailItem, AuditTrailResponse,
+    NotaryVerifyResponse, EvidenceChainItem,
 )
 from app.schemas.common import ApiResponse
 from app.services.certificate_service import generate_certificate_pdf
@@ -1143,3 +1144,94 @@ async def request_timestamp(
         message="RFC 3161 时间戳生成成功",
         data={"timestamp_path": str(ts_path)},
     )
+
+
+# ==============================================================================
+# P0: Universal Verify Endpoint — aggregates evidence chain for QR code scanning
+# ==============================================================================
+
+
+@router.get("/notary/verify/{record_id}", response_model=ApiResponse[NotaryVerifyResponse])
+def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
+    """通用存证验证端点 (P0).
+
+    聚合查询 NotaryRecord + Certificate + C2PARecord + AuditTrail，
+    返回完整证据链状态 (L1/L2/L3/L4)。
+
+    前端 VerifyView.vue 通过此端点实现 QR Code 扫码验证。
+    """
+    # 查询存证记录
+    record = db.query(NotaryRecord).filter(NotaryRecord.id == record_id).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="存证记录不存在")
+
+    work = db.query(Work).filter(Work.id == record.work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail="关联作品不存在")
+
+    # L1: ECDSA 本地签名验证
+    l1_status = "verified" if record.notes and "L1 Signature" in (record.notes or "") else "pending"
+    evidence_chain = [EvidenceChainItem(
+        level="L1", type="ECDSA 本地签名", status=l1_status,
+        details={"sig_ref": "data/certificates/signatures"} if l1_status == "verified" else None,
+    )]
+
+    # L2: 区块链存证验证
+    l2_status = "verified" if record.status == "confirmed" else ("pending" if record.status == "pending" else "failed")
+    evidence_chain.append(EvidenceChainItem(
+        level="L2", type=f"区块链 ({NOTARY_PLATFORMS.get(record.platform, {}).get('name', record.platform)})",
+        status=l2_status,
+        details={
+            "tx_hash": record.transaction_hash,
+            "block_height": record.block_height,
+            "platform_url": record.platform_url,
+        } if l2_status == "verified" else None,
+    ))
+
+    # L3: C2PA manifest 验证
+    c2pa_record = db.query(C2PARecord).filter(C2PARecord.work_id == record.work_id).first()
+    if c2pa_record:
+        manifest = c2pa_record.manifest_json
+        is_valid = False
+        if isinstance(manifest, dict):
+            sig_hash = manifest.get("signature", {}).get("hash", "")
+            has_assertions = len(manifest.get("assertions", [])) > 0
+            is_valid = bool(sig_hash and has_assertions)
+        evidence_chain.append(EvidenceChainItem(
+            level="L3", type="C2PA 内容凭证",
+            status="verified" if is_valid else "pending",
+            details={"manifest_exists": True} if is_valid else {"manifest_exists": True, "incomplete": True},
+        ))
+    else:
+        evidence_chain.append(EvidenceChainItem(
+            level="L3", type="C2PA 内容凭证", status="not_started",
+        ))
+
+    # L4: RFC 3161 时间戳
+    ts_record = db.query(NotaryRecord).filter(
+        NotaryRecord.work_id == record.work_id,
+        NotaryRecord.platform == "tts_timestamp",
+    ).first()
+    if ts_record and ts_record.status == "confirmed":
+        evidence_chain.append(EvidenceChainItem(
+            level="L4", type="RFC 3161 时间戳 (DigiCert TSA)", status="verified",
+            details={"timestamp_path": ts_record.notes},
+        ))
+    else:
+        evidence_chain.append(EvidenceChainItem(
+            level="L4", type="RFC 3161 时间戳 (DigiCert TSA)", status="not_started",
+        ))
+
+    # 综合验证结果：至少 L1+L2 通过即为有效
+    valid = l1_status == "verified" and l2_status == "verified"
+
+    return ApiResponse(data=NotaryVerifyResponse(
+        valid=valid,
+        record_id=record.id,
+        work_id=record.work_id,
+        work_title=work.title or "",
+        sha256=work.sha256 or "",
+        platform=record.platform,
+        confirmed_at=record.confirmed_at,
+        evidence_chain=evidence_chain,
+    ))

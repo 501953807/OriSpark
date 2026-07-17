@@ -173,3 +173,23 @@ class AuditTrailResponse(BaseModel):
     record_id: str
     status: str
     steps: list[AuditTrailItem]
+
+
+# --- P0: Universal Verify Endpoint ---
+
+class EvidenceChainItem(BaseModel):
+    level: str
+    type: str
+    status: str  # "verified" / "pending" / "failed" / "not_started"
+    details: Optional[dict] = None
+
+
+class NotaryVerifyResponse(BaseModel):
+    valid: bool
+    record_id: str
+    work_id: str
+    work_title: str
+    sha256: str
+    platform: str
+    confirmed_at: Optional[datetime] = None
+    evidence_chain: list[EvidenceChainItem]
