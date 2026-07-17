@@ -3,6 +3,7 @@
 import json
 import os
 import shutil
+import uuid as _uuid
 import zipfile
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional
@@ -323,3 +324,70 @@ def update_action_status(
     db.commit()
     db.refresh(action)
     return action
+
+
+# ── 6. create_action_from_work ──────────────────────────────────
+
+def create_action_from_work(db: Session, work_id: str) -> dict:
+    """Bridge endpoint: from a work directly start enforcement flow."""
+    task_ids = [
+        t.id for t in db.query(MonitorTask.id).filter(
+            MonitorTask.work_id == work_id
+        ).all()
+    ]
+    result_ids = [
+        mr.id for mr in db.query(MonitorResult.id).filter(
+            MonitorResult.task_id.in_(task_ids)
+        ).all()
+    ]
+
+    existing_actions = (
+        db.query(EnforcementAction)
+        .filter(
+            EnforcementAction.monitor_result_id.in_(result_ids),
+            EnforcementAction.status.in_(["complaint_filed", "resolved"]),
+        )
+        .all()
+    )
+    if existing_actions:
+        return {
+            "status": "already_enforced",
+            "action_id": existing_actions[0].id,
+        }
+
+    infringing_results = (
+        db.query(MonitorResult)
+        .filter(
+            MonitorResult.task_id.in_(task_ids),
+            MonitorResult.status.in_(["infringing", "pending_review"]),
+        )
+        .all()
+    )
+
+    if not infringing_results:
+        return {
+            "status": "no_matches",
+            "message": "未检测到侵权行为，建议继续监测",
+        }
+
+    actions = []
+    for mr in infringing_results:
+        action_id = _uuid.uuid4().hex
+        action = EnforcementAction(
+            id=action_id,
+            monitor_result_id=mr.id,
+            action_type="platform_complaint",
+            platform="generic",
+            status="pending_review",
+        )
+        db.add(action)
+        actions.append(action)
+
+    db.commit()
+    for action in actions:
+        db.refresh(action)
+
+    return {
+        "status": "matches_found",
+        "action_ids": [a.id for a in actions],
+    }

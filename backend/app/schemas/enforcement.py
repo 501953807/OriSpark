@@ -162,3 +162,16 @@ class ComplaintSubmitResponse(BaseModel):
     material_path: Optional[str] = None
     prefilled_url: Optional[str] = None
     status: str
+
+
+from typing import Literal
+
+
+class FromWorkResponse(BaseModel):
+    """Bridge endpoint response."""
+
+    status: Literal["matches_found", "no_matches", "already_enforced"]
+    action: Optional[dict[str, Any]] = None
+    actions: Optional[list[dict[str, Any]]] = None
+    action_ids: Optional[list[str]] = None
+    message: Optional[str] = None

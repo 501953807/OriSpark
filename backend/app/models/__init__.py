@@ -61,6 +61,11 @@ from app.models.pod_profit import PODProduct, PODDesign, PODSale
 from app.models.case_study import CaseStudy, CaseTag
 from app.models.copyright_guide import GuideRegistration, RegistrationGuide
 
+# 维权流水线
+from app.models.enforcement import (
+    EnforcementAction, EnforcementTemplate, ComplaintMaterial,
+)
+
 from app.models.album import Album
 from app.models.music_release import MusicRelease
 from app.models.split_sheet import SplitSheet
@@ -137,4 +142,6 @@ __all__ = [
     "AudiobookProduction", "AudiobookChapter",
     # 版权登记指南
     "GuideRegistration", "RegistrationGuide",
+    # 维权流水线
+    "EnforcementAction", "EnforcementTemplate", "ComplaintMaterial",
 ]

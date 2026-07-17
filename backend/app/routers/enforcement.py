@@ -28,6 +28,7 @@ from app.services.enforcement import (
     generate_pdf_package,
     resolve_template_variables,
     update_action_status as service_update_action_status,
+    create_action_from_work as service_create_action_from_work,
 )
 
 router = APIRouter(prefix="/api/enforcement", tags=["Enforcement"])
@@ -375,3 +376,46 @@ async def seed_templates(db: Session = Depends(get_db)):
 
     count = db.query(EnforcementTemplate).count()
     return {"status": "seeded", "message": f"Seeded {count} templates", "count": count}
+
+
+# ── 8. POST /actions/from-work/{work_id} ────────────────────────
+
+
+@router.post("/actions/from-work/{work_id}")
+async def create_action_from_work_endpoint(
+    work_id: str,
+    db: Session = Depends(get_db),
+):
+    """Bridge endpoint: create enforcement actions directly from a work."""
+    result = service_create_action_from_work(db, work_id)
+    return result
+
+
+# ── 9. GET /actions/by-work/{work_id} ──────────────────────────
+
+
+@router.get("/actions/by-work/{work_id}")
+async def list_actions_by_work(
+    work_id: str,
+    db: Session = Depends(get_db),
+):
+    """List all enforcement actions linked to a work."""
+    task_ids = [
+        t.id for t in db.query(MonitorTask.id).filter(
+            MonitorTask.work_id == work_id
+        ).all()
+    ]
+    result_ids = [
+        mr.id for mr in db.query(MonitorResult.id).filter(
+            MonitorResult.task_id.in_(task_ids)
+        ).all()
+    ]
+    if not result_ids:
+        return []
+    actions = (
+        db.query(EnforcementAction)
+        .filter(EnforcementAction.monitor_result_id.in_(result_ids))
+        .order_by(EnforcementAction.created_at.desc())
+        .all()
+    )
+    return [_enrich_action_response(a, db) for a in actions]
