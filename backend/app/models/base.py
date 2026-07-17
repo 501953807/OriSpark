@@ -81,5 +81,8 @@ from app.models.reserved_writing import (
     AudiobookProduction, AudiobookChapter,
 )
 
+# Enforcement workflow (维权流水线)
+from app.models.enforcement import EnforcementAction, EnforcementTemplate, ComplaintMaterial
+
 # Alembic 迁移需要
 target_metadata = Base.metadata
