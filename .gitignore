@@ -64,6 +64,10 @@ temp/
 design/
 docs/
 
+# README files (contain sensitive system details)
+README.md
+README*.md
+
 # AI Agent tools / Claude Code / Serena / OMC (local dev only)
 .codegraph/
 .claude/
