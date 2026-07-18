@@ -10,6 +10,16 @@
       <span class="batch-count">{{ selectedIds.size }} / {{ visibleCount }}</span>
     </div>
 
+    <!-- EXIF advanced filters -->
+    <div class="exif-filters">
+      <input type="number" v-model.number="filters.aperture_min" placeholder="光圈 Min" />
+      <input type="number" v-model.number="filters.aperture_max" placeholder="光圈 Max" />
+      <input type="text" v-model="filters.shutter_speed" placeholder="快门速度" />
+      <input type="number" v-model.number="filters.iso_min" placeholder="ISO Min" />
+      <input type="number" v-model.number="filters.iso_max" placeholder="ISO Max" />
+      <input type="number" v-model.number="filters.focal_length" placeholder="焦距(mm)" />
+    </div>
+
     <!-- Loading -->
     <div v-if="loading" class="shot-loading">加载中...</div>
 
@@ -104,9 +114,47 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 // ── Filtering ──────────────────────────────────────────────────
+const filters = ref({
+  aperture_min: null as number | null,
+  aperture_max: null as number | null,
+  shutter_speed: '',
+  iso_min: null as number | null,
+  iso_max: null as number | null,
+  focal_length: null as number | null,
+})
+
+function matchExif(shot: PhotographerShot): boolean {
+  const f = filters.value
+  if (f.aperture_min !== null && shot.aperture) {
+    const val = parseFloat(String(shot.aperture).replace('f/', ''))
+    if (isNaN(val) || val < f.aperture_min) return false
+  }
+  if (f.aperture_max !== null && shot.aperture) {
+    const val = parseFloat(String(shot.aperture).replace('f/', ''))
+    if (isNaN(val) || val > f.aperture_max) return false
+  }
+  if (f.shutter_speed && !String(shot.shutter_speed ?? '').includes(f.shutter_speed)) return false
+  if (f.iso_min !== null && shot.iso !== undefined) {
+    const val = Number(shot.iso)
+    if (isNaN(val) || val < f.iso_min) return false
+  }
+  if (f.iso_max !== null && shot.iso !== undefined) {
+    const val = Number(shot.iso)
+    if (isNaN(val) || val > f.iso_max) return false
+  }
+  if (f.focal_length !== null && shot.focal_length) {
+    const val = parseFloat(String(shot.focal_length).replace('mm', ''))
+    if (isNaN(val) || Math.abs(val - f.focal_length) > 1) return false
+  }
+  return true
+}
+
 const visibleShots = computed(() => {
-  if (!props.filter) return props.shots
-  return props.shots.filter((s) => s.shot_status === props.filter)
+  let list = props.shots
+  if (props.filter) {
+    list = list.filter((s) => s.shot_status === props.filter)
+  }
+  return list.filter(matchExif)
 })
 
 const visibleCount = computed(() => visibleShots.value.length)
@@ -409,4 +457,28 @@ function thumbnailUrl(shot: PhotographerShot): string {
 .btn:hover { background: var(--bg); }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
+
+/* ── EXIF filter inputs ─────────────────────────────────────── */
+.exif-filters {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  flex-wrap: wrap;
+}
+
+.exif-filters input {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  width: 110px;
+  font-family: inherit;
+}
+
+.exif-filters input::placeholder {
+  color: var(--muted);
+}
 </style>
