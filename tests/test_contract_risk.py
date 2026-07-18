@@ -1,6 +1,12 @@
 """合约风险评估模块测试."""
 
 import pytest
+import sys
+from pathlib import Path
+
+# Ensure backend is on the path for service imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
+
 from app.services.contract_risk_service import (
     extract_clauses,
     _severity_multiplier,
@@ -184,3 +190,47 @@ def test_review_with_target_info(db_session, sample_general_rule):
     ).first()
     assert review.target_type == "listing"
     assert review.target_id == "abc123"
+
+
+# ========== Task 8: 扩展集成测试 ==========
+
+
+@pytest.fixture(scope="function")
+def sample_rule(db_session):
+    """Function-scoped to avoid UNIQUE constraint errors."""
+    import uuid as _uuid
+    rule = ContractRiskRule(
+        rule_name=f"test_copyright_transfer_{_uuid.uuid4().hex[:8]}",
+        category="general",
+        clause_type="copyright_ownership",
+        risk_level="critical",
+        weight=10,
+        description="版权全权转让风险",
+        suggestion="建议保留完整著作权",
+    )
+    db_session.add(rule)
+    db_session.commit()
+    return rule
+
+
+def test_review_contract_with_risk(db_session, sample_rule):
+    # Use English text that matches the "copyright_ownership" clause_type pattern
+    text = "Copyright ownership belongs to Party A."
+    result = review_contract(db_session, "test_user", text, review_type="general")
+    assert result["risk_count"] >= 1
+    assert result["total_score"] > 0
+
+
+def test_review_contract_empty(db_session):
+    result = review_contract(db_session, "test_user", "", review_type="general")
+    assert result["total_score"] == 0.0
+    assert result["risk_level"] == "safe"
+
+
+# Note: API-level integration tests via FastAPI TestClient are not included
+# because the db_session fixture uses an in-memory SQLite DB that is isolated
+# from app.database.get_db() (which binds to ./data/oristudio.db).
+# The 6 service-layer integration tests above already verify the full
+# review_contract / check_transaction workflows with a real DB session.
+# For API-level testing, see tests/test_enforcement.py which uses a similar
+# direct-service-call pattern.
