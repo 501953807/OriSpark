@@ -46,6 +46,7 @@ const router = createRouter({
         { path: 'capability', name: 'capability', component: () => import('@/views/CapabilityAssessmentView.vue') },
         { path: 'multimarket', name: 'multimarket', component: () => import('@/views/MultiMarketView.vue') },
         { path: 'enforcement-roi', name: 'enforcement-roi', component: () => import('@/views/EnforcementRoiView.vue') },
+        { path: 'enforcement', name: 'enforcement-dashboard', component: () => import('@/views/EnforcementDashboardView.vue') },
         { path: 'private-traffic', name: 'private-traffic', component: () => import('@/views/PrivateTrafficView.vue') },
         { path: 'growth-stages', name: 'growth-stages', component: () => import('@/views/GrowthStageView.vue') },
         { path: 'risk-center', name: 'risk-center', component: () => import('@/views/RiskWarningCenterView.vue') },

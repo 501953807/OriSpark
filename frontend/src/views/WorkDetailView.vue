@@ -7,6 +7,7 @@
       <div class="toolbar-actions">
         <a v-if="previewUrl" :href="previewUrl" download class="btn btn-secondary btn-sm">📥 下载</a>
         <button v-if="!work?.is_verified" class="btn btn-secondary btn-sm" @click="doNotarize">🔒 存证</button>
+        <button class="btn btn-secondary btn-sm" @click="showEnforcement = true">⚖️ 维权</button>
         <button class="btn btn-primary btn-sm" @click="showEditPanel = true">✏️ 编辑</button>
         <div class="dropdown-wrapper">
           <button class="btn btn-ghost btn-sm" @click="showMoreMenu = !showMoreMenu">⋯</button>
@@ -271,6 +272,15 @@
       @save="handleSave"
       @delete="handleDelete"
     />
+
+    <!-- Enforcement Wizard -->
+    <EnforcementWizard
+      v-if="work"
+      :visible="showEnforcement"
+      :work-id="work.id"
+      @close="showEnforcement = false"
+      @success="onEnforcementSuccess"
+    />
   </div>
 </template>
 
@@ -288,6 +298,7 @@ import { monitorApi } from '@/api/monitor'
 import type { Work } from '@/types/work'
 import { getAllStages, getStagesForFileType, getStageColor as getStageColorUtil } from '@/composables/useWorkStages'
 import AIGenerationPanel from '@/components/ai/AIGenerationPanel.vue'
+import EnforcementWizard from '@/components/work/EnforcementWizard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -296,6 +307,7 @@ const work = ref<Work | null>(null)
 const versions = ref<any[]>([])
 const loading = ref(true)
 const showEditPanel = ref(false)
+const showEnforcement = ref(false)
 const showMoreMenu = ref(false)
 const notaryCount = ref(0)
 
@@ -592,6 +604,11 @@ async function handleDelete() {
 
 function navigateToProject(projectId: string) {
   router.push(`/app/projects/${projectId}`)
+}
+
+function onEnforcementSuccess(actionIds: string[]) {
+  showEnforcement.value = false
+  loadWork()
 }
 
 function formatFileSize(bytes: number): string {
