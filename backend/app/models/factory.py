@@ -139,5 +139,5 @@ class RFQ(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     __table_args__ = (
-        Index("idx_rfq_status", "status"),
+        Index("idx_rfqs_status", "status"),
     )
