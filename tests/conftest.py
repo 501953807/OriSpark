@@ -14,6 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base  # noqa: F401
 import app.models.work  # noqa: F401
 import app.models.contract_risk  # noqa: F401
+import app.models.insurance  # noqa: F401
 from app.models.work import Work
 
 
