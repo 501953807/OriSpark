@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/backend && python -c \\\"import ast; ast.parse(open('app/deps.py').read()); print('deps.py OK')\\\" && python -c \\\"import ast; ast....",
-  "error": "Exit code 127\n(eval):1: command not found: python",
-  "timestamp": "2026-06-24T03:09:40.365Z",
-  "retry_count": 1
-}

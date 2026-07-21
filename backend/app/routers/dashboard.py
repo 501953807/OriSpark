@@ -1,4 +1,4 @@
-"""经营管理中心 API 路由 — 对应: docs/modules-v3/06-business-management.md
+"""经营管理中心 API 路由 — 对应: docs/modules-v5/06-business-management.md
 端点: 4 (dashboard/stats, dashboard/recent, dashboard/revenue, dashboard/trends)"""
 
 from fastapi import APIRouter, Depends

@@ -1,4 +1,4 @@
-"""存证确权 API 路由 — 对应: docs/modules-v3/02-rights-protection.md
+"""存证确权 API 路由 — 对应: docs/modules-v5/02-rights-protection.md
 端点: 18 (notary)"""
 import logging
 
@@ -1235,3 +1235,229 @@ def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
         confirmed_at=record.confirmed_at,
         evidence_chain=evidence_chain,
     ))
+
+
+# ==============================================================================
+# P0-05: AIGC Trace Audit Integration Hub — Unified Provenance Chain
+# ==============================================================================
+
+
+@router.post("/trace/audit/build", response_model=ApiResponse[dict])
+def build_provenance_chain_endpoint(
+    data: dict = None,
+    db: Session = Depends(get_db),
+    _auth=Depends(require_auth),
+):
+    """构建完整 AIGC 溯源链并持久化 (P0-05).
+
+    body: {
+        "work_id": str,
+        "file_path": str (可选，默认从作品记录读取),
+        "author_name": str (可选，默认 "OriStudio Creator"),
+        "include_ai_sessions": bool (可选，默认 true)
+    }
+
+    整合四层溯源机制:
+    L1: ECDSA 本地签名
+    L2: RFC 3161 可信时间戳 (异步)
+    L3: C2PA 元数据嵌入
+    L4: 区块链存证锚定
+    """
+    from app.services.aigc_trace_audit_hub import AIGCTraceAuditHub
+
+    if not data:
+        raise HTTPException(status_code=400, detail="请求体不能为空")
+
+    work_id = data.get("work_id")
+    if not work_id:
+        raise HTTPException(status_code=400, detail="缺少 work_id")
+
+    # 验证作品存在
+    work = db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail="作品不存在")
+
+    file_path = data.get("file_path") or work.file_path
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=400, detail=f"作品文件不存在: {file_path}")
+
+    author_name = data.get("author_name", "OriStudio Creator")
+    include_ai_sessions = data.get("include_ai_sessions", True)
+
+    try:
+        result = AIGCTraceAuditHub.build_provenance_chain(
+            db=db,
+            work_id=work_id,
+            file_path=file_path,
+            author_name=author_name,
+            include_ai_sessions=include_ai_sessions,
+        )
+        return ApiResponse(
+            message="溯源链构建成功",
+            data=result,
+        )
+    except Exception as e:
+        logging.getLogger(__name__).exception("Failed to build provenance chain: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"溯源链构建失败: {str(e)}")
+
+
+@router.get("/trace/audit/verify/{work_id}", response_model=ApiResponse[dict])
+def verify_provenance_chain_endpoint(
+    work_id: str,
+    file_hash: Optional[str] = Query(None, description="可选的文件哈希用于重新验证"),
+    db: Session = Depends(get_db),
+):
+    """验证作品的完整溯源链 (P0-05).
+
+    聚合查询所有溯源层状态，返回验证结果。
+    """
+    from app.services.aigc_trace_audit_hub import AIGCTraceAuditHub
+
+    work = db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail="作品不存在")
+
+    try:
+        result = AIGCTraceAuditHub.verify_provenance_chain(
+            db=db,
+            work_id=work_id,
+            file_hash=file_hash,
+        )
+        return ApiResponse(
+            message="溯源链验证完成" if result["verified"] else "溯源链验证未通过",
+            data=result,
+        )
+    except Exception as e:
+        logging.getLogger(__name__).exception("Failed to verify provenance chain: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"溯源链验证失败: {str(e)}")
+
+
+@router.get("/trace/audit/status/{work_id}", response_model=ApiResponse[dict])
+def get_trace_audit_status(
+    work_id: str,
+    db: Session = Depends(get_db),
+):
+    """获取作品的溯源审计状态摘要 (P0-05).
+
+    轻量级状态查询，不执行完整验证。
+    """
+    c2pa_count = db.query(C2PARecord).filter(
+        C2PARecord.work_id == work_id,
+        C2PARecord.is_active == True,
+    ).count()
+
+    notary_count = db.query(NotaryRecord).filter(
+        NotaryRecord.work_id == work_id,
+    ).count()
+
+    # Check local signature file
+    sig_path = Path("data/certificates/signatures") / f"{work_id}.json"
+    has_signature = sig_path.exists()
+
+    return ApiResponse(
+        data={
+            "work_id": work_id,
+            "has_c2pa_record": c2pa_count > 0,
+            "c2pa_record_count": c2pa_count,
+            "has_notary_record": notary_count > 0,
+            "notary_record_count": notary_count,
+            "has_local_signature": has_signature,
+            "provenance_complete": c2pa_count > 0 and notary_count > 0 and has_signature,
+        }
+    )
+
+
+# ==============================================================================
+# P0-06: C2PA/TSA/Blockchain Triple Authentication Pipeline
+# ==============================================================================
+
+
+@router.post("/trace/triple/authenticate", response_model=ApiResponse[dict])
+def run_triple_authentication_endpoint(
+    data: dict = None,
+    db: Session = Depends(get_db),
+    _auth=Depends(require_auth),
+):
+    """执行 C2PA/TSA/Blockchain 三重认证管线 (P0-06).
+
+    body: {
+        "work_id": str,
+        "file_path": str (可选，默认从作品记录读取),
+        "author_name": str (可选),
+        "blockchain_platform": str (可选，默认 local_ecdsa)
+    }
+
+    三层认证:
+    - L1: C2PA manifest 生成 + 嵌入
+    - L2: RFC 3161 可信时间戳
+    - L3: 区块链存证锚定
+    """
+    from app.services.triple_auth_pipeline import TripleAuthenticationPipeline
+
+    if not data:
+        raise HTTPException(status_code=400, detail="请求体不能为空")
+
+    work_id = data.get("work_id")
+    if not work_id:
+        raise HTTPException(status_code=400, detail="缺少 work_id")
+
+    # 验证作品存在
+    work = db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail="作品不存在")
+
+    file_path = data.get("file_path") or work.file_path
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=400, detail=f"作品文件不存在: {file_path}")
+
+    blockchain_platform = data.get("blockchain_platform", "local_ecdsa")
+
+    try:
+        result = TripleAuthenticationPipeline.run_triple_authentication(
+            db=db,
+            work_id=work_id,
+            file_path=file_path,
+            author_name=data.get("author_name", "OriStudio Creator"),
+            blockchain_platform=blockchain_platform,
+        )
+        return ApiResponse(
+            message="三重认证成功" if result["overall_status"] == "authenticated" else "三重认证失败",
+            data=result,
+        )
+    except NotImplementedError as e:
+        raise HTTPException(status_code=501, detail=str(e))
+    except Exception as e:
+        logging.getLogger(__name__).exception("Triple authentication failed: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"三重认证失败: {str(e)}")
+
+
+@router.get("/trace/triple/verify/{work_id}", response_model=ApiResponse[dict])
+def verify_triple_authentication_endpoint(
+    work_id: str,
+    file_hash: Optional[str] = Query(None, description="可选的文件哈希用于重新验证"),
+    db: Session = Depends(get_db),
+):
+    """验证作品的三重认证结果 (P0-06).
+
+    聚合查询 C2PA、TSA、Blockchain 三层认证状态。
+    """
+    from app.services.triple_auth_pipeline import TripleAuthenticationPipeline
+
+    work = db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail="作品不存在")
+
+    try:
+        result = TripleAuthenticationPipeline.verify_triple_authentication(
+            db=db,
+            work_id=work_id,
+            file_hash=file_hash,
+        )
+        return ApiResponse(
+            message="三重认证验证完成" if result["verified"] else "三重认证未完全通过",
+            data=result,
+        )
+    except Exception as e:
+        logging.getLogger(__name__).exception("Failed to verify triple auth: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"三重认证验证失败: {str(e)}")
+

@@ -266,3 +266,113 @@ class PhotographerStatsResponse(BaseModel):
     """摄影师统计响应."""
     stats: ShotStats
     recent_activity: list[dict[str, Any]] = []
+
+
+# ============================================================================
+# RAW Format management (v2)
+# ============================================================================
+
+
+class RawFormatSchema(BaseModel):
+    """RAW 格式记录."""
+    model_config = {"from_attributes": True}
+
+    id: str
+    work_id: str
+    file_extension: str
+    file_size_bytes: Optional[int] = None
+    sensor_width: Optional[int] = None
+    sensor_height: Optional[int] = None
+    color_space: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+
+class RawFormatCreate(BaseModel):
+    """创建 RAW 格式记录请求."""
+    work_id: str = Field(..., min_length=1)
+    file_extension: str = Field(..., min_length=1, max_length=10)
+    file_size_bytes: Optional[int] = None
+    sensor_width: Optional[int] = None
+    sensor_height: Optional[int] = None
+    color_space: Optional[str] = None
+
+
+class RawFormatUpdate(BaseModel):
+    """更新 RAW 格式记录请求."""
+    file_extension: Optional[str] = None
+    file_size_bytes: Optional[int] = None
+    sensor_width: Optional[int] = None
+    sensor_height: Optional[int] = None
+    color_space: Optional[str] = None
+
+
+# ============================================================================
+# Digital Download (v2)
+# ============================================================================
+
+
+class DigitalDownloadSchema(BaseModel):
+    """数字预设包."""
+    model_config = {"from_attributes": True}
+
+    id: str
+    work_id: str
+    product_id: Optional[str] = None
+    download_url: Optional[str] = None
+    max_downloads: Optional[int] = None
+    download_count: int = 0
+    created_at: Optional[datetime] = None
+
+
+class DigitalDownloadCreate(BaseModel):
+    """创建数字预设包请求."""
+    work_id: str = Field(..., min_length=1)
+    product_id: Optional[str] = None
+    download_url: Optional[str] = None
+    max_downloads: Optional[int] = None
+
+
+class DigitalDownloadUpdate(BaseModel):
+    """更新数字预设包请求."""
+    download_url: Optional[str] = None
+    max_downloads: Optional[int] = None
+
+
+# ============================================================================
+# Fine Art Print (v2)
+# ============================================================================
+
+
+class FineArtPrintConfigSchema(BaseModel):
+    """艺术微喷配置."""
+    model_config = {"from_attributes": True}
+
+    id: str
+    work_id: str
+    paper_type: str
+    max_width_cm: Optional[float] = None
+    max_height_cm: Optional[float] = None
+    framing_available: bool = False
+    price_multiplier: float = 1.0
+    is_active: bool = True
+    created_at: Optional[datetime] = None
+
+
+class FineArtPrintConfigCreate(BaseModel):
+    """创建艺术微喷配置请求."""
+    work_id: str = Field(..., min_length=1)
+    paper_type: str = Field(..., min_length=1, max_length=50)
+    max_width_cm: Optional[float] = None
+    max_height_cm: Optional[float] = None
+    framing_available: bool = False
+    price_multiplier: float = 1.0
+
+
+class FineArtPrintConfigUpdate(BaseModel):
+    """更新艺术微喷配置请求."""
+    paper_type: Optional[str] = None
+    max_width_cm: Optional[float] = None
+    max_height_cm: Optional[float] = None
+    framing_available: Optional[bool] = None
+    price_multiplier: Optional[float] = None
+    is_active: Optional[bool] = None

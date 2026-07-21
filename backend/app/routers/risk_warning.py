@@ -11,10 +11,10 @@ from app.database import get_db
 from app.models.work import Work
 from app.models.risk_warning import RiskWarning, TaxDeadline, HealthMetric
 from app.schemas.common import ApiResponse
-from app.services.risk_warning_service import RiskWarningService
+from app.services.risk_warning_service import RiskWarningService, detect_burnout_risk
 from app.deps import require_auth
 
-router = APIRouter(prefix="/api/risk-warning", tags=["risk-warning"])
+router = APIRouter(prefix="/risk-warning", tags=["risk-warning"])
 
 
 class TaxDeadlineCreate(BaseModel):
@@ -59,6 +59,19 @@ class RiskCheckRequest(BaseModel):
     work_title: Optional[str] = ""
 
 
+class BatchCheckItem(BaseModel):
+    work_id: Optional[str] = None
+    prompt: Optional[str] = None
+    work_title: Optional[str] = ""
+    model_name: Optional[str] = None
+    reference_images: Optional[list[str]] = None
+
+
+class BatchCheckRequest(BaseModel):
+    items: list[BatchCheckItem]
+    user_id: str = "local"
+
+
 def _get_service() -> RiskWarningService:
     return RiskWarningService()
 
@@ -93,6 +106,27 @@ async def check_risk_warning(
             }
             for r in results
         ],
+    )
+
+
+@router.post("/batch-check", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
+async def batch_check_risk_warning(
+    payload: BatchCheckRequest,
+    db: Session = Depends(get_db),
+):
+    """批量侵权检测 — 对多个作品/提示词组合并行检测."""
+    service = _get_service()
+    items_dict = [item.model_dump() for item in payload.items]
+    results = await service.batch_check(
+        items=items_dict,
+        user_id=payload.user_id,
+        db=db,
+    )
+
+    total_warnings = sum(r["warning_count"] for r in results)
+    return ApiResponse(
+        message=f"完成 {len(results)} 个作品的批量检测，共检测到 {total_warnings} 条预警",
+        data=results,
     )
 
 
@@ -270,68 +304,3 @@ def log_health_metric(body: HealthMetricCreate, db: Session = Depends(get_db)):
 def get_burnout_risk(db: Session = Depends(get_db)):
     """获取 burnout 风险评估."""
     return detect_burnout_risk(db, "local")
-
-
-def detect_burnout_risk(db: Session, user_id: str) -> BurnoutRisk:
-    """基于最近 7 天健康数据检测 burnout 风险."""
-    today = date.today()
-    from datetime import timedelta
-    week_ago = today - timedelta(days=7)
-
-    metrics = db.query(HealthMetric).filter(
-        HealthMetric.user_id == user_id,
-        HealthMetric.recorded_date >= week_ago,
-        HealthMetric.recorded_date <= today,
-    ).order_by(HealthMetric.recorded_date.desc()).all()
-
-    factors = []
-    score = 0.0
-
-    if not metrics:
-        return BurnoutRisk(risk_level="low", score=10, factors=["暂无健康数据"], recommendation="建议开始记录每日工作时长")
-
-    avg_hours = sum(m.daily_work_hours for m in metrics) / len(metrics)
-    avg_mood = sum(m.mood_score or 5 for m in metrics) / len(metrics)
-    break_rate = sum(1 for m in metrics if m.has_break_taken) / len(metrics)
-    total_works = sum(m.works_created for m in metrics)
-
-    if avg_hours > 10:
-        factors.append(f"日均工作{avg_hours:.1f}小时（>10h危险线）")
-        score += 35
-    elif avg_hours > 8:
-        factors.append(f"日均工作{avg_hours:.1f}小时（接近饱和）")
-        score += 20
-
-    if avg_mood < 4:
-        factors.append(f"平均心情{avg_mood:.1f}/10（偏低）")
-        score += 25
-    elif avg_mood < 6:
-        factors.append(f"平均心情{avg_mood:.1f}/10（一般）")
-        score += 10
-
-    if break_rate < 0.3:
-        factors.append(f"休息时间占比仅{break_rate*100:.0f}%（建议>30%）")
-        score += 20
-
-    if total_works == 0 and avg_hours > 4:
-        factors.append("工作时长长但产出为0（可能无效加班）")
-        score += 20
-
-    score = min(score, 100)
-
-    if score >= 60:
-        risk = "high"
-        rec = "建议立即休息1-2天，减少每日工作至6小时内，安排运动或社交活动恢复精力。"
-    elif score >= 30:
-        risk = "medium"
-        rec = "注意劳逸结合，确保每天有午休时间，每周至少安排1天完全休息。"
-    else:
-        risk = "low"
-        rec = "当前状态良好，继续保持健康的工作节奏。"
-
-    return BurnoutRisk(
-        risk_level=risk,
-        score=round(score),
-        factors=factors,
-        recommendation=rec,
-    )

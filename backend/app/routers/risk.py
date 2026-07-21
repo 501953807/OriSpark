@@ -14,7 +14,7 @@ from app.services.risk_service import (
 from app.models.risk_control import RiskRule
 from typing import Optional
 
-router = APIRouter(prefix="/api/risk", tags=["risk-control"])
+router = APIRouter(prefix="/risk", tags=["risk-control"])
 
 
 @router.post("/evaluate", response_model=RiskAssessmentSchema)

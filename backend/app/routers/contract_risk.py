@@ -14,7 +14,7 @@ from app.schemas.contract_risk import (
 )
 from app.services.contract_risk_service import review_contract, check_transaction
 
-router = APIRouter(prefix="/api/contract-risk", tags=["contract-risk"])
+router = APIRouter(prefix="/contract-risk", tags=["contract-risk"])
 
 
 @router.post("/review", response_model=ContractReviewResponse)

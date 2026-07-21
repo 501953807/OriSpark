@@ -31,7 +31,7 @@ from app.services.enforcement import (
     create_action_from_work as service_create_action_from_work,
 )
 
-router = APIRouter(prefix="/api/enforcement", tags=["Enforcement"])
+router = APIRouter(prefix="/enforcement", tags=["Enforcement"])
 
 
 # ── helpers ───────────────────────────────────────────────────────

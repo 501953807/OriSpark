@@ -1,4 +1,4 @@
-"""IP 登记指引 API 路由 — 对应: docs/modules-v3/03-ip-registration.md
+"""IP 登记指引 API 路由 — 对应: docs/modules-v5/03-ip-registration.md
 Phase 0.2: 合规改造(多推荐+置信度+免责声明+律师审核步骤)
 端点: 24 (ipr)"""
 import logging

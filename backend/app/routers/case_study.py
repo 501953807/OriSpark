@@ -13,7 +13,7 @@ from app.services.case_study_service import (
     get_case_stats, search_cases, CATEGORIES,
 )
 
-router = APIRouter(prefix="/api/case-studies", tags=["case-studies"])
+router = APIRouter(prefix="/case-studies", tags=["case-studies"])
 
 
 @router.get("/categories")

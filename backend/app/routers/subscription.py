@@ -1,4 +1,4 @@
-"""订阅系统 API 路由 — 对应: docs/modules-v3/04-monetization-engine.md
+"""订阅系统 API 路由 — 对应: docs/modules-v5/04-monetization-engine.md
 Phase 2: 创作者订阅层级
 端点: 7 (subscription)"""
 

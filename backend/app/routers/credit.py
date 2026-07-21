@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.schemas.credit import CreditRatingCreate, CreditBehaviorRecord, CreditRatingSchema, CreditBehaviorSchema
-from app.services.credit_service import record_behavior, get_rating_by_user, get_behaviors
+from app.services.credit_service import record_behavior, get_rating_by_user, get_behaviors, get_improvement_suggestions
 
-router = APIRouter(prefix="/api/credit", tags=["credit"])
+router = APIRouter(prefix="/credit", tags=["credit"])
 
 
 @router.post("/behavior", response_model=dict)
@@ -47,3 +47,10 @@ def get_user_behaviors(user_id: str, limit: int = 50, db: Session = Depends(get_
     return [CreditBehaviorSchema(id=b.id, user_id=b.user_id, behavior_type=b.behavior_type,
                                  score_delta=b.score_delta, created_at=b.created_at)
             for b in behaviors]
+
+
+@router.get("/improvement-suggestions/{user_id}", response_model=dict)
+def get_improvements(user_id: str, db: Session = Depends(get_db)):
+    """获取信用提升建议."""
+    suggestions = get_improvement_suggestions(user_id, db)
+    return {"data": suggestions}

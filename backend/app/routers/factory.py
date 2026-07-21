@@ -1,4 +1,4 @@
-"""工厂/RFQ API 路由 — 对应: docs/modules-v3/06-business-management.md
+"""工厂/RFQ API 路由 — 对应: docs/modules-v5/06-business-management.md
 Phase 3: 手工艺人询价单+样品+质检
 端点: 9 (factory)"""
 

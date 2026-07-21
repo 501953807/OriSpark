@@ -1,4 +1,4 @@
-"""批量操作 + 回收站 + 文件夹导入 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""批量操作 + 回收站 + 文件夹导入 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 1.2: POST /works/import-folder (递归+去重+自动项目)
 端点: 7 (batch_works)"""
 import logging

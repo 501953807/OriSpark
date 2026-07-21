@@ -1,4 +1,4 @@
-"""系统基础设施 API 路由 — 对应: docs/modules-v3/07-system-infra.md
+"""系统基础设施 API 路由 — 对应: docs/modules-v5/07-system-infra.md
 Phase 0: 免责声明管理, Phase 2: Onboarding API
 端点: 54 (system)
 

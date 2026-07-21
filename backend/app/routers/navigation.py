@@ -16,7 +16,7 @@ from app.services.navigation_service import (
     switch_path,
 )
 
-router = APIRouter(prefix="/api/navigation", tags=["navigation"])
+router = APIRouter(prefix="/navigation", tags=["navigation"])
 
 
 @router.get("/status/{user_id}", response_model=NavigationStatusResponse)

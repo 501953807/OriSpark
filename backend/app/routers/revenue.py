@@ -17,7 +17,7 @@ from app.services.revenue_service import (
 )
 from app.models.publish import RevenueRecord
 
-router = APIRouter(prefix="/api/revenue", tags=["revenue"])
+router = APIRouter(prefix="/revenue", tags=["revenue"])
 
 
 @router.post("/records", response_model=RevenueRecordSchema)

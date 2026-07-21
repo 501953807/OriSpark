@@ -1,4 +1,4 @@
-"""商业转化引擎 API 路由 — 对应: docs/modules-v3/04-monetization-engine.md
+"""商业转化引擎 API 路由 — 对应: docs/modules-v5/04-monetization-engine.md
 Phase 1: POD渠道管理、Canvas预览、Printful Mockup
 端点: 50 (supply)
 

@@ -1,4 +1,4 @@
-"""水印预设 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""水印预设 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 2: 摄影师水印预设管理
 端点: 6 (watermark)"""
 

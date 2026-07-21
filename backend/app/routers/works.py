@@ -1,4 +1,4 @@
-"""作品管理 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""作品管理 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 1.1: 自动元数据提取, Phase 1.3: 视频缩略图修正, Phase 1.5: 存证状态友好化
 端点: 18 (works)"""
 import logging

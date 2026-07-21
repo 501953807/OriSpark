@@ -1,8 +1,9 @@
-"""委托项目管理 API 路由 — 对应: docs/modules-v3/06-business-management.md
+"""委托项目管理 API 路由 — 对应: docs/modules-v5/06-business-management.md
 端点: 9 (commission)"""
 
 from datetime import datetime, date, timedelta
 from decimal import Decimal
+import json
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -762,4 +763,135 @@ def get_dashboard(db: Session = Depends(get_db)):
         "pending_payment": pending_payment_count,
         "monthly_revenue": round(monthly_revenue, 2),
         "avg_ticket": round(avg_ticket, 2),
+    })
+
+
+# ============================================================================
+# v2: 佣金余额 + 提现 + 对账单
+# ============================================================================
+
+
+@router.get("/commission/balance", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def get_commission_balance(user_id: str = Depends(require_auth),
+                           db: Session = Depends(get_db)):
+    """获取可用佣金余额."""
+    total_earned = sum(
+        float(p.amount)
+        for p in db.query(CommissionPayment).filter(
+            CommissionPayment.status == "received"
+        ).all()
+    )
+    frozen = sum(
+        float(p.amount)
+        for p in db.query(CommissionPayment).filter(
+            CommissionPayment.status == "frozen"
+        ).all()
+    )
+    return ApiResponse(data={
+        "available_yuan": round(total_earned - frozen, 2),
+        "frozen_yuan": round(frozen, 2),
+        "total_earned_yuan": round(total_earned, 2),
+    })
+
+
+@router.post("/commission/withdraw", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def post_withdraw(data: dict, user_id: str = Depends(require_auth),
+                  db: Session = Depends(get_db)):
+    """申请佣金提现."""
+    from app.models.withdrawal import WithdrawalRequest
+
+    amount = Decimal(str(data.get("amount_yuan", 0)))
+    if amount <= 0:
+        raise HTTPException(status_code=400, detail="提现金额必须 > 0")
+
+    # 手续费 1%
+    fee_rate = Decimal("0.01")
+    fee = (amount * fee_rate).quantize(Decimal("0.01"))
+    net_amount = amount - fee
+
+    if net_amount < 10:
+        raise HTTPException(status_code=400, detail="提现后净额不足 10 元")
+
+    withdrawal = WithdrawalRequest(
+        user_id=user_id,
+        amount_yuan=amount,
+        available_balance_yuan=amount,
+        fee_yuan=fee,
+        net_amount_yuan=net_amount,
+        method=data.get("method", "bank_transfer"),
+        account_info=json.dumps(data.get("account_info", {})),
+        status="pending",
+    )
+    db.add(withdrawal)
+    db.commit()
+    db.refresh(withdrawal)
+
+    return ApiResponse(data={
+        "id": withdrawal.id,
+        "amount_yuan": float(withdrawal.amount_yuan),
+        "net_amount_yuan": float(withdrawal.net_amount_yuan),
+        "status": withdrawal.status,
+    }, message="提现申请已提交")
+
+
+@router.get("/commission/withdrawals", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
+def get_withdrawals(user_id: str = Depends(require_auth),
+                    status: str = None, limit: int = 20,
+                    db: Session = Depends(get_db)):
+    """提现记录列表."""
+    from app.models.withdrawal import WithdrawalRequest
+    query = db.query(WithdrawalRequest).filter(WithdrawalRequest.user_id == user_id)
+    if status:
+        query = query.filter(WithdrawalRequest.status == status)
+    withdrawals = query.order_by(WithdrawalRequest.created_at.desc()).limit(limit).all()
+    return ApiResponse(data=[{
+        "id": w.id, "amount_yuan": float(w.amount_yuan),
+        "net_amount_yuan": float(w.net_amount_yuan),
+        "status": w.status, "method": w.method,
+        "created_at": w.created_at.isoformat() if w.created_at else None,
+    } for w in withdrawals])
+
+
+@router.get("/commission/statistics/monthly", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def get_monthly_stats(user_id: str = Depends(require_auth), year: int = None,
+                      db: Session = Depends(get_db)):
+    """月度佣金汇总（对账单）."""
+    from sqlalchemy import func, extract
+
+    query = db.query(CommissionPayment).filter(
+        CommissionPayment.status == "received"
+    )
+    if year:
+        query = query.filter(extract('year', CommissionPayment.paid_at) == year)
+
+    records = query.all()
+    monthly = {}
+    for r in records:
+        month = r.paid_at.strftime("%Y-%m") if r.paid_at and hasattr(r, 'paid_at') else "unknown"
+        if month not in monthly:
+            monthly[month] = {"total": 0, "record_count": 0}
+        monthly[month]["total"] += float(r.amount or 0)
+        monthly[month]["record_count"] += 1
+
+    return ApiResponse(data={"monthly": monthly, "records": len(records)})
+
+
+@router.get("/commission/statistics/yearly", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def get_yearly_stats(user_id: str = Depends(require_auth), year: int = None,
+                     db: Session = Depends(get_db)):
+    """年度佣金汇总."""
+    from sqlalchemy import extract
+
+    query = db.query(CommissionPayment).filter(
+        CommissionPayment.status == "received"
+    )
+    if year:
+        query = query.filter(extract('year', CommissionPayment.paid_at) == year)
+
+    records = query.all()
+    total = sum(float(r.amount or 0) for r in records)
+    return ApiResponse(data={
+        "year": year or datetime.now().year,
+        "total_commission": round(total, 2),
+        "record_count": len(records),
     })

@@ -18,7 +18,7 @@ from app.services.content_pipeline_service import (
 )
 from app.models.content_pipeline import PlatformAccount
 
-router = APIRouter(prefix="/api/content-pipeline", tags=["content-pipeline"])
+router = APIRouter(prefix="/content-pipeline", tags=["content-pipeline"])
 
 
 @router.get("/accounts", response_model=list[PlatformAccountResponse])

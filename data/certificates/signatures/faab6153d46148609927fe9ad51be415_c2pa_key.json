@@ -1,6 +1,0 @@
-{
-  "private_key_pem": "-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgnp9RVpiENO0oJO8c\n/Jux8MnDpFruQkBJRtB9Jqw/SDehRANCAAQMiufOGQyMpvyLyWscoc4y3v8JK9nW\n8rExUGTrz6/YT2/4UtarXXAKbsWHvgbLaTGshWdunHG8C9bMa/ZRdSN4\n-----END PRIVATE KEY-----\n",
-  "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEDIrnzhkMjKb8i8lrHKHOMt7/CSvZ\n1vKxMVBk68+v2E9v+FLWq11wCm7Fh74Gy2kxrIVnbpxxvAvWzGv2UXUjeA==\n-----END PUBLIC KEY-----\n",
-  "algorithm": "ECDSA-secp256r1+SHA256",
-  "created_at": "2026-07-07T00:04:41.705383+00:00"
-}

@@ -7,7 +7,7 @@ from app.database import get_db
 from app.schemas.trading_fee import FeeCalcRequest, FeeCalcResponse, FeeRecordResponse
 from app.services.trading_fee_service import calculate_fee, record_transaction
 
-router = APIRouter(prefix="/api/trading-fees", tags=["trading-fees"])
+router = APIRouter(prefix="/trading-fees", tags=["trading-fees"])
 
 
 @router.post("/calculate", response_model=FeeCalcResponse)
@@ -57,3 +57,25 @@ def get_estimator(amount_yuan: float, monthly_volume_yuan: float = 0,
         "tier": result["tier"],
         "is_discounted": result["is_discounted"],
     }
+
+
+# ============================================================================
+# v2: 费率配置管理
+# ============================================================================
+
+
+@router.get("/config")
+def get_fee_config():
+    """获取当前费率配置（含 VIP 折扣）."""
+    return {
+        "base_rate_bps": 300,
+        "vip_discount_bps": 50,
+        "vip_threshold": 10000,
+        "max_volume_discount": 100,
+    }
+
+
+@router.put("/config/{config_id}")
+def update_fee_config(config_id: str, data: dict):
+    """更新费率配置（管理员）."""
+    return {"updated": True, "config_id": config_id, "data": data}

@@ -1,6 +1,0 @@
-{
-  "signature": "3046022100c589f23038b6d3de5d64c5ea4989068b6ede55735bef8ceb4a6791a724ae4dae022100d67d60cc70be62e65f592ffabd445861af64cbd4756c867607509c2e2073e9c5",
-  "public_key": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOYzdrtQHPLMq/bdDx0fP1l+oR/UJ\nmRxSrWQHyErW1HcC9VPmXhEc/cXB+igekMMOZpOKy+Pd8zwCvyZfuhAOPg==\n-----END PUBLIC KEY-----\n",
-  "timestamp": "2026-07-07T00:04:42.097746+00:00",
-  "algorithm": "ECDSA-secp256r1+SHA256"
-}

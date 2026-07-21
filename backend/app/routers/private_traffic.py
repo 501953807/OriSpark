@@ -22,7 +22,7 @@ from app.services.private_traffic_service import (
     get_funnel_summary,
 )
 
-router = APIRouter(prefix="/api/private-traffic", tags=["private-traffic"])
+router = APIRouter(prefix="/private-traffic", tags=["private-traffic"])
 
 USER_ID = "current_user"
 

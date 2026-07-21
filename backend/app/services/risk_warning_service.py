@@ -8,11 +8,23 @@ Phase 0: 实现四个检测维度
 """
 
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from typing import Optional
 
-from app.models.risk_warning import RiskWarning
+from sqlalchemy.orm import Session
+
+from app.models.risk_warning import RiskWarning, HealthMetric
 from app.gateway.trademark import TrademarkGateway, MockTrademarkGateway
 from app.gateway.model_source import ModelSourceGateway, MockModelSourceGateway
+
+
+@dataclass
+class BurnoutRisk:
+    """Burnout 风险评估结果."""
+    risk_level: str  # low / medium / high
+    score: float
+    factors: list = field(default_factory=list)
+    recommendation: str = ""
 
 
 # 内置侵权关键词库 (v1 硬编码，后续可从 dictStore 动态加载)
@@ -173,6 +185,62 @@ class RiskWarningService:
 
         return results
 
+    async def batch_check(self, items: list[dict], user_id: str, db: Session) -> list[dict]:
+        """批量侵权检测 — 对多个作品/提示词组合并行检测.
+
+        items: [{"work_id": ..., "prompt": ..., "work_title": ..., "model_name": ...}, ...]
+        返回: [{"work_id", "warnings": [...], "status": "ok"|"error"}]
+        """
+        from app.models.work import Work
+
+        results: list[dict] = []
+        service = RiskWarningService()
+
+        for item in items:
+            work_id = item.get("work_id") or item.get("workId")
+            prompt = item.get("prompt")
+            work_title = item.get("work_title") or item.get("workTitle") or ""
+            model_name = item.get("model_name") or item.get("modelName")
+            reference_images = item.get("reference_images") or item.get("referenceImages")
+
+            try:
+                warnings = await service.check_all(
+                    user_id=user_id,
+                    work_id=work_id,
+                    prompt=prompt,
+                    reference_images=reference_images,
+                    model_name=model_name,
+                    work_title=work_title,
+                )
+                warning_dicts = [
+                    {
+                        "warning_type": w.warning_type,
+                        "severity": w.severity,
+                        "title": w.title,
+                        "description": w.description,
+                        "matched_entity": w.matched_entity,
+                        "confidence": w.confidence,
+                        "suggestion": w.suggestion,
+                    }
+                    for w in warnings
+                ]
+                results.append({
+                    "work_id": work_id,
+                    "warnings": warning_dicts,
+                    "warning_count": len(warning_dicts),
+                    "status": "ok",
+                })
+            except Exception as exc:
+                results.append({
+                    "work_id": work_id,
+                    "warnings": [],
+                    "warning_count": 0,
+                    "status": "error",
+                    "error": str(exc),
+                })
+
+        return results
+
     @staticmethod
     def _to_risk_warning(user_id: str, work_id: Optional[str], wr: WarningResult) -> RiskWarning:
         return RiskWarning(
@@ -229,3 +297,67 @@ class RiskWarningService:
             "artist_style": f"'{entity}' 可能涉及艺术家风格模仿，注意版权风险。",
         }
         return suggestions.get(cat, "建议修改创作方向。")
+
+
+def detect_burnout_risk(db, user_id: str) -> BurnoutRisk:
+    """基于最近 7 天健康数据检测 burnout 风险."""
+    today = date.today()
+    week_ago = today - timedelta(days=7)
+
+    metrics = db.query(HealthMetric).filter(
+        HealthMetric.user_id == user_id,
+        HealthMetric.recorded_date >= week_ago,
+        HealthMetric.recorded_date <= today,
+    ).order_by(HealthMetric.recorded_date.desc()).all()
+
+    factors = []
+    score = 0.0
+
+    if not metrics:
+        return BurnoutRisk(risk_level="low", score=10, factors=["暂无健康数据"], recommendation="建议开始记录每日工作时长")
+
+    avg_hours = sum(m.daily_work_hours for m in metrics) / len(metrics)
+    avg_mood = sum(m.mood_score or 5 for m in metrics) / len(metrics)
+    break_rate = sum(1 for m in metrics if m.has_break_taken) / len(metrics)
+    total_works = sum(m.works_created for m in metrics)
+
+    if avg_hours > 10:
+        factors.append(f"日均工作{avg_hours:.1f}小时（>10h危险线）")
+        score += 35
+    elif avg_hours > 8:
+        factors.append(f"日均工作{avg_hours:.1f}小时（接近饱和）")
+        score += 20
+
+    if avg_mood < 4:
+        factors.append(f"平均心情{avg_mood:.1f}/10（偏低）")
+        score += 25
+    elif avg_mood < 6:
+        factors.append(f"平均心情{avg_mood:.1f}/10（一般）")
+        score += 10
+
+    if break_rate < 0.3:
+        factors.append(f"休息时间占比仅{break_rate*100:.0f}%（建议>30%）")
+        score += 20
+
+    if total_works == 0 and avg_hours > 4:
+        factors.append("工作时长长但产出为0（可能无效加班）")
+        score += 20
+
+    score = min(score, 100)
+
+    if score >= 60:
+        risk = "high"
+        rec = "建议立即休息1-2天，减少每日工作至6小时内，安排运动或社交活动恢复精力。"
+    elif score >= 30:
+        risk = "medium"
+        rec = "注意劳逸结合，确保每天有午休时间，每周至少安排1天完全休息。"
+    else:
+        risk = "low"
+        rec = "当前状态良好，继续保持健康的工作节奏。"
+
+    return BurnoutRisk(
+        risk_level=risk,
+        score=round(score),
+        factors=factors,
+        recommendation=rec,
+    )

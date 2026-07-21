@@ -27,7 +27,7 @@ from app.schemas.common import ApiResponse
 from app.services.ai_service import AIService
 from app.deps import require_auth
 
-router = APIRouter(prefix="/api/ai/generate", tags=["AI"])
+router = APIRouter(prefix="/ai/generate", tags=["AI"])
 
 # AI generation rate limiter: 10 requests per 60s per IP
 _ai_rate_store: dict[str, list[float]] = defaultdict(list)
