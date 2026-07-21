@@ -1,4 +1,4 @@
-"""版本管理 + 项目分组 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""版本管理 + 项目分组 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 端点: 9 (versions)"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query

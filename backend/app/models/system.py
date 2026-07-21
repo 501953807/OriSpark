@@ -169,6 +169,17 @@ class User(Base):
     # v3 创作者类型 (Onboarding Step1 选择)
     creator_type = Column(String(20), nullable=True)  # illustrator/photographer/video_creator/crafter/musician/writer
 
+    # 合约市场 9 方参与角色 (v5.0) — creator/operator/legal_rep/tax_agent/logistics/insurer/trader/payment_provider/platform
+    participant_roles = Column(JSON, default=list)
+    # 平台运营角色标识
+    is_platform_operator = Column(Boolean, default=False)
+    # 支付托管方标识
+    is_payment_provider = Column(Boolean, default=False)
+    # 保险方标识
+    is_insurer = Column(Boolean, default=False)
+    # 物流方标识
+    is_logistics = Column(Boolean, default=False)
+
     # 登录信息
     last_login_at = Column(DateTime, nullable=True)
     last_login_provider = Column(String(20), nullable=True)  # google/wechat/douyin/email/local

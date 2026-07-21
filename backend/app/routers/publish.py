@@ -1,4 +1,4 @@
-"""内容分发中心 API 路由 — 对应: docs/modules-v3/05-content-distribution.md
+"""内容分发中心 API 路由 — 对应: docs/modules-v5/05-content-distribution.md
 Phase 1: AI文案、排期、Verified Badge、Feed导出
 端点: 26 (publish)"""
 import logging

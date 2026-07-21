@@ -1,4 +1,4 @@
-"""作品变体组 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""作品变体组 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 3: 横竖屏版本管理
 端点: 10 (work_variants)"""
 

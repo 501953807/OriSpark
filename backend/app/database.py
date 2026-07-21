@@ -2,6 +2,7 @@
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.pool import StaticPool
 
 from app.config import settings
 
@@ -12,11 +13,13 @@ if db_url.startswith("sqlite+aiosqlite:///"):
 else:
     sync_url = db_url
 
+# SQLite 使用 StaticPool（单连接），避免多线程冲突
 engine = create_engine(
     sync_url,
     echo=settings.DEBUG,
     connect_args={"check_same_thread": False},
     pool_pre_ping=True,
+    poolclass=StaticPool,
 )
 
 
@@ -28,11 +31,11 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.execute("PRAGMA foreign_keys=ON")
-        cursor.execute("PRAGMA cache_size=-8000")
+        cursor.execute("PRAGMA cache_size=-8000")  # 8MB 缓存
+        cursor.execute("PRAGMA temp_store=MEMORY")
+        cursor.execute("PRAGMA mmap_size=268435456")  # 256MB mmap
         cursor.close()
 
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
@@ -44,3 +47,6 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

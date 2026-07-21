@@ -10,7 +10,7 @@ from app.services.matching_service import (
     place_bid, close_auction, create_licensing_match, negotiate_licensing,
 )
 
-router = APIRouter(prefix="/api/matching", tags=["matching"])
+router = APIRouter(prefix="/matching", tags=["matching"])
 
 
 # --- Auction endpoints ---

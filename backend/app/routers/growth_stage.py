@@ -7,7 +7,7 @@ from app.database import get_db
 from app.schemas.growth_stage import GrowthStageResponse, GrowthTaskResponse, ProgressDashboard
 from app.services.growth_stage_service import get_progress_dashboard, update_growth_stage, complete_task
 
-router = APIRouter(prefix="/api/growth-stages", tags=["growth-stages"])
+router = APIRouter(prefix="/growth-stages", tags=["growth-stages"])
 
 USER_ID = "current_user"
 

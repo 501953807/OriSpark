@@ -6,8 +6,9 @@ from app.schemas.matchmaking import MatchRequestCreate, MatchRequestSchema, Matc
 from app.services.matchmaking_service import (
     create_match_request, match_creators, award_match, update_delivery,
 )
+from app.services.matchmaker_service import auto_match, get_match_score
 
-router = APIRouter(prefix="/api/matchmaking", tags=["matchmaking"])
+router = APIRouter(prefix="/matchmaking", tags=["matchmaking"])
 
 
 @router.post("", response_model=MatchRequestSchema)
@@ -56,3 +57,23 @@ def patch_delivery(tx_id: str, delivery_status: str, db: Session = Depends(get_d
     if not tx:
         raise HTTPException(status_code=404, detail="Transaction not found")
     return {"id": tx.id, "delivery_status": tx.delivery_status}
+
+
+@router.post("/auto-match/{request_id}")
+def post_auto_match(request_id: str, db: Session = Depends(get_db)):
+    """自动匹配候选卖家."""
+    try:
+        results = auto_match(db, request_id)
+        return {"results": results, "total": len(results)}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.get("/match-score")
+def get_match_score_endpoint(listing_id: str, request_id: str, db: Session = Depends(get_db)):
+    """查询单个挂牌对某需求的匹配度."""
+    try:
+        result = get_match_score(db, listing_id, request_id)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

@@ -1,4 +1,4 @@
-"""作品管理业务服务 — 对应: docs/modules-v3/01-creative-assets.md
+"""作品管理业务服务 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 1.3: 视频缩略图30%位置关键帧 (非首帧)
 增强: 失败时记录日志，不再静默吞错误"""
 

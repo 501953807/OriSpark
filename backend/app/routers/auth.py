@@ -1,4 +1,4 @@
-"""JWT 认证 API 路由 — 对应: docs/modules-v3/07-system-infra.md
+"""JWT 认证 API 路由 — 对应: docs/modules-v5/07-system-infra.md
 Phase 2: Onboarding API, creator_type 字段
 端点: 15 (auth)
 

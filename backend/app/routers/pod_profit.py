@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import require_auth
 from app.schemas.pod_profit import (
     ProductConfigCreate, PricingSimulation, SaleRecord,
     ProfitResult, DesignSummary, PodOverview,
@@ -13,7 +14,7 @@ from app.services.pod_profit_service import (
     get_design_profit_summary, get_pod_overview,
 )
 
-router = APIRouter(prefix="/api/pod-profit", tags=["pod-profit"])
+router = APIRouter(prefix="/pod-profit", tags=["pod-profit"])
 
 
 @router.post("/product-config")
@@ -66,3 +67,53 @@ def designs_summary(db: Session = Depends(get_db)):
 def overview(db: Session = Depends(get_db)):
     """获取 POD 整体概览."""
     return get_pod_overview(db, "current_user")
+
+
+# ============================================================================
+# v2: POD 结算 + 统计
+# ============================================================================
+
+
+@router.get("/my-settlements")
+def get_my_settlements(user_id: str = Depends(require_auth),
+                       period: str = None, status: str = None,
+                       db: Session = Depends(get_db)):
+    """我的结算单列表."""
+    from app.services.pod_settlement_service import list_settlements
+    settlements = list_settlements(db, user_id, period, status)
+    return [{
+        "id": s.id, "period": s.period, "status": s.status,
+        "total_sales_yuan": float(s.total_sales_yuan),
+        "creator_earnings_yuan": float(s.creator_earnings_yuan),
+        "confirmed_at": s.confirmed_at.isoformat() if s.confirmed_at else None,
+    } for s in settlements]
+
+
+@router.post("/settlements/generate")
+def post_generate_settlement(period: str, user_id: str = Depends(require_auth),
+                             db: Session = Depends(get_db)):
+    """手动触发月度结算生成."""
+    from app.services.pod_settlement_service import generate_monthly_settlement
+    settlement = generate_monthly_settlement(db, user_id, period)
+    return {"id": settlement.id, "period": settlement.period, "status": settlement.status}
+
+
+@router.post("/settlements/{settlement_id}/confirm")
+def post_confirm_settlement(settlement_id: str, user_id: str = Depends(require_auth),
+                            db: Session = Depends(get_db)):
+    """确认结算单."""
+    from app.services.pod_settlement_service import confirm_settlement
+    try:
+        settlement = confirm_settlement(db, settlement_id, user_id)
+        return {"id": settlement.id, "status": settlement.status}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/sales/statistics")
+def get_sales_statistics(user_id: str = Depends(require_auth),
+                         start_date: str = None, end_date: str = None,
+                         db: Session = Depends(get_db)):
+    """POD 销售统计."""
+    from app.services.pod_settlement_service import get_sales_statistics as _get_stats
+    return _get_stats(db, user_id, start_date, end_date)

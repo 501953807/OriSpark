@@ -19,7 +19,7 @@ from app.services.multi_market_service import (
     get_tax_guide,
 )
 
-router = APIRouter(prefix="/api/multi-market", tags=["multi-market"])
+router = APIRouter(prefix="/multi-market", tags=["multi-market"])
 
 
 @router.get("/markets", response_model=list[MarketInfoSchema])

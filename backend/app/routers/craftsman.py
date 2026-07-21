@@ -8,13 +8,14 @@ Features:
   - RFQs CRUD + status update
 """
 
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.database import get_db
 from app.models.factory import Factory, CraftProduct, RFQ
+from app.models.reserved_crafts import PhysicalProduct, MaterialInventory, MaterialTransaction, ProductionBatch
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
@@ -392,6 +393,405 @@ def _rfq_to_dict(r: RFQ) -> dict:
         "created_at": r.created_at.isoformat() if r.created_at else None,
         "updated_at": r.updated_at.isoformat() if r.updated_at else None,
     }
+
+
+# ============================================================================
+# v2: Physical Product (15.3.1)
+# ============================================================================
+
+
+class PhysicalProductCreate(BaseModel):
+    work_id: Optional[str] = None
+    title: str = Field(..., min_length=1, max_length=500)
+    description: Optional[str] = None
+    category: Optional[str] = Field(None, max_length=50)
+    dimensions: Optional[dict] = None
+    weight_g: Optional[int] = None
+    price: float = Field(..., gt=0)
+    currency: str = Field("CNY", max_length=10)
+    stock_quantity: int = Field(1, ge=0)
+    shipping_regions: Optional[list[str]] = None
+
+
+class PhysicalProductUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    category: Optional[str] = None
+    dimensions: Optional[dict] = None
+    weight_g: Optional[int] = None
+    price: Optional[float] = None
+    currency: Optional[str] = None
+    stock_quantity: Optional[int] = None
+    shipping_regions: Optional[list[str]] = None
+    is_active: Optional[bool] = None
+
+
+@router.get("/craftsman/physical-products", response_model=ApiResponse[list])
+def list_physical_products(
+    category: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """获取物理产品列表."""
+    q = db.query(PhysicalProduct).filter(PhysicalProduct.is_active == True)
+    if category:
+        q = q.filter(PhysicalProduct.category == category)
+    products = q.order_by(PhysicalProduct.created_at.desc()).all()
+    return ApiResponse(data=[{
+        "id": p.id,
+        "work_id": p.work_id,
+        "title": p.title,
+        "description": p.description,
+        "category": p.category,
+        "dimensions": p.dimensions,
+        "weight_g": p.weight_g,
+        "price": p.price,
+        "currency": p.currency,
+        "stock_quantity": p.stock_quantity,
+        "shipping_regions": p.shipping_regions or [],
+        "is_active": p.is_active,
+        "created_at": p.created_at.isoformat() if p.created_at else None,
+        "updated_at": p.updated_at.isoformat() if p.updated_at else None,
+    } for p in products])
+
+
+@router.post("/craftsman/physical-products", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_physical_product(payload: PhysicalProductCreate, db: Session = Depends(get_db)):
+    """创建物理产品."""
+    product = PhysicalProduct(
+        user_id="local",
+        work_id=payload.work_id,
+        title=payload.title,
+        description=payload.description,
+        category=payload.category,
+        dimensions=payload.dimensions,
+        weight_g=payload.weight_g,
+        price=payload.price,
+        currency=payload.currency,
+        stock_quantity=payload.stock_quantity,
+        shipping_regions=payload.shipping_regions,
+    )
+    try:
+        db.add(product)
+        db.commit()
+        db.refresh(product)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": product.id}, message="物理产品创建成功")
+
+
+@router.patch("/craftsman/physical-products/{product_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_physical_product(product_id: str, payload: PhysicalProductUpdate, db: Session = Depends(get_db)):
+    """更新物理产品."""
+    product = db.query(PhysicalProduct).filter(PhysicalProduct.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="物理产品不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(product, key, value)
+    try:
+        db.commit()
+        db.refresh(product)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": product.id}, message="物理产品已更新")
+
+
+@router.delete("/craftsman/physical-products/{product_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_physical_product(product_id: str, db: Session = Depends(get_db)):
+    """删除物理产品."""
+    product = db.query(PhysicalProduct).filter(PhysicalProduct.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="物理产品不存在")
+    try:
+        db.delete(product)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="物理产品已删除")
+
+
+# ============================================================================
+# v2: Material Inventory (15.3.2)
+# ============================================================================
+
+
+class MaterialInventoryCreate(BaseModel):
+    material_name: str = Field(..., min_length=1, max_length=200)
+    material_category: Optional[str] = Field(None, max_length=50)
+    unit: str = Field(..., min_length=1, max_length=20)
+    quantity_on_hand: float = Field(0.0, ge=0)
+    quantity_reserved: float = Field(0.0, ge=0)
+    reorder_level: Optional[float] = None
+    unit_cost: Optional[float] = None
+    location: Optional[str] = Field(None, max_length=200)
+
+
+class MaterialInventoryUpdate(BaseModel):
+    material_name: Optional[str] = None
+    material_category: Optional[str] = None
+    unit: Optional[str] = None
+    quantity_on_hand: Optional[float] = None
+    quantity_reserved: Optional[float] = None
+    reorder_level: Optional[float] = None
+    unit_cost: Optional[float] = None
+    location: Optional[str] = None
+
+
+class MaterialTransactionCreate(BaseModel):
+    material_id: str = Field(..., min_length=1)
+    transaction_type: str = Field(..., pattern="^(purchase|consume|scrap)$")
+    quantity: float = Field(..., gt=0)
+    reference_type: Optional[str] = None
+    reference_id: Optional[str] = None
+    notes: Optional[str] = None
+
+
+@router.get("/craftsman/materials", response_model=ApiResponse[list])
+def list_materials(db: Session = Depends(get_db)):
+    """获取原料库存列表."""
+    items = db.query(MaterialInventory).order_by(MaterialInventory.created_at.desc()).all()
+    return ApiResponse(data=[{
+        "id": m.id,
+        "material_name": m.material_name,
+        "material_category": m.material_category,
+        "unit": m.unit,
+        "quantity_on_hand": m.quantity_on_hand,
+        "quantity_reserved": m.quantity_reserved,
+        "available_qty": m.quantity_on_hand - (m.quantity_reserved or 0),
+        "reorder_level": m.reorder_level,
+        "unit_cost": m.unit_cost,
+        "location": m.location,
+        "last_counted_at": m.last_counted_at.isoformat() if m.last_counted_at else None,
+        "created_at": m.created_at.isoformat() if m.created_at else None,
+    } for m in items])
+
+
+@router.post("/craftsman/materials", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_material(payload: MaterialInventoryCreate, db: Session = Depends(get_db)):
+    """添加原料库存."""
+    mat = MaterialInventory(
+        user_id="local",
+        material_name=payload.material_name,
+        material_category=payload.material_category,
+        unit=payload.unit,
+        quantity_on_hand=payload.quantity_on_hand,
+        quantity_reserved=payload.quantity_reserved,
+        reorder_level=payload.reorder_level,
+        unit_cost=payload.unit_cost,
+        location=payload.location,
+    )
+    try:
+        db.add(mat)
+        db.commit()
+        db.refresh(mat)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": mat.id}, message="原料已添加")
+
+
+@router.patch("/craftsman/materials/{material_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_material(material_id: str, payload: MaterialInventoryUpdate, db: Session = Depends(get_db)):
+    """更新原料库存."""
+    mat = db.query(MaterialInventory).filter(MaterialInventory.id == material_id).first()
+    if not mat:
+        raise HTTPException(status_code=404, detail="原料不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(mat, key, value)
+    try:
+        db.commit()
+        db.refresh(mat)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": mat.id}, message="原料已更新")
+
+
+@router.delete("/craftsman/materials/{material_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_material(material_id: str, db: Session = Depends(get_db)):
+    """删除原料库存."""
+    mat = db.query(MaterialInventory).filter(MaterialInventory.id == material_id).first()
+    if not mat:
+        raise HTTPException(status_code=404, detail="原料不存在")
+    try:
+        db.delete(mat)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="原料已删除")
+
+
+@router.post("/craftsman/material-transactions", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_material_transaction(payload: MaterialTransactionCreate, db: Session = Depends(get_db)):
+    """记录材料出入库流水."""
+    mat = db.query(MaterialInventory).filter(MaterialInventory.id == payload.material_id).first()
+    if not mat:
+        raise HTTPException(status_code=404, detail="原料不存在")
+
+    txn = MaterialTransaction(
+        material_id=payload.material_id,
+        transaction_type=payload.transaction_type,
+        quantity=payload.quantity,
+        reference_type=payload.reference_type,
+        reference_id=payload.reference_id,
+        notes=payload.notes,
+    )
+    # Update inventory on-hand based on transaction type
+    if payload.transaction_type == "purchase":
+        mat.quantity_on_hand += payload.quantity
+    elif payload.transaction_type in ("consume", "scrap"):
+        mat.quantity_on_hand -= payload.quantity
+        if mat.quantity_on_hand < 0:
+            db.rollback()
+            raise HTTPException(status_code=400, detail="库存不足，无法出库或报废")
+    try:
+        db.add(txn)
+        db.commit()
+        db.refresh(txn)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": txn.id}, message=f"材料{payload.transaction_type}记录成功")
+
+
+@router.get("/craftsman/material-transactions", response_model=ApiResponse[list])
+def list_material_transactions(
+    material_id: Optional[str] = None,
+    limit: int = Query(50, ge=1, le=200),
+    db: Session = Depends(get_db),
+):
+    """获取材料流水记录."""
+    q = db.query(MaterialTransaction)
+    if material_id:
+        q = q.filter(MaterialTransaction.material_id == material_id)
+    txns = q.order_by(MaterialTransaction.created_at.desc()).limit(limit).all()
+    return ApiResponse(data=[{
+        "id": t.id,
+        "material_id": t.material_id,
+        "transaction_type": t.transaction_type,
+        "quantity": t.quantity,
+        "reference_type": t.reference_type,
+        "reference_id": t.reference_id,
+        "notes": t.notes,
+        "created_at": t.created_at.isoformat() if t.created_at else None,
+    } for t in txns])
+
+
+# ============================================================================
+# v2: Production Batch (15.3.3)
+# ============================================================================
+
+
+class ProductionBatchCreate(BaseModel):
+    work_id: Optional[str] = None
+    title: str = Field(..., min_length=1, max_length=500)
+    planned_quantity: int = Field(..., ge=1)
+
+
+class ProductionBatchUpdate(BaseModel):
+    title: Optional[str] = None
+    planned_quantity: Optional[int] = None
+    produced_quantity: Optional[int] = None
+    sold_quantity: Optional[int] = None
+    status: Optional[str] = Field(None, pattern="^(planned|in_production|done|shipped)$")
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
+
+
+@router.get("/craftsman/production-batches", response_model=ApiResponse[list])
+def list_production_batches(
+    status: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """获取生产批次列表."""
+    q = db.query(ProductionBatch)
+    if status:
+        q = q.filter(ProductionBatch.status == status)
+    batches = q.order_by(ProductionBatch.created_at.desc()).all()
+    return ApiResponse(data=[{
+        "id": b.id,
+        "work_id": b.work_id,
+        "title": b.title,
+        "planned_quantity": b.planned_quantity,
+        "produced_quantity": b.produced_quantity,
+        "sold_quantity": b.sold_quantity,
+        "status": b.status,
+        "started_at": b.started_at.isoformat() if b.started_at else None,
+        "completed_at": b.completed_at.isoformat() if b.completed_at else None,
+        "created_at": b.created_at.isoformat() if b.created_at else None,
+    } for b in batches])
+
+
+@router.post("/craftsman/production-batches", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_production_batch(payload: ProductionBatchCreate, db: Session = Depends(get_db)):
+    """创建生产批次."""
+    batch = ProductionBatch(
+        user_id="local",
+        work_id=payload.work_id,
+        title=payload.title,
+        planned_quantity=payload.planned_quantity,
+    )
+    try:
+        db.add(batch)
+        db.commit()
+        db.refresh(batch)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": batch.id}, message="生产批次已创建")
+
+
+@router.patch("/craftsman/production-batches/{batch_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_production_batch(batch_id: str, payload: ProductionBatchUpdate, db: Session = Depends(get_db)):
+    """更新生产批次."""
+    batch = db.query(ProductionBatch).filter(ProductionBatch.id == batch_id).first()
+    if not batch:
+        raise HTTPException(status_code=404, detail="生产批次不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    # Auto-set started_at/completed_at based on status transitions
+    new_status = update_data.get("status")
+    if new_status == "in_production" and not batch.started_at:
+        from datetime import datetime as _dt
+        update_data["started_at"] = _dt.utcnow()
+    if new_status == "done" and batch.started_at and not batch.completed_at:
+        from datetime import datetime as _dt
+        update_data["completed_at"] = _dt.utcnow()
+    for key, value in update_data.items():
+        setattr(batch, key, value)
+    try:
+        db.commit()
+        db.refresh(batch)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={
+        "id": batch.id,
+        "title": batch.title,
+        "status": batch.status,
+        "planned_quantity": batch.planned_quantity,
+        "produced_quantity": batch.produced_quantity,
+        "sold_quantity": batch.sold_quantity,
+    }, message="生产批次已更新")
+
+
+@router.delete("/craftsman/production-batches/{batch_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_production_batch(batch_id: str, db: Session = Depends(get_db)):
+    """删除生产批次."""
+    batch = db.query(ProductionBatch).filter(ProductionBatch.id == batch_id).first()
+    if not batch:
+        raise HTTPException(status_code=404, detail="生产批次不存在")
+    try:
+        db.delete(batch)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="生产批次已删除")
 
 
 # ===========================================================================

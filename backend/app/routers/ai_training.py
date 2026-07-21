@@ -6,7 +6,7 @@ from app.models.ai_training_license import AITrainingLicense
 from app.schemas.ai_training import AILicenseUpdate, AILicenseResponse
 from app.services.ai_training_service import upsert_ai_license
 
-router = APIRouter(prefix="/api/ai-training", tags=["ai-training"])
+router = APIRouter(prefix="/ai-training", tags=["ai-training"])
 
 
 @router.put("/{work_id}", response_model=AILicenseResponse)

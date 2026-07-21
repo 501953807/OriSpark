@@ -1,4 +1,4 @@
-"""视频指纹 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""视频指纹 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 3: 视频创作者指纹生成与比对
 端点: 7 (video_fingerprint)"""
 

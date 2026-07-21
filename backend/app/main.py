@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing, matching_engine, matchmaking
+from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing, matching_engine, matchmaking, etsy
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
 from app.middleware.logging import LoggingMiddleware
@@ -106,6 +106,7 @@ app.include_router(photographer.router, prefix="/api", tags=["Photographer"])
 app.include_router(craftsman.router, prefix="/api", tags=["Craftsman"])
 app.include_router(musician.router, prefix="/api", tags=["Musician"])
 app.include_router(writer.router, prefix="/api", tags=["Writer"])
+app.include_router(etsy.router, prefix="/api", tags=["Etsy"])
 app.include_router(certification.router, prefix="/api", tags=["Certification"])
 app.include_router(ai_training.router, prefix="/api", tags=["ai-training"])
 app.include_router(ip_commercialization.router, prefix="/api", tags=["ip-commercialization"])
@@ -119,10 +120,10 @@ app.include_router(ws_router, tags=["WebSocket"])
 from app.routers.risk_warning import router as risk_warning_router
 from app.routers.ai_session import router as ai_session_router
 
-app.include_router(risk_warning_router)
-app.include_router(ai_session_router)
+app.include_router(risk_warning_router, prefix="/api")
+app.include_router(ai_session_router, prefix="/api")
 from app.routers.ai_generate import router as ai_generate_router
-app.include_router(ai_generate_router)
+app.include_router(ai_generate_router, prefix="/api")
 
 # Phase 1: Risk control & credit system
 from app.routers.risk import router as risk_router
@@ -141,27 +142,47 @@ from app.routers.pod_profit import router as pod_profit_router
 from app.routers.case_study import router as case_study_router
 from app.routers.copyright_guide import router as copyright_guide_router
 
-app.include_router(risk_router)
-app.include_router(credit_router)
-app.include_router(revenue_router)
-app.include_router(contract_risk_router)
-app.include_router(navigation_router)
-app.include_router(insurance_router)
-app.include_router(capability_router)
-app.include_router(multi_market_router)
-app.include_router(enforcement_roi_router)
-app.include_router(private_traffic_router)
-app.include_router(growth_stage_router)
-app.include_router(content_pipeline_router)
-app.include_router(pod_profit_router)
-app.include_router(case_study_router)
-app.include_router(copyright_guide_router)
+app.include_router(risk_router, prefix="/api")
+app.include_router(credit_router, prefix="/api")
+app.include_router(revenue_router, prefix="/api")
+app.include_router(contract_risk_router, prefix="/api")
+app.include_router(navigation_router, prefix="/api")
+app.include_router(insurance_router, prefix="/api")
+app.include_router(capability_router, prefix="/api")
+app.include_router(multi_market_router, prefix="/api")
+app.include_router(enforcement_roi_router, prefix="/api")
+app.include_router(private_traffic_router, prefix="/api")
+app.include_router(growth_stage_router, prefix="/api")
+app.include_router(content_pipeline_router, prefix="/api")
+app.include_router(pod_profit_router, prefix="/api")
+app.include_router(case_study_router, prefix="/api")
+app.include_router(copyright_guide_router, prefix="/api")
+
+# Phase 1: Contract market + split rules
+from app.routers.contract import router as contract_router
+from app.routers.split_rule import router as split_rule_router
+
+app.include_router(contract_router, prefix="/api")
+app.include_router(split_rule_router, prefix="/api")
 
 
 
 # Phase 2: Enforcement workflow
 from app.routers.enforcement import router as enforcement_router
-app.include_router(enforcement_router)
+from app.routers.negotiation import router as negotiation_router
+
+app.include_router(enforcement_router, prefix="/api")
+app.include_router(negotiation_router, prefix="/api")
+
+# Module 9 v2: AI增长引擎
+from app.routers.ai_session_v2 import router as ai_session_v2_router
+from app.routers.achievement import router as achievement_router
+from app.routers.invoice import router as invoice_router
+
+app.include_router(ai_session_v2_router, prefix="/api")
+app.include_router(achievement_router, prefix="/api")
+app.include_router(invoice_router, prefix="/api")
+
 
 @app.get("/api/health")
 async def health_check():

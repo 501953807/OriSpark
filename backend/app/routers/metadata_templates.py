@@ -1,4 +1,4 @@
-"""元数据模板 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""元数据模板 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 2: 摄影师批量元数据模板
 端点: 9 (metadata_templates)"""
 

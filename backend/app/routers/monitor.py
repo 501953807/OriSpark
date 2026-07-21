@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""侵权监测 API 路由 — 对应: docs/modules-v3/02-rights-protection.md
+"""侵权监测 API 路由 — 对应: docs/modules-v5/02-rights-protection.md
 Phase 1: 视频指纹监测、音频指纹、文本查重
 端点: 39 (monitor)
 

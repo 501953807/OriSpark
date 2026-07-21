@@ -101,14 +101,14 @@ def apply_behavior(rating: CreditRating, behavior_type: str, score_delta: int) -
     rating.updated_at = datetime.utcnow()
 
     if behavior_type == BehaviorType.TRANSACTION_COMPLETED:
-        rating.transaction_count += 1
-        rating.successful_transactions += 1
+        rating.transaction_count = (rating.transaction_count or 0) + 1
+        rating.successful_transactions = (rating.successful_transactions or 0) + 1
     elif behavior_type == BehaviorType.TRANSACTION_CANCELLED:
-        rating.transaction_count += 1
+        rating.transaction_count = (rating.transaction_count or 0) + 1
     elif behavior_type == BehaviorType.DISPUTE_LOST:
-        rating.dispute_count += 1
+        rating.dispute_count = (rating.dispute_count or 0) + 1
     elif behavior_type == BehaviorType.LATE_DELIVERY:
-        rating.late_delivery_count += 1
+        rating.late_delivery_count = (rating.late_delivery_count or 0) + 1
 
     new_tier = calculate_tier(rating.total_score)
     if new_tier != rating.tier:

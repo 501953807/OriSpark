@@ -1,4 +1,4 @@
-"""字幕管理 API 路由 — 对应: docs/modules-v3/01-creative-assets.md
+"""字幕管理 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 3: 视频创作者字幕管理
 端点: 7 (subtitle)"""
 

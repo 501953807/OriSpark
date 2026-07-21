@@ -23,7 +23,7 @@ from app.services.insurance_service import (
     get_claim_status,
 )
 
-router = APIRouter(prefix="/api/insurance", tags=["copyright-insurance"])
+router = APIRouter(prefix="/insurance", tags=["copyright-insurance"])
 
 
 @router.get("/products", response_model=list[InsuranceProductSchema])

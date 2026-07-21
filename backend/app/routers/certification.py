@@ -9,7 +9,7 @@ from app.schemas.certification import (
 )
 from app.services.certification_service import batch_certify, certify_single
 
-router = APIRouter(prefix="/api/certification", tags=["certification"])
+router = APIRouter(prefix="/certification", tags=["certification"])
 
 
 @router.post("/single", response_model=CertificationResponse)

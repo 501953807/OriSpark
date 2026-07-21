@@ -14,7 +14,7 @@ from app.services.copyright_guide_service import (
     update_registration, list_registrations, get_registration_summary,
 )
 
-router = APIRouter(prefix="/api/copyright-guide", tags=["copyright-guide"])
+router = APIRouter(prefix="/copyright-guide", tags=["copyright-guide"])
 
 
 @router.get("/guides")

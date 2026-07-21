@@ -23,7 +23,7 @@ from app.services.enforcement_roi_service import (
     get_user_cases,
 )
 
-router = APIRouter(prefix="/api/enforcement-roi", tags=["enforcement-roi"])
+router = APIRouter(prefix="/enforcement-roi", tags=["enforcement-roi"])
 
 
 @router.get("/decision-tree")

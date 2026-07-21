@@ -1,23 +1,28 @@
-"""Alembic 环境配置."""
+"""Alembic environment configuration."""
 
+import sys
 from logging.config import fileConfig
+from pathlib import Path
+
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-# 导入所有模型
-from app.database import Base
+# Ensure backend/ is on sys.path so relative imports work
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+# Import target_metadata directly from models.base to avoid triggering
+# app/__init__.py -> app/main.py -> full router import chain
 from app.models.base import target_metadata
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# 使用 target_metadata 以便 autogenerate 检测模型变更
 target_metadata = target_metadata
 
 
 def run_migrations_offline() -> None:
-    """离线模式迁移."""
+    """Run migrations in offline mode."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -30,7 +35,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """在线模式迁移."""
+    """Run migrations in online mode."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

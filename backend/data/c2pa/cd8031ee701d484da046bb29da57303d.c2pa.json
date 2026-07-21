@@ -1,0 +1,70 @@
+{
+  "claim_generator": "OriStudio_C2PA/1.0 c2pa-service/0.2.0",
+  "claim_generator_info": [
+    {
+      "name": "OriStudio C2PA Service",
+      "version": "0.2.0"
+    }
+  ],
+  "vendor": "oristudio",
+  "recorder": "OriStudio",
+  "title": "拖鞋尺码表2",
+  "format": "application/json",
+  "instance_id": "oristudio:20260717103854691378",
+  "signature_info": {
+    "issuer": "OriStudio",
+    "time": "2026-07-17T10:38:54.683651+00:00",
+    "alg": "es256",
+    "ta_url": ""
+  },
+  "assertions": [
+    {
+      "label": "stds.schema-org.CreativeWork",
+      "data": {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": "拖鞋尺码表2",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "OriStudio Creator"
+          }
+        ],
+        "dateCreated": "2026-07-17T10:38:54.683651+00:00"
+      }
+    },
+    {
+      "label": "stds.schema-org.ClaimReview",
+      "data": {
+        "@context": "https://schema.org",
+        "@type": "ClaimReview",
+        "claimReviewed": "Content hash for '拖鞋尺码表2'",
+        "reviewAspect": "origin",
+        "datePublished": "2026-07-17T10:38:54.683651+00:00"
+      }
+    },
+    {
+      "label": "oristudio.hash",
+      "data": {
+        "algorithm": "SHA-256",
+        "hash": "56f4411fa5cddeada479fc43d92fd38696094a13c46678b0b19f40e2c576e625",
+        "c2pa_hash": "VvRBH6XN3q2kefxD2S_ThpYJShPEZniwsZ9A4sV25iU"
+      }
+    },
+    {
+      "label": "oristudio.signature",
+      "data": {
+        "algorithm": "ECDSA-secp256r1+SHA256",
+        "signed_at": "2026-07-17T10:38:54.683651+00:00",
+        "signer": "OriStudio"
+      }
+    }
+  ],
+  "ingredients": [],
+  "signature": {
+    "alg": "es256",
+    "hash": "MEUCIQDiQ_0dod-Osg-pVf95ZtAnO0Ldkjs8dKIjfDMh5yGsSwIgXX5-CN2PFCByGqub5stTGkKDilqOw_B39kbGa0J2um0",
+    "pad": "",
+    "signed_at": "2026-07-17T10:38:54.804679+00:00"
+  }
+}

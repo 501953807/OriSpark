@@ -24,7 +24,7 @@ from app.services.capability_service import (
 from app.models.capability import CapabilityDimension
 from app.services.capability_service import AI_VULNERABILITY
 
-router = APIRouter(prefix="/api/capability", tags=["creator-capability"])
+router = APIRouter(prefix="/capability", tags=["creator-capability"])
 
 
 @router.get("/dimensions", response_model=list[DimensionSchema])

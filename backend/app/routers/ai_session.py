@@ -12,7 +12,7 @@ from app.models.ai_session import AiCreationSession
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
 
-router = APIRouter(prefix="/api/works", tags=["ai-sessions"])
+router = APIRouter(prefix="/works", tags=["ai-sessions"])
 
 
 class AiSessionCreate(BaseModel):

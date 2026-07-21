@@ -14,6 +14,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.work_variant import WorkVariant
+from app.models.reserved_photographer import RawFormat, DigitalDownload, FineArtPrintConfig
 from app.schemas.common import ApiResponse, PaginatedResponse
 from app.schemas.photographer import (
     ShotResponse,
@@ -32,6 +33,15 @@ from app.schemas.photographer import (
     StockValidateResult,
     PhotographerStatsResponse,
     ShotStats,
+    RawFormatSchema,
+    RawFormatCreate,
+    RawFormatUpdate,
+    DigitalDownloadSchema,
+    DigitalDownloadCreate,
+    DigitalDownloadUpdate,
+    FineArtPrintConfigSchema,
+    FineArtPrintConfigCreate,
+    FineArtPrintConfigUpdate,
 )
 from app.services.stock_service import StockService, SUPPORTED_CHANNEL_NAMES
 from app.deps import require_auth
@@ -681,3 +691,199 @@ def list_stock_platforms():
     return ApiResponse(
         data=[StockPlatformInfo(**p) for p in StockService.list_platforms()],
     )
+
+
+# ============================================================================
+# RAW Format management (v2)
+# ============================================================================
+
+
+@router.get("/photographer/raw-formats", response_model=ApiResponse[list[RawFormatSchema]])
+def list_raw_formats(db: Session = Depends(get_db)):
+    """获取 RAW 格式记录列表."""
+    items = db.query(RawFormat).order_by(RawFormat.created_at.desc()).all()
+    return ApiResponse(data=[RawFormatSchema.model_validate(i).model_dump() for i in items])
+
+
+@router.post("/photographer/raw-formats", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_raw_format(payload: RawFormatCreate, db: Session = Depends(get_db)):
+    """创建 RAW 格式记录."""
+    raw = RawFormat(
+        work_id=payload.work_id,
+        file_extension=payload.file_extension,
+        file_size_bytes=payload.file_size_bytes,
+        sensor_width=payload.sensor_width,
+        sensor_height=payload.sensor_height,
+        color_space=payload.color_space,
+    )
+    try:
+        db.add(raw)
+        db.commit()
+        db.refresh(raw)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": raw.id}, message="RAW 格式记录已创建")
+
+
+@router.patch("/photographer/raw-formats/{raw_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_raw_format(raw_id: str, payload: RawFormatUpdate, db: Session = Depends(get_db)):
+    """更新 RAW 格式记录."""
+    raw = db.query(RawFormat).filter(RawFormat.id == raw_id).first()
+    if not raw:
+        raise HTTPException(status_code=404, detail="RAW 记录不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(raw, key, value)
+    try:
+        db.commit()
+        db.refresh(raw)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": raw.id}, message="RAW 格式记录已更新")
+
+
+@router.delete("/photographer/raw-formats/{raw_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_raw_format(raw_id: str, db: Session = Depends(get_db)):
+    """删除 RAW 格式记录."""
+    raw = db.query(RawFormat).filter(RawFormat.id == raw_id).first()
+    if not raw:
+        raise HTTPException(status_code=404, detail="RAW 记录不存在")
+    try:
+        db.delete(raw)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="RAW 格式记录已删除")
+
+
+# ============================================================================
+# Digital Download (v2)
+# ============================================================================
+
+
+@router.get("/photographer/digital-downloads", response_model=ApiResponse[list[DigitalDownloadSchema]])
+def list_digital_downloads(db: Session = Depends(get_db)):
+    """获取数字预设包列表."""
+    items = db.query(DigitalDownload).order_by(DigitalDownload.created_at.desc()).all()
+    return ApiResponse(data=[DigitalDownloadSchema.model_validate(i).model_dump() for i in items])
+
+
+@router.post("/photographer/digital-downloads", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_digital_download(payload: DigitalDownloadCreate, db: Session = Depends(get_db)):
+    """创建数字预设包."""
+    dd = DigitalDownload(
+        work_id=payload.work_id,
+        product_id=payload.product_id,
+        download_url=payload.download_url,
+        max_downloads=payload.max_downloads,
+    )
+    try:
+        db.add(dd)
+        db.commit()
+        db.refresh(dd)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": dd.id}, message="数字预设包已创建")
+
+
+@router.patch("/photographer/digital-downloads/{dd_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_digital_download(dd_id: str, payload: DigitalDownloadUpdate, db: Session = Depends(get_db)):
+    """更新数字预设包."""
+    dd = db.query(DigitalDownload).filter(DigitalDownload.id == dd_id).first()
+    if not dd:
+        raise HTTPException(status_code=404, detail="数字预设包不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(dd, key, value)
+    try:
+        db.commit()
+        db.refresh(dd)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": dd.id}, message="数字预设包已更新")
+
+
+@router.delete("/photographer/digital-downloads/{dd_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_digital_download(dd_id: str, db: Session = Depends(get_db)):
+    """删除数字预设包."""
+    dd = db.query(DigitalDownload).filter(DigitalDownload.id == dd_id).first()
+    if not dd:
+        raise HTTPException(status_code=404, detail="数字预设包不存在")
+    try:
+        db.delete(dd)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="数字预设包已删除")
+
+
+# ============================================================================
+# Fine Art Print (v2)
+# ============================================================================
+
+
+@router.get("/photographer/fine-art-prints", response_model=ApiResponse[list[FineArtPrintConfigSchema]])
+def list_fine_art_prints(db: Session = Depends(get_db)):
+    """获取艺术微喷配置列表."""
+    items = db.query(FineArtPrintConfig).order_by(FineArtPrintConfig.created_at.desc()).all()
+    return ApiResponse(data=[FineArtPrintConfigSchema.model_validate(i).model_dump() for i in items])
+
+
+@router.post("/photographer/fine-art-prints", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def create_fine_art_print(payload: FineArtPrintConfigCreate, db: Session = Depends(get_db)):
+    """创建艺术微喷配置."""
+    fap = FineArtPrintConfig(
+        work_id=payload.work_id,
+        paper_type=payload.paper_type,
+        max_width_cm=payload.max_width_cm,
+        max_height_cm=payload.max_height_cm,
+        framing_available=payload.framing_available,
+        price_multiplier=payload.price_multiplier,
+    )
+    try:
+        db.add(fap)
+        db.commit()
+        db.refresh(fap)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": fap.id}, message="艺术微喷配置已创建")
+
+
+@router.patch("/photographer/fine-art-prints/{fap_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def update_fine_art_print(fap_id: str, payload: FineArtPrintConfigUpdate, db: Session = Depends(get_db)):
+    """更新艺术微喷配置."""
+    fap = db.query(FineArtPrintConfig).filter(FineArtPrintConfig.id == fap_id).first()
+    if not fap:
+        raise HTTPException(status_code=404, detail="艺术微喷配置不存在")
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(fap, key, value)
+    try:
+        db.commit()
+        db.refresh(fap)
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(data={"id": fap.id}, message="艺术微喷配置已更新")
+
+
+@router.delete("/photographer/fine-art-prints/{fap_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_fine_art_print(fap_id: str, db: Session = Depends(get_db)):
+    """删除艺术微喷配置."""
+    fap = db.query(FineArtPrintConfig).filter(FineArtPrintConfig.id == fap_id).first()
+    if not fap:
+        raise HTTPException(status_code=404, detail="艺术微喷配置不存在")
+    try:
+        db.delete(fap)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return ApiResponse(message="艺术微喷配置已删除")
