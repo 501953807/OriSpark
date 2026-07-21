@@ -1,65 +1,78 @@
-.PHONY: help dev backend frontend install test clean
+.PHONY: help install db-init db-migrate db-revision backend frontend electron portal miniprogram celery test lint format clean docker-build docker-up docker-down all deps
 
-help: ## 显示帮助信息
+help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-install: ## 安装所有依赖
-	@echo "安装后端依赖..."
+install: ## Install all dependencies
+	@echo "Installing backend dependencies..."
 	cd backend && pip install -r requirements.txt
-	@echo "安装前端依赖..."
-	cd frontend && npm install
-	@echo "依赖安装完成!"
+	@echo "Installing frontend-web dependencies..."
+	cd frontend-web && npm install
+	@echo "Dependencies installed!"
 
-dev: ## 启动开发环境 (后端 + 前端)
-	@echo "启动后端 (端口 8765)..."
-	cd backend && uvicorn app.main:app --port 8765 --reload &
-	@echo "启动前端 (端口 5173)..."
-	cd frontend && npm run dev
+db-init: ## Initialize database and seed data
+	cd backend && python3 -m app.database --init
 
-backend: ## 仅启动后端开发服务器
-	cd backend && uvicorn app.main:app --port 8765 --reload
-
-frontend: ## 仅启动前端开发服务器
-	cd frontend && npm run dev
-
-db-init: ## 初始化数据库
-	cd backend && python -m app.database --init
-
-db-migrate: ## 运行数据库迁移
+db-migrate: ## Run Alembic migrations
 	cd backend && alembic upgrade head
 
-db-revision: ## 创建新的迁移脚本
+db-revision: ## Create new Alembic migration
 	cd backend && alembic revision --autogenerate -m "$(msg)"
 
-test: ## 运行所有测试
+backend: ## Start backend API only
+	@bash scripts/start-backend.sh
+
+frontend: ## Start frontend Web only
+	@bash scripts/start-frontend.sh
+
+electron: ## Start Electron desktop app
+	@bash scripts/start-electron.sh
+
+portal: ## Start Nuxt portal
+	@bash scripts/start-portal.sh
+
+miniprogram: ## Start WeChat mini-program
+	@bash scripts/start-miniprogram.sh
+
+celery: ## Start Celery worker and beat
+	@bash scripts/start-celery.sh
+
+test: ## Run all tests
+	@bash scripts/check-deps.sh
 	cd backend && pytest tests/ -v
-	cd frontend && npx vitest run
+	cd frontend-web && npx vitest run
 
-test-backend: ## 运行后端测试
+test-backend: ## Run backend tests only
 	cd backend && pytest tests/ -v
 
-test-frontend: ## 运行前端测试
-	cd frontend && npx vitest run
+test-frontend: ## Run frontend tests only
+	cd frontend-web && npx vitest run
 
-lint: ## 代码检查
+lint: ## Run linters
 	cd backend && ruff check app/
-	cd frontend && npx eslint src/
+	cd frontend-web && npx eslint src/
 
-format: ## 代码格式化
+format: ## Format code
 	cd backend && ruff format app/
-	cd frontend && npx prettier --write src/
+	cd frontend-web && npx prettier --write src/
 
-clean: ## 清理构建产物
+clean: ## Clean build artifacts
 	rm -rf backend/__pycache__ backend/app/__pycache__
-	rm -rf frontend/dist frontend/.vite
+	rm -rf frontend-web/dist frontend-web/.vite
 	rm -rf backend/data/certificates/*
-	@echo "清理完成."
+	@echo "Clean complete."
 
-docker-build: ## 构建 Docker 镜像
-	docker-compose build
+all: ## Start all available services
+	@bash scripts/start-all.sh
 
-docker-up: ## 启动 Docker 服务
-	docker-compose up -d
+deps: ## Check environment dependencies
+	@bash scripts/check-deps.sh
 
-docker-down: ## 停止 Docker 服务
-	docker-compose down
+docker-build: ## Build Docker images
+	docker compose build
+
+docker-up: ## Start Docker services
+	docker compose up -d
+
+docker-down: ## Stop Docker services
+	docker compose down
