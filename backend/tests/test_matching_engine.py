@@ -7,35 +7,15 @@ import pytest
 from datetime import datetime, timedelta
 from app.services.matching_service import place_bid, close_auction
 from app.models.matching_engine import AuctionRecord, Bid, BidStatus
-from app.database import engine, Base
-from sqlalchemy.orm import sessionmaker
 
-# Import to register models with Base.metadata
-import app.models.work  # noqa: F401
-
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Use conftest's db_session fixture instead of custom db fixture
 
 
-@pytest.fixture(scope="session", autouse=True)
-def init_matching_tables():
-    """Create tables once per session."""
-    Base.metadata.create_all(bind=engine)
-    yield
-
-
-@pytest.fixture
-def db():
-    s = TestingSessionLocal()
+def _make_auction(db_session, **kwargs):
     # Disable FK checks for test isolation
-    s.execute(text("PRAGMA foreign_keys = OFF"))
-    yield s
-    s.close()
+    from sqlalchemy import text
+    db_session.execute(text("PRAGMA foreign_keys = OFF"))
 
-
-from sqlalchemy import text
-
-
-def _make_auction(db, **kwargs):
     auction = AuctionRecord(
         listing_id=kwargs.get("listing_id", "l1"),
         work_id=kwargs.get("work_id", "w1"),
@@ -48,15 +28,15 @@ def _make_auction(db, **kwargs):
     )
     if kwargs.get("expired"):
         auction.ends_at = datetime.utcnow() - timedelta(minutes=1)
-    db.add(auction)
-    db.commit()
-    db.refresh(auction)
+    db_session.add(auction)
+    db_session.flush()
+    # Don't rollback here - let the per-test fixture handle it
     return auction
 
 
-def test_place_bid_success(db):
-    auction = _make_auction(db)
-    bid = place_bid(db, auction.id, "buyer1", 150)
+def test_place_bid_success(db_session):
+    auction = _make_auction(db_session)
+    bid = place_bid(db_session, auction.id, "buyer1", 150)
     assert bid is not None
     assert bid.amount_yuan == 150
     assert bid.status == BidStatus.OPEN
@@ -64,24 +44,24 @@ def test_place_bid_success(db):
     assert auction.bid_count == 1
 
 
-def test_place_bid_insufficient(db):
-    auction = _make_auction(db)
-    bid = place_bid(db, auction.id, "buyer1", 105)  # below min increment
+def test_place_bid_insufficient(db_session):
+    auction = _make_auction(db_session)
+    bid = place_bid(db_session, auction.id, "buyer1", 105)  # below min increment
     assert bid is None
 
 
-def test_close_auction(db):
-    auction = _make_auction(db)
-    bid = place_bid(db, auction.id, "buyer1", 150)
+def test_close_auction(db_session):
+    auction = _make_auction(db_session)
+    bid = place_bid(db_session, auction.id, "buyer1", 150)
     assert bid is not None
-    result = close_auction(db, auction.id)
+    result = close_auction(db_session, auction.id)
     assert result is not None
     assert result.status == "closed"
     assert result.winner_buyer_id == "buyer1"
     assert result.winner_amount_yuan == 150
 
 
-def test_bid_on_expired_auction(db):
-    auction = _make_auction(db, expired=True)
-    bid = place_bid(db, auction.id, "buyer1", 200)
+def test_bid_on_expired_auction(db_session):
+    auction = _make_auction(db_session, expired=True)
+    bid = place_bid(db_session, auction.id, "buyer1", 200)
     assert bid is None

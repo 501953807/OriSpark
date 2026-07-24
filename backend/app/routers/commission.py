@@ -478,7 +478,7 @@ def create_payment(id: str, payload: PaymentCreate, db: Session = Depends(get_db
         milestone_id=payload.milestone_id,
         amount=Decimal(str(payload.amount)),
         method=payload.method,
-        status=payload.status or "pending",
+        status="pending",
         notes=payload.notes,
     )
     db.add(payment)

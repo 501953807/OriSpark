@@ -26,6 +26,7 @@ from app.models.system import (
 
 from app.models.metadata_template import MetadataTemplate, TemplateField
 from app.models.watermark import WatermarkPreset
+from app.models.chat import Conversation, Message
 from app.models.commission import (
     CommissionProject, CommissionOrder, CommissionMessage,
     CommissionMilestone, CommissionPayment, CommissionRevision,
@@ -38,6 +39,7 @@ from app.models.work_variant import WorkVariantGroup, WorkVariant
 from app.models.factory import (
     RFQRequest, Sample, QualityReport, Factory, CraftProduct, RFQ,
 )
+from app.models.quality_inspection import QualityInspection
 from app.models.risk_warning import RiskWarning, TaxDeadline, HealthMetric
 from app.models.ai_session import AiCreationSession
 from app.models.achievement import AchievementBadge, UserAchievement, LeaderboardEntry
@@ -65,6 +67,12 @@ from app.models.split_sheet import SplitSheet
 from app.models.contract import (
     ContractInstance, SplitRule, SplitExecutionLog, ContractMatching,
 )
+from app.models.negotiation import TradeNegotiation
+from app.models.fork_merge import (
+    ForkMergeWork, ForkMergeBranch, ForkMergeCommit,
+    ForkMergePullRequest, ForkMergeCollaborator, ForkMergeSplitLock,
+)
+from app.models.scr_reputation import SCRScore, SCRHistory
 
 # P2 变现引擎模型
 from app.models.listings import DesignListing, DesignTemplateCompatibility
@@ -104,6 +112,13 @@ from app.models.matching_engine import AuctionRecord, Bid, LicensingMatch
 # 多市场扩展
 from app.models.multi_market import MarketInfo, ExpansionPlan, TaxGuide
 
+# 全球税务与结算 (v5.0)
+from app.models.tax_settlement import TaxAgent, TaxReport
+from app.models.settlement import TaxCalculation, MultiCurrencySettlement
+
+# 分发回流引擎 (v5.0)
+from app.models.reverse_trace import ReverseTraceLink, ReverseTraceEvent
+
 # 导航任务
 from app.models.navigation import NavigationTask, CreatorNavigation
 
@@ -133,28 +148,29 @@ from app.models.article import Article
 from app.models.book import Book
 
 # 摄影师预留
-from app.models.reserved_photographer import (
+from app.models.photographer_v2 import (
     RawFormat,
     StockChannel, StockUpload, StockSale,
     DigitalDownload,
     FineArtPrintConfig,
 )
+from app.models.etsy import EtsyListing, EtsyOrder, EtsyShop
 
 # 视频 v3 预留
-from app.models.reserved_video import (
+from app.models.video_v3 import (
     BrandCampaign, BrandTask, BrandMessage,
     PlatformGoal, PlatformEarning,
 )
 
 # 手工 v3 预留
-from app.models.reserved_crafts import (
+from app.models.craftsman_v3 import (
     PhysicalProduct,
     MaterialInventory, MaterialTransaction,
     ProductionBatch,
 )
 
 # 音乐 v4 预留
-from app.models.reserved_music import (
+from app.models.music_v4 import (
     AlbumTrack,
     WorkCollaborator,
     DistributionRelease, DistroPlatform,
@@ -162,7 +178,7 @@ from app.models.reserved_music import (
 )
 
 # 文字 v4 预留
-from app.models.reserved_writing import (
+from app.models.writing_v4 import (
     Chapter, ChapterComment, ChapterRevision,
     ExportConfig,
     EbookProduct,
@@ -192,6 +208,7 @@ __all__ = [
     "WatermarkPreset",
     "CommissionProject", "CommissionOrder", "CommissionMessage",
     "CommissionMilestone", "CommissionPayment", "CommissionRevision",
+    "Conversation", "Message",
     "Subtitle", "ProjectFileFormat",
     "VideoFingerprintConfig", "VideoFrameFingerprint",
     "WorkVariantGroup", "WorkVariant",
@@ -226,6 +243,10 @@ __all__ = [
     "EnforcementCase", "CaseReference", "DefenseBudgetTier",
     # 合约市场 v5.0
     "ContractInstance", "SplitRule", "SplitExecutionLog", "ContractMatching",
+    "TradeNegotiation",
+    "ForkMergeWork", "ForkMergeBranch", "ForkMergeCommit",
+    "ForkMergePullRequest", "ForkMergeCollaborator", "ForkMergeSplitLock",
+    "SCRScore", "SCRHistory",
     # P2 变现引擎
     "DesignListing", "DesignTemplateCompatibility",
     "ProductTemplate", "MonetizationChannel", "Campaign", "License",
@@ -249,6 +270,10 @@ __all__ = [
     "AuctionRecord", "Bid", "LicensingMatch",
     # 多市场
     "MarketInfo", "ExpansionPlan", "TaxGuide",
+    # 全球税务与结算
+    "TaxAgent", "TaxReport", "TaxCalculation", "MultiCurrencySettlement",
+    # 分发回流引擎
+    "ReverseTraceLink", "ReverseTraceEvent",
     # 导航
     "NavigationTask", "CreatorNavigation",
     # 交易谈判

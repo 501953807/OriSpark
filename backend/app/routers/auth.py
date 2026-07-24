@@ -515,6 +515,39 @@ def list_sessions(
     })
 
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
+@router.post("/auth/change-password", response_model=ApiResponse)
+def change_password(
+    data: ChangePasswordRequest,
+    user_id: str = Depends(get_current_user_id),
+    db: Session = Depends(get_db),
+):
+    """修改密码."""
+    if user_id == "local":
+        raise HTTPException(status_code=401, detail="请先登录")
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+
+    if user.password_hash != _hash_password(data.current_password):
+        raise HTTPException(status_code=400, detail="当前密码不正确")
+
+    user.password_hash = _hash_password(data.new_password)
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    return ApiResponse(message="密码已修改")
+
+
 # -- v3 Onboarding --
 
 class CompleteOnboardingRequest(BaseModel):

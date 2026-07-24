@@ -35,19 +35,19 @@ from app.models.work_variant import WorkVariantGroup, WorkVariant
 from app.models.factory import RFQRequest, Sample, QualityReport, Factory, CraftProduct, RFQ
 
 # 摄影师 v2 预留
-from app.models.reserved_photographer import (
+from app.models.photographer_v2 import (
     RawFormat, StockChannel, StockUpload, StockSale,
     DigitalDownload, FineArtPrintConfig,
 )
 
 # 视频 v3 预留
-from app.models.reserved_video import (
+from app.models.video_v3 import (
     BrandCampaign, BrandTask, BrandMessage,
     PlatformGoal, PlatformEarning,
 )
 
 # 手工 v3 预留
-from app.models.reserved_crafts import (
+from app.models.craftsman_v3 import (
     PhysicalProduct, MaterialInventory, MaterialTransaction,
     ProductionBatch,
 )
@@ -66,7 +66,7 @@ from app.models.commission import (
 )
 
 # 音乐 v4 预留
-from app.models.reserved_music import (
+from app.models.music_v4 import (
     WorkCollaborator,
     DistributionRelease, DistroPlatform,
     SampleClearance,
@@ -74,7 +74,7 @@ from app.models.reserved_music import (
 )
 
 # 文字 v4 预留
-from app.models.reserved_writing import (
+from app.models.writing_v4 import (
     Chapter, ChapterComment, ChapterRevision,
     ExportConfig,
     EbookProduct,
@@ -83,6 +83,12 @@ from app.models.reserved_writing import (
 
 # Enforcement workflow (维权流水线)
 from app.models.enforcement import EnforcementAction, EnforcementTemplate, ComplaintMaterial
+
+# Contract market (v5.0)
+from app.models.contract import ContractInstance, SplitRule, SplitExecutionLog, ContractMatching
+
+# Contract risk assessment
+from app.models.contract_risk import ContractRiskRule, ContractReview, ContractClause
 
 # Alembic 迁移需要
 target_metadata = Base.metadata

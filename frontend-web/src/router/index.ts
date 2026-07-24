@@ -84,6 +84,12 @@ const router = createRouter({
         { path: 'etsy', name: 'etsy', component: () => import('@/views/EtsyView.vue') },
         { path: 'musician', name: 'musician', component: () => import('@/views/MusicianView.vue') },
         { path: 'writer', name: 'writer', component: () => import('@/views/WriterView.vue') },
+        { path: 'fork-merge', name: 'fork-merge', component: () => import('@/views/ForkMergeView.vue') },
+        { path: 'negotiation', name: 'negotiation', component: () => import('@/views/NegotiationView.vue') },
+        { path: 'scr', name: 'scr-dash', component: () => import('@/views/SCRDashView.vue') },
+        { path: 'tax', name: 'tax-settlement', component: () => import('@/views/TaxSettlementView.vue') },
+        { path: 'distribution', name: 'distribution-hub', component: () => import('@/views/DistributionHubView.vue') },
+        { path: 'attribution', name: 'attribution', component: () => import('@/views/AttributionView.vue') },
       ],
     },
     // 404

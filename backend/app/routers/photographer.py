@@ -14,7 +14,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.work_variant import WorkVariant
-from app.models.reserved_photographer import RawFormat, DigitalDownload, FineArtPrintConfig
+from app.models.photographer_v2 import RawFormat, DigitalDownload, FineArtPrintConfig
 from app.schemas.common import ApiResponse, PaginatedResponse
 from app.schemas.photographer import (
     ShotResponse,
@@ -466,7 +466,7 @@ def stock_uploads_list(
 
     可选过滤: channel_id, status, work_id。
     """
-    from app.models.reserved_photographer import StockUpload as SU
+    from app.models.photographer_v2 import StockUpload as SU
     q = db.query(SU)
     if channel_id:
         q = q.filter(SU.channel_id == channel_id)
@@ -525,8 +525,8 @@ def stock_sales(
 
     若不提供日期范围则汇总全部。
     """
-    from app.models.reserved_photographer import StockSale as SS
-    from app.models.reserved_photographer import StockChannel as SC
+    from app.models.photographer_v2 import StockSale as SS
+    from app.models.photographer_v2 import StockChannel as SC
     from sqlalchemy import func
 
     ch = db.query(SC).filter(SC.id == channel_id).first()
@@ -594,8 +594,8 @@ def sync_sales(
     svc.sync_sales(channel_id, sd, ed)
 
     # Refresh summary from DB (now includes synced records).
-    from app.models.reserved_photographer import StockSale as SS
-    from app.models.reserved_photographer import StockChannel as SC
+    from app.models.photographer_v2 import StockSale as SS
+    from app.models.photographer_v2 import StockChannel as SC
     from sqlalchemy import func
 
     ch = db.query(SC).filter(SC.id == channel_id).first()

@@ -15,7 +15,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.factory import Factory, CraftProduct, RFQ
-from app.models.reserved_crafts import PhysicalProduct, MaterialInventory, MaterialTransaction, ProductionBatch
+from app.models.craftsman_v3 import PhysicalProduct, MaterialInventory, MaterialTransaction, ProductionBatch
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
 

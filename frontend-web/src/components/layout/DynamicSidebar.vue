@@ -265,6 +265,8 @@ const iconMap: Record<string, string> = {
   projects: '📂',
   recycle: '🗑️',
   marketplace: '🤝',
+  tax: '💱',
+  distribution: '📡',
 }
 
 const labelMap: Record<string, string> = {
@@ -291,6 +293,8 @@ const labelMap: Record<string, string> = {
   projects: '项目分组',
   recycle: '回收站',
   marketplace: '商业撮合',
+  tax: '全球税务',
+  distribution: '分发回流',
 }
 
 function routeIcon(name: string): string {

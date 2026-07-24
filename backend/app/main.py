@@ -141,6 +141,10 @@ from app.routers.content_pipeline import router as content_pipeline_router
 from app.routers.pod_profit import router as pod_profit_router
 from app.routers.case_study import router as case_study_router
 from app.routers.copyright_guide import router as copyright_guide_router
+from app.routers.scr_reputation import router as scr_router
+from app.routers.tax_agent import router as tax_agent_router
+from app.routers.settlement import router as settlement_router
+from app.routers.reverse_trace import router as reverse_trace_router
 
 app.include_router(risk_router, prefix="/api")
 app.include_router(credit_router, prefix="/api")
@@ -157,6 +161,10 @@ app.include_router(content_pipeline_router, prefix="/api")
 app.include_router(pod_profit_router, prefix="/api")
 app.include_router(case_study_router, prefix="/api")
 app.include_router(copyright_guide_router, prefix="/api")
+app.include_router(scr_router, prefix="/api")
+app.include_router(tax_agent_router, prefix="/api")
+app.include_router(settlement_router, prefix="/api")
+app.include_router(reverse_trace_router, prefix="/api")
 
 # Phase 1: Contract market + split rules
 from app.routers.contract import router as contract_router
@@ -182,6 +190,13 @@ from app.routers.invoice import router as invoice_router
 app.include_router(ai_session_v2_router, prefix="/api")
 app.include_router(achievement_router, prefix="/api")
 app.include_router(invoice_router, prefix="/api")
+
+# Public read-only API (OriSpark portal + miniprogram)
+from app.routers.public_api import router as public_router
+from app.routers.chat import router as chat_router
+
+app.include_router(public_router, prefix="/api")
+app.include_router(chat_router, prefix="/api", tags=["Chat"])
 
 
 @app.get("/api/health")

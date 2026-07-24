@@ -189,10 +189,8 @@ def subscribe(payload: SubscribePayload, db: Session = Depends(get_db)):
         tier_id=tier_id,
         status="active",
         subscribed_at=datetime.utcnow(),
-        expires_at=datetime.utcnow() + (
-            datetime(9999, 12, 31) if tier.period == "yearly"
-            else datetime.utcnow().replace(year=datetime.utcnow().year + 1)
-        ),
+        expires_at=datetime(9999, 12, 31) if tier.period == "yearly"
+        else datetime.utcnow().replace(year=datetime.utcnow().year + 1),
     )
     # Cancel previous subscriptions
     db.query(SubscriptionSubscriber).filter(

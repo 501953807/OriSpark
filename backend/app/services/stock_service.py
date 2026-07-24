@@ -550,7 +550,7 @@ class StockService:
 
     def _load_channel(self, channel_id: str):
         """Load channel row + decrypt credentials."""
-        from app.models.reserved_photographer import StockChannel
+        from app.models.photographer_v2 import StockChannel
         row = self._db.query(StockChannel).filter(
             StockChannel.id == channel_id,
         ).first()
@@ -565,7 +565,7 @@ class StockService:
                        api_key: str, api_secret: str,
                        account_id: str) -> Any:
         """Encrypt + upsert a StockChannel record; return it."""
-        from app.models.reserved_photographer import StockChannel
+        from app.models.photographer_v2 import StockChannel
         existing = self._db.query(StockChannel).filter(
             StockChannel.user_id == user_id,
             StockChannel.channel_name == channel_name,
@@ -655,7 +655,7 @@ class StockService:
         result = await gw.upload(file_path, keywords, categories)
 
         # Persist upload record.
-        from app.models.reserved_photographer import StockUpload
+        from app.models.photographer_v2 import StockUpload
         upload = StockUpload(
             channel_id=channel_id,
             work_id=work_id,
@@ -694,7 +694,7 @@ class StockService:
 
         records = await gw.get_sales(start_date, end_date)
 
-        from app.models.reserved_photographer import StockSale
+        from app.models.photographer_v2 import StockSale
         created = []
         for rec in records:
             sale = StockSale(

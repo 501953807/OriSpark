@@ -8,73 +8,19 @@ Tests:
 """
 
 import asyncio
+import datetime
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
-from unittest.mock import AsyncMock, patch, MagicMock
+from unittest.mock import AsyncMock, patch, MagicMock, PropertyMock
 
 import pytest
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.database import Base
 from app.models.etsy import EtsyListing, EtsyOrder, EtsyShop
 from app.models.system import User as UserModel
 from app.services.etsy_service import EtsyService, EtsyGateway
-
-
-# ── DB fixture ──────────────────────────────────────────────
-
-# Use conftest's engine directly
-from tests.conftest import _engine
-
-
-@pytest.fixture(autouse=True)
-def _mock_etsy_env():
-    """Provide Etsy API credentials so EtsyGateway._is_configured returns True."""
-    with patch.dict(os.environ, {
-        "ETSY_CLIENT_ID": "test-client-id",
-        "ETSY_CLIENT_SECRET": "test-client-secret",
-    }):
-        yield
-
-
-@pytest.fixture
-def setup_db(_mock_etsy_env):
-    """Create tables for each test, starting fresh."""
-    with _engine.connect() as conn:
-        from sqlalchemy import text
-        # Drop all indexes
-        for row in conn.execute(text(
-            "SELECT name FROM sqlite_master "
-            "WHERE type='index' AND name NOT LIKE 'sqlite_%'"
-        )).fetchall():
-            try:
-                conn.execute(text(f"DROP INDEX IF EXISTS [{row[0]}]"))
-            except Exception:
-                pass
-        # Drop all tables
-        for row in conn.execute(text(
-            "SELECT name FROM sqlite_master WHERE type='table'"
-        )).fetchall():
-            try:
-                conn.execute(text(f"DROP TABLE IF EXISTS [{row[0]}]"))
-            except Exception:
-                pass
-        conn.commit()
-
-    try:
-        Base.metadata.create_all(bind=_engine)
-    except Exception:
-        pass  # May fail on duplicate indexes; tables are created
-    yield
-    Base.metadata.drop_all(bind=_engine)
-
-
-# No custom db_session fixture — uses conftest's db_session which shares the same engine
 
 
 @pytest.fixture
@@ -87,75 +33,78 @@ def ettsy_service(db_session):
 class TestConnectShop:
     def test_connect_shop_mock_mode(self, ettsy_service, db_session):
         """Real mode: still needs HTTP mock for token exchange."""
-        # Seed user
-        user = UserModel(id="test-user-001", username="tester", email="test@example.com")
-        db_session.add(user)
-        db_session.commit()
+        # Patch _is_configured so the service doesn't short-circuit to mock mode
+        with patch.object(type(ettsy_service.gateway), '_is_configured', new_callable=PropertyMock, return_value=True):
+            # Seed user
+            user = UserModel(id="test-user-001", username="tester", email="test@example.com")
+            db_session.add(user)
+            db_session.commit()
 
-        mock_token_response = {
-            "access_token": "fake-access-token",
-            "refresh_token": "fake-refresh-token",
-            "expires_in": 14400,
-            "shop_name": "Test Shop",
-            "shop_id": "etsy-mock-shop",
-        }
-        mock_resp = MagicMock()
-        mock_resp.raise_for_status.return_value = None
-        mock_resp.json.return_value = mock_token_response
+            mock_token_response = {
+                "access_token": "fake-access-token",
+                "refresh_token": "fake-refresh-token",
+                "expires_in": 14400,
+                "shop_name": "Test Shop",
+                "shop_id": "etsy-mock-shop",
+            }
+            mock_resp = MagicMock()
+            mock_resp.raise_for_status.return_value = None
+            mock_resp.json.return_value = mock_token_response
 
-        with patch("app.services.etsy_service.httpx.AsyncClient") as mock_client_cls:
-            mock_client = AsyncMock()
-            mock_client.post.return_value = mock_resp
-            mock_client.aclose = AsyncMock()
-            mock_client_cls.return_value.__aenter__.return_value = mock_client
+            with patch("app.services.etsy_service.httpx.AsyncClient") as mock_client_cls:
+                mock_client = AsyncMock()
+                mock_client.post.return_value = mock_resp
+                mock_client.aclose = AsyncMock()
+                mock_client_cls.return_value.__aenter__.return_value = mock_client
 
-            result = asyncio_run(ettsy_service.connect_shop("test-user-001", "fake-code"))
+                result = asyncio_run(ettsy_service.connect_shop("test-user-001", "fake-code"))
 
-        assert result["shop_name"] == "Test Shop"
-        assert result["shop_id"] == "etsy-mock-shop"
-        # Verify DB record
-        shop = db_session.query(EtsyShop).filter(
-            EtsyShop.user_id == "test-user-001"
-        ).first()
-        assert shop is not None
-        assert shop.shop_name == "Test Shop"
-        assert shop.access_token  # encrypted value stored
+            assert result["shop_name"] == "Test Shop"
+            assert result["shop_id"] == "etsy-mock-shop"
+            # Verify DB record
+            shop = db_session.query(EtsyShop).filter(
+                EtsyShop.user_id == "test-user-001"
+            ).first()
+            assert shop is not None
+            assert shop.shop_name == "Test Shop"
+            assert shop.access_token  # encrypted value stored
 
     def test_connect_shop_real_flow(self, ettsy_service, db_session):
         """Real OAuth flow: exchange code for tokens, stored in DB."""
-        user = UserModel(id="test-user-001", username="tester", email="test@example.com")
-        db_session.add(user)
-        db_session.commit()
+        with patch.object(type(ettsy_service.gateway), '_is_configured', new_callable=PropertyMock, return_value=True):
+            user = UserModel(id="test-user-001", username="tester", email="test@example.com")
+            db_session.add(user)
+            db_session.commit()
 
-        mock_token_response = {
-            "access_token": "fake-access-token-xyz",
-            "refresh_token": "fake-refresh-token-abc",
-            "expires_in": 14400,
-            "shop_name": "My Mock Etsy Shop",
-            "shop_id": "etsy-shop-real-123",
-        }
-        mock_resp = MagicMock()
-        mock_resp.raise_for_status.return_value = None
-        mock_resp.json.return_value = mock_token_response
+            mock_token_response = {
+                "access_token": "fake-access-token-xyz",
+                "refresh_token": "fake-refresh-token-abc",
+                "expires_in": 14400,
+                "shop_name": "My Mock Etsy Shop",
+                "shop_id": "etsy-shop-real-123",
+            }
+            mock_resp = MagicMock()
+            mock_resp.raise_for_status.return_value = None
+            mock_resp.json.return_value = mock_token_response
 
-        with patch("app.services.etsy_service.httpx.AsyncClient") as mock_client_cls:
-            mock_client = AsyncMock()
-            mock_client.post.return_value = mock_resp
-            mock_client.aclose = AsyncMock()
-            mock_client_cls.return_value.__aenter__.return_value = mock_client
+            with patch("app.services.etsy_service.httpx.AsyncClient") as mock_client_cls:
+                mock_client = AsyncMock()
+                mock_client.post.return_value = mock_resp
+                mock_client.aclose = AsyncMock()
+                mock_client_cls.return_value.__aenter__.return_value = mock_client
 
-            result = asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code-123"))
+                result = asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code-123"))
 
-        assert result["shop_name"] == "My Mock Etsy Shop"
-        assert result["shop_id"] == "etsy-shop-real-123"
+            assert result["shop_name"] == "My Mock Etsy Shop"
+            assert result["shop_id"] == "etsy-shop-real-123"
 
-        # Verify encrypted storage
-        shop = db_session.query(EtsyShop).filter(
-            EtsyShop.user_id == "test-user-001"
-        ).first()
-        assert shop is not None
-        assert shop.access_token  # should be encrypted, not plain text
-        assert shop.refresh_token  # also encrypted
+            # Verify encrypted storage
+            shop = db_session.query(EtsyShop).filter(
+                EtsyShop.user_id == "test-user-001"
+            ).first()
+            assert shop is not None
+            assert shop.access_token  # should be encrypted, not plain text
+            assert shop.refresh_token  # also encrypted
 
 
 # ── 2. sync_product_to_etsy ─────────────────────────────────
@@ -185,9 +134,11 @@ class TestSyncProductToEtsy:
             mock_client.aclose = AsyncMock()
             mock_client_cls.return_value.__aenter__.return_value = mock_client
 
-            asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code"))
+            # Patch _is_configured so connect_shop goes through real OAuth path
+            with patch.object(type(ettsy_service.gateway), '_is_configured', new_callable=PropertyMock, return_value=True):
+                asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code"))
 
-        # Replace the gateway instance with a mock
+        # Replace the gateway instance with a mock for create_listing
         mock_gw_instance = MagicMock()
         mock_gw_instance.create_listing = AsyncMock(return_value="etsy-listing-789")
         orig_gateway = ettsy_service.gateway
@@ -260,7 +211,9 @@ class TestSyncOrders:
             mock_client.aclose = AsyncMock()
             mock_client_cls.return_value.__aenter__.return_value = mock_client
 
-            asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code"))
+            # Patch _is_configured so connect_shop goes through real OAuth path
+            with patch.object(type(ettsy_service.gateway), '_is_configured', new_callable=PropertyMock, return_value=True):
+                asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code"))
 
         # Mock order data from Etsy API
         mock_orders = [
@@ -316,6 +269,26 @@ class TestGetDashboard:
         db_session.add(user)
         db_session.commit()
 
+        # Connect shop first (must be inside _is_configured patch so DB records are created)
+        mock_token_response = {
+            "access_token": "fake-token",
+            "expires_in": 14400,
+            "shop_name": "Test Shop",
+            "shop_id": "etsy-shop-dash",
+        }
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status.return_value = None
+        mock_resp.json.return_value = mock_token_response
+
+        with patch("app.services.etsy_service.httpx.AsyncClient") as mock_client_cls:
+            mock_client = AsyncMock()
+            mock_client.post.return_value = mock_resp
+            mock_client.aclose = AsyncMock()
+            mock_client_cls.return_value.__aenter__.return_value = mock_client
+
+            with patch.object(type(ettsy_service.gateway), '_is_configured', new_callable=PropertyMock, return_value=True):
+                asyncio_run(ettsy_service.connect_shop("test-user-001", "auth-code"))
+
         # Create mock EtsyListing records
         listing1 = EtsyListing(
             id="etl-001",
@@ -359,7 +332,7 @@ class TestGetDashboard:
                 etsy_order_id="dash-order-1",
                 order_total=29.99,
                 status="paid",
-                order_date=datetime(2026, 3, 15, 10, 0, 0),
+                order_date=datetime.datetime(2026, 3, 15, 10, 0, 0),
             ),
             EtsyOrder(
                 id="eoo-002",
@@ -368,7 +341,7 @@ class TestGetDashboard:
                 etsy_order_id="dash-order-2",
                 order_total=29.99,
                 status="shipped",
-                order_date=datetime(2026, 3, 20, 14, 0, 0),
+                order_date=datetime.datetime(2026, 3, 20, 14, 0, 0),
             ),
             EtsyOrder(
                 id="eoo-003",
@@ -377,7 +350,7 @@ class TestGetDashboard:
                 etsy_order_id="dash-order-3",
                 order_total=9.99,
                 status="completed",
-                order_date=datetime(2026, 3, 10, 9, 0, 0),
+                order_date=datetime.datetime(2026, 3, 10, 9, 0, 0),
             ),
             EtsyOrder(
                 id="eoo-004",
@@ -386,7 +359,7 @@ class TestGetDashboard:
                 etsy_order_id="dash-order-4",
                 order_total=29.99,
                 status="cancelled",
-                order_date=datetime(2026, 3, 5, 16, 0, 0),
+                order_date=datetime.datetime(2026, 3, 5, 16, 0, 0),
             ),
         ]
         db_session.add_all(orders)

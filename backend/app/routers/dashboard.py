@@ -10,7 +10,7 @@ from app.database import get_db
 from app.models.work import Work
 from app.models.notary import NotaryRecord
 from app.models.monitor import MonitorResult
-from app.models.reserved_photographer import StockSale
+from app.models.photographer_v2 import StockSale
 from app.models.etsy import EtsyOrder
 from app.models.commission import CommissionOrder
 from app.schemas.common import (

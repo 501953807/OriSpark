@@ -74,8 +74,8 @@ def test_batch_notarize(client):
     assert len(work_ids) >= 2, f"Only got {len(work_ids)} works, expected >= 2"
 
     resp = client.post(
-        "/api/notary/batch?platform=zhixinchain",
-        json=work_ids,
+        "/api/notary/batch",
+        json={"work_ids": work_ids, "platform": "zhixinchain"},
     )
     assert resp.status_code == 200
     result = resp.json()
