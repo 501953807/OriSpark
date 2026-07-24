@@ -42,6 +42,9 @@ backend/data/thumbnails/
 backend/data/backups/
 backend/data/logs/
 backend/data/config/secrets.yaml
+backend/data/c2pa/
+backend/data/vc/
+backend/data/workspace/
 
 # Coverage
 coverage/
