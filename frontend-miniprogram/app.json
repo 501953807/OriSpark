@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/works/index",
+    "pages/works/detail",
+    "pages/contracts/index",
+    "pages/contracts/detail",
+    "pages/notifications/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#059669",
+    "navigationBarTitleText": "OriSpark",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f9fafb",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#6b7280",
+    "selectedColor": "#059669",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tab-home.png",
+        "selectedIconPath": "static/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/works/index",
+        "text": "作品",
+        "iconPath": "static/tab-works.png",
+        "selectedIconPath": "static/tab-works-active.png"
+      },
+      {
+        "pagePath": "pages/contracts/index",
+        "text": "合约",
+        "iconPath": "static/tab-contract.png",
+        "selectedIconPath": "static/tab-contract-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tab-profile.png",
+        "selectedIconPath": "static/tab-profile-active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

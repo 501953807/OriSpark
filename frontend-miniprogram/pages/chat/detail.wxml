@@ -1,0 +1,18 @@
+<!--pages/chat/detail.wxml-->
+<view class="container chat-detail">
+  <scroll-view scroll-y class="message-list" scroll-into-view="{{scrollIntoView}}" scroll-with-animation>
+    <view
+      class="message {{item._isMe ? 'sent' : 'received'}}"
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="msg-{{index}}"
+    >
+      <text class="msg-text">{{item.content}}</text>
+      <text class="msg-time">{{item._time}}</text>
+    </view>
+  </scroll-view>
+  <view class="chat-input">
+    <input class="input-field" value="{{inputText}}" bindinput="onInput" placeholder="输入消息..." />
+    <button class="btn-primary btn-small" bindtap="onSend">发送</button>
+  </view>
+</view>

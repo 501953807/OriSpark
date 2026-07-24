@@ -1,0 +1,22 @@
+/* pages/contracts/index.wxss */
+.contract-list { padding: 16rpx; }
+.contract-item {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.contract-info { flex: 1; }
+.contract-title { font-size: 28rpx; font-weight: 500; display: block; }
+.contract-type { font-size: 22rpx; color: #9ca3af; display: block; margin-top: 4rpx; }
+.contract-amount { font-size: 30rpx; font-weight: bold; color: #1a237e; margin-top: 8rpx; display: block; }
+.contract-status { font-size: 24rpx; padding: 4rpx 12rpx; border-radius: 8rpx; white-space: nowrap; }
+.contract-status.active { background: #e8f5e9; color: #2e7d32; }
+.contract-status.pending { background: #fff3e0; color: #e65100; }
+.contract-status.listed { background: #e3f2fd; color: #1565c0; }
+.empty-state { text-align: center; padding: 80rpx 0; color: #9ca3af; }
+.loading-text { text-align: center; padding: 80rpx 0; color: #6b7280; }
+.section-title { font-size: 32rpx; font-weight: bold; padding: 24rpx 24rpx 16rpx; }

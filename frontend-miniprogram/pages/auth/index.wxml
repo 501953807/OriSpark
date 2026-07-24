@@ -1,0 +1,9 @@
+<!--pages/auth/index.wxml-->
+<view class="container auth-page">
+  <view class="auth-logo">OriStudio</view>
+  <text class="auth-title">微信一键登录</text>
+  <button class="btn-primary" bindtap="wxLogin" loading="{{loggingIn}}" disabled="{{loggingIn}}">
+    微信登录
+  </button>
+  <text class="auth-hint">登录即同意服务条款与隐私政策</text>
+</view>

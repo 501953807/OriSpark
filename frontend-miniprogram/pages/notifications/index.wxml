@@ -1,0 +1,13 @@
+<!--pages/notifications/index.wxml-->
+<view class="container">
+  <view class="section-title">通知</view>
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{notifications.length === 0}}" class="empty-state">暂无通知</view>
+  <view wx:else>
+    <view class="notification-item" wx:for="{{notifications}}" wx:key="id">
+      <text class="notification-title">{{item.title}}</text>
+      <text class="notification-body">{{item.body}}</text>
+      <text class="notification-time">{{item.created_at}}</text>
+    </view>
+  </view>
+</view>

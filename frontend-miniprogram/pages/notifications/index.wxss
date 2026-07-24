@@ -1,0 +1,5 @@
+/* pages/notifications/index.wxss */
+.notification-item { background: #fff; padding: 24rpx; margin-bottom: 8rpx; border-bottom: 1rpx solid #eee; }
+.notification-title { font-size: 30rpx; font-weight: 500; display: block; }
+.notification-body { font-size: 26rpx; color: #666; display: block; margin-top: 8rpx; }
+.notification-time { font-size: 22rpx; color: #999; display: block; margin-top: 8rpx; }

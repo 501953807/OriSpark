@@ -87,3 +87,4 @@ README*.md
 !.env.example
 !.env.example
 backend/data/pre_restore_*.db
+data/

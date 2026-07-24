@@ -1,0 +1,12 @@
+{
+  "name": "orispark-miniprogram",
+  "version": "1.0.0",
+  "description": "OriSpark 微信小程序 — OriStudio + OriSpark 轻量结合体",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint pages utils api components"
+  },
+  "keywords": ["wechat", "miniprogram"],
+  "author": "OriSpark",
+  "license": "UNLICENSED"
+}

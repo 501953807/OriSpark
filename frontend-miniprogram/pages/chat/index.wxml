@@ -1,0 +1,13 @@
+<!--pages/chat/index.wxml-->
+<view class="container">
+  <view class="section-title">消息</view>
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{sessions.length === 0}}" class="empty-state">暂无会话</view>
+  <view wx:else class="session-list">
+    <view class="session-item" wx:for="{{sessions}}" wx:key="id" bindtap="enterSession" data-id="{{item.id}}">
+      <text class="session-name">{{item.other_user_name}}</text>
+      <text class="session-last">{{item.last_message}}</text>
+      <text class="session-time">{{item._time}}</text>
+    </view>
+  </view>
+</view>

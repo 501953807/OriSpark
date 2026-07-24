@@ -1,0 +1,16 @@
+<!--pages/contracts/index.wxml-->
+<view class="container">
+  <view class="section-title">合约市场</view>
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{contracts.length === 0}}" class="empty-state">暂无合约</view>
+  <view wx:else class="contract-list">
+    <view class="contract-item" wx:for="{{contracts}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="contract-info">
+        <text class="contract-title">{{item.title}}</text>
+        <text class="contract-type">{{item.contract_type}}</text>
+        <text class="contract-amount">¥{{item.total_amount}}</text>
+      </view>
+      <view class="contract-status {{item.status}}">{{item.status}}</view>
+    </view>
+  </view>
+</view>

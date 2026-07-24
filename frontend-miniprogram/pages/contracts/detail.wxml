@@ -1,0 +1,29 @@
+<!--pages/contracts/detail.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{!contract}}" class="empty-state">合约不存在</view>
+  <view wx:else class="detail-section">
+    <view class="detail-title">{{contract.title}}</view>
+    <view class="detail-meta">
+      <view class="status-badge {{contract.status}}">{{contract.status}}</view>
+      <text class="detail-type">{{contract.contract_type}}</text>
+    </view>
+    <view class="detail-amount">
+      <text class="amount-label">金额</text>
+      <text class="amount-value">¥{{contract.total_amount}}</text>
+    </view>
+    <view class="detail-desc" wx:if="{{contract.description}}">
+      <text class="desc-label">说明</text>
+      <text class="desc-text">{{contract.description}}</text>
+    </view>
+    <view class="detail-scope">
+      <text class="scope-label">授权范围</text>
+      <view class="scope-row"><text class="scope-key">用途</text><text>{{contract.scope_usage}}</text></view>
+      <view class="scope-row"><text class="scope-key">地域</text><text>{{contract.scope_geography}}</text></view>
+      <view class="scope-row"><text class="scope-key">期限</text><text>{{contract.scope_duration || '未限定'}}</text></view>
+    </view>
+    <view class="detail-footer">
+      <button class="btn-primary" bindtap="onContactCreator">联系创作者</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,59 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 通知卡片 -->
+  <view class="section" wx:if="{{notifications.length > 0}}">
+    <view class="section-header" bindtap="navigateToNotifications">
+      <text class="section-title">最新通知</text>
+      <text class="more-text">更多 ›</text>
+    </view>
+    <view class="notification-card" wx:for="{{notifications}}" wx:key="id" bindtap="navigateToNotifications">
+      <text class="notification-text">{{item.title}}</text>
+      <text class="notification-time">{{item.created_at}}</text>
+    </view>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="stats-section">
+    <view class="stat-item">
+      <text class="stat-value">--</text>
+      <text class="stat-label">作品总数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">--</text>
+      <text class="stat-label">合约数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">--</text>
+      <text class="stat-label">创作者</text>
+    </view>
+  </view>
+
+  <!-- 精选作品 -->
+  <view class="section">
+    <view class="section-header" bindtap="navigateToWorks">
+      <text class="section-title">精选作品</text>
+      <text class="more-text">浏览全部 ›</text>
+    </view>
+    <view class="works-scroll">
+      <view class="work-item" wx:for="{{featuredWorks}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
+        <image class="work-thumb" src="{{item.thumbnail || '/static/placeholder.png'}}" mode="aspectFill" />
+        <text class="work-name">{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最新合约 -->
+  <view class="section">
+    <view class="section-header" bindtap="navigateToContracts">
+      <text class="section-title">最新合约</text>
+      <text class="more-text">浏览全部 ›</text>
+    </view>
+    <view class="contract-list">
+      <view class="contract-item" wx:for="{{recentContracts}}" wx:key="id" bindtap="goContractDetail" data-id="{{item.id}}">
+        <text class="contract-title">{{item.title}}</text>
+        <text class="contract-amount">¥{{item.total_amount}}</text>
+        <view class="contract-status status-{{item.status}}">{{item.status}}</view>
+      </view>
+    </view>
+  </view>
+</view>

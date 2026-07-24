@@ -1,0 +1,11 @@
+<!--pages/works/detail.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{!work}}" class="empty-state">作品不存在</view>
+  <view wx:else class="detail-section">
+    <image class="work-image" src="{{work.thumbnail || '/static/placeholder.png'}}" mode="aspectFill" />
+    <view class="work-title">{{work.title}}</view>
+    <view class="work-category">分类：{{work.category}}</view>
+    <view class="work-desc">{{work.description}}</view>
+  </view>
+</view>

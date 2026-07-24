@@ -1,0 +1,137 @@
+/* pages/index/index.wxss */
+.section {
+  margin-top: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.more-text {
+  font-size: 24rpx;
+  color: #059669;
+}
+
+.stats-section {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-top: 24rpx;
+  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #059669;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #6b7280;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.works-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 16rpx 0;
+}
+
+.work-item {
+  flex-shrink: 0;
+  width: 200rpx;
+  margin-right: 16rpx;
+}
+
+.work-thumb {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  background: #f3f4f6;
+}
+
+.work-name {
+  font-size: 24rpx;
+  color: #374151;
+  margin-top: 8rpx;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contract-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.contract-item {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.1);
+}
+
+.contract-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.contract-amount {
+  font-size: 24rpx;
+  color: #059669;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.contract-status {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  margin-top: 8rpx;
+}
+
+.status-listed { background: #fef3c7; color: #92400e; }
+.status-active { background: #d1fae5; color: #065f46; }
+
+.notification-card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 8rpx;
+  box-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.1);
+}
+
+.notification-text {
+  font-size: 26rpx;
+  color: #374151;
+  display: block;
+}
+
+.notification-time {
+  font-size: 20rpx;
+  color: #9ca3af;
+  margin-top: 8rpx;
+  display: block;
+}

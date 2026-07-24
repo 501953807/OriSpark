@@ -1,0 +1,13 @@
+<!--pages/works/index.wxml-->
+<view class="container">
+  <text class="page-title">作品</text>
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{!works.length}}" class="empty-text">暂无作品</view>
+  <view class="works-grid" wx:else>
+    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="work-thumb" src="{{item.thumbnail || '/static/placeholder.png'}}" mode="aspectFill" />
+      <text class="work-name">{{item.title}}</text>
+      <text class="work-category">{{item.category}}</text>
+    </view>
+  </view>
+</view>
