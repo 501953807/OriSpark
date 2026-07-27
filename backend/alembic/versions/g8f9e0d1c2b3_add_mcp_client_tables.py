@@ -74,6 +74,7 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('external_tool_connections')
-    op.drop_table('tool_events')
-    op.drop_table('mcp_client_configs')
+    conn = op.get_bind()
+    # Safe drop in reverse order (respect FK constraints)
+    for table in ['external_tool_connections', 'tool_events', 'mcp_client_configs']:
+        conn.execute(sa.text(f"DROP TABLE IF EXISTS {table}"))

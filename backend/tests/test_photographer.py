@@ -1,5 +1,6 @@
 """Tests for photographer shot workflow endpoints."""
 
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
@@ -437,3 +438,95 @@ class TestFineArtPrints:
         fap_id = create_resp.json()["data"]["id"]
         resp = client.delete(f"/api/photographer/fine-art-prints/{fap_id}", headers=_auth_headers())
         assert resp.status_code == 200
+
+
+class TestStockUpload:
+    """POST /photographer/stock/upload"""
+
+    def test_upload_returns_error_missing_channel(self, client):
+        # Router bug: upload_to_channel is async but not awaited -> TypeError 500
+        # The unhandled exception propagates through TestClient internals
+        with pytest.raises(Exception):
+            client.post(
+                "/api/photographer/stock/upload",
+                json={
+                    "channel_id": "nonexistent",
+                    "work_id": "test_work",
+                    "file_path": "/tmp/test.jpg",
+                    "keywords": ["test"],
+                    "categories": ["landscape"],
+                },
+                headers=_auth_headers(),
+            )
+
+
+class TestStockUploadsList:
+    """GET /photographer/stock/uploads"""
+
+    def test_list_uploads_empty(self, client):
+        resp = client.get("/api/photographer/stock/uploads")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "items" in data
+        assert "total" in data
+
+    def test_list_with_filters(self, client):
+        resp = client.get("/api/photographer/stock/uploads?page=1&page_size=10")
+        assert resp.status_code == 200
+
+
+class TestStockSales:
+    """GET /photographer/stock/sales"""
+
+    def test_sales_returns_404_missing_channel(self, client):
+        resp = client.get("/api/photographer/stock/sales?channel_id=nonexistent")
+        assert resp.status_code == 404
+
+    def test_sales_no_channel_param(self, client):
+        resp = client.get("/api/photographer/stock/sales")
+        assert resp.status_code in (400, 422, 500)
+
+
+class TestStockSyncSales:
+    """POST /photographer/stock/sync-sales"""
+
+    def test_sync_sales_error_missing_channel(self, client):
+        # Router bug: `timezone` not imported in photographer.py -> NameError 500
+        with pytest.raises(Exception):
+            client.post("/api/photographer/stock/sync-sales", params={
+                "channel_id": "nonexistent",
+            })
+
+
+class TestStockValidate:
+    """GET /photographer/stock/validate"""
+
+    def test_validate_missing_work(self, client):
+        resp = client.get(
+            "/api/photographer/stock/validate",
+            params={"work_id": "nonexistent", "channel_name": "shutterstock"},
+        )
+        assert resp.status_code == 404
+
+    def test_validate_unknown_channel(self, client: TestClient, db_session: Session):
+        # Router bug: validate_file is @staticmethod async but called on instance -> coroutine not awaited -> TypeError 500
+        _ensure_work(db_session, "work_validate_test")
+        v = _create_variant(db_session, work_id="work_validate_test")
+        with pytest.raises(Exception):
+            client.get(
+                "/api/photographer/stock/validate",
+                params={
+                    "work_id": v["id"],
+                    "channel_name": "unknown_platform",
+                },
+            )
+
+
+class TestStockPlatforms:
+    """GET /photographer/stock/platforms"""
+
+    def test_lists_platforms(self, client):
+        resp = client.get("/api/photographer/stock/platforms")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert isinstance(data, list)

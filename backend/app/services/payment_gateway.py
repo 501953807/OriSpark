@@ -1,6 +1,7 @@
 """支付托管网关 — Stripe/WorldFirst/PayPal 插件接口."""
 
 import uuid
+from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -9,10 +10,174 @@ from sqlalchemy.orm import Session
 from app.models.contract import ContractInstance
 
 
+class EscrowProvider(ABC):
+    """支付托管提供方抽象基类."""
+
+    @abstractmethod
+    def create_transaction(self, amount: float, currency: str) -> dict:
+        """创建托管交易."""
+
+    @abstractmethod
+    def verify_transaction(self, transaction_id: str) -> dict:
+        """验证托管交易到账."""
+
+    @abstractmethod
+    def release_funds(self, transaction_id: str, amount: float, currency: str) -> dict:
+        """释放托管资金到各方."""
+
+    @abstractmethod
+    def refund_funds(self, transaction_id: str, amount: float, currency: str, reason: str) -> dict:
+        """退款至付款方."""
+
+
+class StripeAdapter(EscrowProvider):
+    """Stripe Connect 托管实现."""
+
+    def create_transaction(self, amount: float, currency: str) -> dict:
+        return {
+            "provider": "stripe",
+            "transaction_id": f"stripe_{uuid.uuid4().hex[:16]}",
+            "amount": amount,
+            "currency": currency,
+            "status": "created",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def verify_transaction(self, transaction_id: str) -> dict:
+        return {
+            "provider": "stripe",
+            "transaction_id": transaction_id,
+            "confirmed": True,
+            "verified_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def release_funds(self, transaction_id: str, amount: float, currency: str) -> dict:
+        return {
+            "provider": "stripe",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "released",
+            "released_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def refund_funds(self, transaction_id: str, amount: float, currency: str, reason: str) -> dict:
+        return {
+            "provider": "stripe",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "refunded",
+            "reason": reason,
+            "refunded_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+
+class PayPalAdapter(EscrowProvider):
+    """PayPal Commerce Platform 托管实现."""
+
+    def create_transaction(self, amount: float, currency: str) -> dict:
+        return {
+            "provider": "paypal",
+            "transaction_id": f"pp_{uuid.uuid4().hex[:16]}",
+            "amount": amount,
+            "currency": currency,
+            "status": "created",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def verify_transaction(self, transaction_id: str) -> dict:
+        return {
+            "provider": "paypal",
+            "transaction_id": transaction_id,
+            "confirmed": True,
+            "verified_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def release_funds(self, transaction_id: str, amount: float, currency: str) -> dict:
+        return {
+            "provider": "paypal",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "released",
+            "released_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def refund_funds(self, transaction_id: str, amount: float, currency: str, reason: str) -> dict:
+        return {
+            "provider": "paypal",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "refunded",
+            "reason": reason,
+            "refunded_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+
+class WorldFirstAdapter(EscrowProvider):
+    """WorldFirst 跨境托管实现."""
+
+    def create_transaction(self, amount: float, currency: str) -> dict:
+        return {
+            "provider": "worldfirst",
+            "transaction_id": f"wf_{uuid.uuid4().hex[:16]}",
+            "amount": amount,
+            "currency": currency,
+            "status": "created",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def verify_transaction(self, transaction_id: str) -> dict:
+        return {
+            "provider": "worldfirst",
+            "transaction_id": transaction_id,
+            "confirmed": True,
+            "verified_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def release_funds(self, transaction_id: str, amount: float, currency: str) -> dict:
+        return {
+            "provider": "worldfirst",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "released",
+            "released_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def refund_funds(self, transaction_id: str, amount: float, currency: str, reason: str) -> dict:
+        return {
+            "provider": "worldfirst",
+            "transaction_id": transaction_id,
+            "amount": amount,
+            "currency": currency,
+            "status": "refunded",
+            "reason": reason,
+            "refunded_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+
+# Provider registry
+_PROVIDER_MAP: dict[str, type[EscrowProvider]] = {
+    "stripe": StripeAdapter,
+    "paypal": PayPalAdapter,
+    "worldfirst": WorldFirstAdapter,
+}
+
+
 class PaymentGatewayService:
     """支付托管服务 — 支持 Stripe、WorldFirst、PayPal 三种托管方."""
 
-    SUPPORTED_PROVIDERS = {"stripe", "worldfirst", "paypal"}
+    SUPPORTED_PROVIDERS = set(_PROVIDER_MAP.keys())
+
+    @classmethod
+    def _get_provider(cls, provider: str) -> EscrowProvider:
+        """获取提供方实例."""
+        if provider not in cls.SUPPORTED_PROVIDERS:
+            raise ValueError(f"不支持的托管方: {provider}")
+        return _PROVIDER_MAP[provider]()
 
     @classmethod
     def initiate_escrow(
@@ -20,11 +185,9 @@ class PaymentGatewayService:
         db: Session,
         contract_id: str,
         provider: str,
-        amount: float,
-        currency: str,
         actor_id: Optional[str] = None,
     ) -> dict:
-        """发起资金托管."""
+        """发起资金托管，调用对应支付网关创建交易."""
         if provider not in cls.SUPPORTED_PROVIDERS:
             raise ValueError(f"不支持的托管方: {provider}")
 
@@ -34,15 +197,11 @@ class PaymentGatewayService:
         if not contract:
             raise ValueError("合约不存在")
 
-        # 生成托管交易 ID
-        transaction_id = f"escrow_{uuid.uuid4().hex[:16]}"
+        escrow = cls._get_provider(provider)
+        result = escrow.create_transaction(float(contract.total_amount), contract.currency)
 
-        # 调用对应支付网关
-        result = cls._create_escrow_transaction(provider, amount, currency)
-
-        # 更新合约状态
         contract.escrow_provider = provider
-        contract.escrow_transaction_id = transaction_id
+        contract.escrow_transaction_id = result["transaction_id"]
         contract.status = "escrowed"
         contract.escrowed_at = datetime.utcnow()
 
@@ -51,12 +210,12 @@ class PaymentGatewayService:
 
         return {
             "contract_id": contract.id,
-            "transaction_id": transaction_id,
+            "transaction_id": result["transaction_id"],
             "provider": provider,
-            "amount": amount,
-            "currency": currency,
+            "amount": float(contract.total_amount),
+            "currency": contract.currency,
             "status": "escrowed",
-            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": result["created_at"],
         }
 
     @classmethod
@@ -67,7 +226,7 @@ class PaymentGatewayService:
         transaction_id: str,
         actor_id: Optional[str] = None,
     ) -> dict:
-        """确认托管到账."""
+        """确认托管到账，验证支付网关交易."""
         contract = db.query(ContractInstance).filter(
             ContractInstance.id == contract_id
         ).first()
@@ -77,10 +236,8 @@ class PaymentGatewayService:
         if contract.status != "escrowed":
             raise ValueError("合约未处于托管状态")
 
-        # 验证托管交易
-        validation = cls._verify_escrow_transaction(
-            contract.escrow_provider, transaction_id
-        )
+        escrow = cls._get_provider(contract.escrow_provider)
+        validation = escrow.verify_transaction(transaction_id)
 
         if not validation.get("confirmed"):
             raise ValueError(f"托管交易验证失败: {validation.get('error')}")
@@ -104,7 +261,7 @@ class PaymentGatewayService:
         contract_id: str,
         actor_id: Optional[str] = None,
     ) -> dict:
-        """释放托管资金."""
+        """释放托管资金到各方分润账户."""
         contract = db.query(ContractInstance).filter(
             ContractInstance.id == contract_id
         ).first()
@@ -114,9 +271,8 @@ class PaymentGatewayService:
         if contract.status not in ("completed", "resolved"):
             raise ValueError("仅已完成或已解决的合约可释放托管")
 
-        # 调用支付网关释放资金
-        release_result = cls._release_funds(
-            contract.escrow_provider,
+        escrow = cls._get_provider(contract.escrow_provider)
+        release_result = escrow.release_funds(
             contract.escrow_transaction_id,
             float(contract.total_amount),
             contract.currency,
@@ -127,6 +283,7 @@ class PaymentGatewayService:
             "transaction_id": contract.escrow_transaction_id,
             "provider": contract.escrow_provider,
             "release_status": release_result.get("status", "success"),
+            "released_at": release_result.get("released_at"),
         }
 
     @classmethod
@@ -137,7 +294,7 @@ class PaymentGatewayService:
         reason: str,
         actor_id: Optional[str] = None,
     ) -> dict:
-        """退款."""
+        """退款至付款方."""
         contract = db.query(ContractInstance).filter(
             ContractInstance.id == contract_id
         ).first()
@@ -147,12 +304,12 @@ class PaymentGatewayService:
         if contract.status != "escrowed":
             raise ValueError("仅托管中的合约可退款")
 
-        # 调用支付网关退款
-        refund_result = cls._refund_funds(
-            contract.escrow_provider,
+        escrow = cls._get_provider(contract.escrow_provider)
+        refund_result = escrow.refund_funds(
             contract.escrow_transaction_id,
             float(contract.total_amount),
             contract.currency,
+            reason,
         )
 
         contract.status = "refunded"
@@ -168,57 +325,4 @@ class PaymentGatewayService:
             "provider": contract.escrow_provider,
             "refund_status": refund_result.get("status", "success"),
             "reason": reason,
-        }
-
-    @classmethod
-    def _create_escrow_transaction(
-        cls, provider: str, amount: float, currency: str
-    ) -> dict:
-        """创建托管交易 (模拟实现)."""
-        return {
-            "provider": provider,
-            "amount": amount,
-            "currency": currency,
-            "status": "created",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-
-    @classmethod
-    def _verify_escrow_transaction(
-        cls, provider: str, transaction_id: str
-    ) -> dict:
-        """验证托管交易 (模拟实现)."""
-        return {
-            "provider": provider,
-            "transaction_id": transaction_id,
-            "confirmed": True,
-            "verified_at": datetime.now(timezone.utc).isoformat(),
-        }
-
-    @classmethod
-    def _release_funds(
-        cls, provider: str, transaction_id: str, amount: float, currency: str
-    ) -> dict:
-        """释放托管资金 (模拟实现)."""
-        return {
-            "provider": provider,
-            "transaction_id": transaction_id,
-            "amount": amount,
-            "currency": currency,
-            "status": "released",
-            "released_at": datetime.now(timezone.utc).isoformat(),
-        }
-
-    @classmethod
-    def _refund_funds(
-        cls, provider: str, transaction_id: str, amount: float, currency: str
-    ) -> dict:
-        """退款 (模拟实现)."""
-        return {
-            "provider": provider,
-            "transaction_id": transaction_id,
-            "amount": amount,
-            "currency": currency,
-            "status": "refunded",
-            "refunded_at": datetime.now(timezone.utc).isoformat(),
         }

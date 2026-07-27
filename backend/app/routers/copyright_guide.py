@@ -20,7 +20,18 @@ router = APIRouter(prefix="/copyright-guide", tags=["copyright-guide"])
 @router.get("/guides")
 def get_all_guides(db: Session = Depends(get_db)):
     """获取所有登记指南."""
-    return get_or_create_guides(db)
+    guides = get_or_create_guides(db)
+    return [
+        {
+            "id": g.id,
+            "work_type": g.work_type,
+            "title_zh": g.title_zh,
+            "steps": g.steps,
+            "estimated_days": g.estimated_days,
+            "estimated_fee_yuan": g.estimated_fee_yuan,
+        }
+        for g in guides
+    ]
 
 
 @router.get("/guides/{work_type}")
@@ -29,7 +40,14 @@ def get_guide(work_type: str, db: Session = Depends(get_db)):
     guide = get_guide(db, work_type)
     if not guide:
         raise HTTPException(status_code=404, detail="Guide not found")
-    return guide
+    return {
+        "id": guide.id,
+        "work_type": guide.work_type,
+        "title_zh": guide.title_zh,
+        "steps": guide.steps,
+        "estimated_days": guide.estimated_days,
+        "estimated_fee_yuan": guide.estimated_fee_yuan,
+    }
 
 
 @router.post("/registrations", response_model=dict)

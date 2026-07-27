@@ -34,30 +34,42 @@ def get_active_listings(db: Session = Depends(get_db)):
     return [ListingResponse(**{k: getattr(l, k) for k in ListingResponse.model_fields}) for l in listings]
 
 
-@router.get("/{listing_id}", response_model=ListingResponse)
-def get_listing(listing_id: str, db: Session = Depends(get_db)):
-    listing = db.query(Listing).filter(Listing.id == listing_id).first()
-    if not listing:
-        raise HTTPException(status_code=404, detail="Listing not found")
-    return ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields})
+@router.get("/search")
+def search_listings(category: str = None, creator_type: str = None,
+                    min_price: float = None, max_price: float = None,
+                    tags: str = None, sort_by: str = "created_at",
+                    limit: int = 20, offset: int = 0,
+                    db: Session = Depends(get_db)):
+    """高级搜索挂牌."""
+    query = db.query(Listing).filter(Listing.status == "active")
 
+    if category:
+        query = query.filter(getattr(Listing, 'category', None) == category)
+    if creator_type:
+        query = query.filter(getattr(Listing, 'creator_type', None) == creator_type)
+    if min_price is not None:
+        query = query.filter(Listing.asking_price_yuan >= min_price)
+    if max_price is not None:
+        query = query.filter(Listing.asking_price_yuan <= max_price)
+    if tags:
+        tag_list = [t.strip() for t in tags.split(",")]
+        for tag in tag_list:
+            query = query.filter(Listing.tags.contains(tag))
 
-@router.patch("/{listing_id}", response_model=ListingResponse)
-def patch_update_listing(listing_id: str, body: ListingUpdate, db: Session = Depends(get_db)):
-    updates = body.model_dump(exclude_none=True)
-    listing = update_listing(db, listing_id, updates)
-    if not listing:
-        raise HTTPException(status_code=404, detail="Listing not found")
-    return ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields})
+    sort_map = {
+        "created_at": Listing.created_at.desc(),
+        "price_asc": Listing.asking_price_yuan.asc(),
+        "price_desc": Listing.asking_price_yuan.desc(),
+        "popularity": Listing.view_count.desc() if hasattr(Listing, 'view_count') else Listing.created_at.desc(),
+    }
+    order_by = sort_map.get(sort_by, Listing.created_at.desc())
+    query = query.order_by(order_by)
 
-
-@router.post("/{listing_id}/sell")
-def post_sell_listing(listing_id: str, buyer_id: str, db: Session = Depends(get_db)):
-    listing = mark_sold(db, listing_id, buyer_id)
-    if not listing:
-        raise HTTPException(status_code=400, detail="Listing not available for sale")
-    profit = calculate_profit(listing.asking_price_yuan, listing.platform_fee_rate_bps, listing.profit_split_percent)
-    return {"listing": ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields}), "profit_split": profit}
+    listings = query.limit(limit).offset(offset).all()
+    return {
+        "listings": [ListingResponse(**{k: getattr(l, k) for k in ListingResponse.model_fields}) for l in listings],
+        "total": len(listings),
+    }
 
 
 @router.post("/profit-estimate")
@@ -67,7 +79,7 @@ def post_profit_estimate(asking_price: float, fee_rate_bps: int = 200, split_per
 
 
 # ============================================================================
-# v2: 批量操作 + 高级搜索
+# v2: 批量操作
 # ============================================================================
 
 
@@ -136,39 +148,27 @@ def batch_expire(ids: list[str], expires_at: str, seller_id: str = Depends(requi
     return {"updated": count}
 
 
-@router.get("/search")
-def search_listings(category: str = None, creator_type: str = None,
-                    min_price: float = None, max_price: float = None,
-                    tags: str = None, sort_by: str = "created_at",
-                    limit: int = 20, offset: int = 0,
-                    db: Session = Depends(get_db)):
-    """高级搜索挂牌."""
-    query = db.query(Listing).filter(Listing.status == "active")
+@router.get("/{listing_id}", response_model=ListingResponse)
+def get_listing(listing_id: str, db: Session = Depends(get_db)):
+    listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    return ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields})
 
-    if category:
-        query = query.filter(getattr(Listing, 'category', None) == category)
-    if creator_type:
-        query = query.filter(getattr(Listing, 'creator_type', None) == creator_type)
-    if min_price is not None:
-        query = query.filter(Listing.asking_price_yuan >= min_price)
-    if max_price is not None:
-        query = query.filter(Listing.asking_price_yuan <= max_price)
-    if tags:
-        tag_list = [t.strip() for t in tags.split(",")]
-        for tag in tag_list:
-            query = query.filter(Listing.tags.contains(tag))
 
-    sort_map = {
-        "created_at": Listing.created_at.desc(),
-        "price_asc": Listing.asking_price_yuan.asc(),
-        "price_desc": Listing.asking_price_yuan.desc(),
-        "popularity": Listing.view_count.desc() if hasattr(Listing, 'view_count') else Listing.created_at.desc(),
-    }
-    order_by = sort_map.get(sort_by, Listing.created_at.desc())
-    query = query.order_by(order_by)
+@router.patch("/{listing_id}", response_model=ListingResponse)
+def patch_update_listing(listing_id: str, body: ListingUpdate, db: Session = Depends(get_db)):
+    updates = body.model_dump(exclude_none=True)
+    listing = update_listing(db, listing_id, updates)
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    return ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields})
 
-    listings = query.limit(limit).offset(offset).all()
-    return {
-        "listings": [ListingResponse(**{k: getattr(l, k) for k in ListingResponse.model_fields}) for l in listings],
-        "total": len(listings),
-    }
+
+@router.post("/{listing_id}/sell")
+def post_sell_listing(listing_id: str, buyer_id: str, db: Session = Depends(get_db)):
+    listing = mark_sold(db, listing_id, buyer_id)
+    if not listing:
+        raise HTTPException(status_code=400, detail="Listing not available for sale")
+    profit = calculate_profit(listing.asking_price_yuan, listing.platform_fee_rate_bps, listing.profit_split_percent)
+    return {"listing": ListingResponse(**{k: getattr(listing, k) for k in ListingResponse.model_fields}), "profit_split": profit}

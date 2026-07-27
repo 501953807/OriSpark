@@ -247,22 +247,45 @@ class ContractStateService:
         cls,
         db: Session,
         contract_id: str,
-        provider: str,
+        provider: str = "stripe",
         actor_id: Optional[str] = None,
     ) -> ContractInstance:
-        """发起资金托管."""
-        contract = cls.validate_transition(
-            db, contract_id, "escrowed", actor_id
-        )
-        contract.escrowed_at = datetime.utcnow()
-        contract.escrow_provider = provider
+        """发起资金托管 — 委托 PaymentGatewayService 处理支付流程.
 
+        状态流转 (escrowed) 由 PaymentGatewayService 直接完成，
+        本方法仅作为 ContractStateService 的入口点以保持路由签名一致。
+        """
+        from app.services.payment_gateway import PaymentGatewayService
+
+        pgw_result = PaymentGatewayService.initiate_escrow(
+            db=db,
+            contract_id=contract_id,
+            provider=provider,
+            actor_id=actor_id,
+        )
+
+        contract = db.query(ContractInstance).filter(
+            ContractInstance.id == contract_id
+        ).first()
+        if not contract:
+            raise HTTPException(status_code=404, detail="合约不存在")
+
+        # Audit log the escrow creation
+        audit = AuditLog(
+            user_id=actor_id,
+            action=f"escrow_initiated:{pgw_result.get('provider', 'unknown')}",
+            detail=json.dumps({
+                "contract_id": contract_id,
+                "transaction_id": pgw_result.get("transaction_id"),
+                "amount": pgw_result.get("amount"),
+            }, ensure_ascii=False),
+            module="contract_market",
+        )
+        db.add(audit)
         try:
             db.commit()
-            db.refresh(contract)
-        except Exception as e:
+        except Exception:
             db.rollback()
-            raise HTTPException(status_code=500, detail="发起托管失败")
 
         return contract
 
@@ -274,18 +297,23 @@ class ContractStateService:
         transaction_id: str,
         actor_id: Optional[str] = None,
     ) -> ContractInstance:
-        """确认托管到账."""
+        """确认托管到账 — 委托 PaymentGatewayService 验证交易."""
+        from app.services.payment_gateway import PaymentGatewayService
+
+        pgw_result = PaymentGatewayService.confirm_escrow(
+            db=db,
+            contract_id=contract_id,
+            transaction_id=transaction_id,
+            actor_id=actor_id,
+        )
+
         contract = db.query(ContractInstance).filter(
             ContractInstance.id == contract_id
         ).first()
         if not contract:
             raise HTTPException(status_code=404, detail="合约不存在")
-        if contract.status != "escrowed":
-            raise HTTPException(status_code=400, detail="合约未处于托管状态")
 
-        contract.escrow_transaction_id = transaction_id
-        contract.updated_at = datetime.utcnow()
-
+        # Audit log the confirmation
         audit = AuditLog(
             user_id=actor_id,
             action="escrow_confirmed",
@@ -296,13 +324,10 @@ class ContractStateService:
             module="contract_market",
         )
         db.add(audit)
-
         try:
             db.commit()
-            db.refresh(contract)
-        except Exception as e:
+        except Exception:
             db.rollback()
-            raise HTTPException(status_code=500, detail="确认托管失败")
 
         return contract
 
@@ -316,7 +341,7 @@ class ContractStateService:
         premium: Optional[float] = None,
         actor_id: Optional[str] = None,
     ) -> ContractInstance:
-        """激活保险."""
+        """激活保险 — 更新合约字段并尝试创建保单记录."""
         contract = cls.validate_transition(
             db, contract_id, "insured", actor_id
         )
@@ -324,8 +349,26 @@ class ContractStateService:
             contract.insurance_product_id = insurance_product_id
         if policy_no:
             contract.insurance_policy_no = policy_no
+        else:
+            import uuid
+            contract.insurance_policy_no = f"POL_{uuid.uuid4().hex[:12].upper()}"
         if premium is not None:
             contract.insurance_premium = premium
+
+        # 尝试通过保险服务创建实际保单
+        if insurance_product_id:
+            try:
+                from datetime import date as date_type
+                from app.services.insurance_service import InsuranceService
+                InsuranceService.create_policy(
+                    db=db,
+                    user_id=contract.creator_id,
+                    product_id=insurance_product_id,
+                    start_date=date_type.today(),
+                )
+            except Exception:
+                # 保险服务不可用时不影响合约状态流转
+                pass
 
         try:
             db.commit()

@@ -5,6 +5,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models.case_study import CaseStudy
 from app.schemas.case_study import (
     CaseStudyCreate, CaseStudyUpdate, CaseStudyResponse, CaseStats,
 )
@@ -20,6 +21,18 @@ router = APIRouter(prefix="/case-studies", tags=["case-studies"])
 def get_categories():
     """获取所有分类及其中文名称."""
     return [{"key": k, "name_zh": v["name_zh"], "icon": v["icon"]} for k, v in CATEGORIES.items()]
+
+
+@router.get("/stats", response_model=CaseStats)
+def stats(db: Session = Depends(get_db)):
+    """获取案例统计."""
+    return get_case_stats(db, "current_user")
+
+
+@router.get("/search")
+def search(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
+    """搜索案例."""
+    return search_cases(db, "current_user", q)
 
 
 @router.get("", response_model=list[CaseStudyResponse])
@@ -66,15 +79,3 @@ def remove(case_id: str, db: Session = Depends(get_db)):
     if not delete_case(db, "current_user", case_id):
         raise HTTPException(status_code=404, detail="Case not found")
     return {"message": "Deleted"}
-
-
-@router.get("/stats", response_model=CaseStats)
-def stats(db: Session = Depends(get_db)):
-    """获取案例统计."""
-    return get_case_stats(db, "current_user")
-
-
-@router.get("/search")
-def search(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
-    """搜索案例."""
-    return search_cases(db, "current_user", q)

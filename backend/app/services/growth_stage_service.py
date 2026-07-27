@@ -184,53 +184,61 @@ def get_progress_dashboard(db: Session, user_id: str) -> dict:
 
 def update_growth_stage(db: Session, user_id: str, data: dict) -> dict:
     """手动更新成长阶段指标."""
+    monthly_revenue = data.get("monthly_revenue_yuan", 0)
+    total_works = data.get("total_works", 0)
+    total_certs = data.get("total_certificates", 0)
+    credit_score = data.get("credit_score", 50)
+
+    evaluation = evaluate_stage(monthly_revenue, total_works, total_certs, credit_score)
+
     existing = db.query(CreatorGrowthStage).filter(
         CreatorGrowthStage.user_id == user_id,
     ).first()
 
     if existing:
-        existing.monthly_revenue_yuan = data.get("monthly_revenue_yuan", existing.monthly_revenue_yuan)
-        existing.total_works = data.get("total_works", existing.total_works)
-        existing.total_certificates = data.get("total_certificates", existing.total_certificates)
-        existing.credit_score = data.get("credit_score", existing.credit_score)
+        existing.monthly_revenue_yuan = monthly_revenue
+        existing.total_works = total_works
+        existing.total_certificates = total_certs
+        existing.credit_score = credit_score
+        existing.stage_key = evaluation["stage_key"]
+        existing.stage_name_zh = evaluation["stage_name_zh"]
+        existing.overall_progress_percent = evaluation["stage_progress"]
+        existing.next_stage_progress_percent = evaluation.get("next_stage_progress", 0)
         existing.evaluated_at = datetime.utcnow()
     else:
         existing = CreatorGrowthStage(
             user_id=user_id,
-            monthly_revenue_yuan=data.get("monthly_revenue_yuan", 0),
-            total_works=data.get("total_works", 0),
-            total_certificates=data.get("total_certificates", 0),
-            credit_score=data.get("credit_score", 50),
+            stage_key=evaluation["stage_key"],
+            stage_name_zh=evaluation["stage_name_zh"],
+            monthly_revenue_yuan=monthly_revenue,
+            total_works=total_works,
+            total_certificates=total_certs,
+            credit_score=credit_score,
+            overall_progress_percent=evaluation["stage_progress"],
+            next_stage_progress_percent=evaluation.get("next_stage_progress", 0),
         )
         db.add(existing)
 
     db.commit()
     db.refresh(existing)
 
-    evaluation = evaluate_stage(
-        existing.monthly_revenue_yuan,
-        existing.total_works,
-        existing.total_certificates,
-        existing.credit_score,
-    )
-
     return {
         "id": existing.id,
         "stage_key": evaluation["stage_key"],
         "stage_name_zh": evaluation["stage_name_zh"],
         "progress_percent": evaluation["stage_progress"],
-        "next_stage_progress": evaluation["next_stage_progress"],
+        "next_stage_progress": evaluation.get("next_stage_progress", 0),
     }
 
 
-def complete_task(db: Session, user_id: str, task_id: str) -> dict:
+def complete_task(db: Session, user_id: str, task_key: str) -> dict:
     """标记任务完成."""
     task = db.query(GrowthTask).filter(
-        GrowthTask.id == task_id,
         GrowthTask.user_id == user_id,
+        GrowthTask.task_key == task_key,  # was: id == task_id
     ).first()
     if not task:
-        raise ValueError("Task not found")
+        return {"error": f"Task {task_key} not found"}
     task.is_completed = True
     task.completed_at = datetime.utcnow()
     db.commit()

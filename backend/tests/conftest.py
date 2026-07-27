@@ -111,10 +111,20 @@ def test_db_engine():
     _app_db.SessionLocal = TestSessionLocal
 
     # Create all tables using original (unpatched) create_all
+    # create_all can fail on existing indexes; create tables one-by-one as fallback
     try:
         _original_create_all(bind=test_engine)
     except Exception:
-        pass
+        # Fallback: create each table individually, ignoring those that already exist
+        from sqlalchemy import inspect as sa_inspect
+        inspector = sa_inspect(test_engine)
+        existing = set(inspector.get_table_names())
+        for table in _orig_target_metadata.tables.values():
+            if table.name not in existing:
+                try:
+                    table.create(test_engine)
+                except Exception:
+                    pass  # skip tables that can't be created
 
     yield test_engine
 
@@ -134,26 +144,26 @@ def db_session(test_db_engine):
     try:
         yield session
     finally:
-        session.rollback()
+        try:
+            session.rollback()
+        except Exception:
+            pass  # engine may already be disposed (in-memory SQLite)
         session.close()
 
 
 @pytest.fixture()
-def client(test_db_engine):
+def client(test_db_engine, db_session):
     """FastAPI test client backed by the per-test in-memory DB.
 
-    Patches app.database.engine and overrides get_db BEFORE creating TestClient,
-    so the lifespan creates tables on the test engine instead of the prod DB.
+    Uses the SAME session as db_session so data written via _create_user()
+    is visible to API requests within the same test.
     """
     from app.main import app
     from app.database import get_db
     from starlette.testclient import TestClient
 
-    # Create a session bound to the test engine
-    session = sessionmaker(autocommit=False, autoflush=False, bind=test_db_engine)()
-
     def _override_get_db():
-        yield session
+        yield db_session
 
     # Override get_db BEFORE starting TestClient
     app.dependency_overrides[get_db] = _override_get_db
@@ -161,9 +171,7 @@ def client(test_db_engine):
     with TestClient(app) as c:
         yield c
 
-    # Cleanup
-    session.rollback()
-    session.close()
+    # Cleanup - just remove the override; db_session fixture handles rollback/close
     if get_db in app.dependency_overrides:
         del app.dependency_overrides[get_db]
 

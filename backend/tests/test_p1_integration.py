@@ -241,13 +241,13 @@ def test_initiate_escrow_success(db_session, draft_contract, subscriber):
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
 
     result = PaymentGatewayService.initiate_escrow(
-        db_session, cid, "stripe", 5000.0, "CNY"
+        db_session, cid, "stripe"
     )
     assert result["provider"] == "stripe"
     assert result["amount"] == 5000.0
     assert result["currency"] == "CNY"
     assert result["status"] == "escrowed"
-    assert result["transaction_id"].startswith("escrow_")
+    assert result["transaction_id"].startswith("stripe_")
 
 
 def test_confirm_escrow_success(db_session, draft_contract, subscriber):
@@ -258,7 +258,7 @@ def test_confirm_escrow_success(db_session, draft_contract, subscriber):
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
 
     init_result = PaymentGatewayService.initiate_escrow(
-        db_session, cid, "worldfirst", 5000.0, "CNY"
+        db_session, cid, "worldfirst"
     )
     confirm_result = PaymentGatewayService.confirm_escrow(
         db_session, cid, init_result["transaction_id"]
@@ -272,7 +272,7 @@ def test_release_escrow_after_completion(db_session, draft_contract, subscriber)
     ContractStateService.publish_contract(db_session, cid)
     ContractStateService.activate_contract(db_session, cid)
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
-    PaymentGatewayService.initiate_escrow(db_session, cid, "stripe", 5000.0, "CNY")
+    PaymentGatewayService.initiate_escrow(db_session, cid, "stripe")
     ContractStateService.activate_insurance(db_session, cid, policy_no="POL_RELEASE_001")
     ContractStateService.start_execution(db_session, cid)
     ContractStateService.complete_contract(db_session, cid)
@@ -289,7 +289,7 @@ def test_refund_escrow(db_session, draft_contract, subscriber):
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
 
     PaymentGatewayService.initiate_escrow(
-        db_session, cid, "paypal", 5000.0, "CNY"
+        db_session, cid, "paypal"
     )
     result = PaymentGatewayService.refund_escrow(
         db_session, cid, reason="交易取消，全额退款"
@@ -318,7 +318,7 @@ def test_release_escrow_before_completion(db_session, draft_contract, subscriber
     ContractStateService.activate_contract(db_session, cid)
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
     PaymentGatewayService.initiate_escrow(
-        db_session, cid, "stripe", 5000.0, "CNY"
+        db_session, cid, "stripe"
     )
 
     with pytest.raises(ValueError):
@@ -329,7 +329,7 @@ def test_unsupported_provider_raises(db_session, draft_contract):
     """不支持的托管方应抛出异常."""
     with pytest.raises(ValueError):
         PaymentGatewayService.initiate_escrow(
-            db_session, draft_contract.id, "unknown_provider", 100.0, "CNY"
+            db_session, draft_contract.id, "unknown_provider"
         )
 
 
@@ -337,7 +337,7 @@ def test_escrow_nonexistent_contract(db_session):
     """不存在合约不能发起托管."""
     with pytest.raises(ValueError):
         PaymentGatewayService.initiate_escrow(
-            db_session, "nonexistent_id", "stripe", 100.0, "CNY"
+            db_session, "nonexistent_id", "stripe"
         )
 
 
@@ -501,7 +501,7 @@ def test_confirm_delivery_triggers_execution(db_session, draft_contract, subscri
     ContractStateService.publish_contract(db_session, cid)
     ContractStateService.activate_contract(db_session, cid)
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
-    PaymentGatewayService.initiate_escrow(db_session, cid, "stripe", 5000.0, "CNY")
+    PaymentGatewayService.initiate_escrow(db_session, cid, "stripe")
     ContractStateService.activate_insurance(db_session, cid, policy_no="POL_LOGISTICS_001")
 
     shipment = LogisticsService.create_shipment(
@@ -524,7 +524,7 @@ def test_payment_escrow_and_logistics_linked(db_session, draft_contract, subscri
     ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
 
     escrow = PaymentGatewayService.initiate_escrow(
-        db_session, cid, "stripe", 5000.0, "CNY"
+        db_session, cid, "stripe"
     )
     assert escrow["contract_id"] == cid
 
@@ -539,3 +539,68 @@ def test_payment_escrow_and_logistics_linked(db_session, draft_contract, subscri
     ).first()
     assert contract.escrow_transaction_id == escrow["transaction_id"]
     assert contract.status == "escrowed"
+
+
+# ── 保险集成测试 ────────────────────────────────────────────────
+
+
+def test_activate_insurance_creates_policy(db_session, draft_contract, subscriber):
+    """激活保险应创建实际保单记录."""
+    cid = draft_contract.id
+    ContractStateService.publish_contract(db_session, cid)
+    ContractStateService.activate_contract(db_session, cid)
+    ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
+    PaymentGatewayService.initiate_escrow(db_session, cid, "stripe")
+
+    # 先创建一个保险提供商和保险产品
+    from app.models.insurance import InsuranceProduct, InsuranceProvider
+    provider = InsuranceProvider(
+        id=_uid("prov_"),
+        name_zh="测试保险公司",
+        is_active=True,
+    )
+    db_session.add(provider)
+    db_session.commit()
+
+    product = InsuranceProduct(
+        id=_uid("ip_"),
+        product_key="test_product",
+        category="copyright",
+        tier="basic",
+        name_zh="测试保险产品",
+        annual_min_yuan=100.0,
+        annual_max_yuan=500.0,
+        provider_id=provider.id,
+        is_active=True,
+    )
+    db_session.add(product)
+    db_session.commit()
+
+    # 激活保险（传入product_id）
+    contract = ContractStateService.activate_insurance(
+        db_session, cid,
+        insurance_product_id=product.id,
+        policy_no="POL_TEST_POLICY",
+        premium=300.0,
+    )
+    assert contract.status == "insured"
+    assert contract.insurance_product_id == product.id
+    assert contract.insurance_policy_no == "POL_TEST_POLICY"
+
+
+def test_activate_insurance_generates_policy_no(db_session, draft_contract, subscriber):
+    """未提供policy_no时应自动生成."""
+    cid = draft_contract.id
+    ContractStateService.publish_contract(db_session, cid)
+    ContractStateService.activate_contract(db_session, cid)
+    ContractStateService.subscribe_contract(db_session, cid, subscriber.id)
+    PaymentGatewayService.initiate_escrow(db_session, cid, "paypal")
+
+    contract = ContractStateService.activate_insurance(
+        db_session, cid,
+        insurance_product_id=None,
+        policy_no=None,
+        premium=None,
+    )
+    assert contract.status == "insured"
+    assert contract.insurance_policy_no.startswith("POL_")

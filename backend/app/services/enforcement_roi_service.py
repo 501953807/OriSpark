@@ -51,6 +51,7 @@ INFRINGEMENT_PRIORITY = {
 # 四层防御预算
 DEFENSE_TIERS_DATA = [
     {
+        "id": "tier_zero",
         "tier_key": "zero",
         "tier_name_zh": "零成本防御",
         "monthly_cost_low": 0,
@@ -62,6 +63,7 @@ DEFENSE_TIERS_DATA = [
         "recommended_for": "新手创作者、月收入 < ¥5,000",
     },
     {
+        "id": "tier_low",
         "tier_key": "low",
         "tier_name_zh": "基础防御 ($5-20/月)",
         "monthly_cost_low": 5,
@@ -73,6 +75,7 @@ DEFENSE_TIERS_DATA = [
         "recommended_for": "活跃创作者、月收入 ¥5K-¥30K",
     },
     {
+        "id": "tier_mid",
         "tier_key": "mid",
         "tier_name_zh": "中等防御 ($500-3K/年)",
         "monthly_cost_low": 42,
@@ -84,6 +87,7 @@ DEFENSE_TIERS_DATA = [
         "recommended_for": "专业创作者、月收入 ¥30K-¥100K",
     },
     {
+        "id": "tier_high",
         "tier_key": "high",
         "tier_name_zh": "高级防御 ($5K+/年)",
         "monthly_cost_low": 420,

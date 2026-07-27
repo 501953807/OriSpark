@@ -1,6 +1,6 @@
 """成就徽章与排行榜服务."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from app.models.achievement import AchievementBadge, UserAchievement, LeaderboardEntry
 
@@ -103,8 +103,13 @@ def update_leaderboard(creator_type: str, db: Session, period: str = "monthly") 
     ]
 
 
-def get_leaderboard(creator_type: str, period: str = "monthly", limit: int = 50) -> list[dict]:
+def get_leaderboard(creator_type: str, period: str = "monthly", limit: int = 50, db: Session | None = None) -> list[dict]:
     """获取排行榜."""
+    if db is None:
+        from app.database import engine
+        from sqlalchemy.orm import sessionmaker
+        _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        db = _SessionLocal()
     entries = (
         db.query(LeaderboardEntry)
         .filter(

@@ -105,12 +105,14 @@ def list_communities(db: Session, user_id: str) -> list[dict]:
     return [
         {
             "id": c.id,
+            "user_id": c.user_id,
             "platform": c.platform,
             "name": c.name,
             "invite_url": c.invite_url,
             "member_count": c.member_count,
             "tags": c.tags,
             "description": c.description,
+            "is_active": c.is_active,
         }
         for c in communities
     ]

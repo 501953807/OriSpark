@@ -29,7 +29,10 @@ def calc_brand_premium(follower_count: int, engagement_rate: float, category: st
 @router.get("/licenses/{license_id}/contract")
 def get_license_contract(license_id: str, db: Session = Depends(get_db)):
     """生成/预览授权合同."""
-    from app.models.ip_commercialization import IpLicense
+    try:
+        from app.models.ip_commercialization import IpLicense
+    except ImportError:
+        raise HTTPException(status_code=501, detail="IpLicense model not yet implemented")
     license = db.query(IpLicense).filter(IpLicense.id == license_id).first()
     if not license:
         raise HTTPException(status_code=404, detail="License not found")
@@ -52,7 +55,10 @@ def get_license_contract(license_id: str, db: Session = Depends(get_db)):
 @router.get("/expiring-soon")
 def get_expiring_licenses(days: int = 30, db: Session = Depends(get_db)):
     """即将到期的授权列表."""
-    from app.models.ip_commercialization import IpLicense
+    try:
+        from app.models.ip_commercialization import IpLicense
+    except ImportError:
+        return {"licenses": []}
 
     cutoff = datetime.utcnow() + timedelta(days=days)
     licenses = db.query(IpLicense).filter(
@@ -78,7 +84,10 @@ def get_expiring_licenses(days: int = 30, db: Session = Depends(get_db)):
 @router.post("/licenses/{license_id}/renew")
 def renew_license(license_id: str, new_end_date: str, db: Session = Depends(get_db)):
     """续约授权."""
-    from app.models.ip_commercialization import IpLicense
+    try:
+        from app.models.ip_commercialization import IpLicense
+    except ImportError:
+        raise HTTPException(status_code=501, detail="IpLicense model not yet implemented")
     license = db.query(IpLicense).filter(IpLicense.id == license_id).first()
     if not license:
         raise HTTPException(status_code=404, detail="License not found")

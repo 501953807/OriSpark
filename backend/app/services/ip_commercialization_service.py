@@ -36,6 +36,11 @@ def recommend_trademark_classes(creator_type: str) -> list[str]:
 
 
 def create_ip_assessment(db: Session, req: dict) -> IPAsset:
+    required = ["work_id", "ip_name", "originality_score", "market_demand_score",
+                "competition_density", "monetization_potential"]
+    missing = [f for f in required if f not in req]
+    if missing:
+        raise ValueError(f"Missing required fields: {', '.join(missing)}")
     score = calculate_ip_score(
         req["originality_score"], req["market_demand_score"],
         req["competition_density"], req["monetization_potential"],

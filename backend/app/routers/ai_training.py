@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.ai_training_license import AITrainingLicense
+from app.models.ai_training_license import AITrainingLicense, CCProtocol
 from app.schemas.ai_training import AILicenseUpdate, AILicenseResponse
 from app.services.ai_training_service import upsert_ai_license
 
@@ -14,7 +14,7 @@ def update_ai_license(work_id: str, req: AILicenseUpdate, db: Session = Depends(
     license = upsert_ai_license(
         db, work_id=req.work_id,
         enabled=req.enabled,
-        cc_protocol=req.cc_protocol,
+        cc_protocol=req.cc_protocol or CCProtocol.CC0,
         price_per_use_cents=req.price_per_use_cents or 5,
     )
     return license

@@ -199,6 +199,31 @@ def get_timeline(contract_id: str, db: Session = Depends(get_db)):
     return {"contract_id": contract_id, "timeline": timeline}
 
 
+@router.post("/{contract_id}/escrow/release")
+def post_release_escrow(contract_id: str, actor_id: str = "current_user", db: Session = Depends(get_db)):
+    """释放托管资金到各方分润账户."""
+    from app.services.payment_gateway import PaymentGatewayService
+    result = PaymentGatewayService.release_escrow(
+        db=db, contract_id=contract_id, actor_id=actor_id
+    )
+    return result
+
+
+@router.post("/{contract_id}/escrow/refund")
+def post_escrow_refund(
+    contract_id: str,
+    reason: str = "",
+    actor_id: str = "current_user",
+    db: Session = Depends(get_db),
+):
+    """退款至付款方（托管中合约）."""
+    from app.services.payment_gateway import PaymentGatewayService
+    result = PaymentGatewayService.refund_escrow(
+        db=db, contract_id=contract_id, reason=reason or "用户申请退款", actor_id=actor_id
+    )
+    return result
+
+
 @router.get("/{contract_id}/status")
 def get_status(contract_id: str, db: Session = Depends(get_db)):
     """获取合约状态摘要."""

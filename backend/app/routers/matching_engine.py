@@ -17,7 +17,9 @@ router = APIRouter(prefix="/matching", tags=["matching"])
 @router.post("/auctions", response_model=AuctionResponse)
 def post_create_auction(body: AuctionCreate, db: Session = Depends(get_db)):
     from app.models.matching_engine import AuctionRecord
-    record = AuctionRecord(**body.model_dump())
+    dump = body.model_dump()
+    dump["current_bid_yuan"] = dump.get("starting_price_yuan", 0)
+    record = AuctionRecord(**dump)
     db.add(record)
     db.commit()
     db.refresh(record)

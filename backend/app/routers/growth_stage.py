@@ -27,4 +27,7 @@ def update(data: dict, db: Session = Depends(get_db)):
 @router.patch("/tasks/{task_id}/complete")
 def mark_complete(task_id: str, db: Session = Depends(get_db)):
     """标记任务完成."""
-    return complete_task(db, USER_ID, task_id)
+    result = complete_task(db, user_id="current_user", task_key=task_id)
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+    return result

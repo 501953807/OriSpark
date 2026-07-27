@@ -188,7 +188,7 @@ def apply_watermark(payload: ApplyWatermarkPayload, db: Session = Depends(get_db
     if not success:
         raise HTTPException(status_code=500, detail="水印应用失败")
 
-    return ApiResponse(data={"output_path": output_path}, message="水印应用成功")
+    return ApiResponse(data={"output_path": payload.output_path}, message="水印应用成功")
 
 
 # ============================================================================

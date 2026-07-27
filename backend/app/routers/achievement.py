@@ -33,7 +33,8 @@ def unlock_badge(
     result = unlock_achievement(user_id, badge_key, db)
     if not result:
         raise HTTPException(status_code=404, detail="徽章不存在或未激活")
-    return ApiResponse(data=result, message=f"成就已解锁: {result['badge_name']}")
+    msg = f"成就已解锁: {result['badge_name']}" if "badge_name" in result else f"成就状态: {result['status']}"
+    return ApiResponse(data=result, message=msg)
 
 
 @router.get("/achievements", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
@@ -50,7 +51,7 @@ def leaderboard(
     db: Session = Depends(get_db),
 ):
     """获取排行榜."""
-    return ApiResponse(data=get_leaderboard(creator_type, period, limit))
+    return ApiResponse(data=get_leaderboard(creator_type, period, limit, db))
 
 
 @router.post("/leaderboard/update", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
@@ -60,5 +61,5 @@ def refresh_leaderboard(
     db: Session = Depends(get_db),
 ):
     """刷新排行榜数据."""
-    entries = update_leaderboard(creator_type, period, db)
+    entries = update_leaderboard(creator_type, db, period)
     return ApiResponse(data={"entries": entries}, message="排行榜已更新")

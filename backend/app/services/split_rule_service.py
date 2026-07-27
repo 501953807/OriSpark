@@ -1,13 +1,15 @@
 """分润规则管理服务."""
 
 import json
+import uuid
 from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from app.models.contract import SplitRule, ContractInstance
+from app.models.contract import SplitRule, ContractInstance, SplitExecutionLog
 
 
 class SplitRuleService:
@@ -125,8 +127,8 @@ class SplitRuleService:
                 status_code=400, detail="仅认购/托管合约可写入分润规则"
             )
 
-        total = sum(r.get("percentage", 0) for r in rules)
-        platform_fee = round(total * cls.PLATFORM_FEE_RATE, 2)
+        total_pct = sum(r.get("percentage", 0) for r in rules)
+        platform_fee = round(total_pct * cls.PLATFORM_FEE_RATE, 2)
         if platform_fee > contract.total_amount:
             raise HTTPException(
                 status_code=400,
@@ -137,6 +139,184 @@ class SplitRuleService:
         db.commit()
         db.refresh(contract)
         return contract
+
+    @classmethod
+    def calculate_split(
+        cls, db: Session, contract_id: str, total_amount: Optional[float] = None
+    ) -> dict:
+        """计算分润方案 — 读取合约 split_rules_json，按百分比分配金额.
+
+        Returns:
+            {
+                "contract_id": str,
+                "total_amount": float,
+                "platform_fee": float,
+                "distributions": [
+                    {"role": str, "participant_id": str, "percentage": float, "amount": float},
+                    ...
+                ],
+            }
+        """
+        contract = cls._get_contract(db, contract_id)
+        if not contract.split_rules_json or contract.split_rules_json == "[]":
+            raise HTTPException(
+                status_code=400,
+                detail="合约暂无分润规则，请先锁定报价",
+            )
+
+        rules = json.loads(contract.split_rules_json)
+        if not rules:
+            raise HTTPException(status_code=400, detail="分润规则为空")
+
+        amount = Decimal(str(total_amount or contract.total_amount))
+        platform_fee = float((amount * Decimal(str(cls.PLATFORM_FEE_RATE))).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+        distributions = []
+
+        for rule in rules:
+            pct = Decimal(str(rule.get("percentage", 0)))
+            dist_amount = float((amount * pct).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+            distributions.append({
+                "role": rule["role"],
+                "participant_id": rule["participant_id"],
+                "percentage": rule["percentage"],
+                "amount": dist_amount,
+            })
+
+        return {
+            "contract_id": contract.id,
+            "total_amount": float(amount),
+            "platform_fee": platform_fee,
+            "distributions": distributions,
+        }
+
+    @classmethod
+    def execute_split(
+        cls,
+        db: Session,
+        contract_id: str,
+        actor_id: Optional[str] = None,
+        total_amount: Optional[float] = None,
+        batch_id: Optional[str] = None,
+    ) -> dict:
+        """执行分润 — 计算分润方案，创建 SplitExecutionLog，调用支付网关释放资金.
+
+        状态流转: 合约需处于 completed/resolved/executing 状态.
+        如果合约配置了 escrow_provider，则通过该 provider 执行资金分发.
+        """
+        contract = cls._get_contract(db, contract_id)
+        if contract.status not in ("completed", "resolved", "executing"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"当前状态 {contract.status} 不允许执行分润",
+            )
+
+        # 1. 计算分润
+        calc = cls.calculate_split(db, contract_id, total_amount)
+
+        # 2. 生成 batch_id
+        if not batch_id:
+            cycle = contract.completed_at or datetime.utcnow()
+            batch_id = f"{cycle.strftime('%Y-%m')}_monthly"
+
+        # 3. 尝试调用支付网关释放资金
+        executor = "manual"
+        error_message = None
+        if contract.escrow_provider and contract.escrow_transaction_id:
+            try:
+                from app.services.payment_gateway import PaymentGatewayService
+                pgw_result = PaymentGatewayService.release_escrow(
+                    db, contract_id, actor_id=actor_id,
+                )
+                executor = pgw_result.get("provider", "stripe")
+            except Exception as e:
+                error_message = str(e)
+        else:
+            # 无支付托管配置是正常情况（模拟执行），不算错误
+            executor = "manual"
+
+        # 4. 创建执行日志
+        exec_log = SplitExecutionLog(
+            id=uuid.uuid4().hex,
+            contract_id=contract_id,
+            execution_batch=batch_id,
+            total_amount=calc["total_amount"],
+            platform_fee=calc["platform_fee"],
+            executor=executor,
+            status="success" if not error_message else "failed",
+            error_message=error_message,
+            detail_json=json.dumps(calc["distributions"], ensure_ascii=False),
+            executed_at=datetime.utcnow(),
+        )
+        db.add(exec_log)
+        db.commit()
+        db.refresh(exec_log)
+
+        return {
+            "log_id": exec_log.id,
+            "batch_id": batch_id,
+            "status": exec_log.status,
+            "total_amount": calc["total_amount"],
+            "platform_fee": calc["platform_fee"],
+            "distributions": calc["distributions"],
+            "error": error_message,
+        }
+
+    @classmethod
+    def refund_split(
+        cls,
+        db: Session,
+        contract_id: str,
+        reason: str,
+        actor_id: Optional[str] = None,
+    ) -> dict:
+        """退款分润 — 将最近的成功执行记录标记为 refunded，调用支付网关退款.
+
+        仅允许对 status=success 的执行记录进行退款.
+        """
+        contract = cls._get_contract(db, contract_id)
+
+        # 查找最近的成功执行记录
+        latest_exec = (
+            db.query(SplitExecutionLog)
+            .filter(
+                SplitExecutionLog.contract_id == contract_id,
+                SplitExecutionLog.status == "success",
+            )
+            .order_by(SplitExecutionLog.executed_at.desc())
+            .first()
+        )
+
+        if not latest_exec:
+            raise HTTPException(
+                status_code=400,
+                detail="没有找到可退款的有效分润执行记录",
+            )
+
+        # 调用支付网关退款
+        refund_executor = "manual"
+        if contract.escrow_provider and contract.escrow_transaction_id:
+            try:
+                from app.services.payment_gateway import PaymentGatewayService
+                PaymentGatewayService.refund_escrow(
+                    db, contract_id, reason=reason, actor_id=actor_id,
+                )
+                refund_executor = contract.escrow_provider
+            except Exception as e:
+                reason = f"{reason} | 网关退款失败: {str(e)}"
+
+        # 更新执行日志状态
+        latest_exec.status = "refunded"
+        latest_exec.executor = refund_executor
+        db.commit()
+        db.refresh(latest_exec)
+
+        return {
+            "log_id": latest_exec.id,
+            "contract_id": contract_id,
+            "status": "refunded",
+            "reason": reason,
+            "refunded_at": latest_exec.executed_at.isoformat() if latest_exec.executed_at else None,
+        }
 
     @classmethod
     def calculate_platform_fee(cls, total_amount: float) -> float:

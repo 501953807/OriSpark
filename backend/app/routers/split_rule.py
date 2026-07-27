@@ -1,12 +1,24 @@
-"""分润规则路由 — 报价竞争、锁定、写入合约."""
+"""分润规则路由 — 报价竞争、锁定、写入合约、执行分润."""
+
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services.split_rule_service import SplitRuleService
 
 router = APIRouter(prefix="/contracts/{contract_id}/split-rules", tags=["split-rules"])
+
+
+class ExecuteSplitRequest(BaseModel):
+    total_amount: Optional[float] = None
+    batch_id: Optional[str] = None
+
+
+class RefundSplitRequest(BaseModel):
+    reason: str
 
 
 @router.get("/platform-fee")
@@ -75,8 +87,56 @@ def put_update_split_rules(
         raise HTTPException(500, detail=f"Update split rules failed: {e}")
 
 
-@router.get("/platform-fee")
-def get_platform_fee(total_amount: float):
-    """计算平台 3‰ 固定费用."""
-    fee = SplitRuleService.calculate_platform_fee(total_amount)
-    return {"total_amount": total_amount, "platform_fee": fee}
+@router.get("/calculate")
+def get_calculate_split(
+    contract_id: str,
+    total_amount: Optional[float] = Query(default=None),
+    db: Session = Depends(get_db),
+):
+    """计算分润方案 — 按 split_rules_json 分配金额."""
+    try:
+        result = SplitRuleService.calculate_split(db, contract_id, total_amount)
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(500, detail=f"Calculate split failed: {e}")
+
+
+@router.post("/execute")
+def post_execute_split(
+    contract_id: str,
+    body: ExecuteSplitRequest,
+    db: Session = Depends(get_db),
+):
+    """执行分润 — 创建执行日志，调用支付网关释放资金."""
+    try:
+        result = SplitRuleService.execute_split(
+            db,
+            contract_id,
+            total_amount=body.total_amount,
+            batch_id=body.batch_id,
+        )
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(500, detail=f"Execute split failed: {e}")
+
+
+@router.post("/refund")
+def post_refund_split(
+    contract_id: str,
+    body: RefundSplitRequest,
+    db: Session = Depends(get_db),
+):
+    """退款分润 — 将最近的成功执行记录标记为 refunded."""
+    try:
+        result = SplitRuleService.refund_split(
+            db, contract_id, reason=body.reason,
+        )
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(500, detail=f"Refund split failed: {e}")

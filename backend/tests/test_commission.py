@@ -294,3 +294,180 @@ class TestTimeline:
         resp = client.get(f"/api/commission/projects/{proj['id']}/timeline")
         assert resp.status_code == 200
         assert resp.json()["data"] == []
+
+
+class TestPaymentUpdateDelete:
+    """Test PATCH and DELETE for payments."""
+
+    def test_update_payment_status(self, client: TestClient, db_session: Session):
+        proj = _create_sample_project(db_session)
+        pay_resp = client.post(
+            f"/api/commission/projects/{proj['id']}/payments",
+            json={"amount": 500.0, "method": "bank_transfer"},
+        )
+        pid = pay_resp.json()["data"]["id"]
+        resp = client.patch(
+            f"/api/commission/projects/{proj['id']}/payments/{pid}",
+            json={"status": "received"},
+        )
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert data["status"] == "received"
+
+    def test_delete_payment(self, client: TestClient, db_session: Session):
+        proj = _create_sample_project(db_session)
+        pay_resp = client.post(
+            f"/api/commission/projects/{proj['id']}/payments",
+            json={"amount": 100.0, "method": "alipay"},
+        )
+        pid = pay_resp.json()["data"]["id"]
+        resp = client.delete(f"/api/commission/projects/{proj['id']}/payments/{pid}")
+        assert resp.status_code == 200
+
+    def test_update_missing_payment_returns_404(self, client: TestClient):
+        resp = client.patch(
+            "/api/commission/projects/fake-id/payments/nonexistent",
+            json={"status": "received"},
+        )
+        assert resp.status_code == 404
+
+    def test_delete_missing_payment_returns_404(self, client: TestClient):
+        resp = client.delete("/api/commission/projects/fake-id/payments/nonexistent")
+        assert resp.status_code == 404
+
+
+class TestRevisionDelete:
+    """Test DELETE for revisions."""
+
+    def test_delete_revision(self, client: TestClient, db_session: Session):
+        proj = _create_sample_project(db_session)
+        rev_resp = client.post(
+            f"/api/commission/projects/{proj['id']}/revisions",
+            json={"description": "Rev 1", "created_by": "u1"},
+        )
+        rid = rev_resp.json()["data"]["id"]
+        resp = client.delete(f"/api/commission/projects/{proj['id']}/revisions/{rid}")
+        assert resp.status_code == 200
+
+    def test_delete_missing_revision_returns_404(self, client: TestClient):
+        resp = client.delete("/api/commission/projects/fake-id/revisions/nonexistent")
+        assert resp.status_code == 404
+
+
+class TestCalendar:
+    """Test commission calendar endpoint."""
+
+    def test_returns_empty_calendar(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/calendar")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "events" in data
+
+    def test_calendar_with_date_range(self, client: TestClient, db_session: Session):
+        from datetime import date, timedelta
+        today = date.today()
+        from_fmt = (today - timedelta(days=30)).isoformat()
+        to_fmt = (today + timedelta(days=30)).isoformat()
+        resp = client.get(f"/api/commission/calendar?from={from_fmt}&to={to_fmt}")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "events" in data
+
+
+class TestDashboard:
+    """Test commission dashboard endpoint."""
+
+    def test_returns_dashboard_stats(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/dashboard")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "active_count" in data
+        assert "pending_payment" in data
+        assert "monthly_revenue" in data
+        assert "avg_ticket" in data
+
+
+class TestBalance:
+    """Test commission balance endpoint."""
+
+    def test_returns_balance(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/balance")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "available_yuan" in data
+        assert "frozen_yuan" in data
+        assert "total_earned_yuan" in data
+
+
+class TestWithdraw:
+    """Test commission withdraw endpoints."""
+
+    def test_create_withdrawal(self, client: TestClient, db_session: Session):
+        resp = client.post("/api/commission/withdraw", json={
+            "amount_yuan": 100.0,
+            "method": "bank_transfer",
+            "account_info": {"bank": "ICBC", "account": "123456"},
+        })
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "id" in data
+        assert data["status"] == "pending"
+        assert data["net_amount_yuan"] < data["amount_yuan"]
+
+    def test_withdraw_invalid_amount(self, client: TestClient):
+        resp = client.post("/api/commission/withdraw", json={
+            "amount_yuan": -10.0,
+        })
+        assert resp.status_code == 400
+
+    def test_get_withdrawals(self, client: TestClient, db_session: Session):
+        # Create a withdrawal first
+        client.post("/api/commission/withdraw", json={
+            "amount_yuan": 50.0,
+            "method": "alipay",
+        })
+        resp = client.get("/api/commission/withdrawals?limit=10")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert isinstance(data, list)
+
+    def test_get_withdrawals_filtered(self, client: TestClient, db_session: Session):
+        client.post("/api/commission/withdraw", json={
+            "amount_yuan": 200.0,
+            "method": "bank_transfer",
+        })
+        resp = client.get("/api/commission/withdrawals?status=pending&limit=10")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert isinstance(data, list)
+
+
+class TestStatistics:
+    """Test commission statistics endpoints."""
+
+    def test_monthly_stats(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/statistics/monthly")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "monthly" in data
+        assert "records" in data
+
+    def test_monthly_stats_with_year(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/statistics/monthly?year=2026")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "monthly" in data
+
+    def test_yearly_stats(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/statistics/yearly")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert "year" in data
+        assert "total_commission" in data
+        assert "record_count" in data
+
+    def test_yearly_stats_with_year(self, client: TestClient, db_session: Session):
+        resp = client.get("/api/commission/statistics/yearly?year=2025")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert data["year"] == 2025

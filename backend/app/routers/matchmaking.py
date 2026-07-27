@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models.matchmaking import MatchRequest
 from app.schemas.matchmaking import MatchRequestCreate, MatchRequestSchema, MatchTransactionSchema
 from app.services.matchmaking_service import (
     create_match_request, match_creators, award_match, update_delivery,

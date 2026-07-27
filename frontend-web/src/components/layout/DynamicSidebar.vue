@@ -87,6 +87,10 @@
           <span class="sb-icon">📈</span>
           <span v-if="!isCollapsed">经营管理</span>
         </router-link>
+        <router-link v-if="hasSharedRoute('contract-market')" to="/app/contract-market" class="sb-link" active-class="active">
+          <span class="sb-icon">{{ routeIcon('contract-market') }}</span>
+          <span v-if="!isCollapsed">合约市场</span>
+        </router-link>
       </template>
 
       <!-- AI Growth (shared) -->
@@ -279,6 +283,7 @@ const iconMap: Record<string, string> = {
   capability: '🧠',
   'growth-stages': '📈',
   insurance: '🛡️',
+  'contract-market': '📝',
   'content-pipeline': '📡',
   'contract-risk': '📋',
   'enforcement-dashboard': '⚖️',
@@ -328,6 +333,7 @@ const labelMap: Record<string, string> = {
   capability: '能力评估',
   'growth-stages': '成长阶段',
   insurance: '保险市场',
+  'contract-market': '合约市场',
   'content-pipeline': '内容分发流水线',
   'contract-risk': '合同风险评估',
   'enforcement-dashboard': '维权流水线',

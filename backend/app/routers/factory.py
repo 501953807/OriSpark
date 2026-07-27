@@ -95,6 +95,7 @@ def create_rfq(payload: CreateRFQPayload, db: Session = Depends(get_db)):
         deadline=payload.deadline,
         status=payload.status,
     )
+    db.add(rfq)
     try:
         db.commit()
     except Exception:

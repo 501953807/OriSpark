@@ -1,6 +1,7 @@
 """IP 登记 API 测试 (P2.4 全球覆盖)."""
 
 import io
+from sqlalchemy.orm import Session
 
 
 def test_get_guidelines_all(client):
@@ -513,3 +514,268 @@ def test_ipr_disclaimers_in_all_guidelines(client):
         data = resp.json()["data"]
         assert "disclaimer" in data
         assert "不构成法律建议" in data["disclaimer"]
+
+
+# ─── Gazette monitoring ──────────────────────────────────────────
+
+
+def test_gazette_cn(client):
+    """Test CN trademark gazette info."""
+    resp = client.get("/api/ipr/gazette/cn")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert "CNIPA" in data["institution"]
+    assert "商标公告" in data["gazette_name"]
+    assert len(data["how_to_monitor"]) > 0
+
+
+def test_gazette_us(client):
+    """Test US trademark gazette info."""
+    resp = client.get("/api/ipr/gazette/us")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert "USPTO" in data["institution"]
+    assert "Trademark Official Gazette" in data["gazette_name"]
+
+
+def test_gazette_eu(client):
+    """Test EU trademark gazette info."""
+    resp = client.get("/api/ipr/gazette/eu")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert "EUIPO" in data["institution"]
+    assert "EUTM Bulletin" in data["gazette_name"]
+
+
+def test_gazette_unsupported(client):
+    """Test gazette for unsupported jurisdiction returns gracefully."""
+    resp = client.get("/api/ipr/gazette/xx")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert "available_jurisdictions" in data
+
+
+# ─── Application export (assistant/export) ──────────────────────
+
+
+def test_export_application_copyright(client):
+    """Test exporting copyright application materials."""
+    resp = client.post("/api/ipr/assistant/export", json={
+        "ip_type": "copyright",
+        "jurisdiction": "cn",
+        "lawyer_consulted": "A",
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["ip_type"] == "copyright"
+    assert data["lawyer_consulted"] == "A"
+    assert "checklist" in data
+
+
+def test_export_trademark(client):
+    """Test exporting trademark application materials."""
+    resp = client.post("/api/ipr/assistant/export", json={
+        "ip_type": "trademark",
+        "jurisdiction": "cn",
+        "lawyer_consulted": "B",
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["ip_type"] == "trademark"
+
+
+def test_export_requires_lawyer_consultation(client):
+    """Test that export without lawyer consultation is blocked."""
+    resp = client.post("/api/ipr/assistant/export", json={
+        "ip_type": "copyright",
+        "jurisdiction": "cn",
+        "lawyer_consulted": "C",
+    })
+    assert resp.status_code == 403
+
+    resp = client.post("/api/ipr/assistant/export", json={
+        "ip_type": "copyright",
+        "jurisdiction": "cn",
+    })
+    assert resp.status_code == 403
+
+
+# ─── Assistant validate ─────────────────────────────────────────
+
+
+def test_validate_copyright_complete(client):
+    """Test validating a complete copyright application."""
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "copyright",
+        "fields": {
+            "作品名称": "Test Work",
+            "作品类别": "美术作品",
+            "作者姓名": "Test Author",
+            "创作完成日期": "2025-01-01",
+            "创作说明": "This is a detailed description of the creative process and originality.",
+        },
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["valid"] is True
+
+
+def test_validate_copyright_missing_fields(client):
+    """Test validating copyright with missing required fields."""
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "copyright",
+        "fields": {},
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["valid"] is False
+    assert len(data["issues"]) > 0
+
+
+def test_validate_copyright_bad_date(client):
+    """Test validating copyright with invalid date."""
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "copyright",
+        "fields": {
+            "作品名称": "Test",
+            "作品类别": "美术作品",
+            "作者姓名": "Author",
+            "创作完成日期": "not-a-date",
+            "创作说明": "Short",
+        },
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["valid"] is False
+    issues = [i for i in data["issues"] if i["field"] == "创作完成日期"]
+    assert len(issues) > 0
+
+
+def test_validate_copyright_future_date(client):
+    """Test validating copyright with future completion date."""
+    from datetime import date, timedelta
+    future = (date.today() + timedelta(days=365)).isoformat()
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "copyright",
+        "fields": {
+            "作品名称": "Test",
+            "作品类别": "美术作品",
+            "作者姓名": "Author",
+            "创作完成日期": future,
+            "创作说明": "This is a detailed description of the creative process and originality.",
+        },
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["valid"] is False
+
+
+def test_validate_copyright_short_description(client):
+    """Test validating copyright with too-short description triggers warning."""
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "copyright",
+        "fields": {
+            "作品名称": "Test",
+            "作品类别": "美术作品",
+            "作者姓名": "Author",
+            "创作完成日期": "2025-01-01",
+            "创作说明": "Hi",
+        },
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    warnings = [i for i in data["issues"] if i["level"] == "warning"]
+    assert len(warnings) > 0
+
+
+def test_validate_trademark(client):
+    """Test validating a trademark application."""
+    resp = client.post("/api/ipr/assistant/validate", json={
+        "ip_type": "trademark",
+        "fields": {
+            "商标名称": "MyBrand",
+            "申请人名称": "Test Corp",
+            "申请人地址": "123 Test St",
+            "商品/服务类别": "第16类",
+        },
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["valid"] is True
+
+
+# ─── Assistant generate ─────────────────────────────────────────
+
+
+def test_generate_copyright_application(client):
+    """Test generating a copyright application preview."""
+    resp = client.post("/api/ipr/assistant/generate", json={
+        "ip_type": "copyright",
+        "jurisdiction": "cn",
+        "fields": {"作品名称": "Test"},
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["ip_type"] == "copyright"
+    assert data["form_title"] == "作品登记申请表"
+    assert "disclaimer" in data
+
+
+def test_generate_trademark_application(client):
+    """Test generating a trademark application preview."""
+    resp = client.post("/api/ipr/assistant/generate", json={
+        "ip_type": "trademark",
+        "jurisdiction": "cn",
+        "fields": {"商标名称": "MyBrand"},
+    })
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["ip_type"] == "trademark"
+    assert data["form_title"] == "商标注册申请书"
+
+
+# ─── Export application package ─────────────────────────────────
+
+
+def test_export_package(client, db_session: Session):
+    """Test exporting IP registration application package."""
+    # Create an IP registration first
+    resp = client.post("/api/ipr/registrations", json={
+        "ip_type": "copyright",
+        "jurisdiction": "cn",
+        "official_fee": 300,
+        "total_cost": 300,
+        "status": "filed",
+        "notes": "Test export",
+    })
+    assert resp.status_code == 200
+    reg_id = resp.json()["data"]["id"]
+
+    resp = client.post(f"/api/ipr/registrations/{reg_id}/export-package")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["record_id"] == reg_id
+    assert data["ip_type"] == "copyright"
+    assert "zip_data_base64" in data
+    assert "application_form.txt" in data["package_contents"]
+
+
+def test_export_package_missing_record(client):
+    """Test exporting package for non-existent record."""
+    resp = client.post("/api/ipr/registrations/nonexistent/export-package")
+    assert resp.status_code == 404
+
+
+# ─── Recommend strategies ───────────────────────────────────────
+
+
+def test_recommend_strategies(client):
+    """Test getting creator-type recommendation strategies."""
+    resp = client.get("/api/ipr/recommend/strategies")
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert isinstance(data, list)
+    assert len(data) >= 5
+    keys = {s["key"] for s in data}
+    assert "illustrator" in keys
+    assert "photographer" in keys

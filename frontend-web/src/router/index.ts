@@ -43,6 +43,7 @@ const router = createRouter({
         { path: 'contract-risk', name: 'contract-risk', component: () => import('@/views/ContractRiskView.vue') },
         { path: 'navigation', name: 'navigation', component: () => import('@/views/CreatorNavigationView.vue') },
         { path: 'insurance', name: 'insurance', component: () => import('@/views/InsuranceMarketView.vue') },
+        { path: 'contract-market', name: 'contract-market', component: () => import('@/views/ContractMarketView.vue') },
         { path: 'capability', name: 'capability', component: () => import('@/views/CapabilityAssessmentView.vue') },
         { path: 'multimarket', name: 'multimarket', component: () => import('@/views/MultiMarketView.vue') },
         { path: 'enforcement-roi', name: 'enforcement-roi', component: () => import('@/views/EnforcementRoiView.vue') },

@@ -84,6 +84,7 @@ async def check_risk_warning(
     """统一风险检测入口."""
     service = _get_service()
     results = await service.check_all(
+        db=db,
         user_id=data.user_id,
         work_id=data.work_id,
         prompt=data.prompt,

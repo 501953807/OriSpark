@@ -1,7 +1,9 @@
+from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app.models.credit import (
     CreditRating, CreditBehavior, BEHAVIOR_SCORES, apply_behavior,
+    BehaviorType, CreditTier,
 )
 
 

@@ -19,7 +19,14 @@ def post_calculate_fee(req: FeeCalcRequest):
         creator_type=req.creator_type,
         category=req.category,
     )
-    return FeeCalcResponse(**result)
+    return FeeCalcResponse(
+        amount_yuan=result["amount_yuan"],
+        fee_rate_percent=round(result["rate_bps"] / 100, 2),
+        fee_amount_yuan=result["fee_amount_yuan"],
+        tier=result["tier"],
+        is_discounted=result["is_discounted"],
+        discount_reason=result.get("discount_reason"),
+    )
 
 
 @router.post("/record", response_model=FeeRecordResponse)

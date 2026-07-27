@@ -8,7 +8,7 @@ OriSpark/
 │   ├── DESIGN.md             # 系统总纲、版本路线图、模块全景
 │   ├── ARCHITECTURE.md       # 五层业务架构 + 六层技术架构
 │   ├── UX.md                 # UI 交互设计规范
-│   ├── modules-v3/           # 16 个模块详细功能设计
+│   ├── modules-v5/           # 16 个模块详细功能设计
 │   └── test-reports/         # 审计自测报告、测试日志
 │
 ├── backend/                  # FastAPI 后端服务
@@ -55,12 +55,12 @@ OriSpark/
 
 | 检查项 | 操作 |
 |--------|------|
-| 模块定位是否理解？ | 阅读 `docs/modules-v3/<模块名>.md` |
+| 模块定位是否理解？ | 阅读 `docs/modules-v5/<模块名>.md` |
 | 架构边界是否清晰？ | 核对 `docs/ARCHITECTURE.md` 的架构图 |
 | 接口契约是否一致？ | 查看 `backend/app/schemas/` 中的 Pydantic model |
 | 状态流转是否正确？ | 检查 `app/services/<模块>_state_service.py` |
 
-> ⛔ **禁止**在没有查阅 `DESIGN.md` 和 `modules-v3/` 的情况下进行代码修改。
+> ⛔ **禁止**在没有查阅 `DESIGN.md` 和 `modules-v5/` 的情况下进行代码修改。
 
 ### 3. 代码完整性检查清单（提交前强制）
 
@@ -101,7 +101,7 @@ cd backend && alembic diff --sql  # 生成迁移脚本需人工审查
 
 ```mermaid
 graph LR
-    A[接到修改请求] --> B{是否查询过 DESIGN.md/modules-v3/}
+    A[接到修改请求] --> B{是否查询过 DESIGN.md/modules-v5/}
     B -- 否 --> C[先查阅设计文档]
     B -- 否 --> D[向用户提问澄清意图]
     C --> E[打开目标文件 read]

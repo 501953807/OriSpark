@@ -39,6 +39,7 @@ from app.models.work_variant import WorkVariantGroup, WorkVariant
 from app.models.factory import (
     RFQRequest, Sample, QualityReport, Factory, CraftProduct, RFQ,
 )
+from app.models.logistics import LogisticsProvider, LogisticsShipment
 from app.models.quality_inspection import QualityInspection
 from app.models.risk_warning import RiskWarning, TaxDeadline, HealthMetric
 from app.models.ai_session import AiCreationSession
@@ -213,6 +214,7 @@ __all__ = [
     "VideoFingerprintConfig", "VideoFrameFingerprint",
     "WorkVariantGroup", "WorkVariant",
     "RFQRequest", "Sample", "QualityReport", "Factory", "CraftProduct", "RFQ",
+    "LogisticsProvider", "LogisticsShipment",
     # 摄影师 v2
     "RawFormat",
     "StockChannel", "StockUpload", "StockSale",

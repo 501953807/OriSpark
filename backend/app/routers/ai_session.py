@@ -152,11 +152,24 @@ def list_ai_sessions(
     )
 
 
+class AiSessionUpdate(BaseModel):
+    tool_version: Optional[str] = None
+    prompt: Optional[str] = None
+    prompt_history: Optional[str] = None
+    seed: Optional[int] = None
+    parameters: Optional[dict] = None
+    negative_prompt: Optional[str] = None
+    model_name: Optional[str] = None
+    lora_names: Optional[list[str]] = None
+    output_images: Optional[Union[int, list[str]]] = None
+    human_interventions: Optional[list[str]] = None
+
+
 @router.patch("/{work_id}/ai-session/{session_id}", response_model=ApiResponse[AiSessionResponse], dependencies=[Depends(require_auth)])
 def update_ai_session(
     work_id: str,
     session_id: str,
-    data: AiSessionCreate,
+    data: AiSessionUpdate,
     db: Session = Depends(get_db),
 ):
     """编辑创作会话记录."""
