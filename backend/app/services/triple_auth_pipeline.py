@@ -190,10 +190,24 @@ class TripleAuthenticationPipeline:
         # External blockchain platforms (stub — requires gateway implementation)
         supported = ["polygon", "antchain", "zhixinchain"]
         if platform in supported:
-            raise NotImplementedError(
-                f"Blockchain gateway for {platform} not yet implemented. "
-                f"Use local_ecdsa for now."
-            )
+            # Fallback to local ECDSA signing for v1 - external gateways to be implemented in future versions
+            # Log warning and use local_ecdsa as temporary solution
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"External blockchain gateway '{platform}' not yet implemented. Falling back to local_ecdsa for anchoring.")
+
+            from app.services.local_notary import sign_work, save_signature
+
+            signature_data = sign_work(file_hash)
+            sig_path = save_signature(work_id, signature_data)
+
+            return {
+                "tx_hash": file_hash[:64],
+                "block_number": None,
+                "signature_path": sig_path,
+                "platform": f"{platform}_fallback",
+                "warning": f"Gateway for {platform} not implemented; using local signing as temporary measure",
+            }
 
         raise ValueError(f"Unsupported blockchain platform: {platform}")
 

@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -16,17 +16,18 @@ from app.schemas.reverse_trace import (
     AttributionSummary,
 )
 from app.services.reverse_trace_service import ReverseTraceService
+from app.deps import require_auth
 
 router = APIRouter()
 
 
 @router.post("/trace/links", response_model=ApiResponse)
-def create_link(body: TraceLinkCreate, db: Session = Depends(get_db)):
+def create_link(body: TraceLinkCreate, db: Session = Depends(get_db), user_id: str = Depends(require_auth)):
     """创建可信短链."""
     service = ReverseTraceService(db)
     link = service.create_link(
         work_id=body.work_id,
-        user_id="local",  # TODO: from auth
+        user_id=user_id,  # Use authenticated user ID from auth header
         platform_code=body.platform_code,
         original_url=body.original_url,
         redirect_url=body.redirect_url,

@@ -149,7 +149,7 @@ class RiskWarningService:
 
         return warnings
 
-    async def check_all(self, user_id: str, work_id: Optional[str] = None,
+    async def check_all(self, db: Optional[Session], user_id: str, work_id: Optional[str] = None,
                         prompt: Optional[str] = None,
                         reference_images: Optional[list[str]] = None,
                         model_name: Optional[str] = None,
@@ -165,8 +165,18 @@ class RiskWarningService:
         # 维度 2: 参考图检测
         if reference_images and len(reference_images) > 0:
             ref_hash = reference_images[0]
-            # TODO: 从 DB 查同用户已有作品哈希列表
+            # Query DB for existing hashes of this user's works
             existing_hashes: list[str] = []
+            if db is not None:
+                from app.models.work import Work
+                existing_hashes = (
+                    db.query(Work.sha256)
+                    .filter(Work.creator_id == user_id, Work.status == "active")
+                    .distinct()
+                    .all()
+                )
+                existing_hashes = [h[0] for h in existing_hashes if h[0]]
+
             wr = self.check_reference_image(ref_hash, existing_hashes)
             if wr:
                 results.append(self._to_risk_warning(user_id, work_id, wr))
@@ -205,6 +215,7 @@ class RiskWarningService:
 
             try:
                 warnings = await service.check_all(
+                    db=db,
                     user_id=user_id,
                     work_id=work_id,
                     prompt=prompt,
