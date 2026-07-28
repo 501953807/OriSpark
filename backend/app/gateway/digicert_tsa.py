@@ -309,8 +309,9 @@ class MockTSAGateway(TimestampGateway):
 
     async def request_timestamp(self, data_hash: str) -> Optional[TimestampToken]:
         import datetime
+        from datetime import timezone
         import hashlib
-        nonce_hash = hashlib.sha256(str(datetime.datetime.utcnow()).encode()).hexdigest()
+        nonce_hash = hashlib.sha256(str(datetime.datetime.now(timezone.utc)).encode()).hexdigest()
         return TimestampToken(
             token_bytes=f"mock-tsa:{data_hash[:16]}:{nonce_hash}".encode(),
             hash_algorithm="sha256",

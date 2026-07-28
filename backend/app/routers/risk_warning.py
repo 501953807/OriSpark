@@ -1,7 +1,7 @@
 """风险预警 API 路由 — Phase 0."""
 
 from typing import Optional
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -209,7 +209,7 @@ def dismiss_warning(
 
     warning.dismissed = True
     from datetime import datetime
-    warning.dismissed_at = datetime.utcnow()
+    warning.dismissed_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

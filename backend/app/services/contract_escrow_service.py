@@ -1,7 +1,7 @@
 """合约生命周期管理服务."""
 
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -73,7 +73,7 @@ class ContractEscrowService:
         contract = self._get_contract(db, contract_id)
         self._validate_transition(contract.status, "listed")
         contract.status = "listed"
-        contract.published_at = datetime.utcnow()
+        contract.published_at = datetime.now(timezone.utc)
         contract.verified = "pending"
         db.commit()
         db.refresh(contract)
@@ -86,7 +86,7 @@ class ContractEscrowService:
         contract = self._get_contract(db, contract_id)
         self._validate_transition(contract.status, "subscribed")
         contract.status = "subscribed"
-        contract.subscribed_at = datetime.utcnow()
+        contract.subscribed_at = datetime.now(timezone.utc)
         contract.operator_id = subscriber_id
         db.commit()
         db.refresh(contract)
@@ -99,7 +99,7 @@ class ContractEscrowService:
         contract = self._get_contract(db, contract_id)
         self._validate_transition(contract.status, "escrowed")
         contract.status = "escrowed"
-        contract.escrowed_at = datetime.utcnow()
+        contract.escrowed_at = datetime.now(timezone.utc)
         contract.escrow_provider = provider
         db.commit()
         db.refresh(contract)
@@ -131,7 +131,7 @@ class ContractEscrowService:
         contract = self._get_contract(db, contract_id)
         self._validate_transition(contract.status, "executing")
         contract.status = "executing"
-        contract.executed_at = datetime.utcnow()
+        contract.executed_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(contract)
         return contract
@@ -141,7 +141,7 @@ class ContractEscrowService:
         contract = self._get_contract(db, contract_id)
         self._validate_transition(contract.status, "completed")
         contract.status = "completed"
-        contract.completed_at = datetime.utcnow()
+        contract.completed_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(contract)
         return contract

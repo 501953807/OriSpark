@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.database import get_db
 from app.services.ip_commercialization_service import create_ip_assessment, estimate_brand_premium
@@ -60,7 +60,7 @@ def get_expiring_licenses(days: int = 30, db: Session = Depends(get_db)):
     except ImportError:
         return {"licenses": []}
 
-    cutoff = datetime.utcnow() + timedelta(days=days)
+    cutoff = datetime.now(timezone.utc) + timedelta(days=days)
     licenses = db.query(IpLicense).filter(
         IpLicense.status == "active",
     ).all()
@@ -69,7 +69,7 @@ def get_expiring_licenses(days: int = 30, db: Session = Depends(get_db)):
     for lic in licenses:
         end_date = getattr(lic, 'end_date', None)
         if end_date and end_date <= cutoff:
-            days_remaining = (end_date - datetime.utcnow()).days
+            days_remaining = (end_date - datetime.now(timezone.utc)).days
             result.append({
                 "id": lic.id,
                 "work_title": getattr(lic, 'work_title', ""),

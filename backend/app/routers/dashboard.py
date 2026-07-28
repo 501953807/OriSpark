@@ -4,7 +4,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.database import get_db
 from app.models.work import Work
@@ -41,7 +41,7 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     ).scalar() or 0
 
     # Monthly revenue — aggregate from all revenue tables
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     monthly_rev = 0.0
 
@@ -109,7 +109,7 @@ def get_recent_works(limit: int = 10, db: Session = Depends(get_db)):
 @router.get("/dashboard/revenue", response_model=ApiResponse[RevenueSummary])
 def get_dashboard_revenue(db: Session = Depends(get_db)):
     """获取收入数据 — 聚合 stock_sales / etsy_orders / commission_orders, 返回近 12 个月收入趋势."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     twelve_months_ago = now.replace(day=1) - timedelta(days=365)
 
     # --- monthly revenue breakdown ---
@@ -156,7 +156,7 @@ def get_dashboard_revenue(db: Session = Depends(get_db)):
 @router.get("/dashboard/trends", response_model=ApiResponse[TrendsSummary])
 def get_dashboard_trends(db: Session = Depends(get_db)):
     """获取作品创建趋势 — 近 30 天每日新增作品数."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     thirty_days_ago = now - timedelta(days=30)
 
     rows = (

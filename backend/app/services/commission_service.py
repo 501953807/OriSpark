@@ -1,6 +1,6 @@
 """委托管理服务."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -239,7 +239,7 @@ def complete_milestone(db: Session, project_id: str, milestone_index: int) -> Co
     if milestone_index < 0 or milestone_index >= len(milestones):
         raise ValueError(f"里程碑索引越界: {milestone_index}")
     milestones[milestone_index]["completed"] = True
-    milestones[milestone_index]["completed_at"] = datetime.utcnow().isoformat()
+    milestones[milestone_index]["completed_at"] = datetime.now(timezone.utc).isoformat()
     project.milestones = milestones
     db.commit()
     db.refresh(project)

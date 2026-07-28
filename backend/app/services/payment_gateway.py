@@ -203,7 +203,7 @@ class PaymentGatewayService:
         contract.escrow_provider = provider
         contract.escrow_transaction_id = result["transaction_id"]
         contract.status = "escrowed"
-        contract.escrowed_at = datetime.utcnow()
+        contract.escrowed_at = datetime.now(timezone.utc)
 
         db.flush()
         db.refresh(contract)
@@ -243,7 +243,7 @@ class PaymentGatewayService:
             raise ValueError(f"托管交易验证失败: {validation.get('error')}")
 
         contract.escrow_transaction_id = transaction_id
-        contract.updated_at = datetime.utcnow()
+        contract.updated_at = datetime.now(timezone.utc)
 
         db.flush()
         db.refresh(contract)
@@ -314,7 +314,7 @@ class PaymentGatewayService:
 
         contract.status = "refunded"
         contract.review_comment = reason
-        contract.updated_at = datetime.utcnow()
+        contract.updated_at = datetime.now(timezone.utc)
 
         db.flush()
         db.refresh(contract)

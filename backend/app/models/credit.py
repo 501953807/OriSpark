@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Integer, Text, JSON
 from app.database import Base
@@ -98,7 +98,7 @@ def calculate_tier(score: int) -> str:
 def apply_behavior(rating: CreditRating, behavior_type: str, score_delta: int) -> CreditRating:
     """应用一条行为到信用评分."""
     rating.total_score += score_delta
-    rating.updated_at = datetime.utcnow()
+    rating.updated_at = datetime.now(timezone.utc)
 
     if behavior_type == BehaviorType.TRANSACTION_COMPLETED:
         rating.transaction_count = (rating.transaction_count or 0) + 1
@@ -113,7 +113,7 @@ def apply_behavior(rating: CreditRating, behavior_type: str, score_delta: int) -
     new_tier = calculate_tier(rating.total_score)
     if new_tier != rating.tier:
         history = rating.tier_history or []
-        history.append({"tier": new_tier, "at": datetime.utcnow().isoformat()})
+        history.append({"tier": new_tier, "at": datetime.now(timezone.utc).isoformat()})
         rating.tier_history = history
         rating.tier = new_tier
 

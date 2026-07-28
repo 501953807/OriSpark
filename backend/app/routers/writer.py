@@ -7,7 +7,7 @@
 - GET/POST/PATCH/DELETE /writer/manuscripts/{id}
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy import func
@@ -150,7 +150,7 @@ def update_article(article_id: str, payload: ArticleUpdate, db: Session = Depend
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(article, key, value)
-    article.updated_at = datetime.utcnow()
+    article.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -326,7 +326,7 @@ def update_manuscript(manuscript_id: str, payload: ManuscriptUpdate, db: Session
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(manuscript, key, value)
-    manuscript.updated_at = datetime.utcnow()
+    manuscript.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

@@ -756,11 +756,11 @@ def update_production_batch(batch_id: str, payload: ProductionBatchUpdate, db: S
     # Auto-set started_at/completed_at based on status transitions
     new_status = update_data.get("status")
     if new_status == "in_production" and not batch.started_at:
-        from datetime import datetime as _dt
-        update_data["started_at"] = _dt.utcnow()
+        from datetime import datetime, timezone
+        update_data["started_at"] = datetime.now(timezone.utc)
     if new_status == "done" and batch.started_at and not batch.completed_at:
-        from datetime import datetime as _dt
-        update_data["completed_at"] = _dt.utcnow()
+        from datetime import datetime, timezone
+        update_data["completed_at"] = datetime.now(timezone.utc)
     for key, value in update_data.items():
         setattr(batch, key, value)
     try:

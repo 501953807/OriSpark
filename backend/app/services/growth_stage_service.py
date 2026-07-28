@@ -1,6 +1,6 @@
 """创作者成长阶段服务层 — 自动评估 + 任务清单 + 进度可视化."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -204,7 +204,7 @@ def update_growth_stage(db: Session, user_id: str, data: dict) -> dict:
         existing.stage_name_zh = evaluation["stage_name_zh"]
         existing.overall_progress_percent = evaluation["stage_progress"]
         existing.next_stage_progress_percent = evaluation.get("next_stage_progress", 0)
-        existing.evaluated_at = datetime.utcnow()
+        existing.evaluated_at = datetime.now(timezone.utc)
     else:
         existing = CreatorGrowthStage(
             user_id=user_id,
@@ -240,7 +240,7 @@ def complete_task(db: Session, user_id: str, task_key: str) -> dict:
     if not task:
         return {"error": f"Task {task_key} not found"}
     task.is_completed = True
-    task.completed_at = datetime.utcnow()
+    task.completed_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(task)
     return {

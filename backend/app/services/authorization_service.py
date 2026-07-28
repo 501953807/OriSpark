@@ -1,6 +1,6 @@
 """授权追踪与收益汇总服务."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from app.models.ai_session import AiCreationSession
 
@@ -10,7 +10,7 @@ def track_authorization(work_id: str, user_id: str, db: Session) -> dict:
     return {
         "work_id": work_id,
         "user_id": user_id,
-        "tracked_at": datetime.utcnow().isoformat(),
+        "tracked_at": datetime.now(timezone.utc).isoformat(),
         "status": "recorded",
     }
 
@@ -41,5 +41,5 @@ def update_authorization(work_id: str, enabled: bool, cc_protocol: str | None, p
         "enabled": enabled,
         "cc_protocol": cc_protocol,
         "price_per_use_cents": price_per_use_cents,
-        "updated_at": datetime.utcnow().isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
     }

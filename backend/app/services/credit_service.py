@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from app.models.credit import (
@@ -76,8 +76,8 @@ def get_improvement_suggestions(user_id: str, db: Session) -> dict:
     behaviors = get_behaviors(db, user_id, limit=100)
 
     # 分析行为模式
-    recent_30 = [b for b in behaviors if b.created_at and (datetime.utcnow() - b.created_at).days <= 30]
-    recent_7 = [b for b in behaviors if b.created_at and (datetime.utcnow() - b.created_at).days <= 7]
+    recent_30 = [b for b in behaviors if b.created_at and (datetime.now(timezone.utc) - b.created_at).days <= 30]
+    recent_7 = [b for b in behaviors if b.created_at and (datetime.now(timezone.utc) - b.created_at).days <= 7]
 
     # 计算关键指标
     total_positive = sum(b.score_delta for b in behaviors if b.score_delta > 0)

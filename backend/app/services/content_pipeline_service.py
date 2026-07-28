@@ -1,6 +1,6 @@
 """多平台内容分发流水线服务层."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -37,7 +37,7 @@ def add_account(db: Session, user_id: str, platform: str, account_name: str,
         existing.account_name = account_name
         existing.account_id = account_id
         existing.follower_count = follower_count
-        existing.updated_at = datetime.utcnow()
+        existing.updated_at = datetime.now(timezone.utc)
         db.flush()
         return {"id": existing.id, "action": "updated"}
     acc = PlatformAccount(
@@ -151,7 +151,7 @@ def get_publish_stats(db: Session, user_id: str) -> dict:
     ).count()
 
     # 近7天发布趋势
-    seven_days_ago = datetime.utcnow() - timedelta(days=7)
+    seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
     recent_published = db.query(PublishLog).filter(
         PublishLog.user_id == user_id,
         PublishLog.status == "success",

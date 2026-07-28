@@ -4,7 +4,7 @@ Phase 0.2: 合规改造(多推荐+置信度+免责声明+律师审核步骤)
 import logging
 
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
 from pydantic import BaseModel, Field
@@ -2443,7 +2443,7 @@ def generate_application(data: GenerateApplicationPayload):
         "ip_type": ip_type,
         "jurisdiction": jurisdiction,
         "fields": fields,
-        "generated_at": datetime.utcnow().isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "disclaimer": "本申请表为系统自动预填，请核对无误后通过官方平台提交。本工具不构成法律建议。",
     }
 
@@ -2613,7 +2613,7 @@ def _generate_form_text(record, ip_type, jurisdiction, guidelines):
         f"Application No: {record.application_no or '(待分配)'}",
         f"Filing Date: {record.filing_date.isoformat() if record.filing_date else '(待填写)'}",
         f"Status: {record.status}",
-        f"Generated: {datetime.utcnow().isoformat()}",
+        f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "",
         "--- 申请人信息 ---",
         "(请手动填写)",
@@ -2643,7 +2643,7 @@ def _generate_checklist_text(checklist, ip_type, jurisdiction):
     """Generate materials checklist text."""
     lines = [
         f"=== Materials Checklist ({ip_type}/{jurisdiction}) ===",
-        f"Generated: {datetime.utcnow().isoformat()}",
+        f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "",
     ]
     for idx, item in enumerate(checklist, 1):

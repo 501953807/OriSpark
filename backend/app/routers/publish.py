@@ -971,7 +971,7 @@ async def create_schedule(data: CreateScheduleRequest, db: Session = Depends(get
         listing_id=data.listing_id,
         work_id=data.work_id,
         platform=data.platform,
-        scheduled_time=sched_time or datetime.utcnow(),
+        scheduled_time=sched_time or datetime.now(timezone.utc),
         content_preview=data.content_preview,
     )
     db.add(schedule)

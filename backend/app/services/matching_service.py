@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from app.models.matching_engine import AuctionRecord, Bid, LicensingMatch, BidStatus
@@ -12,7 +12,7 @@ def place_bid(db: Session, auction_id: str, buyer_id: str, amount_yuan: float,
         return None
     if amount_yuan < auction.current_bid_yuan + auction.min_increment_yuan:
         return None
-    if auction.ends_at and datetime.utcnow() > auction.ends_at:
+    if auction.ends_at and datetime.now(timezone.utc) > auction.ends_at:
         return None
 
     bid = Bid(

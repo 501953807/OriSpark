@@ -1,7 +1,7 @@
 """Fork-Merge 协同创作服务 — Git-style 协作工作流."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -77,7 +77,7 @@ class ForkMergeService:
         if not work:
             raise ValueError("协同仓库不存在")
         work.status = "closed"
-        work.updated_at = datetime.utcnow()
+        work.updated_at = datetime.now(timezone.utc)
         db.flush()
         db.refresh(work)
         return work
@@ -246,7 +246,7 @@ class ForkMergeService:
             raise ValueError("只能合并开放的 Merge Request")
 
         pr.status = "merged"
-        pr.merged_at = datetime.utcnow()
+        pr.merged_at = datetime.now(timezone.utc)
         pr.merge_method = merge_method
         db.flush()
         db.refresh(pr)
@@ -313,7 +313,7 @@ class ForkMergeService:
         if not collaborator:
             raise ValueError("协作者不存在")
 
-        collaborator.left_at = datetime.utcnow()
+        collaborator.left_at = datetime.now(timezone.utc)
         db.flush()
         db.refresh(collaborator)
         return collaborator

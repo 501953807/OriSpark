@@ -1,6 +1,6 @@
 """POD 月度结算服务."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from sqlalchemy.orm import Session
@@ -83,7 +83,7 @@ def confirm_settlement(db: Session, settlement_id: str, user_id: str) -> PodSett
         raise ValueError(f"Cannot confirm settlement in status: {settlement.status}")
 
     settlement.status = "confirmed"
-    settlement.confirmed_at = datetime.utcnow()
+    settlement.confirmed_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(settlement)
     return settlement

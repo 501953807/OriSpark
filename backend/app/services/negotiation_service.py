@@ -1,7 +1,7 @@
 """议价协商服务层 — 含状态机."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from sqlalchemy.orm import Session
@@ -30,7 +30,7 @@ def _append_message(nego: TradeNegotiation, sender_id: str, role: str, content: 
         "sender_id": sender_id,
         "role": role,
         "content": content,
-        "created_at": datetime.utcnow().isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
     })
     nego.message_log = json.dumps(messages, ensure_ascii=False)
 

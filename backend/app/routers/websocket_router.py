@@ -1,7 +1,7 @@
 """WebSocket 路由."""
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Set
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
@@ -146,7 +146,7 @@ async def websocket_chat(websocket: WebSocket, session_id: str):
                 if not content:
                     continue
 
-                created_at = datetime.utcnow().isoformat()
+                created_at = datetime.now(timezone.utc).isoformat()
 
                 # 构建消息包
                 msg_packet = {

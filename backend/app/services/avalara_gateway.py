@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 """Avalara 税务计算 Gateway ABC 模式."""
 
 from abc import ABC, abstractmethod
@@ -110,7 +111,7 @@ class AvalaraGateway(GatewayABC):
             },
             "purchase_price": amount,
             "product_type": product_type,
-            "date": datetime.utcnow().strftime("%Y-%m-%d"),
+            "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         }
 
         try:

@@ -3,7 +3,7 @@
 Musician v4: Albums, Music Releases, Split Sheets CRUD endpoints.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -136,7 +136,7 @@ def update_release(
     for field, value in update_data.items():
         setattr(release, field, value)
 
-    release.updated_at = datetime.utcnow()
+    release.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -328,7 +328,7 @@ def update_split_sheet(
     if "signed_at" in update_data and update_data["signed_at"] is not None:
         sheet.status = "signed"
 
-    sheet.updated_at = datetime.utcnow()
+    sheet.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

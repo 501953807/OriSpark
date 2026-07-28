@@ -1,6 +1,6 @@
 """合约撮合引擎服务."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -51,7 +51,7 @@ class ContractMatchingService:
             participant_id=participant_id,
             match_score=match_score,
             match_reason=match_reason,
-            pushed_at=datetime.utcnow(),
+            pushed_at=datetime.now(timezone.utc),
         )
         db.add(matching)
         db.commit()
@@ -63,7 +63,7 @@ class ContractMatchingService:
     ) -> ContractMatching:
         """记录查看行为."""
         matching = self._get_matching(db, matching_id)
-        matching.viewed_at = datetime.utcnow()
+        matching.viewed_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(matching)
         return matching
@@ -76,7 +76,7 @@ class ContractMatchingService:
         valid_responses = {"accepted", "declined", "counter_offer"}
         if response not in valid_responses:
             raise HTTPException(status_code=400, detail=f"无效响应类型: {response}")
-        matching.responded_at = datetime.utcnow()
+        matching.responded_at = datetime.now(timezone.utc)
         matching.response = response
         if counter_offer_json:
             matching.counter_offer_json = counter_offer_json

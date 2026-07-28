@@ -1,6 +1,6 @@
 """成就徽章与排行榜服务."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from app.models.achievement import AchievementBadge, UserAchievement, LeaderboardEntry
 
@@ -41,7 +41,7 @@ def unlock_achievement(user_id: str, badge_key: str, db: Session) -> dict | None
     user_achievement = UserAchievement(
         user_id=user_id,
         badge_id=badge.id,
-        unlocked_at=datetime.utcnow(),
+        unlocked_at=datetime.now(timezone.utc),
     )
     db.add(user_achievement)
     try:
@@ -79,7 +79,7 @@ def get_user_achievements(user_id: str, db: Session) -> list[dict]:
 
 def update_leaderboard(creator_type: str, db: Session, period: str = "monthly") -> list[dict]:
     """更新排行榜数据."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     period_start = now - timedelta(days=30) if period == "monthly" else now - timedelta(days=7)
 
     entries = (

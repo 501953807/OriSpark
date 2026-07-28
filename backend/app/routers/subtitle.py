@@ -2,7 +2,7 @@
 Phase 3: 视频创作者字幕管理
 端点: 7 (subtitle)"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -123,7 +123,7 @@ def update_subtitle(subtitle_id: str, payload: UpdateSubtitlePayload, db: Sessio
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(subtitle, key, value)
-    subtitle.updated_at = datetime.utcnow()
+    subtitle.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

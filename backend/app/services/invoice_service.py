@@ -1,13 +1,13 @@
 """发票与自动续费服务."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from app.models.invoice import Invoice, SubscriptionAutoRenewal
 
 
 def generate_invoice_number(db: Session) -> str:
     """生成发票编号 INV/YYYY/MM/XXXX."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     prefix = f"INV/{now.year:04d}/{now.month:02d}"
     existing = db.query(Invoice).filter(Invoice.invoice_number.like(f"{prefix}%")).all()
     seq = len(existing) + 1
@@ -27,7 +27,7 @@ def create_invoice(user_id: str, amount_yuan: float, tax_rate: float = 0.11, des
         tax_amount_yuan=tax,
         total_yuan=float(amount_yuan),
         status="pending",
-        due_date=due_date or datetime.utcnow() + timedelta(days=30),
+        due_date=due_date or datetime.now(timezone.utc) + timedelta(days=30),
         description=description,
         payment_method=payment_method,
         is_auto_renewal=is_auto_renewal,
@@ -58,7 +58,7 @@ def mark_invoice_paid(invoice_id: str, db: Session) -> dict:
     if not invoice:
         raise ValueError("发票不存在")
     invoice.status = "paid"
-    invoice.paid_at = datetime.utcnow()
+    invoice.paid_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -81,7 +81,7 @@ def update_auto_renewal(subscriber_id: str, enabled: bool, db: Session) -> dict:
         db.add(renewal)
     else:
         renewal.enabled = enabled
-        renewal.updated_at = datetime.utcnow()
+        renewal.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -129,10 +129,10 @@ def process_renewal_attempt(subscriber_id: str, success: bool, db: Session) -> d
     if not renewal:
         return {"status": "not_found"}
 
-    renewal.last_renewal_attempt = datetime.utcnow()
+    renewal.last_renewal_attempt = datetime.now(timezone.utc)
     if success:
         renewal.failed_attempts = 0
-        renewal.next_renewal_date = datetime.utcnow() + timedelta(days=30)
+        renewal.next_renewal_date = datetime.now(timezone.utc) + timedelta(days=30)
         status = "success"
     else:
         renewal.failed_attempts += 1

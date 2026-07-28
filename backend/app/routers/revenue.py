@@ -50,8 +50,8 @@ def get_summary(user_id: str, months: int = 12, db: Session = Depends(get_db)):
 def get_diversity(user_id: str, months: int = 12, db: Session = Depends(get_db)):
     """获取用户收入多元化指数."""
     cutoff_months = months
-    from datetime import datetime, timedelta
-    cutoff_date = datetime.utcnow() - timedelta(days=30 * cutoff_months)
+    from datetime import datetime, timedelta, timezone
+    cutoff_date = datetime.now(timezone.utc) - timedelta(days=30 * cutoff_months)
     records = (
         db.query(RevenueRecord)
         .filter(

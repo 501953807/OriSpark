@@ -1,7 +1,7 @@
 """SCR 分布式信誉系统数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, DateTime, Float, Integer, ForeignKey, Text, JSON, Index
@@ -119,10 +119,10 @@ def calculate_scr_tier(score: float) -> str:
 
 def apply_scr_behavior(rating: SCRRating, behavior_type: str, score_delta: float) -> SCRRating:
     rating.raw_score += score_delta
-    rating.updated_at = datetime.utcnow()
+    rating.updated_at = datetime.now(timezone.utc)
     rating.raw_score = max(0.0, min(100.0, rating.raw_score))
     new_tier = calculate_scr_tier(rating.raw_score)
     if new_tier != rating.tier:
         rating.tier = new_tier
-        rating.updated_at = datetime.utcnow()
+        rating.updated_at = datetime.now(timezone.utc)
     return rating

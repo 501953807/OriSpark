@@ -1,7 +1,7 @@
 """SCR 分布式信誉系统服务."""
 
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -26,7 +26,7 @@ class SCRRatingService:
             rating_type=rating_type, status="active", tier="draft",
             raw_score=initial_score, confidence=0.0, consensus_count=0,
             min_required_consensus=min_consensus,
-            expires_at=datetime.utcnow() + timedelta(days=90),
+            expires_at=datetime.now(timezone.utc) + timedelta(days=90),
         )
         db.add(rating)
         db.commit()
@@ -55,14 +55,14 @@ class SCRRatingService:
         if not rating:
             raise ValueError("评级不存在")
 
-        if rating.expires_at and rating.expires_at < datetime.utcnow():
+        if rating.expires_at and rating.expires_at < datetime.now(timezone.utc):
             rating.status = "suspended"
 
         behavior = SCRBehavior(
             id=str(uuid.uuid4().hex), rating_id=rating_id,
             user_id=rating.user_id, rater_id=rating.rater_id,
             behavior_type=behavior_type, score_delta=score_delta,
-            description=description, created_at=datetime.utcnow(),
+            description=description, created_at=datetime.now(timezone.utc),
         )
         db.add(behavior)
 
@@ -94,14 +94,14 @@ class SCRRatingService:
             link = SCRTrustLink(
                 id=str(uuid.uuid4().hex), rating_id=rating_id or "unknown",
                 source_user_id=source_user_id, target_user_id=target_user_id,
-                trust_score=trust_score, weight=weight, created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow(), expires_at=expires_at,
+                trust_score=trust_score, weight=weight, created_at=datetime.now(timezone.utc),
+                updated_at=datetime.now(timezone.utc), expires_at=expires_at,
             )
             db.add(link)
         else:
             link.trust_score = trust_score
             link.weight = weight
-            link.updated_at = datetime.utcnow()
+            link.updated_at = datetime.now(timezone.utc)
             link.expires_at = expires_at
 
         db.commit()
@@ -155,7 +155,7 @@ class SCRRatingService:
         if not rating:
             raise ValueError("评级不存在")
         rating.status = "revoked"
-        rating.updated_at = datetime.utcnow()
+        rating.updated_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(rating)
         return rating
@@ -167,7 +167,7 @@ class SCRRatingService:
         if not rating:
             raise ValueError("评级不存在")
         rating.status = "suspended"
-        rating.updated_at = datetime.utcnow()
+        rating.updated_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(rating)
         return rating

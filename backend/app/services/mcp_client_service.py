@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import httpx
@@ -83,7 +83,7 @@ class MCPClientService:
             if hasattr(config, key):
                 setattr(config, key, value)
 
-        config.updated_at = datetime.utcnow()
+        config.updated_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(config)
         return config
@@ -150,14 +150,14 @@ class MCPClientService:
                     config_id=config_id,
                     connection_id=conn_id,
                     status="connected",
-                    connected_at=datetime.utcnow(),
-                    last_heartbeat_at=datetime.utcnow(),
+                    connected_at=datetime.now(timezone.utc),
+                    last_heartbeat_at=datetime.now(timezone.utc),
                     conn_metadata=result.get("result", {}),
                 )
                 db.add(connection)
 
                 # 更新配置最后连接时间
-                config.last_connected_at = datetime.utcnow()
+                config.last_connected_at = datetime.now(timezone.utc)
                 config.last_error = None
                 db.commit()
 
@@ -185,7 +185,7 @@ class MCPClientService:
             raise ValueError("连接不存在")
 
         connection.status = "disconnected"
-        connection.disconnected_at = datetime.utcnow()
+        connection.disconnected_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(connection)
         return connection
@@ -257,7 +257,7 @@ class MCPClientService:
             work_id=work_id,
             user_id=user_id,
             session_id=session_id,
-            received_at=datetime.utcnow(),
+            received_at=datetime.now(timezone.utc),
         )
         db.add(event)
 
@@ -269,7 +269,7 @@ class MCPClientService:
             ).first()
             if connection:
                 connection.event_count += 1
-                connection.last_heartbeat_at = datetime.utcnow()
+                connection.last_heartbeat_at = datetime.now(timezone.utc)
 
         db.commit()
         db.refresh(event)
@@ -295,7 +295,7 @@ class MCPClientService:
         if session_id:
             event.session_id = session_id
         event.processed = True
-        event.processed_at = datetime.utcnow()
+        event.processed_at = datetime.now(timezone.utc)
         event.error_message = None
 
         db.commit()

@@ -1,6 +1,6 @@
 """私域流量管理服务层."""
 
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -127,7 +127,7 @@ def add_funnel_entry(db: Session, user_id: str, data: dict) -> dict:
         profile_clicks=data.get("profile_clicks", 0),
         link_clicks=data.get("link_clicks", 0),
         converted_subscribers=data.get("converted_subscribers", 0),
-        tracked_date=datetime.utcnow(),
+        tracked_date=datetime.now(timezone.utc),
         notes=data.get("notes"),
     )
     db.add(entry)

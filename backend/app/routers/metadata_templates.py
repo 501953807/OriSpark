@@ -2,7 +2,7 @@
 Phase 2: 摄影师批量元数据模板
 端点: 9 (metadata_templates)"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -191,8 +191,8 @@ def update_template(template_id: str, payload: UpdateTemplatePayload, db: Sessio
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(template, key, value)
-    template.updated_at = datetime.utcnow()
-    template.updated_at = datetime.utcnow()
+    template.updated_at = datetime.now(timezone.utc)
+    template.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -270,7 +270,7 @@ def update_field(template_id: str, field_id: str, payload: UpdateFieldPayload, d
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(field, key, value)
-    field.updated_at = datetime.utcnow()
+    field.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

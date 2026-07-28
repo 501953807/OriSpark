@@ -14,7 +14,7 @@ Features:
 import logging
 
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -1207,7 +1207,7 @@ def export_campaign_report(campaign_id: str, db: Session = Depends(get_db)):
         },
         "reward_tiers": tier_stats,
         "orders": order_stats,
-        "export_time": __import__("datetime").datetime.utcnow().isoformat(),
+        "export_time": datetime.now(timezone.utc).isoformat(),
     })
 
 
@@ -1381,7 +1381,7 @@ def export_license(license_id: str, format: str = "creative_fabrica", db: Sessio
                 "file_format": "PNG",
                 "commercial_use": "commercial" in (lic.allowed_uses or []),
             },
-            "exported_at": __import__("datetime").datetime.utcnow().isoformat(),
+            "exported_at": datetime.now(timezone.utc).isoformat(),
         }
 
     elif format == "creative_market":
@@ -1396,7 +1396,7 @@ def export_license(license_id: str, format: str = "creative_fabrica", db: Sessio
                 "license_type": _map_license_to_cm(lic.license_type),
                 "tags": ["illustration", "design"],
             },
-            "exported_at": __import__("datetime").datetime.utcnow().isoformat(),
+            "exported_at": datetime.now(timezone.utc).isoformat(),
         }
 
     elif format == "gumroad":
@@ -1410,7 +1410,7 @@ def export_license(license_id: str, format: str = "creative_fabrica", db: Sessio
                 "currency": lic.currency.lower(),
                 "discoverable": True,
             },
-            "exported_at": __import__("datetime").datetime.utcnow().isoformat(),
+            "exported_at": datetime.now(timezone.utc).isoformat(),
         }
 
     elif format == "envato":
@@ -1424,7 +1424,7 @@ def export_license(license_id: str, format: str = "creative_fabrica", db: Sessio
                 "extended_price": lic.price * 5,
                 "tags": ["design", "illustration", "art"],
             },
-            "exported_at": __import__("datetime").datetime.utcnow().isoformat(),
+            "exported_at": datetime.now(timezone.utc).isoformat(),
         }
 
     else:
@@ -2055,7 +2055,7 @@ def create_listing(data: ListingCreate, db: Session = Depends(get_db)):
         variant_sku=data.variant_sku,
         variant_name=data.variant_name,
         spec_validation=data.spec_validation,
-        spec_validated_at=datetime.utcnow() if data.spec_validation else None,
+        spec_validated_at=datetime.now(timezone.utc) if data.spec_validation else None,
         mockup_image_path=data.mockup_image_path,
         design_file_path=data.design_file_path,
         status=data.status,

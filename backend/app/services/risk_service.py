@@ -143,7 +143,7 @@ def remove_blacklist_entry(db: Session, user_id: str, category: Optional[str] = 
 
 def is_blacklisted(db: Session, user_id: str) -> bool:
     """检查用户是否在黑名单中."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     entry = (
         db.query(BlacklistEntry)
         .filter(

@@ -135,7 +135,7 @@ class AIGCTraceAuditHub:
             certificate_id=f"c2pa-{work_id}-{timestamp[:10]}",
             status="confirmed",
             evidence_hash=file_hash,
-            confirmed_at=datetime.utcnow(),
+            confirmed_at=datetime.now(timezone.utc),
             notes=json.dumps({
                 "file_hash": file_hash,
                 "c2pa_embedded": embedded_path is not None,
@@ -151,7 +151,7 @@ class AIGCTraceAuditHub:
         c2pa_record = C2PARecord(
             work_id=work_id,
             manifest_json=manifest,
-            embedded_at=datetime.utcnow(),
+            embedded_at=datetime.now(timezone.utc),
             is_active=True,
             validator_url=embedded_path or "",
         )
@@ -172,7 +172,7 @@ class AIGCTraceAuditHub:
                 step=step,
                 status=status,
                 detail=detail,
-                created_at=datetime.utcnow(),
+                created_at=datetime.now(timezone.utc),
             )
             db.add(audit)
 

@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 """白名单学习服务 (P2.3.12).
 
 基于用户操作模式自动建议白名单规则:
@@ -53,7 +54,7 @@ def record_whitelist_action(
 
     if existing:
         existing.occurrence_count += 1
-        existing.last_seen_at = __import__("datetime").datetime.utcnow()
+        existing.last_seen_at = __import__("datetime").datetime.now(timezone.utc)
         db.commit()
         return existing
     else:

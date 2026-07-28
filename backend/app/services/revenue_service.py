@@ -1,7 +1,7 @@
 """收入多元化分析服务层."""
 
 import math
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -115,7 +115,7 @@ def get_revenue_summary(
     months: int = 12,
 ) -> dict:
     """获取用户收入汇总统计."""
-    cutoff_date = datetime.utcnow() - timedelta(days=30 * months)
+    cutoff_date = datetime.now(timezone.utc) - timedelta(days=30 * months)
 
     records = (
         db.query(RevenueRecord)

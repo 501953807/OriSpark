@@ -5,7 +5,7 @@ import os
 import shutil
 import uuid as _uuid
 import zipfile
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy.orm import Session
@@ -148,7 +148,7 @@ def generate_pdf_package(evidence: dict, output_dir: str = "data/enforcement") -
         ZIP 文件路径
     """
     os.makedirs(output_dir, exist_ok=True)
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     zip_path = os.path.join(output_dir, f"evidence_{timestamp}.zip")
 
     # 准备文本摘要
@@ -319,7 +319,7 @@ def update_action_status(
             setattr(action, field, value)
 
     action.status = new_status
-    action.updated_at = datetime.utcnow()
+    action.updated_at = datetime.now(timezone.utc)
 
     db.commit()
     db.refresh(action)

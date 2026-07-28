@@ -3,7 +3,7 @@
 端点: 7 (photographer shots workflow)
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from math import radians, sin, cos, sqrt, atan2
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -128,7 +128,7 @@ def update_shot_status(
     variant.shot_status = payload.shot_status
     if payload.shot_notes is not None:
         variant.shot_notes = payload.shot_notes
-    variant.updated_at = datetime.utcnow()
+    variant.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -266,7 +266,7 @@ def add_stock_channel(
         "channel": payload.channel,
         "status": payload.status,
         "remote_id": payload.remote_id,
-        "updated_at": datetime.utcnow().isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
     }
     if existing_idx is not None:
         channels[existing_idx] = channel_entry

@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
@@ -63,8 +63,8 @@ class SplitRuleService:
         if existing and existing.locked_at is None:
             existing.percentage = percentage
             existing.quote_amount = quote_amount
-            existing.quoted_at = datetime.utcnow()
-            existing.changed_at = datetime.utcnow()
+            existing.quoted_at = datetime.now(timezone.utc)
+            existing.changed_at = datetime.now(timezone.utc)
             existing.change_reason = "重新报价"
             db.commit()
             db.refresh(existing)
@@ -77,7 +77,7 @@ class SplitRuleService:
             role=role,
             percentage=percentage,
             quote_amount=quote_amount,
-            quoted_at=datetime.utcnow(),
+            quoted_at=datetime.now(timezone.utc),
         )
         db.add(rule)
         db.commit()
@@ -109,7 +109,7 @@ class SplitRuleService:
                 .all()
             )
             for candidate in candidates:
-                candidate.locked_at = datetime.utcnow()
+                candidate.locked_at = datetime.now(timezone.utc)
                 candidate.change_reason = "最优报价锁定"
                 locked.append(cls._rule_to_dict(candidate))
 
@@ -215,7 +215,7 @@ class SplitRuleService:
 
         # 2. 生成 batch_id
         if not batch_id:
-            cycle = contract.completed_at or datetime.utcnow()
+            cycle = contract.completed_at or datetime.now(timezone.utc)
             batch_id = f"{cycle.strftime('%Y-%m')}_monthly"
 
         # 3. 尝试调用支付网关释放资金
@@ -245,7 +245,7 @@ class SplitRuleService:
             status="success" if not error_message else "failed",
             error_message=error_message,
             detail_json=json.dumps(calc["distributions"], ensure_ascii=False),
-            executed_at=datetime.utcnow(),
+            executed_at=datetime.now(timezone.utc),
         )
         db.add(exec_log)
         db.commit()

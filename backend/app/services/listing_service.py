@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 
 from app.models.listing import Listing, ListingStatus
@@ -8,7 +8,7 @@ def create_listing(db: Session, seller_id: str, req: dict) -> Listing:
     """创建挂牌."""
     expires_at = None
     if req.get("expires_days"):
-        expires_at = datetime.utcnow() + timedelta(days=req["expires_days"])
+        expires_at = datetime.now(timezone.utc) + timedelta(days=req["expires_days"])
 
     listing = Listing(
         work_id=req["work_id"],
@@ -39,7 +39,7 @@ def update_listing(db: Session, listing_id: str, updates: dict) -> Listing | Non
     for key, value in updates.items():
         if hasattr(listing, key) and key not in ("id", "work_id", "seller_id", "created_at"):
             setattr(listing, key, value)
-    listing.updated_at = datetime.utcnow()
+    listing.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(listing)
     return listing
@@ -52,7 +52,7 @@ def mark_sold(db: Session, listing_id: str, buyer_id: str) -> Listing | None:
         return None
     listing.status = ListingStatus.SOLD
     listing.buyer_id = buyer_id
-    listing.sold_at = datetime.utcnow()
+    listing.sold_at = datetime.now(timezone.utc)
     listing.quantity_sold += 1
     db.commit()
     db.refresh(listing)
@@ -76,7 +76,7 @@ def calculate_profit(asking_price: float, fee_rate_bps: int, split_percent: floa
 
 def expire_expired_listings(db: Session):
     """过期处理 — 将过期的挂牌标记为 expired."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     result = (
         db.query(Listing)
         .filter(

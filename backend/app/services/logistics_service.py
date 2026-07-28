@@ -1,7 +1,7 @@
 """物流商管理服务."""
 
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -71,7 +71,7 @@ class LogisticsService:
             if hasattr(provider, key):
                 setattr(provider, key, value)
 
-        provider.updated_at = datetime.utcnow()
+        provider.updated_at = datetime.now(timezone.utc)
         db.flush()
         db.refresh(provider)
         return provider
@@ -156,15 +156,15 @@ class LogisticsService:
 
         old_status = shipment.status
         shipment.status = status
-        shipment.updated_at = datetime.utcnow()
+        shipment.updated_at = datetime.now(timezone.utc)
 
         # 设置时间戳
         if status == "shipped":
-            shipment.shipped_at = datetime.utcnow()
+            shipment.shipped_at = datetime.now(timezone.utc)
         elif status == "delivered":
-            shipment.delivered_at = datetime.utcnow()
+            shipment.delivered_at = datetime.now(timezone.utc)
         elif status == "returned":
-            shipment.delivered_at = datetime.utcnow()
+            shipment.delivered_at = datetime.now(timezone.utc)
 
         # 添加轨迹事件
         event = LogisticsTrackingEvent(

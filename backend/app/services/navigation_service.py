@@ -1,7 +1,7 @@
 """创作者导航服务层 — 进度引擎 + 表达式评估."""
 
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -144,7 +144,7 @@ def complete_task(db: Session, user_id: str, task_key: str, context: Optional[di
     # 标记完成
     completed_keys.append(task_key)
     nav.completed_tasks = completed_keys
-    nav.last_completed_at = datetime.utcnow()
+    nav.last_completed_at = datetime.now(timezone.utc)
 
     # 重新计算进度
     tasks = (

@@ -5,7 +5,7 @@ Handyman (v3b) — Etsy 店铺连接、商品发布、订单同步.
 
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import httpx
@@ -319,7 +319,7 @@ class EtsyService:
         encrypted_access = encrypt(access_token)
         encrypted_refresh = encrypt(refresh_token) if refresh_token else None
 
-        token_expires = datetime.utcnow() + timedelta(seconds=int(expires_in))
+        token_expires = datetime.now(timezone.utc) + timedelta(seconds=int(expires_in))
 
         # Upsert shop record
         shop = (
@@ -347,7 +347,7 @@ class EtsyService:
             shop.shop_name = token_data.get("shop_name", shop.shop_name)
             shop.shop_id = token_data.get("shop_id", shop.shop_id)
             shop.is_active = True
-            shop.updated_at = datetime.utcnow()
+            shop.updated_at = datetime.now(timezone.utc)
 
         self.db.commit()
         self.db.refresh(shop)
@@ -390,10 +390,10 @@ class EtsyService:
 
         shop.access_token = encrypt(token_data.get("access_token", ""))
         shop.refresh_token = encrypt(token_data.get("refresh_token", ""))
-        shop.token_expires_at = datetime.utcnow() + timedelta(
+        shop.token_expires_at = datetime.now(timezone.utc) + timedelta(
             seconds=int(token_data.get("expires_in", 14400))
         )
-        shop.updated_at = datetime.utcnow()
+        shop.updated_at = datetime.now(timezone.utc)
         self.db.commit()
         return True
 
@@ -450,7 +450,7 @@ class EtsyService:
         )
 
         # Store locally
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         etl = EtsyListing(
             id=os.urandom(16).hex()[:32],
             user_id=user_id,
@@ -510,7 +510,7 @@ class EtsyService:
             if key in updates and updates[key] is not None:
                 setattr(etl, key, updates[key])
 
-        etl.updated_at = datetime.utcnow()
+        etl.updated_at = datetime.now(timezone.utc)
 
         # Also update on Etsy
         shop = (
@@ -546,7 +546,7 @@ class EtsyService:
         if not etl:
             return False
         etl.status = "inactive"
-        etl.updated_at = datetime.utcnow()
+        etl.updated_at = datetime.now(timezone.utc)
         self.db.commit()
         return True
 
@@ -580,7 +580,7 @@ class EtsyService:
         if success:
             etl.status = "active"
             etl.etsy_status = "active"
-            etl.updated_at = datetime.utcnow()
+            etl.updated_at = datetime.now(timezone.utc)
             self.db.commit()
 
         return success
@@ -617,7 +617,7 @@ class EtsyService:
 
         etl.views_count = data.get("views", etl.views_count)
         etl.favorites_count = data.get("favorites", etl.favorites_count)
-        etl.updated_at = datetime.utcnow()
+        etl.updated_at = datetime.now(timezone.utc)
         self.db.commit()
 
         return data
@@ -692,9 +692,9 @@ class EtsyService:
                     # Update existing
                     if "state" in order_data:
                         existing.status = order_data["state"]
-                    existing.updated_at = datetime.utcnow()
+                    existing.updated_at = datetime.now(timezone.utc)
                 else:
-                    now = datetime.utcnow()
+                    now = datetime.now(timezone.utc)
                     order_date = order_data.get("created_utc", None)
                     if order_date:
                         try:
@@ -811,7 +811,7 @@ class EtsyService:
             orders_by_status[o.status] = orders_by_status.get(o.status, 0) + 1
 
         # Revenue by month (last 6 months)
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         revenue_by_month = []
         for i in range(6):
             m_start = now.replace(day=1) - timedelta(days=i * 31)

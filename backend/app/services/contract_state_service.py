@@ -93,7 +93,7 @@ class ContractStateService:
             )
 
         contract.status = target_status
-        contract.updated_at = datetime.utcnow()
+        contract.updated_at = datetime.now(timezone.utc)
 
         # 记录审计日志
         audit = AuditLog(
@@ -185,7 +185,7 @@ class ContractStateService:
     ) -> ContractInstance:
         """发布合约挂牌."""
         contract = cls.validate_transition(db, contract_id, "listed", actor_id)
-        contract.published_at = datetime.utcnow()
+        contract.published_at = datetime.now(timezone.utc)
         contract.verified = "pending"
 
         try:
@@ -207,7 +207,7 @@ class ContractStateService:
         """激活合约（平台审核通过）."""
         contract = cls.validate_transition(db, contract_id, "active", actor_id)
         contract.verified = "approved"
-        contract.published_at = datetime.utcnow()
+        contract.published_at = datetime.now(timezone.utc)
 
         try:
             db.commit()
@@ -230,7 +230,7 @@ class ContractStateService:
         contract = cls.validate_transition(
             db, contract_id, "subscribed", actor_id
         )
-        contract.subscribed_at = datetime.utcnow()
+        contract.subscribed_at = datetime.now(timezone.utc)
         contract.operator_id = subscriber_id
 
         try:
@@ -390,7 +390,7 @@ class ContractStateService:
         contract = cls.validate_transition(
             db, contract_id, "executing", actor_id
         )
-        contract.executed_at = datetime.utcnow()
+        contract.executed_at = datetime.now(timezone.utc)
 
         try:
             db.commit()
@@ -412,7 +412,7 @@ class ContractStateService:
         contract = cls.validate_transition(
             db, contract_id, "completed", actor_id
         )
-        contract.completed_at = datetime.utcnow()
+        contract.completed_at = datetime.now(timezone.utc)
 
         try:
             db.commit()
@@ -516,7 +516,7 @@ class ContractStateService:
         old_status = contract.status
         contract.status = "cancelled"
         contract.review_comment = reason
-        contract.updated_at = datetime.utcnow()
+        contract.updated_at = datetime.now(timezone.utc)
 
         audit = AuditLog(
             user_id=actor_id,

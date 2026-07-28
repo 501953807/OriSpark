@@ -1,6 +1,6 @@
 """订阅系统服务."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -92,7 +92,7 @@ def subscribe(db: Session, user_id: str, tier_id: str) -> SubscriptionSubscriber
     )
     # Calculate expiry based on tier period
     period_months = 12 if tier.period == "yearly" else 1
-    subscriber.expires_at = datetime.utcnow() + timedelta(days=30 * period_months)
+    subscriber.expires_at = datetime.now(timezone.utc) + timedelta(days=30 * period_months)
     db.add(subscriber)
     db.commit()
     db.refresh(subscriber)
@@ -113,7 +113,7 @@ def unsubscribe(db: Session, user_id: str, tier_id: str) -> bool:
     if not sub:
         return False
     sub.status = "cancelled"
-    sub.cancelled_at = datetime.utcnow()
+    sub.cancelled_at = datetime.now(timezone.utc)
     db.commit()
     return True
 

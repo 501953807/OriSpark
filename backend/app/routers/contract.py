@@ -1,6 +1,6 @@
 """合约市场路由 — 完整 CRUD + 状态机 API."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -102,7 +102,7 @@ def patch_update_contract(contract_id: str, body: dict, db: Session = Depends(ge
                 "scope_usage", "scope_geography", "scope_duration"):
         if key in body:
             setattr(contract, key, body[key])
-    contract.updated_at = datetime.utcnow()
+    contract.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(contract)
     return {"id": contract.id, "status": contract.status}
