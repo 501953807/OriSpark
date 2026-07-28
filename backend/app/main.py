@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
-from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, logistics, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing, matching_engine, matchmaking, etsy, fork_merge, contract_matching
+from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, logistics, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing, matching_engine, matchmaking, etsy, fork_merge, contract_matching, innocence_proof
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
 from app.middleware.logging import LoggingMiddleware
@@ -100,6 +100,7 @@ app.include_router(factory.router, prefix="/api", tags=["Factory"])
 app.include_router(subtitle.router, prefix="/api", tags=["Subtitle"])
 app.include_router(metadata_templates.router, prefix="/api", tags=["MetadataTemplates"])
 app.include_router(watermark.router, prefix="/api", tags=["Watermark"])
+app.include_router(innocence_proof.router, prefix="/api", tags=["InnocenceProof"])
 app.include_router(mcp_server.router, prefix="/api", tags=["MCP"])
 app.include_router(work_variants.router, prefix="/api", tags=["WorkVariants"])
 app.include_router(logistics.router, prefix="/api", tags=["Logistics"])

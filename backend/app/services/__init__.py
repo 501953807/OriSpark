@@ -2,6 +2,8 @@
 
 from app.services.hasher import compute_sha256, compute_md5, verify_hash
 from app.services.work_service import detect_file_type, generate_thumbnail, extract_exif, get_image_dimensions, get_all_metadata
+from app.services.watermark_service import get_presets, create_preset, update_preset, delete_preset, apply_watermark_to_work
+from app.services.pdf_report_service import generate_innocence_proof_pdf
 from app.services.certificate_service import generate_certificate_pdf
 from app.services.search_service import setup_fts5, search_works_fts
 from app.services.websocket_manager import manager, ConnectionManager
@@ -12,6 +14,8 @@ from app.services.auto_tag_service import auto_generate_tags, suggest_tags
 __all__ = [
     "compute_sha256", "compute_md5", "verify_hash",
     "detect_file_type", "generate_thumbnail", "extract_exif", "get_image_dimensions", "get_all_metadata",
+    "get_presets", "create_preset", "update_preset", "delete_preset", "apply_watermark_to_work",
+    "generate_innocence_proof_pdf",
     "generate_certificate_pdf",
     "setup_fts5", "search_works_fts",
     "manager", "ConnectionManager",

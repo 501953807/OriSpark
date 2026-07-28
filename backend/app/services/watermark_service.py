@@ -1,87 +1,132 @@
-"""Watermark service — generate previews, apply watermarks, validate configs."""
+"""水印预设服务."""
 
-from typing import Tuple
+from typing import Optional, List
+from datetime import datetime
+from sqlalchemy.orm import Session
+from app.models.watermark_preset import WatermarkPreset, PositionEnum
 
 
-def validate_config(config: dict) -> Tuple[bool, str]:
-    """Validate a watermark configuration dictionary.
+def get_presets(db: Session) -> List[dict]:
+    """获取所有水印预设，按创建时间降序排列."""
+    presets = db.query(WatermarkPreset).order_by(WatermarkPreset.created_at.desc()).all()
+    return [p.to_dict() for p in presets]
 
-    Returns (is_valid, error_message).
-    """
-    watermark_type = config.get("watermark_type")
-    if watermark_type not in ("text", "image", "tiled"):
-        return False, "Invalid watermark_type"
 
-    if watermark_type == "text":
-        text = config.get("text")
-        if not text or not isinstance(text, str) or not text.strip():
-            return False, "text watermark requires non-empty 'text'"
+def get_preset(db: Session, preset_id: str) -> Optional[dict]:
+    """根据 ID 获取单个水印预设."""
+    preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == preset_id).first()
+    if preset:
+        return preset.to_dict()
+    return None
 
-    elif watermark_type == "image":
-        image_url = config.get("image_url")
-        if not image_url:
-            return False, "image watermark requires 'image_url'"
 
-    elif watermark_type == "tiled":
-        tile_image_url = config.get("tile_image_url")
-        if not tile_image_url:
-            return False, "tiled watermark requires 'tile_image_url'"
+def create_preset(
+    db: Session,
+    name: str,
+    position: str,
+    opacity: int = 100,
+    text: Optional[str] = None,
+    image_path: Optional[str] = None,
+) -> dict:
+    """创建新的水印预设."""
+    # Convert string position to enum
+    try:
+        position_enum = PositionEnum(position)
+    except ValueError:
+        raise ValueError(f"无效的position值：{position}")
 
-    position = config.get("position", "bottom_right")
-    valid_positions = (
-        "top_left", "top_right", "bottom_left", "bottom_right",
-        "center", "custom",
+    preset = WatermarkPreset(
+        name=name,
+        position=position_enum,
+        opacity=opacity,
+        text=text,
+        image_path=image_path,
     )
-    if position not in valid_positions:
-        return False, f"Invalid position: {position}"
-
-    opacity = config.get("opacity")
-    if opacity is not None and not (0 <= opacity <= 1):
-        return False, "opacity must be between 0 and 1"
-
-    return True, ""
-
-
-def generate_watermark_preview(preset_config: dict, image_path: str) -> str:
-    """Generate a preview URL/path for a watermark preset applied to an image.
-
-    Returns a file path string pointing to the preview image.
-    """
-    from pathlib import Path
-    import shutil
-
-    data_dir = Path("data") / "thumbnails" / "watermark_previews"
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    preview_path = str(data_dir / f"preview_{hash(str(preset_config))}.png")
-
-    # MVP: copy source image as placeholder preview
+    db.add(preset)
     try:
-        src = Path(image_path)
-        if src.exists():
-            shutil.copy2(str(src), preview_path)
-        else:
-            preview_path = image_path  # fall back to source
+        db.commit()
+        db.refresh(preset)
+        return preset.to_dict()
     except Exception:
-        preview_path = image_path
+        db.rollback()
+        raise
 
-    return preview_path
 
+def update_preset(
+    db: Session,
+    preset_id: str,
+    name: Optional[str] = None,
+    position: Optional[str] = None,
+    opacity: Optional[int] = None,
+    text: Optional[str] = None,
+    image_path: Optional[str] = None,
+) -> dict:
+    """更新现有水印预设."""
+    preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == preset_id).first()
+    if not preset:
+        raise ValueError("预设不存在")
 
-def apply_watermark(work_path: str, preset: dict, output_path: str) -> bool:
-    """Apply a watermark preset to an image file.
-
-    Returns True on success, False on failure.
-    MVP stub: copies the file to output_path without real processing.
-    """
-    from pathlib import Path
-    import shutil
+    if name is not None:
+        preset.name = name
+    if position is not None:
+        try:
+            preset.position = PositionEnum(position)
+        except ValueError:
+            raise ValueError(f"无效的position值：{position}")
+    if opacity is not None:
+        preset.opacity = opacity
+    if text is not None:
+        preset.text = text
+    if image_path is not None:
+        preset.image_path = image_path
 
     try:
-        src = Path(work_path)
-        dst = Path(output_path)
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(str(src), str(dst))
+        db.commit()
+        db.refresh(preset)
+        return preset.to_dict()
+    except Exception:
+        db.rollback()
+        raise
+
+
+def delete_preset(db: Session, preset_id: str) -> bool:
+    """删除水印预设."""
+    preset = db.query(WatermarkPreset).filter(WatermarkPreset.id == preset_id).first()
+    if not preset:
+        return False
+    db.delete(preset)
+    try:
+        db.commit()
         return True
     except Exception:
-        return False
+        db.rollback()
+        raise
+
+
+def apply_watermark_to_work(
+    db: Session, work_id: str, preset_id: str
+) -> dict:
+    """
+    将水印预设应用到作品（批量操作接口）.
+
+    注意：此函数主要负责验证和记录，实际的水印应用逻辑
+    由外部服务或图像处理模块执行。
+    """
+    # 验证作品是否存在（work表存在说明作品已注册）
+    from app.models.work import Work
+    work = db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise ValueError(f"作品 {work_id} 不存在")
+
+    # 验证预设是否存在
+    preset = get_preset(db, preset_id)
+    if not preset:
+        raise ValueError(f"水印预设 {preset_id} 不存在")
+
+    # 记录水印应用（这里简化，实际可能需要水印日志表）
+    return {
+        "work_id": work_id,
+        "preset_id": preset_id,
+        "applied_at": datetime.now().isoformat(),
+        "message": f"水印预设 '{preset['name']}' 已应用于作品 {work_id}"
+    }

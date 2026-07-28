@@ -25,8 +25,9 @@ from app.models.system import (
 )
 
 from app.models.metadata_template import MetadataTemplate, TemplateField
-from app.models.watermark import WatermarkPreset
 from app.models.chat import Conversation, Message
+from app.models.innocence_proof import InnocenceProof
+from app.models.watermark_preset import WatermarkPreset, PositionEnum
 from app.models.commission import (
     CommissionProject, CommissionOrder, CommissionMessage,
     CommissionMilestone, CommissionPayment, CommissionRevision,
@@ -206,10 +207,10 @@ __all__ = [
     "DictionaryGroup", "DictionaryItem",
     "Notification", "Plugin", "EmailVerification", "PasswordReset",
     "User", "UserLoginHistory", "Disclaimer", "DisclaimerAcceptance",
-    "WatermarkPreset",
+    "WatermarkPreset", "PositionEnum",
     "CommissionProject", "CommissionOrder", "CommissionMessage",
     "CommissionMilestone", "CommissionPayment", "CommissionRevision",
-    "Conversation", "Message",
+    "InnocenceProof", "Conversation", "Message",
     "Subtitle", "ProjectFileFormat",
     "VideoFingerprintConfig", "VideoFrameFingerprint",
     "WorkVariantGroup", "WorkVariant",

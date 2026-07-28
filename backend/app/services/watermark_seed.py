@@ -1,64 +1,35 @@
 """Watermark seed data — default presets for new OriStudio installations."""
 
-from datetime import datetime
 from sqlalchemy.orm import Session
 
-from app.models.watermark import WatermarkPreset
+from app.models.watermark_preset import WatermarkPreset, PositionEnum
 
 
 def seed_default_presets(db: Session):
     """Insert default watermark presets if none exist."""
-    existing = db.query(WatermarkPreset).filter(
-        WatermarkPreset.is_default == True  # noqa: E712
-    ).first()
+    # Check if any preset already exists (simple check)
+    existing = db.query(WatermarkPreset).first()
     if existing:
         return
 
     defaults = [
         WatermarkPreset(
             name="Corner Logo",
-            description="Small text watermark, bottom-right corner, subtle opacity",
-            watermark_type="text",
-            config={
-                "text": "OriStudio",
-                "font_size": 24,
-                "font_color": "#FFFFFF",
-                "opacity": 0.3,
-                "position": "bottom_right",
-                "rotation": 0,
-                "padding": 16,
-            },
-            is_default=True,
+            position=PositionEnum.BOTTOM_RIGHT,
+            opacity=30,
+            text="OriStudio",
         ),
         WatermarkPreset(
             name="Center Diagonal",
-            description="Larger diagonal text watermark centered on the image",
-            watermark_type="text",
-            config={
-                "text": "Copyright OriStudio",
-                "font_size": 48,
-                "font_color": "#FFFFFF",
-                "opacity": 0.2,
-                "position": "center",
-                "rotation": 45,
-                "padding": 32,
-            },
-            is_default=True,
+            position=PositionEnum.TOP_RIGHT,
+            opacity=20,
+            text="Copyright OriStudio",
         ),
         WatermarkPreset(
-            name="Tiled Pattern",
-            description="Repeated small text pattern across the entire image",
-            watermark_type="tiled",
-            config={
-                "text": "© OriStudio",
-                "tile_font_size": 16,
-                "tile_opacity": 0.1,
-                "tile_color": "#FFFFFF",
-                "tile_width": 120,
-                "tile_height": 40,
-                "spacing": 80,
-            },
-            is_default=True,
+            name="Top Left Branding",
+            position=PositionEnum.TOP_LEFT,
+            opacity=15,
+            text="© OriStudio",
         ),
     ]
 
