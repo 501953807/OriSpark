@@ -37,6 +37,7 @@ class Work(Base):
     mime_type = Column(String(100), nullable=True)
     sha256 = Column(String(64), nullable=True, index=True)
     md5 = Column(String(32), nullable=True)
+    creator_id = Column(String(32), ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     description = Column(Text, nullable=True)
     project_id = Column(String(32), ForeignKey("projects.id"), nullable=True)
     status = Column(String(20), nullable=False, default="active")  # active/trashed/archived
@@ -86,6 +87,8 @@ class Work(Base):
     notary_records = relationship("NotaryRecord", back_populates="work")
     # Fork 父子关系
     parent = relationship("Work", remote_side="Work.id", backref="forks")
+    # Creator relationship to User
+    creator = relationship("User", foreign_keys=[creator_id], backref="created_works")
 
     __table_args__ = (
         Index("idx_works_sha256", "sha256"),
@@ -98,6 +101,7 @@ class Work(Base):
         Index("idx_works_import_mode", "import_mode"),
         Index("idx_works_parent", "parent_work_id"),
         Index("idx_works_license", "license_type"),
+        Index("idx_works_creator", "creator_id"),  # New index for creator_id
     )
 
 

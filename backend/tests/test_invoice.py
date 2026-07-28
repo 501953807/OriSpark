@@ -1,16 +1,34 @@
 """Tests for invoice and auto-renewal endpoints."""
 
 import pytest
+import time
+import json
+import base64
 from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 
+def _create_token(user_id: str) -> str:
+    """Create a valid JWT token using the deps._sign function signature."""
+    header = {"alg": "HS256", "typ": "JWT"}
+    exp = int(time.time()) + 3600  # 1 hour expiry
+    payload = {"sub": user_id, "iat": int(time.time()), "exp": exp}
+
+    def b64encode(data: str) -> str:
+        return base64.urlsafe_b64encode(data.encode()).rstrip(b"=").decode()
+
+    h = b64encode(json.dumps(header))
+    p = b64encode(json.dumps(payload))
+    from app.deps import _sign
+    sig = _sign(f"{h}.{p}")
+    return f"{h}.{p}.{sig}"
+
+
 def _auth_headers(user_id: str = "test_user") -> dict:
-    """Return headers that make require_auth return user_id."""
-    # require_auth falls back to "local" when no Bearer token, which returns "local" as user_id.
-    # We use "Bearer local" to trigger the fallback path.
-    return {"Authorization": "Bearer local"}
+    """Return headers with a valid JWT token for the given user_id."""
+    token = _create_token(user_id)
+    return {"Authorization": f"Bearer {token}"}
 
 
 class TestCreateInvoice:
@@ -30,8 +48,8 @@ class TestCreateInvoice:
         data = resp.json()["data"]
         assert data["amount_yuan"] == 100.0
         assert data["status"] == "pending"
-        # require_auth returns "local" in test mode (no real JWT)
-        assert data["user_id"] == "local"
+        # user_id should come from the JWT token (the "sub" claim)
+        assert data["user_id"] == "test_user_1"
         assert "invoice_number" in data
         assert data["invoice_number"].startswith("INV/")
 

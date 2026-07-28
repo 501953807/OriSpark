@@ -154,7 +154,7 @@ router = APIRouter()
 # -- 系统设置 --
 # ================================================================
 
-@router.get("/system/settings", response_model=ApiResponse[dict])
+@router.get("/system/settings", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
 def get_settings(db: Session = Depends(get_db)):
     """获取所有系统设置.
 
@@ -362,7 +362,7 @@ def create_scheduled_backup(
     )
 
 
-@router.get("/system/backup/schedule", response_model=ApiResponse)
+@router.get("/system/backup/schedule", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def get_backup_schedule(db: Session = Depends(get_db)):
     """获取定时备份配置."""
     cron = db.query(SystemSetting).filter(SystemSetting.key == "backup_schedule_cron").first()
@@ -376,7 +376,7 @@ def get_backup_schedule(db: Session = Depends(get_db)):
     })
 
 
-@router.get("/system/backups", response_model=ApiResponse)
+@router.get("/system/backups", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def list_backups(db: Session = Depends(get_db)):
     """获取备份列表."""
     backups = db.query(BackupRecord).order_by(BackupRecord.created_at.desc()).all()
@@ -476,7 +476,7 @@ def delete_backup(backup_id: str, db: Session = Depends(get_db)):
 # -- 审计日志 --
 # ================================================================
 
-@router.get("/system/audit-logs", response_model=ApiResponse)
+@router.get("/system/audit-logs", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def get_audit_logs(
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=200),
@@ -524,7 +524,7 @@ def get_audit_logs(
 # -- 存储管理 --
 # ================================================================
 
-@router.get("/system/storage", response_model=ApiResponse)
+@router.get("/system/storage", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def get_storage_info():
     """获取存储空间信息."""
     workspace = Path("data/workspace")
@@ -904,7 +904,7 @@ def delete_dict_item(
 # -- 通知中心 --
 # ================================================================
 
-@router.get("/notifications", response_model=ApiResponse)
+@router.get("/notifications", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def get_notifications(
     type: Optional[str] = None,
     is_read: Optional[bool] = None,
@@ -950,7 +950,7 @@ def get_notifications(
     })
 
 
-@router.get("/notifications/unread-count", response_model=ApiResponse)
+@router.get("/notifications/unread-count", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 def get_unread_count(
     authorization: Optional[str] = Header(None),
     db: Session = Depends(get_db),

@@ -3,7 +3,13 @@
 Central place for shared auth, db, and error-handling dependencies.
 """
 
-from typing import Optional
+from typing import Optional, Dict, Any
+import time as _time
+import json as _json
+import hmac as _hmac
+import hashlib
+import base64
+from pathlib import Path
 
 from fastapi import Depends, Header, HTTPException, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -17,7 +23,53 @@ from app.models.system import User as UserModel
 _SECRET = settings.SECRET_KEY.encode()
 
 # P3.5.5: Token 黑名单 (内存字典，重启后失效 — 生产环境改用 Redis)
-_token_blacklist: dict[str, float] = {}
+_token_blacklist: Dict[str, float] = {}
+
+# Optional Redis client for production
+_redis_client: Optional[Any] = None
+
+
+def _init_redis():
+    """尝试初始化 Redis 客户端，失败则设为 None."""
+    global _redis_client
+    try:
+        import redis
+        r = redis.from_url(settings.REDIS_URL, socket_connect_timeout=2)
+        r.ping()
+        _redis_client = r
+        print(f"Redis token blacklist initialized: {settings.REDIS_URL}")
+    except Exception:
+        _redis_client = None  # Fallback to memory
+
+
+# Initialize Redis on import
+_init_redis()
+
+
+def _add_to_blacklist(token: str, expires: float = None) -> None:
+    """将 token 加入黑名单。若设置了 expires，使用 Redis TTL."""
+    if _redis_client:
+        # Use Redis with TTL (30 days same as token expiry)
+        ttl = int(expires - _time.time()) if expires and expires > _time.time() else 86400 * 30
+        _redis_client.setex(token, ttl, "1")
+    else:
+        _token_blacklist[token] = _time.time()
+
+
+def _is_blacklisted(token: str) -> bool:
+    """检查 token 是否在黑名单中."""
+    if _redis_client:
+        return _redis_client.exists(token) == 1
+    return token in _token_blacklist
+
+
+def _cleanup_blacklist() -> None:
+    """清理过期的黑名单项。Redis 会自动处理 TTL，内存版需要手动清理."""
+    if not _redis_client:
+        now = _time.time()
+        expired = [t for t, ts in _token_blacklist.items() if now - ts > 86400 * 30]
+        for t in expired:
+            del _token_blacklist[t]
 
 
 def _deb64(data: str) -> str:
@@ -29,8 +81,6 @@ def _deb64(data: str) -> str:
 
 
 def _sign(data: str) -> str:
-    import hashlib
-    import hmac as _hmac
     return _hmac.new(_SECRET, data.encode(), hashlib.sha256).hexdigest()[:32]
 
 
@@ -40,16 +90,12 @@ def _verify_token(token: str) -> Optional[str]:
     P3.5.5: 检查 token 是否在黑名单中。
     Moved here to break circular import (was in auth.py).
     """
-    import hmac as _hmac  # noqa: F811
+    # Clean up expired blacklist entries first
+    _cleanup_blacklist()
 
-    if token in _token_blacklist:
+    # Check if token is blacklisted using unified method
+    if _is_blacklisted(token):
         return None
-
-    import time as _time
-    now = _time.time()
-    expired = [t for t, ts in _token_blacklist.items() if now - ts > 86400 * 30]
-    for t in expired:
-        del _token_blacklist[t]
 
     try:
         parts = token.split(".")
@@ -59,8 +105,8 @@ def _verify_token(token: str) -> Optional[str]:
         expected_sig = _sign(f"{header_b64}.{payload_b64}")
         if not _hmac.compare_digest(signature, expected_sig):
             return None
-        import json as _json
         payload = _json.loads(_deb64(payload_b64))
+        now = _time.time()
         if payload.get("exp", 0) < now:
             return None
         return payload.get("sub")
@@ -78,8 +124,10 @@ def get_current_user_id(
     """Extract and verify the current user ID from the Authorization header.
 
     Returns:
-        The verified user_id string, or falls back to "local" for
-        unauthenticated / demo mode (matching existing app behavior).
+        The verified user_id string.
+
+    Raises:
+        HTTPException(401): If no valid authentication header is provided.
 
     Usage:
         @router.get("/protected", response_model=ApiResponse)
@@ -90,25 +138,14 @@ def get_current_user_id(
             ...
     """
     if not authorization or not authorization.startswith("Bearer "):
-        return "local"
+        raise HTTPException(status_code=401, detail="缺少认证凭证")
 
     token = authorization.replace("Bearer ", "")
     user_id = _verify_token(token)
     if not user_id:
-        return "local"
+        raise HTTPException(status_code=401, detail="认证令牌无效或已过期")
 
     return user_id
-
-
-def get_current_user(
-    authorization: Optional[str] = Header(None, alias="Authorization"),
-    db: Session = Depends(get_db),
-) -> Optional[UserModel]:
-    """Return the authenticated UserModel, or None for unauthenticated/demos."""
-    user_id = get_current_user_id(authorization)
-    if user_id == "local":
-        return None
-    return db.query(UserModel).filter(UserModel.id == user_id).first()
 
 
 def require_auth(
@@ -116,8 +153,38 @@ def require_auth(
 ) -> str:
     """Require authentication. Returns user_id.
 
-    Accepts a valid HMAC-signed token, OR falls back to "local" for
-    development/demo mode (matching get_current_user_id behavior).
+    Requires a valid HMAC-signed token. Raises 401 if authentication is missing or invalid.
+
+    Args:
+        authorization: Authorization header with Bearer token
+
+    Returns:
+        The authenticated user_id
+
+    Raises:
+        HTTPException(401): If authentication fails
+    """
+    return get_current_user_id(authorization)
+
+
+def get_current_user(
+    authorization: Optional[str] = Header(None, alias="Authorization"),
+    db: Session = Depends(get_db),
+) -> Optional[UserModel]:
+    """Return the authenticated UserModel for authorized requests only.
+
+    Note: This function uses get_current_user_id which raises HTTPException(401) on invalid auth.
+    For demo purposes where unauthenticated access is allowed, call get_current_user_id directly.
+
+    Args:
+        authorization: Authorization header with Bearer token
+        db: Database session
+
+    Returns:
+        The authenticated UserModel, or None if not found in database
+
+    Raises:
+        HTTPException(401): If authentication is missing or invalid
     """
     user_id = get_current_user_id(authorization)
-    return user_id
+    return db.query(UserModel).filter(UserModel.id == user_id).first()

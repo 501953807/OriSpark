@@ -800,6 +800,8 @@ def get_revenue_summary(
     )
 
 
+MAX_CSV_SIZE = 5 * 1024 * 1024  # 5MB
+
 @router.post("/publish/revenue/import", response_model=ApiResponse)
 async def import_revenue_csv(
     file: UploadFile = File(...),
@@ -819,6 +821,9 @@ async def import_revenue_csv(
         raise HTTPException(status_code=400, detail="请上传 CSV 文件")
 
     content = await file.read()
+    if len(content) > MAX_CSV_SIZE:
+        raise HTTPException(status_code=400, detail=f"文件大小不能超过 {MAX_CSV_SIZE / (1024*1024):.0f}MB")
+
     text = content.decode("utf-8-sig")
     reader = csv.DictReader(io.StringIO(text))
 

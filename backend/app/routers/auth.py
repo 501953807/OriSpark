@@ -17,6 +17,7 @@ import time
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from pathlib import Path
+import bcrypt
 
 from fastapi import APIRouter, HTTPException, Header, Depends
 from pydantic import BaseModel
@@ -26,17 +27,14 @@ from app.database import get_db
 from app.models.system import User, UserLoginHistory
 from app.config import settings
 from app.schemas.common import ApiResponse
-from app.deps import get_current_user_id, _verify_token, _sign
+from app.deps import get_current_user_id, _verify_token, _sign, _add_to_blacklist
 
 router = APIRouter()
 
 # 本地 JWT secret
 SECRET = settings.SECRET_KEY.encode()
 
-# P3.5.5: Token 黑名单 (内存字典，重启后失效 — 生产环境改用 Redis)
-_token_blacklist: dict[str, float] = {}
-
-# 用户存储文件 (向后兼容，启动时自动迁移)
+# User storage file (backward compatible, auto-migrated on startup)
 USERS_FILE = Path("data/config/users.json")
 
 
@@ -45,7 +43,25 @@ USERS_FILE = Path("data/config/users.json")
 # ================================================================
 
 def _hash_password(password: str) -> str:
-    return hashlib.sha256(f"{password}:{settings.SECRET_KEY}".encode()).hexdigest()
+    """Hash password using bcrypt with cost factor 12."""
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
+
+
+def _verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against its hash. Supports bcrypt hashes and falls back to SHA256 for legacy data."""
+    # First try bcrypt (new format: $2b$, $2a$, $2y$)
+    if hashed_password.startswith('$2b$') or hashed_password.startswith('$2a$') or hashed_password.startswith('$2y$'):
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+    # Fallback: legacy SHA256 hash (first 16 chars of hex digest)
+    # This is for backward compatibility during migration
+    if len(hashed_password) == 32 and all(c in '0123456789abcdef' for c in hashed_password):
+        expected = hashlib.sha256(plain_password.encode('utf-8')).hexdigest()[:16]
+        return hmac.compare_digest(expected, hashed_password)
+
+    return False
 
 
 def _create_token(user_id: str) -> str:
@@ -205,8 +221,12 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == data.email).first()
 
-    if not user or user.password_hash != _hash_password(data.password):
+    if not user or not _verify_password(data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="邮箱或密码错误")
+
+    # Upgrade old SHA256 hash to bcrypt if needed
+    if not (user.password_hash.startswith('$2b$') or user.password_hash.startswith('$2a$') or user.password_hash.startswith('$2y$')):
+        user.password_hash = _hash_password(data.password)
 
     # 更新登录信息
     user.last_login_at = datetime.utcnow()
@@ -240,31 +260,20 @@ def get_current_user(
     db: Session = Depends(get_db),
 ):
     """获取当前登录用户信息."""
-    # 先尝试 JSON 文件向后兼容
     if not authorization or not authorization.startswith("Bearer "):
-        return ApiResponse(data={
-            "id": "local",
-            "username": "创作者",
-            "email": "local@oristudio",
-            "role": "本地用户",
-        })
+        raise HTTPException(status_code=401, detail="缺少认证凭证")
 
     token = authorization.replace("Bearer ", "")
     user_id = _verify_token(token)
     if not user_id:
-        return ApiResponse(data={
-            "id": "local",
-            "username": "创作者",
-            "email": "local@oristudio",
-            "role": "本地用户",
-        })
+        raise HTTPException(status_code=401, detail="认证令牌无效或已过期")
 
     # 从数据库查找
     user = db.query(User).filter(User.id == user_id).first()
     if user:
         return ApiResponse(data=_user_to_dict(user))
 
-    # 向后兼容: JSON 文件
+    # 向后兼容: JSON 文件 (for legacy users in users.json)
     if USERS_FILE.exists():
         try:
             users = json.loads(USERS_FILE.read_text())
@@ -279,12 +288,7 @@ def get_current_user(
         except (json.JSONDecodeError, IOError):
             pass
 
-    return ApiResponse(data={
-        "id": "local",
-        "username": "创作者",
-        "email": "local@oristudio",
-        "role": "本地用户",
-    })
+    raise HTTPException(status_code=401, detail="认证令牌无效或已过期")
 
 
 @router.patch("/auth/me", response_model=ApiResponse)
@@ -478,7 +482,7 @@ def logout(
 
     token = authorization.replace("Bearer ", "")
     if token:
-        _token_blacklist[token] = time.time()
+        _add_to_blacklist(token)
 
     return ApiResponse(message="已退出登录，Token 已失效")
 
@@ -534,7 +538,7 @@ def change_password(
     if not user:
         raise HTTPException(status_code=404, detail="用户不存在")
 
-    if user.password_hash != _hash_password(data.current_password):
+    if not _verify_password(data.current_password, user.password_hash):
         raise HTTPException(status_code=400, detail="当前密码不正确")
 
     user.password_hash = _hash_password(data.new_password)

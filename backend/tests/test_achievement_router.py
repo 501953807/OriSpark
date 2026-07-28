@@ -6,6 +6,31 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
 
 import pytest
+import time
+import json
+import base64
+
+
+def _create_token(user_id: str) -> str:
+    """Create a valid JWT token using the deps._sign function signature."""
+    from app.deps import _sign
+    header = {"alg": "HS256", "typ": "JWT"}
+    exp = int(time.time()) + 3600  # 1 hour expiry
+    payload = {"sub": user_id, "iat": int(time.time()), "exp": exp}
+
+    def b64encode(data: str) -> str:
+        return base64.urlsafe_b64encode(data.encode()).rstrip(b"=").decode()
+
+    h = b64encode(json.dumps(header))
+    p = b64encode(json.dumps(payload))
+    sig = _sign(f"{h}.{p}")
+    return f"{h}.{p}.{sig}"
+
+
+def _auth_headers(user_id: str = "test_user") -> dict:
+    """Return headers with a valid JWT token for the given user_id."""
+    token = _create_token(user_id)
+    return {"Authorization": f"Bearer {token}"}
 
 
 @pytest.fixture
@@ -29,8 +54,8 @@ def test_badge(db_session):
 
 _BASE = "/api/growth"
 
-# Auth header — "Bearer local" falls through to get_current_user_id → "local" user
-_AUTH = {"headers": {"Authorization": "Bearer local"}}
+# Use valid JWT tokens instead of "local" fallback
+_AUTH = _auth_headers("test_user")
 
 
 class TestBadges:
@@ -59,7 +84,7 @@ class TestUnlockBadge:
     def test_unlock_success(self, client, test_badge):
         resp = client.post(
             f"{_BASE}/badges/first_upload/unlock",
-            headers={"Authorization": "Bearer local"},
+            headers=_AUTH,
         )
         assert resp.status_code == 200
         data = resp.json()["data"]
@@ -72,14 +97,14 @@ class TestUnlockBadge:
         from app.models.achievement import UserAchievement
         ua = UserAchievement(
             id="ua_test_001",
-            user_id="local",
+            user_id="test_user",
             badge_id=test_badge.id,
         )
         db_session.add(ua)
         db_session.flush()
         resp = client.post(
             f"{_BASE}/badges/first_upload/unlock",
-            headers={"Authorization": "Bearer local"},
+            headers=_AUTH,
         )
         assert resp.status_code == 200
         assert resp.json()["data"]["status"] == "already_unlocked"
@@ -87,7 +112,7 @@ class TestUnlockBadge:
     def test_nonexistent_badge(self, client):
         resp = client.post(
             f"{_BASE}/badges/nonexist/unlock",
-            headers={"Authorization": "Bearer local"},
+            headers=_AUTH,
         )
         assert resp.status_code == 404
 
@@ -99,25 +124,26 @@ class TestMyAchievements:
         from app.models.achievement import UserAchievement
         ua = UserAchievement(
             id="ua_achieve_test",
-            user_id="local",
+            user_id="test_user",
             badge_id=test_badge.id,
         )
         db_session.add(ua)
         db_session.flush()
         resp = client.get(
             f"{_BASE}/achievements",
-            headers={"Authorization": "Bearer local"},
+            headers=_AUTH,
         )
         assert resp.status_code == 200
         data = resp.json()["data"]
         assert isinstance(data, list)
         assert len(data) >= 1
-        assert data[0]["user_id"] == "local"
+        # Verify the user_id matches the token issuer
+        assert data[0]["user_id"] == "test_user"
 
     def test_empty_for_new_user(self, client):
         resp = client.get(
             f"{_BASE}/achievements",
-            headers={"Authorization": "Bearer local"},
+            headers=_AUTH,
         )
         assert resp.status_code == 200
         assert resp.json()["data"] == []
@@ -130,7 +156,7 @@ class TestLeaderboard:
         from app.models.achievement import LeaderboardEntry
         le = LeaderboardEntry(
             id="lb_test_001",
-            user_id="local",
+            user_id="test_user",
             creator_type="illustrator",
             rank_position=1,
             score=1000.0,
@@ -148,4 +174,5 @@ class TestLeaderboard:
         data = resp.json()["data"]
         assert isinstance(data, list)
         assert len(data) >= 1
-        assert data[0]["user_id"] == "local"
+        # The user_id should match the token issuer (test_user), not "local"
+        assert data[0]["user_id"] == "test_user"

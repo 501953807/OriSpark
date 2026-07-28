@@ -72,7 +72,15 @@ class TestChangePassword:
         data = res.json()
         assert data["message"] == "密码已修改"
 
-    def test_missing_fields(self, client):
-        """Missing fields should return 422 validation error."""
-        res = client.post("/api/auth/change-password", json={"current_password": "old"})
+    def test_missing_fields(self, client, db_session):
+        """Missing fields with valid auth should return 422 validation error."""
+        # Create a user and get token
+        _create_user(db_session, email="missing@test.com", password="oldpass123")
+        token = _create_token("missing@test.com")
+
+        res = client.post(
+            "/api/auth/change-password",
+            json={"current_password": "oldpass123"},  # missing new_password
+            headers={"Authorization": f"Bearer {token}"},
+        )
         assert res.status_code == 422

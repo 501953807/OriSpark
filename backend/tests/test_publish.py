@@ -1,12 +1,33 @@
 """Tests for publish (content distribution) endpoints."""
 
+import time
+import json
+import base64
 from datetime import date, datetime, timezone
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 
-def _auth_headers() -> dict:
-    return {"Authorization": "Bearer local"}
+def _create_token(user_id: str) -> str:
+    """Create a valid JWT token using the deps._sign function signature."""
+    from app.deps import _sign
+    header = {"alg": "HS256", "typ": "JWT"}
+    exp = int(time.time()) + 3600  # 1 hour expiry
+    payload = {"sub": user_id, "iat": int(time.time()), "exp": exp}
+
+    def b64encode(data: str) -> str:
+        return base64.urlsafe_b64encode(data.encode()).rstrip(b"=").decode()
+
+    h = b64encode(json.dumps(header))
+    p = b64encode(json.dumps(payload))
+    sig = _sign(f"{h}.{p}")
+    return f"{h}.{p}.{sig}"
+
+
+def _auth_headers(user_id: str = "test_user") -> dict:
+    """Return headers with a valid JWT token for the given user_id."""
+    token = _create_token(user_id)
+    return {"Authorization": f"Bearer {token}"}
 
 
 def _create_product(db_session: Session, **kwargs) -> dict:
