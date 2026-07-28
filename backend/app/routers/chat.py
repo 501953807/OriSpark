@@ -1,6 +1,6 @@
 """聊天 API 路由 — 会话列表、消息收发。"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
@@ -137,7 +137,7 @@ def list_messages(
         conv.participant_b_id if conv.participant_a_id == user_id
         else conv.participant_a_id
     )
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     for m in msgs:
         if m.sender_id == partner_id and m.is_read is None:
             m.is_read = now
@@ -173,8 +173,8 @@ def send_message(
 
     # Update conversation last message
     conv.last_message = content.strip()[:200]
-    conv.last_message_at = datetime.utcnow()
-    conv.updated_at = datetime.utcnow()
+    conv.last_message_at = datetime.now(timezone.utc)
+    conv.updated_at = datetime.now(timezone.utc)
 
     db.commit()
     db.refresh(msg)

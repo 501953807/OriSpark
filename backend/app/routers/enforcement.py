@@ -1,7 +1,7 @@
 """维权流水线 API 路由 - actions CRUD, evidence package, complaint submission, templates."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -131,9 +131,9 @@ async def update_action(
     if payload.status:
         kwargs = {}
         if payload.status == "complaint_filed":
-            kwargs["sent_at"] = datetime.utcnow()
+            kwargs["sent_at"] = datetime.now(timezone.utc)
         elif payload.status == "resolved":
-            kwargs["resolved_at"] = datetime.utcnow()
+            kwargs["resolved_at"] = datetime.now(timezone.utc)
 
         action = service_update_action_status(db, action_id, new_status=payload.status, **kwargs)
 
@@ -144,7 +144,7 @@ async def update_action(
         if value is not None:
             setattr(action, field, value)
 
-    action.updated_at = datetime.utcnow()
+    action.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(action)
 
@@ -258,7 +258,7 @@ async def submit_complaint(
     )
     db.add(material)
 
-    service_update_action_status(db, action_id, new_status="complaint_filed", sent_at=datetime.utcnow())
+    service_update_action_status(db, action_id, new_status="complaint_filed", sent_at=datetime.now(timezone.utc))
     db.refresh(action)
 
     return ComplaintSubmitResponse(

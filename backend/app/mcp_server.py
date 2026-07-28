@@ -17,7 +17,7 @@ import json
 import hashlib
 import time
 import threading
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Optional, Any
 from pathlib import Path
 
@@ -467,7 +467,7 @@ def _convert_to_wangdiantong(feed_data: dict, products: list) -> dict:
             "barcode": "",
             "weight": getattr(p, 'weight_grams', None) or 0,
             "is_valid": 1,
-            "modified": datetime.utcnow().isoformat(),
+            "modified": datetime.now(timezone.utc).isoformat(),
         })
 
     return {
@@ -515,7 +515,7 @@ def _convert_to_jushuitan(feed_data: dict, products: list) -> dict:
             "pic_big": "",
             "weight": getattr(p, 'weight_grams', None) or 0,
             "enabled": True,
-            "modified": datetime.utcnow().isoformat(),
+            "modified": datetime.now(timezone.utc).isoformat(),
         })
 
     return {
@@ -571,7 +571,7 @@ def _convert_to_wanliuniu(feed_data: dict, products: list) -> dict:
             "unit_name": "件",
             "unit_code": "PCS",
             "is_enabled": True,
-            "modified": datetime.utcnow().isoformat(),
+            "modified": datetime.now(timezone.utc).isoformat(),
         })
 
     return {

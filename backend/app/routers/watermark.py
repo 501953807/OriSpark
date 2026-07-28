@@ -2,7 +2,7 @@
 Phase 2: 摄影师水印预设管理
 端点: 6 (watermark)"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.orm import Session
@@ -139,7 +139,7 @@ def update_preset(preset_id: str, payload: UpdatePresetPayload, db: Session = De
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(preset, key, value)
-    preset.updated_at = datetime.utcnow()
+    preset.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

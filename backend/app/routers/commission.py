@@ -1,7 +1,7 @@
 """委托项目管理 API 路由 — 对应: docs/modules-v5/06-business-management.md
 端点: 9 (commission)"""
 
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 from decimal import Decimal
 import json
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -743,7 +743,7 @@ def get_dashboard(db: Session = Depends(get_db)):
     )
     pending_payment_count = len(pending_payments)
 
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     received = (
         db.query(CommissionPayment)

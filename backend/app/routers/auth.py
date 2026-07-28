@@ -102,7 +102,7 @@ def _migrate_json_users(db: Session):
             password_hash=data.get("password_hash"),
             role="user",
             status="active",
-            created_at=datetime.fromisoformat(data["created_at"]) if data.get("created_at") else datetime.utcnow(),
+            created_at=datetime.fromisoformat(data["created_at"]) if data.get("created_at") else datetime.now(timezone.utc),
         )
         db.add(user)
         migrated += 1
@@ -229,7 +229,7 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         user.password_hash = _hash_password(data.password)
 
     # 更新登录信息
-    user.last_login_at = datetime.utcnow()
+    user.last_login_at = datetime.now(timezone.utc)
     user.last_login_provider = "email"
     user.login_count = (user.login_count or 0) + 1
 

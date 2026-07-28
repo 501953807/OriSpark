@@ -2,7 +2,7 @@
 Phase 3: 横竖屏版本管理
 端点: 10 (work_variants)"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -154,7 +154,7 @@ def update_group(group_id: str, payload: GroupUpdate, db: Session = Depends(get_
     for key in ("name", "description"):
         if key in payload.model_fields_set:
             setattr(group, key, getattr(payload, key))
-    group.updated_at = datetime.utcnow()
+    group.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -326,7 +326,7 @@ def generate_variants(payload: GenerateVariantsRequest, db: Session = Depends(ge
     # Use the work's width as base, scale heights accordingly
     base_width = 1920
     variants_created = 0
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
 
     for name, w_num, h_num in standard_ratios:
         # Already exists? skip

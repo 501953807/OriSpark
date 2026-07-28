@@ -2,7 +2,7 @@
 Phase 2: 创作者订阅层级
 端点: 7 (subscription)"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -108,7 +108,7 @@ def update_tier(tier_id: str, payload: UpdateTierPayload, db: Session = Depends(
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(tier, key, value)
-    tier.updated_at = datetime.utcnow()
+    tier.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:
@@ -188,15 +188,15 @@ def subscribe(payload: SubscribePayload, db: Session = Depends(get_db)):
         user_id=user_id,
         tier_id=tier_id,
         status="active",
-        subscribed_at=datetime.utcnow(),
+        subscribed_at=datetime.now(timezone.utc),
         expires_at=datetime(9999, 12, 31) if tier.period == "yearly"
-        else datetime.utcnow().replace(year=datetime.utcnow().year + 1),
+        else datetime.now(timezone.utc).replace(year=datetime.now(timezone.utc).year + 1),
     )
     # Cancel previous subscriptions
     db.query(SubscriptionSubscriber).filter(
         SubscriptionSubscriber.user_id == user_id,
         SubscriptionSubscriber.status == "active",
-    ).update({"status": "cancelled", "cancelled_at": datetime.utcnow()})
+    ).update({"status": "cancelled", "cancelled_at": datetime.now(timezone.utc)})
     db.add(sub)
     try:
         db.commit()
@@ -218,7 +218,7 @@ def cancel_subscription(payload: CancelSubscriptionPayload, db: Session = Depend
     if not sub:
         raise HTTPException(status_code=404, detail="无活跃订阅")
     sub.status = "cancelled"
-    sub.cancelled_at = datetime.utcnow()
+    sub.cancelled_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

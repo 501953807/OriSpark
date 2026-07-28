@@ -4,7 +4,7 @@
 响应字段使用 snake_case（Pydantic 默认），前端已对齐。
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
@@ -201,7 +201,7 @@ def list_public_contracts(
         if status:
             q = q.filter(ContractInstance.status == status)
         if recent:
-            cutoff = datetime.utcnow() - timedelta(days=30)
+            cutoff = datetime.now(timezone.utc) - timedelta(days=30)
             q = q.filter(ContractInstance.published_at >= cutoff)
         contracts = q.order_by(
             ContractInstance.published_at.desc().nullslast()
@@ -214,7 +214,7 @@ def list_public_contracts(
 @router.get("/public/dashboard-stats", response_model=DashboardStatsOut)
 def get_dashboard_stats(db: Session = Depends(get_public_db)):
     """平台统计数据（首页仪表盘）."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     month_ago = now - timedelta(days=30)
 
     def count_works():
