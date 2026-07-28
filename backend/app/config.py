@@ -1,5 +1,7 @@
 """应用配置管理."""
 
+import os
+import secrets
 from pathlib import Path
 from typing import Optional
 
@@ -19,7 +21,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "OriStudio"
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
-    SECRET_KEY: str = "change-me-to-a-random-string"
+    SECRET_KEY: str = os.environ["SECRET_KEY"]
 
     # 数据库
     DATABASE_URL: str = "sqlite+aiosqlite:///./data/oristudio.db"
