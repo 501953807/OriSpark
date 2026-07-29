@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import get_current_user_id
 from app.schemas.capability import (
     DimensionCreate,
     DimensionSchema,
@@ -22,7 +23,7 @@ from app.services.capability_service import (
     AI_VULNERABILITY,
 )
 from app.models.capability import CapabilityDimension
-from app.services.capability_service import AI_VULNERABILITY
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/capability", tags=["creator-capability"])
 
@@ -36,9 +37,10 @@ def list_dimensions(db: Session = Depends(get_db)):
 
 
 @router.post("/assessments", response_model=AssessmentResponse)
-def post_assessment(req: AssessmentCreate, db: Session = Depends(get_db)):
+def post_assessment(req: AssessmentCreate, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """创建能力评估."""
-    result = create_assessment(db, "current_user", req.dimension_scores)
+    result = create_assessment(db, actor_id, req.dimension_scores)
+    AuditLog.log(db, "create_assessment", f"Created assessment by {actor_id}", actor_id)
     return result
 
 

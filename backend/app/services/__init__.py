@@ -10,6 +10,7 @@ from app.services.websocket_manager import manager, ConnectionManager
 from app.services.evidence_service import generate_evidence_package, generate_complaint_letter, generate_lawyer_letter
 from app.services.c2pa_service import generate_c2pa_manifest, embed_c2pa_metadata, verify_c2pa_metadata
 from app.services.auto_tag_service import auto_generate_tags, suggest_tags
+from app.services.enforcement_service import EnforcementWorkflow
 
 __all__ = [
     "compute_sha256", "compute_md5", "verify_hash",
@@ -22,4 +23,5 @@ __all__ = [
     "generate_evidence_package", "generate_complaint_letter", "generate_lawyer_letter",
     "generate_c2pa_manifest", "embed_c2pa_metadata", "verify_c2pa_metadata",
     "auto_generate_tags", "suggest_tags",
+    "EnforcementWorkflow",
 ]

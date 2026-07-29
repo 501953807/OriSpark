@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import get_current_user_id
 from app.schemas.revenue import (
     RevenueRecordCreate,
     RevenueRecordSchema,
@@ -16,17 +17,17 @@ from app.services.revenue_service import (
     calculate_diversity_index,
 )
 from app.models.publish import RevenueRecord
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/revenue", tags=["revenue"])
-
-
 @router.post("/records", response_model=RevenueRecordSchema)
-def post_record(body: RevenueRecordCreate, db: Session = Depends(get_db)):
+def post_record(body: RevenueRecordCreate, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """记录一笔收入."""
     try:
-        record = record_revenue(db, "current_user", body.income_category, body.amount,
+        record = record_revenue(db, actor_id, body.income_category, body.amount,
                                 body.currency, body.platform, body.recorded_date,
                                 body.source_description)
+        AuditLog.log(db, "record_revenue", f"Recorded revenue by {actor_id}", actor_id)
         return RevenueRecordSchema(
             id=record.id, user_id=record.user_id or "",
             income_category=record.income_category or "", amount=record.amount,

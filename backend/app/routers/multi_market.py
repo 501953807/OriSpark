@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import get_current_user_id
 from app.schemas.multi_market import (
     MarketInfoSchema,
     GeoArbitrageRequest,
@@ -18,6 +19,7 @@ from app.services.multi_market_service import (
     create_expansion_plan,
     get_tax_guide,
 )
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/multi-market", tags=["multi-market"])
 
@@ -46,12 +48,12 @@ def list_phases():
 
 
 @router.post("/plans", response_model=dict)
-def create_plan(req: ExpansionPlanCreate, db: Session = Depends(get_db)):
+def create_plan(req: ExpansionPlanCreate, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """创建出海规划."""
     result = create_expansion_plan(
-        db, "current_user",
-        req.target_markets, req.phase, req.start_date, req.notes,
+        db, actor_id, req.target_markets, req.phase, req.start_date, req.notes,
     )
+    AuditLog.log(db, "create_expansion_plan", f"Created expansion plan by {actor_id}", actor_id)
     return result
 
 

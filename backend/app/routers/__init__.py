@@ -13,6 +13,7 @@ from app.routers.versions import router as versions_router
 from app.routers.batch_works import router as batch_works_router
 from app.routers.auth import router as auth_router
 from app.routers.system import router as system_router
+from app.routers.video_fingerprint import router as video_fingerprint_router
 
 __all__ = [
     "dashboard_router",
@@ -28,4 +29,5 @@ __all__ = [
     "batch_works_router",
     "auth_router",
     "system_router",
+    "video_fingerprint_router",
 ]

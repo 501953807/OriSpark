@@ -39,7 +39,7 @@ class InnocenceProof(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # 关系 - 引用对应的工作
-    work = relationship("Work", backref="innocence_proofs", cascade="all, delete-orphan")
+    work = relationship("Work", backref="innocence_proofs")
 
     __table_args__ = (
         Index("idx_innocence_work_id", "work_id"),

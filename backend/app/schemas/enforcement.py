@@ -175,3 +175,54 @@ class FromWorkResponse(BaseModel):
     actions: Optional[list[dict[str, Any]]] = None
     action_ids: Optional[list[str]] = None
     message: Optional[str] = None
+
+
+# ==============================================================================
+# Workflow orchestration schemas
+# ==============================================================================
+
+
+class TransitionRequest(BaseModel):
+    """Workflow transition request."""
+
+    target_status: str = Field(..., description="Target status to transition to")
+    reason: Optional[str] = Field(None, description="Reason for the transition")
+    actor_id: Optional[str] = Field(None, description="Actor initiating the transition")
+
+
+class ConfirmRequest(BaseModel):
+    """Confirm review request."""
+
+    review_note: Optional[str] = Field(None, description="Review notes")
+    actor_id: Optional[str] = Field(None, description="Actor confirming")
+
+
+class EvidenceGatherRequest(BaseModel):
+    """Gather evidence request."""
+
+    evidence_data: dict = Field(..., description="Evidence data including work_id and evidences")
+    actor_id: Optional[str] = Field(None, description="Actor gathering evidence")
+
+
+class ResolveRequest(BaseModel):
+    """Resolve enforcement action request."""
+
+    resolution_type: Literal["takedown", "settlement", "dismissed", "litigation_started"] = Field(
+        ..., description="Type of resolution"
+    )
+    compensation_amount: Optional[float] = Field(None, description="Compensation amount")
+    resolution_note: Optional[str] = Field(None, description="Resolution notes")
+    actor_id: Optional[str] = Field(None, description="Actor resolving")
+
+
+class WorkflowStatusResponse(BaseModel):
+    """Workflow status response."""
+
+    action_id: str
+    status: str
+    action_type: str
+    platform: str
+    created_at: datetime
+    updated_at: datetime
+    next_possible: list[str]
+    all_materials: Optional[list[dict]] = None
