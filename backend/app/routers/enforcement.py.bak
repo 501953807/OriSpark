@@ -1,5 +1,4 @@
-"""维权流水线 API 路由 — actions CRUD, evidence package, complaint submission, templates."""
-
+"""维权流水线 API 路由 - actions CRUD, evidence package, complaint submission, templates."""
 
 import uuid
 from datetime import datetime, timezone
@@ -8,7 +7,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import get_current_user_id, is_admin
 from app.models.enforcement import (
     ComplaintMaterial,
     EnforcementAction,
@@ -38,13 +36,11 @@ from app.services.enforcement import (
     create_action_from_work as service_create_action_from_work,
 )
 from app.services.enforcement_service import EnforcementWorkflow
-from app.utils.audit import AuditLog
-
 
 router = APIRouter(prefix="/enforcement", tags=["Enforcement"])
 
 
-# ── helpers ────────────────────────────────────────────────────────
+# ── helpers ───────────────────────────────────────────────────────
 
 
 def _enrich_action_response(action: EnforcementAction, db: Session) -> EnforcementActionResponse:
@@ -75,13 +71,12 @@ def _enrich_action_response(action: EnforcementAction, db: Session) -> Enforceme
     return result
 
 
-# ── 1. POST /actions ────────────────────────────────────────────────
+# ── 1. POST /actions ─────────────────────────────────────────────
 
 
 @router.post("/actions", response_model=EnforcementActionResponse, status_code=201)
 async def create_action(
     payload: EnforcementActionCreate,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Create an enforcement action from a monitor result."""
@@ -89,15 +84,13 @@ async def create_action(
     if not mr:
         raise HTTPException(status_code=404, detail="MonitorResult not found")
 
-    action_id = str(uuid.uuid4().hex[:32])
+    action_id = uuid.uuid4().hex
     action = EnforcementAction(
         id=action_id,
         monitor_result_id=payload.monitor_result_id,
         action_type=payload.action_type,
         platform=payload.platform,
         status="pending_review",
-        operator_id=actor_id,  # 🔑 Authenticated user set as operator
-        created_at=datetime.now(timezone.utc),
     )
 
     if payload.template_id:
@@ -112,54 +105,34 @@ async def create_action(
     db.commit()
     db.refresh(action)
 
-    # 🔑 Log creation
-    AuditLog.log(db, "create_enforcement_action", f"Created action {action_id} for monitor result {payload.monitor_result_id}", actor_id)
-
     return _enrich_action_response(action, db)
 
 
-# ── 2. GET /actions/{action_id} ────────────────────────────────────
+# ── 2. GET /actions/{action_id} ──────────────────────────────────
 
 
 @router.get("/actions/{action_id}", response_model=EnforcementActionResponse)
-async def get_action(
-    action_id: str,
-    actor_id: str = Depends(get_current_user_id),
-    db: Session = Depends(get_db),
-):
+async def get_action(action_id: str, db: Session = Depends(get_db)):
     """Get enforcement action detail with embedded work info."""
     action = db.query(EnforcementAction).filter(EnforcementAction.id == action_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Enforcement action not found")
-
-    # 🔑 权限校验：只有行动创建者或管理员可访问
-    if action.operator_id != actor_id and not is_admin(actor_id):
-        raise HTTPException(403, "Forbidden: You cannot access this enforcement action")
-
-    # 🔑 Log view
-    AuditLog.log(db, "view_enforcement_action", f"Viewed action {action_id}", actor_id)
-
     return _enrich_action_response(action, db)
 
 
-# ── 3. PATCH /actions/{action_id} ──────────────────────────────────
+# ── 3. PATCH /actions/{action_id} ────────────────────────────────
 
 
 @router.patch("/actions/{action_id}", response_model=EnforcementActionResponse)
 async def update_action(
     action_id: str,
     payload: EnforcementActionUpdate,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Update enforcement action (state machine enforced)."""
     action = db.query(EnforcementAction).filter(EnforcementAction.id == action_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Enforcement action not found")
-
-    # 🔑 权限校验：只有行动创建者或管理员可更新
-    if action.operator_id != actor_id and not is_admin(actor_id):
-        raise HTTPException(403, "Forbidden: You cannot update this enforcement action")
 
     if payload.status:
         kwargs = {}
@@ -168,7 +141,7 @@ async def update_action(
         elif payload.status == "resolved":
             kwargs["resolved_at"] = datetime.now(timezone.utc)
 
-        action = service_update_action_status(db, action_id, new_status=payload.status, **kwargs, actor_id=actor_id)
+        action = service_update_action_status(db, action_id, new_status=payload.status, **kwargs)
 
     # Apply non-status fields
     for field in ["complaint_text", "template_used", "response_text", "resolution_type",
@@ -181,29 +154,21 @@ async def update_action(
     db.commit()
     db.refresh(action)
 
-    # 🔑 Log update
-    AuditLog.log(db, "update_enforcement_action", f"Updated action {action_id} status={payload.status}", actor_id)
-
     return _enrich_action_response(action, db)
 
 
-# ── 4. POST /actions/{action_id}/evidence ──────────────────────────
+# ── 4. POST /actions/{action_id}/evidence ────────────────────────
 
 
 @router.post("/actions/{action_id}/evidence")
 async def gather_evidence(
     action_id: str,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Gather evidence package and create complaint material."""
     action = db.query(EnforcementAction).filter(EnforcementAction.id == action_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Enforcement action not found")
-
-    # 🔑 权限校验：只有行动相关方可收集证据
-    if action.operator_id != actor_id and not is_admin(actor_id):
-        raise HTTPException(403, "Forbidden: You cannot collect evidence for this action")
 
     mr = db.query(MonitorResult).filter(MonitorResult.id == action.monitor_result_id).first()
     if not mr:
@@ -226,9 +191,6 @@ async def gather_evidence(
     service_update_action_status(db, action_id, new_status="evidence_gathered")
     db.refresh(action)
 
-    # 🔑 Log evidence gathering
-    AuditLog.log(db, "gather_evidence", f"Gathered evidence for action {action_id}", actor_id)
-
     return {
         "status": "evidence_gathered",
         "material_path": zip_path,
@@ -236,24 +198,19 @@ async def gather_evidence(
     }
 
 
-# ── 5. POST /actions/{action_id}/submit ────────────────────────────
+# ── 5. POST /actions/{action_id}/submit ──────────────────────────
 
 
 @router.post("/actions/{action_id}/submit", response_model=ComplaintSubmitResponse)
 async def submit_complaint(
     action_id: str,
-    payload: ComplaintSubmitRequest,
-    actor_id: str = Depends(get_current_user_id),
+    _payload: ComplaintSubmitRequest = ComplaintSubmitRequest(),
     db: Session = Depends(get_db),
 ):
     """Submit complaint using template variables."""
     action = db.query(EnforcementAction).filter(EnforcementAction.id == action_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Enforcement action not found")
-
-    # 🔑 权限校验：只有行动相关方可提交投诉
-    if action.operator_id != actor_id and not is_admin(actor_id):
-        raise HTTPException(403, "Forbidden: You cannot submit complaint for this action")
 
     mr = db.query(MonitorResult).filter(MonitorResult.id == action.monitor_result_id).first()
     if not mr:
@@ -273,7 +230,9 @@ async def submit_complaint(
     template_body = ""
     prefilled_url = None
     if action.template_used:
-        tpl = db.query(EnforcementTemplate).filter(EnforcementTemplate.title == action.template_used).first()
+        tpl = db.query(EnforcementTemplate).filter(
+            EnforcementTemplate.title == action.template_used
+        ).first()
         if tpl:
             template_body = tpl.body_template
             prefilled_url = tpl.filing_url
@@ -305,11 +264,8 @@ async def submit_complaint(
     )
     db.add(material)
 
-    service_update_action_status(db, action_id, new_status="complaint_filed", sent_at=datetime.now(timezone.utc), actor_id=actor_id)
+    service_update_action_status(db, action_id, new_status="complaint_filed", sent_at=datetime.now(timezone.utc))
     db.refresh(action)
-
-    # 🔑 Log complaint submission
-    AuditLog.log(db, "submit_complaint", f"Submitted complaint for action {action_id}", actor_id)
 
     return ComplaintSubmitResponse(
         action_id=action_id,
@@ -327,35 +283,19 @@ async def submit_complaint(
 async def transition_action(
     action_id: str,
     request: TransitionRequest,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Transition enforcement action through workflow steps."""
-    # 🔑 权限校验：请求中的 actor_id 必须与认证用户一致
-    if request.actor_id != actor_id:
-        raise HTTPException(400, "actor_id does not match authenticated user")
-
     try:
         workflow = EnforcementWorkflow(db, action_id)
-
         if not workflow.can_transition(request.target_status):
             raise HTTPException(
                 status_code=400,
                 detail=f"Cannot transition to {request.target_status} from current status",
             )
-
-        # Ensure the requesting user has permission
-        if workflow.action.operator_id != actor_id and not is_admin(actor_id):
-            raise HTTPException(403, "Forbidden: You do not have permission to transition this action")
-
-        workflow.transition_to(request.target_status, actor_id, request.reason or "")
+        workflow.transition_to(request.target_status, request.actor_id, request.reason or "")
         db.commit()
-
-        # 🔑 Log transition
-        AuditLog.log(db, "transition_action", f"Transitioned action {action_id} to {request.target_status}", actor_id)
-
         return {"status": workflow.action.status, "message": f"Transitioned to {request.target_status}"}
-
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
@@ -366,28 +306,14 @@ async def transition_action(
 async def confirm_action(
     action_id: str,
     request: ConfirmRequest,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Confirm review step."""
-    # 🔑 权限校验：请求中的 actor_id 必须与认证用户一致
-    if request.actor_id != actor_id:
-        raise HTTPException(400, "actor_id does not match authenticated user")
-
     try:
         workflow = EnforcementWorkflow(db, action_id)
-
-        if workflow.action.operator_id != actor_id and not is_admin(actor_id):
-            raise HTTPException(403, "Forbidden: You cannot confirm this action")
-
-        workflow.confirm_review(actor_id, request.review_note or "")
+        workflow.confirm_review(request.actor_id, request.review_note or "")
         db.commit()
-
-        # 🔑 Log confirmation
-        AuditLog.log(db, "confirm_action", f"Confirmed action {action_id}", actor_id)
-
         return {"status": workflow.action.status, "message": "Review confirmed"}
-
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -396,28 +322,14 @@ async def confirm_action(
 async def gather_action_evidence(
     action_id: str,
     request: EvidenceGatherRequest,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Gather evidence and transition to evidence_gathered stage."""
-    # 🔑 权限校验：请求中的 actor_id 必须与认证用户一致
-    if request.actor_id != actor_id:
-        raise HTTPException(400, "actor_id does not match authenticated user")
-
     try:
         workflow = EnforcementWorkflow(db, action_id)
-
-        if workflow.action.operator_id != actor_id and not is_admin(actor_id):
-            raise HTTPException(403, "Forbidden: You cannot gather evidence for this action")
-
-        workflow.gather_evidence(request.evidence_data, actor_id, "Evidence collection notes")
+        workflow.gather_evidence(request.evidence_data, request.actor_id, "Evidence collection notes")
         db.commit()
-
-        # 🔑 Log evidence gathering
-        AuditLog.log(db, "gather_evidence", f"Gathered evidence for action {action_id}", actor_id)
-
         return {"status": workflow.action.status, "message": "Evidence gathered"}
-
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -426,7 +338,6 @@ async def gather_action_evidence(
 async def resolve_action(
     action_id: str,
     request: ResolveRequest,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Resolve the enforcement action."""
@@ -436,58 +347,34 @@ async def resolve_action(
             status_code=400,
             detail=f"Invalid resolution type. Must be one of {valid_resolutions}",
         )
-
-    # 🔑 权限校验：请求中的 actor_id 必须与认证用户一致
-    if request.actor_id != actor_id:
-        raise HTTPException(400, "actor_id does not match authenticated user")
-
     try:
         workflow = EnforcementWorkflow(db, action_id)
-
-        if workflow.action.operator_id != actor_id and not is_admin(actor_id):
-            raise HTTPException(403, "Forbidden: You cannot resolve this action")
-
         workflow.resolve(
             request.resolution_type,
             request.compensation_amount,
             request.resolution_note or "",
-            actor_id,
+            request.actor_id,
         )
         db.commit()
-
-        # 🔑 Log resolution
-        AuditLog.log(db, "resolve_action", f"Resolved action {action_id} with type {request.resolution_type}", actor_id)
-
         return {"status": workflow.action.status, "message": f"Action resolved with type {request.resolution_type}"}
-
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/actions/{action_id}/workflow-status", response_model=WorkflowStatusResponse)
-async def get_workflow_status(
-    action_id: str,
-    actor_id: str = Depends(get_current_user_id),
-    db: Session = Depends(get_db),
-):
+async def get_workflow_status(action_id: str, db: Session = Depends(get_db)):
     """Get current workflow status and possible next actions."""
     try:
         workflow = EnforcementWorkflow(db, action_id)
-
-        # 🔑 权限校验：只有行动相关方可查看工作流状态
-        if workflow.action.operator_id != actor_id and not is_admin(actor_id):
-            raise HTTPException(403, "Forbidden: You do not have access to this action's workflow status")
-
         status = workflow.get_status_summary()
-
         # Convert to dict for serialization
         result = {
             "action_id": workflow.action_id,
             "status": workflow.action.status,
             "action_type": workflow.action.action_type,
             "platform": workflow.action.platform,
-            "created_at": workflow.action.created_at.isoformat(),
-            "updated_at": workflow.action.updated_at.isoformat(),
+            "created_at": workflow.action.created_at,
+            "updated_at": workflow.action.updated_at,
             "next_possible": list(workflow.VALID_TRANSITIONS.get(workflow.action.status, [])),
             "all_materials": [
                 {
@@ -500,30 +387,21 @@ async def get_workflow_status(
                 for m in workflow.get_all_materials()
             ],
         }
-
-        # 🔑 Log status check
-        AuditLog.log(db, "check_workflow_status", f"Checked workflow status for action {action_id}", actor_id)
-
         return WorkflowStatusResponse.model_validate(result)
-
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
-# ── 6. GET /templates ───────────────────────────────────────────────
+# ── 6. GET /templates ────────────────────────────────────────────
 
 
 @router.get("/templates", response_model=list[EnforcementTemplateResponse])
 async def list_templates(
     platform: str | None = Query(None),
     jurisdiction: str | None = Query(None),
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """List enforcement templates with optional filters."""
-    # 🔑 Log template listing
-    AuditLog.log(db, "list_templates", f"Listed templates (platform={platform}, jurisdiction={jurisdiction})", actor_id)
-
     q = db.query(EnforcementTemplate)
     if platform:
         q = q.filter(EnforcementTemplate.platform == platform)
@@ -532,19 +410,12 @@ async def list_templates(
     return q.all()
 
 
-# ── 7. POST /templates/seed ─────────────────────────────────────────
+# ── 7. POST /templates/seed ──────────────────────────────────────
 
 
 @router.post("/templates/seed")
-async def seed_templates(
-    actor_id: str = Depends(get_current_user_id),
-    db: Session = Depends(get_db),
-):
+async def seed_templates(db: Session = Depends(get_db)):
     """Seed 3 default enforcement templates if none exist."""
-    # 🔑 权限校验：仅允许管理员填充模板
-    if not is_admin(actor_id):
-        raise HTTPException(403, "Forbidden: Only admin can seed templates")
-
     existing = db.query(EnforcementTemplate).count()
     if existing > 0:
         return {"status": "skipped", "message": "Templates already seeded", "count": existing}
@@ -584,7 +455,7 @@ async def seed_templates(
                 "文件类型为 {{work_file_type}}。\n\n"
                 "发现贵平台存在以下侵权行为：\n"
                 "侵权链接：{{infringement_url}}\n\n"
-                "根据《中华人民共和国著作权法"
+                "根据《中华人民共和国著作权法》"
                 "及相关法规，请贵平台在收到本通知"
                 "后及时删除或屏蔽侵权内容。\n\n"
                 "权属证明：已随本通知附上\n"
@@ -626,59 +497,47 @@ async def seed_templates(
     db.commit()
 
     count = db.query(EnforcementTemplate).count()
-
-    # 🔑 Log template seeding
-    AuditLog.log(db, "seed_templates", f"Seeded {count} enforcement templates", actor_id)
-
     return {"status": "seeded", "message": f"Seeded {count} templates", "count": count}
 
 
-# ── 8. POST /actions/from-work/{work_id} ────────────────────────────
+# ── 8. POST /actions/from-work/{work_id} ────────────────────────
 
 
 @router.post("/actions/from-work/{work_id}")
 async def create_action_from_work_endpoint(
     work_id: str,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """Bridge endpoint: create enforcement actions directly from a work."""
-    # 🔑 Log action creation from work
-    AuditLog.log(db, "create_action_from_work", f"Created enforcement action for work {work_id}", actor_id)
-
-    result = service_create_action_from_work(db, work_id, actor_id)
+    result = service_create_action_from_work(db, work_id)
     return result
 
 
-# ── 9. GET /actions/by-work/{work_id} ──────────────────────────────
+# ── 9. GET /actions/by-work/{work_id} ──────────────────────────
 
 
 @router.get("/actions/by-work/{work_id}")
 async def list_actions_by_work(
     work_id: str,
-    actor_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
     """List all enforcement actions linked to a work."""
-    # 🔑 Log action list by work
-    AuditLog.log(db, "list_actions_by_work", f"Listed actions for work {work_id}", actor_id)
-
     task_ids = [
-        t.id for t in db.query(MonitorTask).filter(MonitorTask.work_id == work_id).all()
+        t.id for t in db.query(MonitorTask.id).filter(
+            MonitorTask.work_id == work_id
+        ).all()
     ]
-
     result_ids = [
-        mr.id for mr in db.query(MonitorResult).filter(MonitorResult.task_id.in_(task_ids)).all()
+        mr.id for mr in db.query(MonitorResult.id).filter(
+            MonitorResult.task_id.in_(task_ids)
+        ).all()
     ]
-
     if not result_ids:
         return []
-
     actions = (
         db.query(EnforcementAction)
         .filter(EnforcementAction.monitor_result_id.in_(result_ids))
         .order_by(EnforcementAction.created_at.desc())
         .all()
     )
-
     return [_enrich_action_response(a, db) for a in actions]

@@ -115,7 +115,7 @@ def update_config(config_id: str, payload: UpdateConfigPayload, db: Session = De
     update_data = payload.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(config, key, value)
-    config.updated_at = datetime.now(timezone.utc)
+    config.updated_at = datetime.utcnow()
     try:
         db.commit()
     except Exception:

@@ -294,12 +294,12 @@ class VideoFingerprintService:
             # Query all stored frame fingerprints in one pass
             all_fps = db.query(VideoFrameFingerprint).all()
 
-            # Group by work_id for batch comparison
+            # Group by video_work_id for batch comparison
             groups: dict[str, list[VideoFrameFingerprint]] = {}
             for fp in all_fps:
-                groups.setdefault(fp.work_id, []).append(fp)
+                groups.setdefault(fp.video_work_id, []).append(fp)
 
-            # Map each frame index → {work_id: total_matches}
+            # Map each frame index → {video_work_id: total_matches}
             source_frame_hits: dict[str, dict[str, list[int]]] = {}
 
             for local_idx, (_, local_hash) in enumerate(frame_hashes):
@@ -309,7 +309,7 @@ class VideoFingerprintService:
                     matching_frame_numbers: list[int] = []
                     for wf in work_frames:
                         try:
-                            stored_int = int(wf.frame_hash, 16)
+                            stored_int = int(wf.perceptual_hash, 16)
                         except (ValueError, TypeError):
                             continue
                         dist = self.hamming_distance(local_hash, stored_int)
@@ -342,7 +342,7 @@ class VideoFingerprintService:
                         for wf in wf_list:
                             if wf.frame_number in all_frame_numbers:
                                 try:
-                                    stored_int = int(wf.frame_hash, 16)
+                                    stored_int = int(wf.perceptual_hash, 16)
                                     dist = self.hamming_distance(fh_hash, stored_int)
                                     avg_dist_sum += dist
                                     count_pairs += 1

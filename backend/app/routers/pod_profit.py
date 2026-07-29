@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import require_auth
+from app.deps import get_current_user_id
 from app.schemas.pod_profit import (
     ProductConfigCreate, PricingSimulation, SaleRecord,
     ProfitResult, DesignSummary, PodOverview,
@@ -13,16 +13,18 @@ from app.services.pod_profit_service import (
     get_or_create_product, simulate_pricing, log_sale,
     get_design_profit_summary, get_pod_overview,
 )
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/pod-profit", tags=["pod-profit"])
 
 
 @router.post("/product-config")
-def create_product_config(data: ProductConfigCreate, db: Session = Depends(get_db)):
+def create_product_config(data: ProductConfigCreate, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """创建/更新 POD 产品配置."""
     product = get_or_create_product(
-        db, "current_user", data.platform, data.product_type, data.markup_rate,
+        db, actor_id, data.platform, data.product_type, data.markup_rate,
     )
+    AuditLog.log(db, "create_pod_product", f"Created product {data.platform} by {actor_id}", actor_id)
     return {
         "id": product.id,
         "platform": product.platform,
@@ -42,10 +44,10 @@ def simulate(data: ProductConfigCreate):
 
 
 @router.post("/log-sale", response_model=ProfitResult)
-def record_sale(data: SaleRecord, db: Session = Depends(get_db)):
+def record_sale(data: SaleRecord, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """记录一笔 POD 销售."""
     result = log_sale(
-        db, "current_user", None,
+        db, actor_id,
         platform=data.platform,
         product_type=data.product_type,
         sale_price_usd=data.sale_price_usd,
@@ -54,19 +56,24 @@ def record_sale(data: SaleRecord, db: Session = Depends(get_db)):
         platform_fee_pct=data.platform_fee_pct,
         exchange_rate=data.exchange_rate,
     )
+    AuditLog.log(db, "record_pod_sale", f"Recorded sale by {actor_id}", actor_id)
     return result
 
 
 @router.get("/designs-summary", response_model=list[DesignSummary])
-def designs_summary(db: Session = Depends(get_db)):
+def designs_summary(actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """获取各设计作品的利润汇总."""
-    return get_design_profit_summary(db, "current_user")
+    result = get_design_profit_summary(db, actor_id)
+    AuditLog.log(db, "view_designs_summary", f"Viewed design summary by {actor_id}", actor_id)
+    return result
 
 
 @router.get("/overview", response_model=PodOverview)
-def overview(db: Session = Depends(get_db)):
+def overview(actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """获取 POD 整体概览."""
-    return get_pod_overview(db, "current_user")
+    result = get_pod_overview(db, actor_id)
+    AuditLog.log(db, "view_pod_overview", f"Viewed pod overview by {actor_id}", actor_id)
+    return result
 
 
 # ============================================================================

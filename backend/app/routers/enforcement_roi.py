@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import get_current_user_id
 from app.schemas.enforcement_roi import (
     EnforcementCaseCreate,
     EnforcementCaseResponse,
@@ -22,6 +23,7 @@ from app.services.enforcement_roi_service import (
     save_enforcement_case,
     get_user_cases,
 )
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/enforcement-roi", tags=["enforcement-roi"])
 
@@ -83,13 +85,16 @@ def get_reference_detail(case_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/cases", response_model=EnforcementCaseResponse)
-def save_case(req: EnforcementCaseCreate, db: Session = Depends(get_db)):
+def save_case(req: EnforcementCaseCreate, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """保存维权案例记录."""
-    result = save_enforcement_case(db, "current_user", req.model_dump())
+    result = save_enforcement_case(db, actor_id, req.model_dump())
+    AuditLog.log(db, "save_enforcement_case", f"Saved enforcement case by {actor_id}", actor_id)
     return result
 
 
 @router.get("/my-cases", response_model=dict)
-def my_cases(db: Session = Depends(get_db)):
+def my_cases(actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """获取我的维权案例和统计汇总."""
-    return get_user_cases(db, "current_user")
+    result = get_user_cases(db, actor_id)
+    AuditLog.log(db, "view_my_cases", f"Viewed my cases by {actor_id}", actor_id)
+    return result

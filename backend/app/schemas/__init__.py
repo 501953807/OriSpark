@@ -19,8 +19,15 @@ from app.schemas.supply import (
     SupplyPartnerCreate as PartnerCreate,
     SupplyOrderCreate as OrderCreate,
 )
+from app.schemas.watermark_preset import (
+    WatermarkPresetCreate, WatermarkPresetResponse, WatermarkPresetListResponse,
+    ApplyWatermarkPayload, ApplyWatermarkResult,
+)
 from app.schemas.publish import (
     ProductCreate, ProductResponse, PublishRequest, RevenueCreate, RevenueResponse,
+)
+from app.schemas.innocence_proof import (
+    InnocenceProofCreate, InnocenceProofResponse, InnocenceProofListResponse,
 )
 from app.schemas.common import (
     PaginatedResponse, ApiResponse, DashboardStats,
@@ -36,6 +43,9 @@ __all__ = [
     "ScanRequest", "ResultUpdateRequest", "EvidencePackageCreate",
     "IPRegistrationCreate", "IPRegistrationUpdate", "IPRegistrationResponse",
     "PartnerCreate", "OrderCreate",
+    "WatermarkPresetCreate", "WatermarkPresetResponse", "WatermarkPresetListResponse",
+    "ApplyWatermarkPayload", "ApplyWatermarkResult",
+    "InnocenceProofCreate", "InnocenceProofResponse", "InnocenceProofListResponse",
     "ProductCreate", "ProductResponse", "PublishRequest", "RevenueCreate", "RevenueResponse",
     "PaginatedResponse", "ApiResponse", "DashboardStats",
     "ErrorResponse", "SuccessResponse", "PaginationParams",

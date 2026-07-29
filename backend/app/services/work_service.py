@@ -120,19 +120,36 @@ def generate_thumbnail(file_path: str, file_type: str, work_id: str) -> Optional
 
 
 def extract_exif(file_path: str) -> Optional[dict]:
+    """提取图片EXIF元数据，返回键名与works_router查询条件兼容的字典."""
     try:
-        from PIL import Image; from PIL.ExifTags import TAGS
-        img=Image.open(file_path); data=img.getexif()
-        if not data: return None
-        result={}
-        for tid,val in data.items():
-            name=TAGS.get(tid,tid)
-            if isinstance(val,bytes):
-                try: val=val.decode("utf-8",errors="replace")
-                except: val=val.hex()
-            result[name]=str(val)
+        from PIL import Image
+        from PIL.ExifTags import TAGS
+        img = Image.open(file_path)
+        data = img.getexif()
+        if not data:
+            return None
+        result = {}
+        # Map standard EXIF keys to query-expectation names matching works_router
+        key_mapping = {
+            "Make": "CameraMake",
+            "Model": "CameraModel",
+            "ISOSpeedRatings": "ISOSpeed",
+            "DateTimeOriginal": "DateTimeOriginal",
+            "GPSLatitude": "GPSLatitude",
+            "GPSLongitude": "GPSLongitude",
+        }
+        for tid, val in data.items():
+            name = TAGS.get(tid, tid)
+            final_name = key_mapping.get(name, name)
+            if isinstance(val, bytes):
+                try:
+                    val = val.decode("utf-8", errors="replace")
+                except:
+                    val = val.hex()
+            result[final_name] = str(val)
         return result
-    except: return None
+    except Exception:
+        return None
 
 
 # ====== 新增元数据提取 ======

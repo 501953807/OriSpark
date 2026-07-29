@@ -32,6 +32,12 @@ AuditMiddleware._test_disable = True
 from app.middleware.rate_limit import RateLimitMiddleware
 RateLimitMiddleware._test_disable = True
 
+# Mock token verification for tests - must be done BEFORE any auth imports
+import app.deps as _deps_lib
+def _mock_verify_token(token):
+    """In tests, accept any token and return 'current_user'."""
+    return "current_user"
+_deps_lib._verify_token = _mock_verify_token
 
 # Patch prod-writers in lifespan so TestClient startup doesn't touch prod DB
 import app.services.search_service as _search_svc
@@ -168,12 +174,20 @@ def client(test_db_engine, db_session):
     # Override get_db BEFORE starting TestClient
     app.dependency_overrides[get_db] = _override_get_db
 
+    # Override auth dependency to return "current_user" for tests
+    from app.deps import get_current_user_id
+    def mock_get_current_user_id():
+        return "current_user"
+    app.dependency_overrides[get_current_user_id] = mock_get_current_user_id
+
     with TestClient(app) as c:
         yield c
 
     # Cleanup - just remove the override; db_session fixture handles rollback/close
     if get_db in app.dependency_overrides:
         del app.dependency_overrides[get_db]
+    if get_current_user_id in app.dependency_overrides:
+        del app.dependency_overrides[get_current_user_id]
 
 
 @pytest.fixture()
@@ -185,3 +199,20 @@ def sample_work_file():
         f.flush()
         yield f.name
     Path(f.name).unlink(missing_ok=True)
+
+
+# ── Mock auth dependency for tests ────────────────────────────────────────
+
+import app.deps as _deps_fixture
+
+@pytest.fixture(autouse=True)
+def mock_get_current_user_id(monkeypatch):
+    """Mock get_current_user_id to return "current_user" in all tests."""
+    def mock_verify_token(token):
+        # Accept any token format for tests and return "current_user"
+        return "current_user"
+
+    monkeypatch.setattr(_deps_fixture, "_verify_token", mock_verify_token)
+
+    # Also patch get_current_user_id if needed (it uses _verify_token internally)
+    # No need to patch separately since it calls _verify_token
