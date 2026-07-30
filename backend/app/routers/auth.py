@@ -49,19 +49,23 @@ def _hash_password(password: str) -> str:
     return hashed.decode('utf-8')
 
 
-def _verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash. Supports bcrypt hashes and falls back to SHA256 for legacy data."""
+def _verify_password(plain_password: str, hashed_password: str) -> tuple[bool, bool]:
+    """Verify a password against its hash. Supports bcrypt hashes and falls back to SHA256 for legacy data.
+
+    Returns:
+        tuple: (is_password_correct, needs_password_upgrade)
+               second flag is True if the stored hash uses weak SHA256 and should be upgraded
+    """
     # First try bcrypt (new format: $2b$, $2a$, $2y$)
     if hashed_password.startswith('$2b$') or hashed_password.startswith('$2a$') or hashed_password.startswith('$2y$'):
-        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8')), False
 
-    # Fallback: legacy SHA256 hash (first 16 chars of hex digest)
-    # This is for backward compatibility during migration
+    # Fallback: legacy SHA256 hash (first 16 chars of hex digest) - WEAK!
     if len(hashed_password) == 32 and all(c in '0123456789abcdef' for c in hashed_password):
         expected = hashlib.sha256(plain_password.encode('utf-8')).hexdigest()[:16]
-        return hmac.compare_digest(expected, hashed_password)
+        return hmac.compare_digest(expected, hashed_password), True
 
-    return False
+    return False, False
 
 
 def _create_token(user_id: str) -> str:
@@ -221,11 +225,16 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == data.email).first()
 
-    if not user or not _verify_password(data.password, user.password_hash):
+    if not user:
+        raise HTTPException(status_code=401, detail="邮箱或密码错误")
+
+    # Verify password and check if upgrade needed
+    is_valid, needs_upgrade = _verify_password(data.password, user.password_hash)
+    if not is_valid:
         raise HTTPException(status_code=401, detail="邮箱或密码错误")
 
     # Upgrade old SHA256 hash to bcrypt if needed
-    if not (user.password_hash.startswith('$2b$') or user.password_hash.startswith('$2a$') or user.password_hash.startswith('$2y$')):
+    if needs_upgrade:
         user.password_hash = _hash_password(data.password)
 
     # 更新登录信息
@@ -538,7 +547,8 @@ def change_password(
     if not user:
         raise HTTPException(status_code=404, detail="用户不存在")
 
-    if not _verify_password(data.current_password, user.password_hash):
+    is_valid, _ = _verify_password(data.current_password, user.password_hash)
+    if not is_valid:
         raise HTTPException(status_code=400, detail="当前密码不正确")
 
     user.password_hash = _hash_password(data.new_password)

@@ -38,8 +38,33 @@ class EnforcementWorkflow:
         "resolved": set(),  # terminal
     }
 
-    def __init__(self, db: Session):
+    def __init__(self, db: Session, action_id: Optional[str] = None):
+        """初始化工作流。
+
+        Args:
+            db: 数据库会话
+            action_id: 可选，维权行动ID。如果不提供，表示新建一个未保存的行动，需先保存后再绑定
+
+        Raises:
+            ValueError: 如果 action_id 对应的行动不存在
+        """
         self.db = db
+        if action_id:
+            self.action_id = action_id
+            self._load_action()
+        else:
+            self.action_id = None
+            self.action = None
+
+    def _load_action(self) -> None:
+        """加载当前维权行动."""
+        if not self.action_id:
+            raise ValueError("Action ID not set")
+        self.action = self.db.query(EnforcementAction).filter(
+            EnforcementAction.id == self.action_id
+        ).first()
+        if not self.action:
+            raise ValueError(f"Enforcement action not found: {self.action_id}")
 
     @classmethod
     def create_from_monitor(
@@ -76,22 +101,9 @@ class EnforcementWorkflow:
             created_at=datetime.now(timezone.utc),
         )
         db.add(action)
-        db.commit()
+        db.commit()  # Commit to assign ID before creating workflow instance
 
         return cls(db, action_id)
-
-    def __init__(self, db: Session, action_id: str):
-        self.db = db
-        self.action_id = action_id
-        self._load_action()
-
-    def _load_action(self) -> None:
-        """加载当前维权行动."""
-        self.action = self.db.query(EnforcementAction).filter(
-            EnforcementAction.id == self.action_id
-        ).first()
-        if not self.action:
-            raise ValueError(f"Enforcement action not found: {self.action_id}")
 
     def can_transition(self, target_status: str) -> bool:
         """检查是否可以转换到目标状态."""
@@ -213,12 +225,14 @@ class EnforcementWorkflow:
         self.db.commit()
 
     def _fill_template_variables(self, template_body: str) -> str:
-        """填充模板中的变量."""
+        """填充模板中的变量，所有用户内容均经过HTML转义."""
+        from html import escape
+
         work = self.db.query(Work).filter(Work.id == self.action.work_id).first() if hasattr(self, 'action') else None
         variables = {
-            "{{work_title}}": work.title if work else "",
+            "{{work_title}}": escape(work.title or ""),
             "{{owner_name}}": "创作者",
-            "{{infringement_url}}": self.action.infringement_url if hasattr(self.action, 'infringement_url') else "",
+            "{{infringement_url}}": escape(self.action.infringement_url if hasattr(self.action, 'infringement_url') else ""),
             "{{date}}": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         }
         for placeholder, value in variables.items():

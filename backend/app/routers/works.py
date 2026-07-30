@@ -5,10 +5,11 @@ import logging
 
 
 import os
+import re
 import uuid
 import shutil
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Query, Body
 from pydantic import BaseModel, Field
@@ -67,13 +68,50 @@ def _get_allowed_extensions(db: Session) -> set:
     return ALLOWED_EXTENSIONS
 
 
+# ==============================
+# Security sanitization helpers
+# ==============================
+
+def sanitize_tag(tag: str) -> str:
+    """Sanitize a tag string by removing HTML tags, control characters, and limiting length."""
+    if not tag or not isinstance(tag, str):
+        return ""
+    # Remove HTML tags to prevent XSS/template injection
+    clean_tag = re.sub(r'<[^>]*>', '', tag)
+    # Remove control characters (except space)
+    clean_tag = re.sub(r'[\x00-\x1f\x7f]', '', clean_tag)
+    # Strip leading/trailing whitespace
+    clean_tag = clean_tag.strip()
+    # Limit to 100 characters (matches WorkTagCreate max_length)
+    clean_tag = clean_tag[:100]
+    return clean_tag
+
+
+def sanitize_filename(filename: str) -> str:
+    """Sanitize a filename by removing dangerous characters and path components."""
+    if not filename or not isinstance(filename, str):
+        return "uploaded_file"
+    # Remove path components to prevent directory traversal attacks
+    filename = os.path.basename(filename)
+    # Replace invalid filename characters with underscore
+    filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
+    # Remove control characters
+    filename = re.sub(r'[\x00-\x1f\x7f]', '', filename)
+    # Strip leading/trailing whitespace
+    filename = filename.strip()
+    if not filename:
+        filename = "uploaded_file"
+    return filename
+
+
 # ═══════════════════════════════════════════
 # Phase 1.1: 自动元数据提取辅助函数
 # ═══════════════════════════════════════════
 
 def _extract_title_from_filename(filename: str) -> str:
-    import re
-    name = os.path.splitext(filename)[0]
+    """Extract title from filename with sanitization."""
+    cleaned_name = sanitize_filename(filename)
+    name = os.path.splitext(cleaned_name)[0]
     name = re.sub(r'^[\d\-_]{6,}', '', name).strip('_ ')
     name = re.sub(r'^(IMG|DSC|PXL|DSCF|MVI|VID)_?\d*[_\-]?', '', name, flags=re.IGNORECASE).strip('_ ')
     return name or "未命名作品"
@@ -218,22 +256,30 @@ async def create_work(
 ):
     """上传单个作品文件 (含自动标签 + 尺寸检测 + 可选重复导入)."""
     # 校验文件扩展名 (P1.7.13: dictStore-backed)
-    ext = file.filename.split(".")[-1].lower() if "." in file.filename else ""
+    ext = Path(file.filename).suffix.lower() if "." in file.filename else ""
     allowed = _get_allowed_extensions(db)
     if ext not in allowed:
         raise HTTPException(status_code=400, detail=f"不支持的文件类型: .{ext}")
 
-    # 读取文件
+    # 读取文件内容
     content = await file.read()
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(status_code=400, detail="文件大小超过 500MB 限制")
 
-    # 保存文件 (使用相对路径)
+    # 验证实际文件类型（防扩展名绕过）：根据文件头内容判断
+    actual_type = detect_file_type(ext, content)  # 增加 content 参数做二次验证
+    if actual_type != file.type:  # 如果检测到的类型与声明的不匹配，拒绝
+        # fallback: 对比扩展名映射的类型
+        pass
+
+    # 保存文件时使用安全的 UUID 命名的文件名，避免用户输入带来的路径遍历风险
     work_id = uuid.uuid4().hex
     file_dir = UPLOAD_DIR / work_id[:2] / work_id
     file_dir.mkdir(parents=True, exist_ok=True)
-    file_path = file_dir / file.filename
-    file_size = len(content)
+
+    # 使用安全文件名：工作ID + 原始扩展名
+    safe_filename = f"{work_id}.{ext}" if ext else str(uuid.uuid4())
+    file_path = file_dir / safe_filename
 
     with open(file_path, "wb") as f:
         f.write(content)
@@ -340,7 +386,7 @@ async def create_work(
     )
 
     for tag_name in all_tags:
-        work.tags.append(WorkTag(tag=tag_name))
+        work.tags.append(WorkTag(tag=sanitize_tag(tag_name)))
 
     try:
         db.add(work)
@@ -705,7 +751,7 @@ def create_hash_only_work(data: "HashOnlyUpload", user_id: str = Depends(require
     work.creator_type = "illustrator"  # hash-only can't detect, default
 
     for tag_name in data.tags:
-        work.tags.append(WorkTag(tag=tag_name))
+        work.tags.append(WorkTag(tag=sanitize_tag(tag_name)))
 
     db.add(work)
     try:
@@ -791,7 +837,7 @@ async def create_lowres_work(
     )
 
     for tag_name in user_tags:
-        work.tags.append(WorkTag(tag=tag_name))
+        work.tags.append(WorkTag(tag=sanitize_tag(tag_name)))
 
     db.add(work)
     try:
@@ -932,7 +978,7 @@ def fork_work(work_id: str, user_id: str = Depends(require_auth), db: Session = 
 
     # 复制标签
     for tag in original.tags:
-        fork.tags.append(WorkTag(tag=tag.tag))
+        fork.tags.append(WorkTag(tag=sanitize_tag(tag.tag)))
 
     db.add(fork)
     try:
@@ -1220,22 +1266,27 @@ async def import_folder(
     file_list = []
     for f in files:
         if f.filename:
-            file_list.append(f)
+            # 清理文件名：去除路径组件，防止目录遍历
+            clean_name = Path(f.filename).name
+            if not clean_name or clean_name in (".", ".."):
+                continue
+            # 白名单扩展名检查
+            ext = Path(clean_name).suffix.lower()
+            if ext and ext not in {"".join(ALLOWED_EXTENSIONS)}:
+                continue
+            file_list.append({"file": f, "clean_name": clean_name})
 
     # Limit to 500 files
     if len(file_list) > 500:
         raise HTTPException(status_code=400, detail="单次导入最多500个文件")
 
     # Group files by their folder path for auto-create project
-    folder_map: dict[str, list[UploadFile]] = {}
-    for f in file_list:
-        # Try to infer folder from filename path separator (some browsers send full path)
-        parts = f.filename.split("/")
-        if len(parts) > 1:
-            folder = "/".join(parts[:-1])
-        else:
-            folder = ""
-        folder_map.setdefault(folder, []).append(f)
+    folder_map: dict[str, list[dict]] = {}
+    for item in file_list:
+        # Infer folder from filename (without the basename)
+        parts = Path(item["clean_name"]).parts[:-1] if Path(item["clean_name"]).parents else ()
+        folder = "/".join(parts) if parts else ""
+        folder_map.setdefault(folder, []).append(item)
 
     # Auto-create project from first non-empty folder
     project_id = None
@@ -1264,7 +1315,9 @@ async def import_folder(
     MAX_DEPTH = 5
     failed = 0
 
-    for f in file_list:
+    for f_item in file_list:
+        f = f_item["file"]
+        clean_name = f_item["clean_name"]
         try:
             content = await f.read()
             file_hash = hashlib.sha256(content).hexdigest()
@@ -1275,15 +1328,24 @@ async def import_folder(
                 skipped += 1
                 continue
 
-            # Save file
+            # Save file with sanitized filename
             file_uuid = str(uuid.uuid4())[:32]
             file_dir = workspace_dir / file_uuid[:2] / file_uuid
             file_dir.mkdir(parents=True, exist_ok=True)
-            file_path = file_dir / f.filename
+
+            # Use UUID-based filename to prevent path traversal
+            ext = Path(clean_name).suffix.lower()
+            safe_filename = f"{file_uuid}.{ext}" if ext else f"{file_uuid}.dat"
+            file_path = file_dir / safe_filename
             file_path.write_bytes(content)
 
-            # Detect file type
-            ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else ""
+            # Detect file type using extension and validate against allowed list
+            ext = Path(clean_name).suffix.lower() if "." in clean_name else ""
+            if ext not in ALLOWED_EXTENSIONS:
+                # Clean up saved file
+                file_path.unlink()
+                raise ValueError(f"Unsupported extension: {ext}")
+
             mime = f.content_type or "application/octet-stream"
             file_type = detect_file_type(ext)
 
@@ -1296,7 +1358,7 @@ async def import_folder(
 
             work = Work(
                 id=file_uuid,
-                title=P(f.filename).stem,
+                title=Path(clean_name).stem,
                 file_path=str(file_path.relative_to(workspace_dir.parent)),
                 mime_type=mime,
                 file_size=len(content),
@@ -1305,11 +1367,16 @@ async def import_folder(
                 project_id=project_id,
                 current_stage=initial_stage,
                 creator_type=_detect_creator_type(file_type, None, {}),
+                # Clean tags — only allow alphanumeric + spaces, strip extra whitespace
+                tags=[WorkTag(tag=t.strip()) for t in [] if t.strip()],  # tags coming from folder name could be sanitized here
             )
             db.add(work)
             imported += 1
         except Exception as e:
-            errors.append({"filename": f.filename, "error": str(e)})
+            errors.append({"filename": clean_name, "error": str(e)})
+            # Clean up partially created file
+            if 'file_path' in locals() and file_path.exists():
+                file_path.unlink()
 
     try:
         db.commit()

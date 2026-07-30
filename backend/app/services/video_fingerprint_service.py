@@ -165,7 +165,7 @@ class VideoFingerprintService:
             2. Apply 2-D DCT-II.
             3. Take top-left 8x8 coefficients (low-frequency band).
             4. Compare each coefficient against the median → 1 bit per pixel.
-            5. Pack into a 64-bit unsigned integer.
+            5. Pack into a 64-bit unsigned integer (MSB first).
         """
         img = Image.open(image_path).convert("L")
         img = img.resize((8, 8), Image.LANCZOS)
@@ -181,15 +181,22 @@ class VideoFingerprintService:
         flat = sorted(v for row in dct for v in row)
         median = (flat[31] + flat[32]) / 2.0
 
-        # Thresholded bits → integer
-        val = 0
+        # Build 64-bit hash correctly: collect all bits first, then pack
+        hash_bits = []
         for i, row in enumerate(dct):
             for j, coeff in enumerate(row):
                 if coeff > median:
-                    val |= 1
-                val <<= 1
-        # The loop shifts one extra time, so trim to 64 bits
-        val &= 0xFFFF_FFFF_FFFF_FFFF
+                    hash_bits.append(1)
+                else:
+                    hash_bits.append(0)
+
+        # Convert bits to integer (MSB first)
+        val = 0
+        for bit in hash_bits:
+            val = (val << 1) | bit
+
+        # Trim to exactly 64 bits (should already be 64)
+        val &= 0xFFFFFFFFFFFFFFFF
         return val
 
     # ------------------------------------------------------------------

@@ -81,7 +81,8 @@ def _deb64(data: str) -> str:
 
 
 def _sign(data: str) -> str:
-    return _hmac.new(_SECRET, data.encode(), hashlib.sha256).hexdigest()[:32]
+    """Generate a secure HMAC-SHA256 signature (full 64-char hex digest)."""
+    return _hmac.new(_SECRET, data.encode(), hashlib.sha256).hexdigest()
 
 
 def _verify_token(token: str) -> Optional[str]:
@@ -102,6 +103,11 @@ def _verify_token(token: str) -> Optional[str]:
         if len(parts) != 3:
             return None
         header_b64, payload_b64, signature = parts
+
+        # Validate signature length (64 hex chars for full HMAC-SHA256)
+        if len(signature) != 64:
+            return None
+
         expected_sig = _sign(f"{header_b64}.{payload_b64}")
         if not _hmac.compare_digest(signature, expected_sig):
             return None

@@ -1,6 +1,7 @@
 """合约生命周期管理服务 — 完整状态机 + 审计追踪."""
 
 import json
+import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Optional
@@ -10,6 +11,8 @@ from fastapi import HTTPException
 
 from app.models.contract import ContractInstance
 from app.models.system import AuditLog
+
+logger = logging.getLogger(__name__)
 
 
 class ContractStateService:
@@ -366,9 +369,13 @@ class ContractStateService:
                     product_id=insurance_product_id,
                     start_date=date_type.today(),
                 )
-            except Exception:
-                # 保险服务不可用时不影响合约状态流转
-                pass
+            except Exception as e:
+                # Log the error but don't fail the contract activation
+                logger.warning(
+                    "Failed to create insurance policy for contract %s: %s",
+                    contract_id, str(e)
+                )
+                # Contract activation proceeds even if insurance service is down
 
         try:
             db.commit()
