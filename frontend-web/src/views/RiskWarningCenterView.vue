@@ -2,7 +2,7 @@
   <div class="risk-warning-view">
     <LoadingSpinner v-if="store.loading" text="加载中..." />
     <template v-else>
-      <h2>风险预警中心</h2>
+      <h2>合规与健康中心</h2>
       <p class="subtitle">税务日历 · 侵权预警 · Burnout检测</p>
 
       <!-- Burnout 风险 -->

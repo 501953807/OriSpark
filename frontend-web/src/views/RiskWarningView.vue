@@ -2,7 +2,7 @@
   <div class="risk-warning-view">
     <LoadingSpinner v-if="store.loading" text="加载中..." />
     <template v-else>
-    <h2>风险预警中心</h2>
+    <h2>侵权风险检测</h2>
     <p class="subtitle">检测提示词、参考图、模型、商标四个维度的侵权风险</p>
 
     <!-- 统计卡片 -->

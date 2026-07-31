@@ -137,10 +137,6 @@
         <span class="sb-icon">📦</span>
         <span v-if="!isCollapsed">商单管理</span>
       </router-link>
-      <router-link to="/app/risk-warning" class="sb-link" active-class="active">
-        <span class="sb-icon">⚠️</span>
-        <span v-if="!isCollapsed">风险预警</span>
-      </router-link>
       <router-link to="/app/integrations" class="sb-link" active-class="active">
         <span class="sb-icon">🔌</span>
         <span v-if="!isCollapsed">第三方对接</span>
