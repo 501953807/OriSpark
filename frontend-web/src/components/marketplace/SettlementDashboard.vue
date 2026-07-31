@@ -10,7 +10,7 @@ const period = ref('2026-07')
 onMounted(async () => {
   try {
     const res = await podSettlementApi.getSalesStatistics({ start_date: `${period.value}-01`, end_date: `${period.value}-28` })
-    stats.value = res.data
+    stats.value = res.data.data
   } catch { /* handled */ } finally { loading.value = false }
 })
 

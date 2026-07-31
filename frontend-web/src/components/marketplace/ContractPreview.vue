@@ -11,12 +11,12 @@ const expiring = ref<any[]>([])
 onMounted(async () => {
   try {
     const res = await ipCommercializationApi.getContract(props.licenseId)
-    contract.value = res.data.contract_text
+    contract.value = res.data.data.contract_text
   } catch { /* handled */ } finally { loading.value = false }
 
   try {
     const res = await ipCommercializationApi.getExpiringSoon(30)
-    expiring.value = res.data.licenses || []
+    expiring.value = res.data.data.licenses || []
   } catch { /* handled */ }
 })
 

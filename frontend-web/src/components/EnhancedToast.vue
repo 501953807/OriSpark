@@ -18,7 +18,7 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'update:visible'])
 
 const motionStore = useMotionStore()
-const timeoutRef = ref<number | null>(null)
+const timeoutRef = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const type = computed(() => props.options?.type || 'info')
 const message = computed(() => props.options?.message || '')
@@ -48,7 +48,7 @@ const startTimer = () => {
 }
 
 const stopTimer = () => {
-  if (timeoutRef.value !== null) {
+  if (typeof timeoutRef.value === 'number' && timeoutRef.value !== null) {
     clearTimeout(timeoutRef.value)
     timeoutRef.value = null
   }

@@ -66,7 +66,7 @@ loadListings()
           <h4>{{ l.title }}</h4>
           <p class="desc">{{ l.description?.slice(0, 80) }}...</p>
           <div class="listing-meta">
-            <span class="price">¥{{ l.asking_price_yuan?.toLocaleString() ?? '--' }}</span>
+            <span class="price">¥{{ (l as any).asking_price_yuan?.toLocaleString() ?? l.price?.toLocaleString() ?? '--' }}</span>
             <span class="status-chip" :class="l.status">{{ l.status }}</span>
           </div>
         </div>

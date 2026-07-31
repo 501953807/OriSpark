@@ -33,7 +33,7 @@ async function loadSuggestions() {
   loading.value = true
   try {
     const res = await creditApi.getImprovementSuggestions(userId.value)
-    data.value = res.data
+    data.value = res.data.data
   } finally {
     loading.value = false
   }

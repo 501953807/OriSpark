@@ -54,9 +54,9 @@ const currencyOptions = [
 const columns = [
   { title: 'ID', key: 'id' },
   { title: '周期', key: 'report_period' },
-  { title: '总收入', key: 'total_income', render(row) { return `$${row.total_income.toFixed(2)}` } },
-  { title: '预扣税', key: 'total_tax_withheld', render(row) { return `$${row.total_tax_withheld.toFixed(2)}` } },
-  { title: '应纳税', key: 'total_tax_owed', render(row) { return `$${row.total_tax_owed.toFixed(2)}` } },
+  { title: '总收入', key: 'total_income', render(row: Record<string, unknown>) { return `$${(row.total_income as number).toFixed(2)}` } },
+  { title: '预扣税', key: 'total_tax_withheld', render(row: Record<string, unknown>) { return `$${(row.total_tax_withheld as number).toFixed(2)}` } },
+  { title: '应纳税', key: 'total_tax_owed', render(row: Record<string, unknown>) { return `$${(row.total_tax_owed as number).toFixed(2)}` } },
   { title: '状态', key: 'status' },
 ]
 

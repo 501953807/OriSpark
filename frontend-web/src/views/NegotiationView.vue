@@ -75,7 +75,7 @@ const selectedId = ref('')
 const statusFilter = ref('')
 const showCreate = ref(false)
 
-const createForm = ref({ buyer_id: '', seller_id: '', initial_price_yuan: undefined as number | null })
+const createForm = ref({ buyer_id: '', seller_id: '', initial_price_yuan: null as number | null })
 
 const statusOptions = [
   { label: '全部', value: '' },
@@ -104,7 +104,10 @@ async function load() {
 async function handleCreate() {
   if (!createForm.value.buyer_id || !createForm.value.seller_id) return
   try {
-    const result = await negotiationApi.create(createForm.value)
+    const result = await negotiationApi.create({
+      ...createForm.value,
+      initial_price_yuan: createForm.value.initial_price_yuan ?? undefined,
+    })
     negs.value.unshift(result.data.data)
     selectedId.value = result.data.data.id
     showCreate.value = false

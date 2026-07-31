@@ -1,6 +1,5 @@
 <template>
   <div class="distribution-hub-view">
-    <n-page title="分发回流引擎" size="large">
       <!-- 顶部统计 -->
       <n-grid :cols="4" :x-gap="12" responsive="screen" style="margin-bottom: 16px">
         <n-gi>
@@ -75,7 +74,7 @@
           </n-space>
         </template>
       </n-modal>
-    </n-page>
+    </div>
   </div>
 </template>
 
@@ -83,7 +82,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  NPage, NGrid, NGi, NStatistic, NCard, NTable, NTh, NTd, NButton, NTag, NModal, NForm, NFormItem, NInput, NSelect, NSpace,
+  NGrid, NGi, NStatistic, NCard, NTable, NTh, NTd, NButton, NTag, NModal, NForm, NFormItem, NInput, NSelect, NSpace,
 } from 'naive-ui'
 import { useMessage } from 'naive-ui'
 import api from '@/api/reverseTrace'

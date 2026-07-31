@@ -57,8 +57,8 @@ const columns = [
   { title: 'ID', key: 'id' },
   { title: '名称', key: 'name' },
   { title: '许可证', key: 'license_no' },
-  { title: '服务区域', key: 'service_areas', render(row) { return (row.service_areas || []).join(', ') } },
-  { title: '费率', key: 'fee_rate', render(row) { return `${(row.fee_rate * 100).toFixed(1)}%` } },
+  { title: '服务区域', key: 'service_areas', render(row: Record<string, unknown>) { return (row.service_areas as unknown[])?.join(', ') || '' } },
+  { title: '费率', key: 'fee_rate', render(row: Record<string, unknown>) { return `${((row.fee_rate as number) * 100).toFixed(1)}%` } },
   { title: '状态', key: 'status' },
 ]
 

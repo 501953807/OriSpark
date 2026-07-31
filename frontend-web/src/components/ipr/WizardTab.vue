@@ -182,8 +182,8 @@
       <h4>💡 商标类别推荐</h4>
       <div class="category-recommender">
         <div class="recommend-input">
-          <input :value="recommendTags" class="form-input" placeholder="输入标签, 逗号分隔 (如: 插画,文创,角色)" @input="recommendTags = ($event.target as HTMLInputElement).value; $emit('update:recommendTags', recommendTags)" @keyup.enter="$emit('recommend', recommendTags, recommendCreatorType)" />
-          <select :value="recommendCreatorType" class="form-input" @change="$emit('update:recommendCreatorType', ($event.target as HTMLSelectElement).value)">
+          <input :value="localRecommendTags" class="form-input" placeholder="输入标签, 逗号分隔 (如: 插画,文创,角色)" @input="localRecommendTags = ($event.target as HTMLInputElement).value; $emit('update:recommendTags', localRecommendTags)" @keyup.enter="$emit('recommend', localRecommendTags, localRecommendCreatorType)" />
+          <select :value="localRecommendCreatorType" class="form-input" @change="$emit('update:recommendCreatorType', ($event.target as HTMLSelectElement).value)">
             <option value="">— 创作者类型(可选) —</option>
             <option value="illustrator_flat">插画师(平面)</option>
             <option value="illustrator_product">插画师(产品化)</option>
@@ -193,7 +193,7 @@
             <option value="musician">音乐人</option>
             <option value="photographer">摄影师</option>
           </select>
-          <button class="btn btn-primary btn-sm" @click="$emit('recommend', recommendTags, recommendCreatorType)">推荐类别</button>
+          <button class="btn btn-primary btn-sm" @click="$emit('recommend', localRecommendTags, localRecommendCreatorType)">推荐类别</button>
         </div>
         <div v-if="recommendResult" class="recommend-result">
           <div v-for="r in recommendResult.recommendations" :key="r.class_no" class="rec-class-item">
@@ -214,7 +214,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch, ref } from 'vue'
 
 const props = defineProps<{
   activeTab: string
@@ -253,6 +253,12 @@ const emit = defineEmits<{
   'recommend': [tags: string, creatorType: string]
   'reset': []
 }>()
+
+const localRecommendTags = ref(props.recommendTags)
+const localRecommendCreatorType = ref(props.recommendCreatorType)
+
+watch(() => props.recommendTags, (v) => { localRecommendTags.value = v })
+watch(() => props.recommendCreatorType, (v) => { localRecommendCreatorType.value = v })
 
 const allRiskConfirmed = computed(() =>
   Object.values(props.riskConfirmations).every(Boolean),

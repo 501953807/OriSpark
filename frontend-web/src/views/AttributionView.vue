@@ -1,7 +1,6 @@
 <template>
   <div class="attribution-view">
-    <n-page title="归因分析">
-      <n-card v-if="summary">
+    <n-card v-if="summary">
         <n-descriptions label-placement="left" :column="2" bordered>
           <n-descriptions-item label="总点击量">{{ summary.total_clicks }}</n-descriptions-item>
           <n-descriptions-item label="独立访客">{{ summary.unique_visitors }}</n-descriptions-item>
@@ -16,8 +15,8 @@
         <!-- 事件分布 -->
         <h3 style="margin: 16px 0 8px">事件分布</h3>
         <n-space wrap>
-          <n-tag v-for="(count, type) in summary.event_breakdown" :key="type" size="large">
-            {{ eventTypeLabel(type) }}: {{ count }}
+          <n-tag v-for="(count, type) in summary.event_breakdown" :key="String(type)" size="large">
+            {{ eventTypeLabel(String(type)) }}: {{ count }}
           </n-tag>
         </n-space>
 
@@ -38,14 +37,14 @@
       </n-card>
 
       <n-result v-else status="info" title="请选择一个链接查看分析" description="从分发 Hub 跳转到此页面并传入 linkId 参数" />
-    </n-page>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { NPage, NCard, NDescriptions, NDescriptionsItem, NSpace, NTag, NTable, NTh, NTd, NResult } from 'naive-ui'
+import { NCard, NDescriptions, NDescriptionsItem, NSpace, NTag, NTable, NTh, NTd, NResult } from 'naive-ui'
 import api from '@/api/reverseTrace'
 
 const route = useRoute()

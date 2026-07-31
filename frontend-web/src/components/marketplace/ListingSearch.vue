@@ -22,7 +22,7 @@ async function loadListings() {
     if (searchParams.value.sort_by) params.sort_by = searchParams.value.sort_by
 
     const res = await listingBatchApi.search(params)
-    listings.value = res.data as ListingDetail[]
+    listings.value = (res.data.data as unknown) as ListingDetail[]
   } catch { /* handled */ } finally { loading.value = false }
 }
 
@@ -54,7 +54,7 @@ onMounted(loadListings)
     <div v-else class="listing-grid">
       <div v-for="l in listings" :key="l.id" class="listing-card">
         <h4>{{ l.title }}</h4>
-        <p class="price">¥{{ l.asking_price_yuan?.toLocaleString() ?? '--' }}</p>
+        <p class="price">¥{{ (l as any).asking_price_yuan?.toLocaleString() ?? l.price?.toLocaleString() ?? '--' }}</p>
         <span class="status-chip" :class="l.status">{{ l.status }}</span>
       </div>
     </div>

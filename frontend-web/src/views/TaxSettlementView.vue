@@ -1,6 +1,5 @@
 <template>
   <div class="tax-settlement-view">
-    <n-page title="全球税务结算" size="large">
       <!-- 顶部统计 -->
       <n-grid :cols="4" :x-gap="12" responsive="screen" style="margin-bottom: 16px">
         <n-gi>
@@ -119,13 +118,13 @@
           <n-button type="primary" @click="handleCalculate">计算</n-button>
         </template>
       </n-modal>
-    </n-page>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import { NPage, NGrid, NGi, NStatistic, NTabs, NTabPane, NCard, NTable, NTh, NTd, NButton, NSpace, NForm, NFormItem, NSelect, NInput, NInputNumber, NModal, NResult } from 'naive-ui'
+import { NGrid, NGi, NStatistic, NTabs, NTabPane, NCard, NTable, NTh, NTd, NButton, NSpace, NForm, NFormItem, NSelect, NInput, NInputNumber, NModal, NResult } from 'naive-ui'
 import AgentSelector from '@/components/tax/AgentSelector.vue'
 import SettlementTable from '@/components/tax/SettlementTable.vue'
 import { taxApi } from '@/api/tax'

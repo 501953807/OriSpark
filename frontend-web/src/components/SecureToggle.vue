@@ -3,7 +3,7 @@
 import { ref, computed, watch } from 'vue'
 import { useMotionStore } from '@/stores/motion'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
 }>()
 
@@ -31,10 +31,10 @@ const playAnimation = computed(() => motionStore.shouldAnimate)
 <template>
   <div
     class="secure-toggle-container"
-    :class="{ locked: isLocked }"
+    :class="{ locked: isLockedRef }"
     @click="toggle"
     role="switch"
-    :aria-checked="isLocked"
+    :aria-checked="isLockedRef"
     tabindex="0"
     @keydown.enter="toggle"
     @keydown.space.prevent="toggle"

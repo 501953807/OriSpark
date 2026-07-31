@@ -182,8 +182,8 @@
               <td><code>{{ raw.file_extension }}</code></td>
               <td>{{ formatBytes(raw.file_size_bytes) }}</td>
               <td>{{ raw.sensor_width }} × {{ raw.sensor_height }}</td>
-              <td>{{ raw.color_space || '-' }}</td>
-              <td>{{ formatDate(raw.created_at) }}</td>
+              <td>{{ (raw.color_space as string | undefined) || '-' }}</td>
+              <td>{{ formatDate(raw.created_at || '') }}</td>
             </tr>
           </tbody>
         </table>

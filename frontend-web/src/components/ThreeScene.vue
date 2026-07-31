@@ -1,79 +1,71 @@
 <!-- src/components/ThreeScene.vue -->
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import * as THREE from 'three'
+import type { Scene, PerspectiveCamera, WebGLRenderer, Points, BufferGeometry } from 'three'
 import { useMotionStore } from '@/stores/motion'
 
 const container = ref<HTMLDivElement | null>(null)
-let scene: THREE.Scene | null = null
-let camera: THREE.PerspectiveCamera | null = null
-let renderer: THREE.WebGLRenderer | null = null
-let particles: THREE.Points | null = null
+let scene: any = null
+let camera: any = null
+let renderer: any = null
+let particles: any = null
 let animationId: number | null = null
+let THREE: any = null
 const motionStore = useMotionStore()
 
-// Initialize Three.js scene
-const initThreeJS = () => {
+const initThreeJS = async () => {
   if (!container.value || !motionStore.shouldAnimate) return
 
-  // Create scene
+  if (!THREE) {
+    THREE = await import('three')
+  }
+
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0x0f172a)
 
-  // Create camera
   const aspect = container.value.clientWidth / container.value.clientHeight
   camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
   camera.position.z = 15
 
-  // Create renderer (alpha transparent, disable antialias for performance)
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, preserveDrawingBuffer: false })
   renderer.setSize(container.value.clientWidth, container.value.clientHeight)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1)) // Cap pixel ratio for performance
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
   container.value.appendChild(renderer.domElement)
 
-  // Create particle system
   createParticles()
-
-  // Start animation loop
   animate()
 }
 
-// Create/update particle system
 const createParticles = () => {
-  if (!scene || !camera || !motionStore.shouldAnimate) return
+  if (!scene || !motionStore.shouldAnimate) return
 
   const count = motionStore.particleCount
   if (count === 0) {
-    // Remove existing particles
     if (particles) {
       scene.remove(particles)
-      if (particles.geometry) particles.geometry.dispose()
-      if (particles.material) particles.material.dispose()
+      particles.geometry.dispose()
+      particles.material.dispose()
       particles = null
     }
     return
   }
 
-  // Dispose previous particles
   if (particles) {
     scene.remove(particles)
-    if (particles.geometry) particles.geometry.dispose()
-    if (particles.material) particles.material.dispose()
+    particles.geometry.dispose()
+    particles.material.dispose()
   }
 
-  // Create new particle system
   const geometry = new THREE.BufferGeometry()
   const positions = new Float32Array(count * 3)
-  const velocities = new Float32Array(count * 3) // Velocity for animation
+  const velocities = new Float32Array(count * 3)
 
   for (let i = 0; i < count * 3; i += 3) {
     positions[i] = (Math.random() - 0.5) * 20
     positions[i + 1] = (Math.random() - 0.5) * 15
     positions[i + 2] = (Math.random() - 0.5) * 20
-
-    // Random upward velocity with some spread
     velocities[i] = (Math.random() - 0.5) * 0.002
-    velocities[i + 1] = (Math.random() * 0.001 + 0.0005) // Slight upward drift
+    velocities[i + 1] = (Math.random() * 0.001 + 0.0005)
     velocities[i + 2] = (Math.random() - 0.5) * 0.002
   }
 
@@ -89,42 +81,31 @@ const createParticles = () => {
 
   particles = new THREE.Points(geometry, material)
   scene.add(particles)
-
-  // Store velocities and positions for animation update
-  (particles as any).velocities = velocities
-  (particles as any).positions = positions
+  ;(particles as any)._velocities = velocities
+  ;(particles as any)._positions = positions
 }
 
-// Animation loop
 const animate = () => {
   animationId = requestAnimationFrame(animate)
-
   if (!particles || !scene || !camera || !motionStore.shouldAnimate) return
 
-  // Update particle positions with velocity
-  const positions = (particles as any).positions
-  const velocities = (particles as any).velocities
+  const positions = (particles as any)._positions
+  const velocities = (particles as any)._velocities
   const speedFactor = motionStore.animationSpeedFactor
 
   for (let i = 0; i < positions.length; i += 3) {
     positions[i] += velocities[i] * speedFactor
     positions[i + 1] += velocities[i + 1] * speedFactor
     positions[i + 2] += velocities[i + 2] * speedFactor
-
-    // Reset when particle reaches top
     if (positions[i + 1] > 7) {
       positions[i + 1] = -7
       positions[i] = (Math.random() - 0.5) * 20
       positions[i + 2] = (Math.random() - 0.5) * 20
     }
-
-    // Add slight horizontal wave effect
     positions[i] += Math.sin(Date.now() * 0.001 + i) * 0.0005
   }
 
   particles.geometry.attributes.position.needsUpdate = true
-
-  // Slowly rotate entire field
   particles.rotation.y += 0.0001 * speedFactor
   particles.rotation.x += 0.00005 * speedFactor
 
@@ -133,7 +114,6 @@ const animate = () => {
   }
 }
 
-// Handle resize
 const handleResize = () => {
   if (!container.value || !camera || !renderer) return
   const width = container.value.clientWidth
@@ -143,7 +123,6 @@ const handleResize = () => {
   renderer.setSize(width, height)
 }
 
-// Watch immersion level changes - recreate particles when needed
 watch(() => motionStore.immersionLevel, () => {
   createParticles()
 })
@@ -155,15 +134,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (animationId) cancelAnimationFrame(animationId)
-  if (renderer) {
-    renderer.dispose()
-    renderer = null
-  }
-  if (particles) {
-    particles.geometry?.dispose()
-    particles.material?.dispose()
-    particles = null
-  }
+  if (renderer) { renderer.dispose(); renderer = null }
+  if (particles) { particles.geometry.dispose(); particles.material.dispose(); particles = null }
   scene = null
   camera = null
   window.removeEventListener('resize', handleResize)
@@ -177,17 +149,13 @@ onBeforeUnmount(() => {
 <style scoped>
 .three-scene-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.6;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .three-scene-container {
-    display: none;
-  }
+  .three-scene-container { display: none; }
 }
 </style>

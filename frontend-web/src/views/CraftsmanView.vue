@@ -290,14 +290,14 @@
     <!-- ── Materials tab ──────────────────────────── -->
     <!-- ============================================ -->
     <div v-if="activeTab === 'materials'" class="tab-panel">
-      <MaterialInventoryPanel :materials="store.materials" />
+      <MaterialInventoryPanel :materials="store.materials as any" />
     </div>
 
     <!-- ============================================ -->
     <!-- ── Batches tab ────────────────────────────── -->
     <!-- ============================================ -->
     <div v-if="activeTab === 'batches'" class="tab-panel">
-      <ProductionBatchPanel :batches="store.productionBatches" />
+      <ProductionBatchPanel :batches="store.productionBatches as any" />
     </div>
 
     <!-- Loading overlay -->

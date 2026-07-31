@@ -12,7 +12,7 @@ async function loadBadges() {
   loading.value = true
   try {
     const res = await achievementApi.listBadges()
-    badges.value = (res.data ?? res) as any[]
+    badges.value = (res.data.data ?? res.data) as any[]
   } catch { /* handled */ } finally { loading.value = false }
 }
 
@@ -26,7 +26,7 @@ async function loadInvoices() {
   invoiceLoading.value = true
   try {
     const res = await invoiceApi.listMy({ limit: 50 })
-    invoices.value = (res.data ?? res) as any[]
+    invoices.value = (res.data.data ?? res.data) as any[]
   } catch { /* handled */ } finally { invoiceLoading.value = false }
 }
 

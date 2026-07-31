@@ -24,6 +24,7 @@ import { computed } from 'vue'
 const props = defineProps<{ score: number }>()
 
 const ARC_LENGTH = 282.74 // 3/4 circle circumference (r=80)
+const arcLength = computed(() => ARC_LENGTH)
 
 const gaugeColor = computed(() => {
   if (props.score >= 90) return '#f59e0b' // gold

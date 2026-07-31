@@ -7,7 +7,6 @@ const balance = ref<CommissionBalance | null>(null)
 const withdrawals = ref<WithdrawalRequest[]>([])
 const loading = ref(true)
 const withdrawing = ref(false)
-
 const withdrawAmount = ref('')
 const withdrawMethod = ref('bank_transfer')
 const accountInfo = ref({ bank_name: '', account_number: '', holder_name: '' })
@@ -26,16 +25,18 @@ const estimatedNet = computed(() => {
   return Math.max(0, amt - estimatedFee.value)
 })
 
-onMounted(async () => {
+async function reload() {
   try {
     const [balRes, wdRes] = await Promise.all([
       commissionApi.getBalance(),
       commissionApi.getWithdrawals({ limit: 10 }),
     ])
-    balance.value = balRes.data
-    withdrawals.value = wdRes.data
+    balance.value = balRes.data.data
+    withdrawals.value = wdRes.data.data
   } catch { /* handled */ } finally { loading.value = false }
-})
+}
+
+onMounted(reload)
 
 async function doWithdraw() {
   const amt = parseFloat(withdrawAmount.value)
@@ -52,7 +53,7 @@ async function doWithdraw() {
       account_info: accountInfo.value,
     })
     withdrawAmount.value = ''
-    await onMounted() // reload
+    await reload()
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : '提现失败'
   } finally { withdrawing.value = false }
@@ -105,7 +106,7 @@ function statusLabel(s: string): string {
           </label>
         </div>
 
-        <div class="fee-preview" v-if="parseFloat(withdrawAmount.value) > 0">
+        <div class="fee-preview" v-if="parseFloat(withdrawAmount) > 0">
           <span>手续费 (1%): ¥{{ estimatedFee.toFixed(2) }}</span>
           <span>到账: ¥{{ estimatedNet.toFixed(2) }}</span>
         </div>

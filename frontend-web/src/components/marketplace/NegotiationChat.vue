@@ -23,7 +23,7 @@ const messages = computed(() => {
 async function load() {
   try {
     const res = await negotiationApi.getById(props.negotiationId)
-    negotiation.value = res.data
+    negotiation.value = res.data.data
   } catch { error.value = '加载议价失败' } finally { loading.value = false }
 }
 

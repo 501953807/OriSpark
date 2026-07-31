@@ -1,25 +1,16 @@
 // src/stores/motion.ts
 import { defineStore } from 'pinia'
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useMotionStore = defineStore('motion', {
   state() {
     return {
-      // User preset: 0=No animation, 1=Basic, 2=Brand immersion, 3=Extreme immersion
       immersionLevel: 2 as number,
-
-      // Auto-detected performance degradation flag
       isDegraded: false as boolean,
       frameRate: 0 as number,
-
-      // Manual control toggle
       immersiveEnabled: true as boolean,
-
-      // Reduced-motion preference (set on mount)
       reducedMotion: false as boolean,
-
-      // Particle count (dynamic)
-      particleCount: 1000 as number
+      particleCount: 1000 as number,
     }
   },
 
@@ -50,24 +41,17 @@ export const useMotionStore = defineStore('motion', {
   actions: {
     setImmersionLevel(level: number): void {
       this.immersionLevel = Math.max(0, Math.min(3, level))
-      this.updateParticleCount()
-      // Save to localStorage
+      this.particleCount = this.particleDensity
       try {
         localStorage.setItem('immersionLevel', this.immersionLevel.toString())
-      } catch (e) {
-        // Ignore storage errors (e.g., in private mode)
-      }
+      } catch { /* ignore */ }
     },
 
     toggleImmersive(): void {
       this.immersiveEnabled = !this.immersiveEnabled
       try {
         localStorage.setItem('immersiveEnabled', this.immersiveEnabled.toString())
-      } catch (e) {}
-    },
-
-    updateParticleCount(): void {
-      this.particleCount = this.particleDensity
+      } catch { /* ignore */ }
     },
 
     monitorFrameRate(): void {
@@ -79,12 +63,10 @@ export const useMotionStore = defineStore('motion', {
       const check = () => {
         frameCount++
         const now = performance.now()
-
         if (now - lastTime >= 1000) {
           this.frameRate = Math.round(frameCount * 1000 / (now - lastTime))
           frameCount = 0
           lastTime = now
-
           if (this.frameRate < 45 && !this.isDegraded) {
             this.isDegraded = true
             this.setImmersionLevel(Math.max(1, this.immersionLevel - 1))
@@ -92,59 +74,41 @@ export const useMotionStore = defineStore('motion', {
             this.isDegraded = false
           }
         }
-
         if (this.shouldAnimate) {
           requestAnimationFrame(check)
         }
       }
-
       requestAnimationFrame(check)
     }
   }
 })
 
-// Helper to initialize reduced-motion preference on mount
-export function initMotionPreferences(store: ReturnType<typeof useMotionStore>) {
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-  store.reducedMotion = mediaQuery.matches
-
-  const handler = (e: MediaQueryListEvent) => {
-    store.reducedMotion = e.matches
-  }
-  mediaQuery.addEventListener('change', handler)
-
-  return () => {
-    mediaQuery.removeEventListener('change', handler)
-  }
-}
-
-// Store initialization with SSR safety
 export function initMotionStore() {
   const store = useMotionStore()
+  if (typeof window === 'undefined') return
 
-  // Restore from localStorage only in browser environment
-  if (typeof window !== 'undefined') {
-    try {
-      const savedLevel = localStorage.getItem('immersionLevel')
-      if (savedLevel !== null) {
-        store.setImmersionLevel(parseInt(savedLevel, 10))
-      }
-
-      const savedImmersive = localStorage.getItem('immersiveEnabled')
-      if (savedImmersive !== null) {
-        store.immersiveEnabled = savedImmersive === 'true'
-      }
-    } catch (e) {
-      // failed to restore motion settings
+  try {
+    const savedLevel = localStorage.getItem('immersionLevel')
+    if (savedLevel !== null) {
+      store.setImmersionLevel(parseInt(savedLevel, 10))
     }
-
-    // Setup reduced-motion listener
-    const cleanup = initMotionPreferences(store)
-    onBeforeUnmount(cleanup)
-
-    // Start monitoring if animations are enabled
-    if (store.shouldAnimate) {
-      store.monitorFrameRate()
+    const savedImmersive = localStorage.getItem('immersiveEnabled')
+    if (savedImmersive !== null) {
+      store.immersiveEnabled = savedImmersive === 'true'
     }
+  } catch { /* ignore */ }
+
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+  store.reducedMotion = mq.matches
+  const onMotionChange = (e: MediaQueryListEvent) => { store.reducedMotion = e.matches }
+  mq.addEventListener('change', onMotionChange)
+
+  // Expose cleanup function for the app bootstrap component
+  ;(window as any).__motionCleanup = () => {
+    mq.removeEventListener('change', onMotionChange)
+  }
+
+  if (store.shouldAnimate) {
+    store.monitorFrameRate()
   }
 }
