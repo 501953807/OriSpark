@@ -1,0 +1,6 @@
+<!-- stat-counter: 数字滚动计数器 -->
+<view class="stat-counter">
+  <text class="stat-counter-prefix" wx:if="{{prefix}}">{{prefix}}</text>
+  <text class="stat-counter-value">{{displayValue}}</text>
+  <text class="stat-counter-suffix" wx:if="{{suffix}}">{{suffix}}</text>
+</view>

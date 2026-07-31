@@ -1,0 +1,4 @@
+<!-- motion-frame: 通用动画容器组件 -->
+<view class="motion-frame" animation="{{animationData}}" style="{{customStyle}}">
+  <slot />
+</view>

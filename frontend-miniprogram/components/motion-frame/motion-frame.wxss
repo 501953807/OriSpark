@@ -1,0 +1,5 @@
+/* motion-frame.wxss */
+.motion-frame {
+  width: 100%;
+  box-sizing: border-box;
+}

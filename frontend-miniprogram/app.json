@@ -52,5 +52,10 @@
     "downloadFile": 10000
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "style": "v2",
+  "usingComponents": {
+    "motion-frame": "/components/motion-frame/motion-frame",
+    "pulse-ring": "/components/pulse-ring/pulse-ring",
+    "stat-counter": "/components/stat-counter/stat-counter"
+  }
 }

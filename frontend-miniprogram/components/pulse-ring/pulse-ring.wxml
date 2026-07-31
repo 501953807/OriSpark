@@ -1,0 +1,5 @@
+<!-- pulse-ring: 品牌签名脉冲涟漪效果 -->
+<view class="pulse-ring-wrap" style="color: {{color}}">
+  <view class="pulse-ring" animation="{{ringAnimation}}"></view>
+  <slot />
+</view>

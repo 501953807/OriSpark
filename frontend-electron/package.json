@@ -1,0 +1,47 @@
+{
+  "name": "oristudio-desktop",
+  "version": "0.1.0",
+  "description": "OriStudio Electron Desktop App — motion system integration",
+  "main": "dist/electron/main.js",
+  "author": "OriStudio Team",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "package": "vite build && electron-builder",
+    "make": "vite build && electron-builder mac"
+  },
+  "dependencies": {
+    "electron": "^33.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@vitejs/plugin-vue": "^5.1.0",
+    "electron-builder": "^25.1.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.4.0",
+    "vite-plugin-electron": "^1.1.0",
+    "vite-plugin-electron-renderer": "^1.1.0"
+  },
+  "build": {
+    "appId": "com.oristudio.desktop",
+    "productName": "OriStudio",
+    "directories": {
+      "output": "out"
+    },
+    "files": [
+      "dist/electron/**/*",
+      "dist/web/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"]
+    }
+  }
+}

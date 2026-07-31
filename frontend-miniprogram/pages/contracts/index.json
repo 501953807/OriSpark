@@ -1,1 +1,1 @@
-{ "navigationBarTitleText": "合约", "usingComponents": {} }
+{ "navigationBarTitleText": "合约", "usingComponents": { "motion-frame": "/components/motion-frame/motion-frame" } }

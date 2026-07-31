@@ -9,30 +9,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: 'oklch(98% 0.004 240)',
+        // Single cohesive accent — desaturated teal for professional feel
+        primary: 'oklch(56% 0.12 170)',
         surface: 'oklch(100% 0 0)',
+        bg: 'oklch(98% 0.004 240)',
         fg: 'oklch(20% 0.02 240)',
         muted: 'oklch(50% 0.018 240)',
         border: 'oklch(90% 0.006 240)',
-        accent: 'oklch(56% 0.12 170)',
-        accent2: 'oklch(62% 0.16 280)',
-        grad1: 'oklch(56% 0.12 170)',
-        grad2: 'oklch(62% 0.16 260)',
-        green: 'oklch(56% 0.12 170)',
-        orange: 'oklch(62% 0.18 55)',
-        blue: 'oklch(58% 0.14 245)',
-        purple: 'oklch(58% 0.16 280)',
-        pink: 'oklch(58% 0.16 350)',
+        // Removed redundant accent2/green/blue/purple/orange — use only primary as accent
       },
       fontFamily: {
-        display: ['Söhne', 'Avenir Next', 'system-ui', 'sans-serif'],
-        body: ['system-ui', 'SF Pro Text', 'sans-serif'],
+        // Display font with character + fallback hierarchy
+        display: ['Söhne', 'Satoshi', 'Avenir Next', 'system-ui', 'sans-serif'],
+        // Body uses Merriweather for editorial feel + sans-serif fallback
+        body: ['Merriweather', 'system-ui', 'SF Pro Text', 'sans-serif'],
       },
+      // More nuanced radius scale — tighter inner elements, softer containers
       borderRadius: {
-        sm: '8px',
-        DEFAULT: '14px',
-        lg: '20px',
-        xl: '28px',
+        sm: '6px',        /* inner elements */
+        default: '12px',  /* cards/buttons */
+        lg: '16px',       /* panels */
+        xl: '24px',       /* hero areas */
+        pill: '9999px',   /* tags */
+      },
+      // Typography improvements — wider line height for readability
+      lineHeight: {
+        tight: '1.25',
+        normal: '1.5',
+        relaxed: '1.625',
       },
     },
   },

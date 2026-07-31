@@ -1,8 +1,13 @@
 // pages/works/index.js
 const { getPublicWorks } = require('../../api/works')
+const { isLowEndDevice } = require('../../utils/motion')
 
 Page({
-  data: { works: [], loading: false },
+  data: {
+    works: [],
+    loading: false,
+    itemDelay: isLowEndDevice() ? 0 : 50,
+  },
 
   onLoad() { this.loadWorks() },
 

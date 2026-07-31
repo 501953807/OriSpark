@@ -1,8 +1,13 @@
 // pages/contracts/index.js
 const { getPublicContracts } = require('../../api/contracts')
+const { isLowEndDevice } = require('../../utils/motion')
 
 Page({
-  data: { contracts: [], loading: false },
+  data: {
+    contracts: [],
+    loading: false,
+    itemDelay: isLowEndDevice() ? 0 : 40,
+  },
   onLoad() { this.loadContracts() },
   async loadContracts() {
     this.setData({ loading: true })

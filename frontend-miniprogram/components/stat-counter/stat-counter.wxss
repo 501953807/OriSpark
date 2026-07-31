@@ -1,0 +1,27 @@
+/* stat-counter.wxss */
+.stat-counter {
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.stat-counter-value {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #059669;
+  display: inline-block;
+}
+
+.stat-counter-prefix {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #059669;
+  margin-right: 2rpx;
+}
+
+.stat-counter-suffix {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #6b7280;
+  margin-left: 4rpx;
+}

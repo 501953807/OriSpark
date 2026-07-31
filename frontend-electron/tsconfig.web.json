@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "../frontend-web/src/**/*.ts",
+    "../frontend-web/src/**/*.vue",
+    "../frontend-web/src/**/*.d.ts"
+  ],
+  "exclude": ["src/main", "dist", "node_modules"]
+}

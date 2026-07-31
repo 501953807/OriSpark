@@ -17,10 +17,13 @@
     "axios": "^1.6",
     "dayjs": "^1.11",
     "echarts": "^5.5",
+    "echarts-gl": "^2.1.0",
+    "gsap": "^3.15.0",
     "naive-ui": "^2.38",
     "photoswipe": "^5.4",
     "pinia": "^2.1",
     "plyr": "^3.7",
+    "three": "^0.185.1",
     "vue": "^3.4",
     "vue-echarts": "^6.6",
     "vue-router": "^4.3"

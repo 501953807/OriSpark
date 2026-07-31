@@ -20,6 +20,8 @@
     <!-- HERO -->
     <main>
       <div class="hero-wrapper">
+        <!-- Three.js particle background (controlled by motion store) -->
+        <ThreeScene v-if="showHeroScene" />
         <div class="hero-bg-deco"></div>
         <div class="hero-bg-deco2"></div>
         <div class="hero">
@@ -169,9 +171,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import ThreeScene from '@/components/ThreeScene.vue'
+import { useMotionStore } from '@/stores/motion'
 
 const isScrolled = ref(false)
+const motionStore = useMotionStore()
 
 function onScroll() {
   isScrolled.value = window.scrollY > 10
@@ -179,6 +184,9 @@ function onScroll() {
 
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
+
+// Show hero ThreeScene only when animation is enabled
+const showHeroScene = computed(() => motionStore.immersionLevel >= 1 && !motionStore.reducedMotion)
 </script>
 
 <style scoped>
@@ -307,7 +315,12 @@ h1 .em { background: linear-gradient(135deg, var(--grad1), var(--grad2)); -webki
 .hc-stat { background: oklch(96% 0.006 240); border-radius: var(--radius); padding: 14px; text-align: center; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .dark .hc-stat { background: oklch(24% 0.01 240); }
 .hc-stat:hover { transform: translateY(-2px); box-shadow: 0 4px 16px oklch(0 0 0 / 0.06); }
-.hc-stat-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+..hc-stat-val { 
+  font-family: 'Satoshi', system-ui, sans-serif; 
+  font-size: 1.6rem; 
+  font-weight: 700; 
+  color: var(--primary); 
+}
 .hc-stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
 .hc-modules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .hc-mod { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 500; background: oklch(96% 0.006 240); transition: background 0.2s, transform 0.2s; }
@@ -329,7 +342,19 @@ h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.8vw, 2.8rem); 
 .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin: 0 auto; }
 
 /* --- FEATURE CARDS --- */
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.features-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 2rem; 
+  align-items: start; 
+}
+
+/* Enhanced: Asymmetric layout — first card gets visual prominence */
+.features-grid .feature-card:nth-child(1) { 
+  grid-column: span 2; 
+  transform: scale(1.02); 
+  box-shadow: 0 8px 24px rgba(86, 104, 205, 0.15); 
+}
 .feature-card {
   background: var(--surface); border-radius: var(--radius-lg);
   border: 1px solid var(--border); padding: 32px 28px;
@@ -337,24 +362,41 @@ h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.8vw, 2.8rem); 
   transition: all 0.35s ease; cursor: default; position: relative; overflow: hidden;
 }
 .feature-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--grad1), var(--grad2));
-  opacity: 0; transition: opacity 0.35s ease;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), oklch(from var(--primary) l c (h-20 d)));
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
-.feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px oklch(0 0 0 / 0.08); border-color: transparent; }
+.feature-card:hover { 
+  transform: translateY(-6px); 
+  box-shadow: 0 12px 32px var(--primary) / 0.15; 
+  border-color: transparent; 
+}
 .feature-card:hover::before { opacity: 1; }
 .fc-icon { width: 48px; height: 48px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-.fc-icon.g1 { background: oklch(56% 0.12 170 / 0.12); color: oklch(56% 0.12 170); }
-.fc-icon.g2 { background: oklch(62% 0.16 260 / 0.12); color: oklch(62% 0.16 260); }
-.fc-icon.g3 { background: oklch(62% 0.18 55 / 0.12); color: oklch(62% 0.18 55); }
-.fc-icon.g4 { background: oklch(58% 0.14 245 / 0.12); color: oklch(58% 0.14 245); }
-.fc-icon.g5 { background: oklch(58% 0.16 350 / 0.12); color: oklch(58% 0.16 350); }
-.fc-icon.g6 { background: oklch(60% 0.12 200 / 0.12); color: oklch(60% 0.12 200); }
+..  .fc-icon.g1 { 
+  background: oklch(56% 0.12 170 / 0.12); 
+  color: var(--primary); 
+}
+. 
+. 
+. 
+. 
+. 
 .fc-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
 .fc-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 .fc-features { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .fc-features li { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-.fc-features li::before { content: '→'; color: var(--accent); font-weight: 600; }
+. .fc-features li::before { 
+  content: '•'; 
+  color: var(--primary); 
+  font-weight: 700; 
+}
 
 /* --- PROOF --- */
 .proof-section { background: linear-gradient(180deg, var(--surface) 0%, oklch(96% 0.006 240) 100%); padding: 80px clamp(16px, 6vw, 80px); }

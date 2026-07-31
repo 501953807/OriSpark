@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "我的作品",
-  "usingComponents": {}
+  "usingComponents": {
+    "motion-frame": "/components/motion-frame/motion-frame"
+  }
 }
