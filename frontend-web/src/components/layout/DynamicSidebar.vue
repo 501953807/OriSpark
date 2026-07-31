@@ -133,14 +133,6 @@
         <span class="sb-icon">🏷️</span>
         <span v-if="!isCollapsed">订阅分级</span>
       </router-link>
-      <router-link to="/app/business/commissions" class="sb-link" active-class="active">
-        <span class="sb-icon">📦</span>
-        <span v-if="!isCollapsed">商单管理</span>
-      </router-link>
-      <router-link to="/app/integrations" class="sb-link" active-class="active">
-        <span class="sb-icon">🔌</span>
-        <span v-if="!isCollapsed">第三方对接</span>
-      </router-link>
     </nav>
 
     <!-- Collapse button -->
@@ -348,9 +340,6 @@ function routeIcon(name: string): string {
 function routeLabel(name: string): string {
   return labelMap[name] ?? name
 }
-
-/** Routes that are type-specific should NOT be duplicated in the shared section. */
-const ROUTES_WITH_SHARED_DUPLICATE = new Set(['rights', 'monitor', 'supply', 'business'])
 
 function hasSharedRoute(routeName: string): boolean {
   if (!typeInfo.value) return true

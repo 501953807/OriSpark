@@ -4,11 +4,8 @@
     <!-- Motion Control Panel (fixed position) -->
     <MotionControlPanel />
 
-    <!-- Shared element page transitions -->
-    <SharedElementTransition />
-
     <!-- Content is rendered by router-view via SharedElementTransition -->
-    <router-view />
+    <SharedElementTransition />
   </div>
 </template>
 
