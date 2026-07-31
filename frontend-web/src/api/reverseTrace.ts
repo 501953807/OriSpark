@@ -1,6 +1,6 @@
 /**分发回流引擎 API 客户端.*/
 
-import request from '@/utils/request'
+import client from './client'
 
 export interface TraceLink {
   id: string
@@ -48,27 +48,27 @@ export interface AttributionSummary {
 const reverseTraceApi = {
   /**创建可信短链 */
   create(data: Partial<TraceLink>) {
-    return request.post('/trace/links', data)
+    return client.post('/trace/links', data)
   },
 
   /**列出短链 */
   list(params?: { platform_code?: string; is_active?: boolean }) {
-    return request.get('/trace/links', { params })
+    return client.get('/trace/links', { params })
   },
 
   /**获取链接详情 */
   getById(id: string) {
-    return request.get(`/trace/links/${id}`)
+    return client.get(`/trace/links/${id}`)
   },
 
   /**更新链接 */
   update(id: string, data: Partial<TraceLink>) {
-    return request.patch(`/trace/links/${id}`, data)
+    return client.patch(`/trace/links/${id}`, data)
   },
 
   /**删除链接 */
   delete(id: string) {
-    return request.delete(`/trace/links/${id}`)
+    return client.delete(`/trace/links/${id}`)
   },
 
   /**记录归因事件 */
@@ -80,12 +80,12 @@ const reverseTraceApi = {
     converted?: boolean
     conversion_value?: number
   }) {
-    return request.post('/trace/events', data)
+    return client.post('/trace/events', data)
   },
 
   /**归因分析 */
   getAnalytics(linkId: string) {
-    return request.get(`/trace/analytics/${linkId}`)
+    return client.get(`/trace/analytics/${linkId}`)
   },
 }
 

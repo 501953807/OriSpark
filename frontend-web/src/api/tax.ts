@@ -1,6 +1,6 @@
 /**全球税务结算 API 客户端.*/
 
-import request from '@/utils/request'
+import client from './client'
 
 export interface TaxAgent {
   id: string
@@ -58,27 +58,27 @@ export interface CurrencyConversion {
 
 const taxAgentApi = {
   list(status?: string) {
-    return request.get('/tax/agents', { params: { status } })
+    return client.get('/tax/agents', { params: { status } })
   },
 
   getById(id: string) {
-    return request.get(`/tax/agents/${id}`)
+    return client.get(`/tax/agents/${id}`)
   },
 
   create(data: Partial<TaxAgent>) {
-    return request.post('/tax/agents', data)
+    return client.post('/tax/agents', data)
   },
 
   update(id: string, data: Partial<TaxAgent>) {
-    return request.patch(`/tax/agents/${id}`, data)
+    return client.patch(`/tax/agents/${id}`, data)
   },
 
   listReports(participantId: string) {
-    return request.get('/tax/reports', { params: { participant_id: participantId } })
+    return client.get('/tax/reports', { params: { participant_id: participantId } })
   },
 
   createReport(data: { participant_id: string; period: string; currency?: string }) {
-    return request.post('/tax/reports', data)
+    return client.post('/tax/reports', data)
   },
 }
 
@@ -91,11 +91,11 @@ const settlementApi = {
     currency?: string
     contract_id?: string
   }) {
-    return request.post('/settlement/calculate-tax', data)
+    return client.post('/settlement/calculate-tax', data)
   },
 
   listCalculations(productType?: string) {
-    return request.get('/settlement/calculations', { params: { product_type: productType } })
+    return client.get('/settlement/calculations', { params: { product_type: productType } })
   },
 
   convertCurrency(data: {
@@ -103,7 +103,7 @@ const settlementApi = {
     target_currency: string
     amount: number
   }) {
-    return request.post('/settlement/convert-currency', data)
+    return client.post('/settlement/convert-currency', data)
   },
 }
 

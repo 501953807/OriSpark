@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import VChart from 'vue-echarts'
-import * echarts from 'echarts'
+import * as echarts from 'echarts'
 // Register echarts-gl for 3D capabilities
 import 'echarts-gl'
 
@@ -89,12 +89,22 @@ const getChartOption = () => ({
   },
   tooltip: {
     trigger: 'item',
-    formatter: (params) => `${params.value[0]}: ${params.value[2]}`
+    formatter: (params: any) => `${params.value[0]}: ${params.value[2]}`
   }
 })
 
+const updateChart = () => {
+  if (!chartInstance) return
+  const options = getChartOption()
+  // Adjust particle density based on immersion level
+  if (motionStore.immersionLevel === 0) {
+    options.series[0].data = [] // Hide when disabled
+  }
+  chartInstance.setOption(options, true)
+}
+
 onMounted(() => {
-  chartInstance = echarts.init(chartRef.value as HTMLElement)
+  chartInstance = echarts.init(chartRef.value as unknown as HTMLElement)
   updateChart()
 
   // Responsive resize handler
@@ -109,7 +119,7 @@ onMounted(() => {
       chartInstance = null
     }
   })
-}
+})
 
 watch(() => motionStore.immersionLevel, () => {
   if (chartInstance) {
@@ -118,20 +128,10 @@ watch(() => motionStore.immersionLevel, () => {
   }
 })
 
-const updateChart = () => {
-  if (!chartInstance) return
-  const options = getChartOption()
-  // Adjust particle density based on immersion level
-  if (motionStore.immersionLevel === 0) {
-    options.series[0].data = [] // Hide when disabled
-  }
-  chartInstance.setOption(options, true)
-}
-
 defineExpose({
   refresh: () => {
     if (chartInstance) {
-      chartInstance.setOption(getChartOption(true), true)
+      chartInstance.setOption(getChartOption(), true)
     }
   }
 })

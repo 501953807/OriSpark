@@ -108,7 +108,7 @@ export function initMotionPreferences(store: ReturnType<typeof useMotionStore>) 
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   store.reducedMotion = mediaQuery.matches
 
-  const handler = (e: MatchMediaEvent) => {
+  const handler = (e: MediaQueryListEvent) => {
     store.reducedMotion = e.matches
   }
   mediaQuery.addEventListener('change', handler)
