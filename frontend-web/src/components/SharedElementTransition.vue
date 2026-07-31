@@ -38,7 +38,7 @@ const shouldApply3DTransition = computed(() =>
       :css="true"
     >
       <keep-alive>
-        <component :is="Component" :key="route.fullPath" />
+        <component :is="Component" :key="'app-layout'" />
       </keep-alive>
     </transition>
   </router-view>

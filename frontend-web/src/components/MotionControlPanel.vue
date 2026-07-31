@@ -28,9 +28,9 @@ const isReducedMotion = computed(() => motionStore.reducedMotion)
 
 <template>
   <div class="motion-panel" :class="{ 'reduced-motion': isReducedMotion }">
-    <div class="panel-header">
+    <div class="panel-header" @click="isExpanded = !isExpanded">
       <span class="panel-title">🎨 动效控制</span>
-      <button class="panel-toggle" aria-label="切换面板">
+      <button class="panel-toggle" aria-label="切换面板" @click.stop="isExpanded = !isExpanded">
         {{ isExpanded ? '▲' : '▼' }}
       </button>
     </div>
