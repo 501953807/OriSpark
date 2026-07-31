@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "OriStudio"
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
-    SECRET_KEY: str = os.environ["SECRET_KEY"]
+    SECRET_KEY: str = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
     # 数据库
     DATABASE_URL: str = "sqlite+aiosqlite:///./data/oristudio.db"

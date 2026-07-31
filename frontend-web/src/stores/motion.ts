@@ -135,7 +135,7 @@ export function initMotionStore() {
         store.immersiveEnabled = savedImmersive === 'true'
       }
     } catch (e) {
-      # failed to restore motion settings
+      // failed to restore motion settings
     }
 
     // Setup reduced-motion listener

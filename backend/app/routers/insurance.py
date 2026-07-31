@@ -5,6 +5,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import get_current_user_id
 from app.models.insurance import InsuranceProduct
 from app.schemas.insurance import (
     InsuranceProductSchema,

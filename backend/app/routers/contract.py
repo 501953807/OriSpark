@@ -297,4 +297,3 @@ def get_status(contract_id: str, actor_id: str = Depends(get_current_user_id), d
     summary = ContractStateService.get_contract_status_summary(db, contract_id)
     return summary
 
-EOF

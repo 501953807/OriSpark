@@ -173,6 +173,25 @@ def require_auth(
     return get_current_user_id(authorization)
 
 
+def is_admin(user_id: str) -> bool:
+    """Check if user has admin privileges.
+
+    In production this would check user roles in database.
+    For development, admin users can be configured via ADMIN_IDS env var.
+
+    Args:
+        user_id: The user ID to check
+
+    Returns:
+        True if user is admin, False otherwise
+    """
+    import os
+    admin_ids = os.environ.get("ADMIN_IDS", "").split(",")
+    if not admin_ids or admin_ids == ['']:
+        return False
+    return user_id.strip() in [a.strip() for a in admin_ids if a.strip()]
+
+
 def get_current_user(
     authorization: Optional[str] = Header(None, alias="Authorization"),
     db: Session = Depends(get_db),

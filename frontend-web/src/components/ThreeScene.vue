@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
   scene = null
   camera = null
   window.removeEventListener('resize', handleResize)
-}
+})
 </script>
 
 <template>
