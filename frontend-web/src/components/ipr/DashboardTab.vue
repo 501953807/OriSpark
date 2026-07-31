@@ -2,7 +2,7 @@
   <div v-if="activeTab === 'dashboard'" class="dashboard animate-fade-in">
     <div class="actions-bar">
       <div class="filter-group">
-        <select v-model="dashFilterType" class="form-input" @change="$emit('load-portfolio')">
+        <select :value="dashFilterType" class="form-input" @change="$emit('update:dashFilterType', ($event.target as HTMLSelectElement).value); $emit('load-portfolio')">
           <option value="">全部类型</option>
           <option value="copyright">著作权</option>
           <option value="trademark">商标</option>
