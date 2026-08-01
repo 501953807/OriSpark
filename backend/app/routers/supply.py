@@ -2,14 +2,8 @@
 Phase 1: POD渠道管理、Canvas预览、Printful Mockup
 端点: 50 (supply)
 
-Features:
-  - 增强 Products CRUD (含变现路径/材质/平台)
-  - 变现渠道管理
-  - 众筹项目管理
-  - IP 授权管理
-  - 增强 Partners CRUD (含制造能力)
-  - 增强 Orders CRUD (含订单类型/样品管理)
-  - 变现仪表盘
+⚠️ [已废弃 v5.0] 本模块已被合约市场系统替代，保留供迁移过渡使用。
+   新功能请使用 /contract/* 路由。
 """
 import logging
 
