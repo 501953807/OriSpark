@@ -1,5 +1,5 @@
 // pages/contracts/detail.js
-const { getPublicContracts } = require('../../api/contracts')
+const { getContractDetail } = require('../../api/contracts')
 
 Page({
   data: { contract: null, loading: true },
@@ -14,10 +14,8 @@ Page({
 
   async loadContract(id) {
     try {
-      const res = await getPublicContracts({ limit: 100 })
-      const contracts = Array.isArray(res) ? res : (res?.data || [])
-      const contract = contracts.find(c => c.id === id)
-      this.setData({ contract, loading: false })
+      const res = await getContractDetail(id)
+      this.setData({ contract: res?.data || res, loading: false })
     } catch (e) {
       console.error('loadContract failed:', e)
       this.setData({ loading: false })

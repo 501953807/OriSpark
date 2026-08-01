@@ -32,7 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
 import type { Contract } from '~/types/public'
+import { fetchPublicContracts } from '~/composables/usePublicApi'
 
 useHead({
   title: '合约市场 — OriSpark',
@@ -44,18 +46,24 @@ const contracts = ref<Contract[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-try {
+async function loadContracts() {
   loading.value = true
-  const params: Record<string, string> = {}
-  if (selectedType.value) params.contract_type = selectedType.value
-  if (selectedStatus.value) params.status = selectedStatus.value
-  const res = await fetchPublicContracts(params)
-  contracts.value = (res ?? []) as Contract[]
-} catch (e) {
-  error.value = e instanceof Error ? e.message : 'Failed to load contracts'
-} finally {
-  loading.value = false
+  error.value = null
+  try {
+    const params: Record<string, string> = {}
+    if (selectedType.value) params.contract_type = selectedType.value
+    if (selectedStatus.value) params.status = selectedStatus.value
+    const res = await fetchPublicContracts(params)
+    contracts.value = (res ?? []) as Contract[]
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load contracts'
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(loadContracts)
+watch([selectedType, selectedStatus], loadContracts)
 </script>
 
 <style scoped>

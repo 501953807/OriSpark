@@ -1,5 +1,5 @@
 // pages/works/index.js
-const { getPublicWorks } = require('../../api/works')
+const { getMyWorks } = require('../../api/works')
 const { isLowEndDevice } = require('../../utils/motion')
 
 Page({
@@ -14,7 +14,7 @@ Page({
   async loadWorks() {
     this.setData({ loading: true })
     try {
-      const res = await getPublicWorks({ limit: 20 })
+      const res = await getMyWorks({ limit: 20 })
       this.setData({ works: Array.isArray(res) ? res : (res?.data || []) })
     } catch (e) { console.error(e) }
     finally { this.setData({ loading: false }) }

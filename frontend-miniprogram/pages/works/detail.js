@@ -1,5 +1,5 @@
 // pages/works/detail.js
-const { getPublicWorkDetail } = require('../../api/works')
+const { getMyWorkDetail } = require('../../api/works')
 
 Page({
   data: { work: null, loading: true },
@@ -14,8 +14,7 @@ Page({
 
   async loadWork(id) {
     try {
-      const res = await getPublicWorkDetail(id)
-      // Backend may return the object directly or wrapped in {data}
+      const res = await getMyWorkDetail(id)
       this.setData({ work: res?.data || res, loading: false })
     } catch (e) {
       console.error('loadWork failed:', e)

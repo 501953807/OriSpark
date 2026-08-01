@@ -1,40 +1,69 @@
-<!-- app/pages/index.vue -->
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import HeroBanner from '@/components/HeroBanner.vue'
+import PlatformStats from '@/components/PlatformStats.vue'
+import WorkGallery3D from '@/components/WorkGallery3D.vue'
+import CoreCapabilities from '@/components/CoreCapabilities.vue'
+import RecentContracts from '@/components/RecentContracts.vue'
+import DownloadCta from '@/components/DownloadCta.vue'
+import { fetchPublicWorks, fetchPublicContracts } from '~/composables/usePublicApi'
+
 useHead({
-  title: 'OriSpark — AI Creator Trust Hub',
+  title: 'OriSpark — AI 时代创作者信任枢纽',
   meta: [
     { name: 'description', content: 'AI时代的创作者权益保护与多边撮合信任枢纽平台' },
     { property: 'og:url', content: 'https://orispark.local' },
   ],
 })
 
-// 导入新组件
-import HeroBanner from '@/components/HeroBanner.vue'
-import PlatformStats from '@/components/PlatformStats.vue'
-import WorkGallery3D from '@/components/WorkGallery3D.vue'
+const featuredWorks = ref<Array<{ id: string; title: string; thumbnail: string | null }>>([])
+const featuredContracts = ref<Array<{ id: string; title: string; total_amount: number; status: string }>>([])
+const heroError = ref<string | null>(null)
+
+onMounted(async () => {
+  try {
+    const [worksRes, contractsRes] = await Promise.allSettled([
+      fetchPublicWorks({ limit: '6' }),
+      fetchPublicContracts({ limit: '5' }),
+    ])
+    if (worksRes.status === 'fulfilled' && Array.isArray(worksRes.value)) {
+      featuredWorks.value = worksRes.value.slice(0, 6).map((w: any) => ({
+        id: w.id,
+        title: w.title,
+        thumbnail: w.thumbnail_path || w.thumbnail || null,
+      }))
+    }
+    if (contractsRes.status === 'fulfilled' && Array.isArray(contractsRes.value)) {
+      featuredContracts.value = contractsRes.value.slice(0, 5).map((c: any) => ({
+        id: c.id,
+        title: c.title,
+        total_amount: c.total_amount || 0,
+        status: c.status || 'active',
+      }))
+    }
+  } catch (e) {
+    heroError.value = e instanceof Error ? e.message : '加载失败'
+  }
+})
 </script>
 
 <template>
   <div class="page-index">
-    <!-- Hero Banner with 3D particle background -->
-    <HeroBanner />
-
-    <!-- Stats Section with animated counters -->
+    <HeroBanner
+      :featured-works="featuredWorks"
+      :featured-contracts="featuredContracts"
+      :error="heroError"
+    />
     <PlatformStats />
-
-    <!-- 3D Gallery with parallax cards -->
     <WorkGallery3D />
-
-    <!-- Other components (unchanged) -->
     <CoreCapabilities />
-    <RecentContracts />
+    <RecentContracts :contracts="featuredContracts" />
     <DownloadCta />
   </div>
 </template>
 
 <style scoped>
 .page-index {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 </style>

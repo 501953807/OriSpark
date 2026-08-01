@@ -1,7 +1,7 @@
 // pages/index/index.js
-const { getFeaturedWorks } = require('../../api/works')
-const { getPublicContracts } = require('../../api/contracts')
-const { getPublicNotifications } = require('../../api/notifications')
+const { getMyWorks } = require('../../api/works')
+const { getMyContracts } = require('../../api/contracts')
+const { getMyNotifications } = require('../../api/notifications')
 const { getMotionManager } = require('../../utils/motion')
 
 Page({
@@ -30,12 +30,14 @@ Page({
   async loadDashboard() {
     this.setData({ loading: true })
     try {
-      const [worksRes, contractsRes] = await Promise.all([
-        getFeaturedWorks({ limit: 6 }),
-        getPublicContracts({ limit: 5 }),
-      ])
-      const worksList = Array.isArray(worksRes) ? worksRes : (worksRes?.data || [])
-      const contractsList = Array.isArray(contractsRes) ? contractsRes : (contractsRes?.data || [])
+      const token = wx.getStorageSync('token')
+      if (token) {
+        const [worksRes, contractsRes] = await Promise.all([
+          getMyWorks({ limit: 6 }),
+          getMyContracts({ limit: 5 }),
+        ])
+        const worksList = Array.isArray(worksRes) ? worksRes : (worksRes?.data || [])
+        const contractsList = Array.isArray(contractsRes) ? contractsRes : (contractsRes?.data || [])
 
       // 统计计数：从全局缓存或后端获取
       const savedStats = wx.getStorageSync('stats_cache')
@@ -72,7 +74,7 @@ Page({
 
   async loadNotifications() {
     try {
-      const res = await getPublicNotifications({ limit: 3 })
+      const res = await getMyNotifications({ limit: 3 })
       this.setData({ notifications: Array.isArray(res) ? res : (res?.data || []) })
     } catch (e) {
       console.error('loadNotifications failed:', e)

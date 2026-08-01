@@ -365,6 +365,48 @@ def google_login_url():
     )
 
 
+@router.post("/auth/wechat/login", response_model=ApiResponse)
+def wechat_miniapp_login(data: dict, db: Session = Depends(get_db)):
+    """微信小程序微信登录（基于 code 换 openid）.
+
+    Mini Program 流程:
+    1. 前端调用 wx.login() 获取 code
+    2. 发送 code 到此端点
+    3. 后端用 code 换 openid/session_key
+    4. 创建/查找用户，签发 JWT
+    """
+    code = data.get("code", "")
+    if not code:
+        raise HTTPException(status_code=400, detail="code 不能为空")
+
+    # 模拟微信 openid 返回（生产环境需调用微信 API）
+    import hashlib, time
+    openid = hashlib.md5(f"miniapp_{code}_{int(time.time())}".encode()).hexdigest()[:16]
+
+    user = _get_user_from_db(openid, db)
+    if not user:
+        user = User(
+            id=openid,
+            username=f"wx_{openid[:8]}",
+            email=f"wx_{openid[:8]}@wechat.local",
+            is_active=True,
+            wechat_openid=openid,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    token = _create_token(user.id)
+    return ApiResponse(
+        message="登录成功",
+        data={
+            "token": token,
+            "user": _user_to_dict(user),
+            "login_provider": "wechat_miniapp",
+        },
+    )
+
+
 @router.get("/auth/wechat/qrcode", response_model=ApiResponse)
 def wechat_qrcode():
     """获取微信扫码登录URL."""

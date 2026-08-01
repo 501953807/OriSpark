@@ -38,7 +38,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
 import type { Opportunity } from '~/types/public'
+import { fetchOpportunities } from '~/composables/usePublicApi'
 
 useHead({
   title: '合作机会 — OriSpark',
@@ -55,15 +57,20 @@ const opportunities = ref<Opportunity[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-try {
+async function loadOpportunities() {
   loading.value = true
-  const res = await fetchOpportunities()
-  opportunities.value = (res.data ?? []) as Opportunity[]
-} catch (e) {
-  error.value = e instanceof Error ? e.message : 'Failed to load opportunities'
-} finally {
-  loading.value = false
+  error.value = null
+  try {
+    const res = await fetchOpportunities()
+    opportunities.value = (res.data ?? []) as Opportunity[]
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load opportunities'
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(loadOpportunities)
 
 const filteredOpportunities = computed(() => {
   if (activeTab.value === 'all') return opportunities.value

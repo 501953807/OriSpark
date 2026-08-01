@@ -1,5 +1,5 @@
 // pages/notifications/index.js
-const { getPublicNotifications } = require('../../api/notifications')
+const { getMyNotifications } = require('../../api/notifications')
 
 Page({
   data: { notifications: [], loading: false },
@@ -7,7 +7,7 @@ Page({
   async loadNotifications() {
     this.setData({ loading: true })
     try {
-      const res = await getPublicNotifications()
+      const res = await getMyNotifications()
       this.setData({ notifications: Array.isArray(res) ? res : (res?.data || []) })
     } catch (e) { console.error(e) }
     finally { this.setData({ loading: false }) }

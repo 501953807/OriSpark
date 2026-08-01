@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useMarketData } from '~/composables/useMarketData'
 
 useHead({
@@ -39,7 +40,8 @@ useHead({
 })
 
 const { stats, loading, error, loadStats } = useMarketData()
-await loadStats()
+
+onMounted(loadStats)
 
 function formatCurrency(value?: number): string {
   if (value == null) return '¥0'

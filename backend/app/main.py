@@ -181,9 +181,14 @@ app.include_router(split_rule_router, prefix="/api")
 
 # Phase 2: Enforcement workflow
 from app.routers.enforcement import router as enforcement_router
+
+# 人类贡献度评分 (G-01)
+from app.routers.contribution import router as contribution_router
 from app.routers.negotiation import router as negotiation_router
 
 app.include_router(enforcement_router, prefix="/api")
+# 人类贡献度评分 (G-01)
+app.include_router(contribution_router, prefix="/api")
 app.include_router(negotiation_router, prefix="/api")
 
 # Module 9 v2: AI增长引擎
@@ -198,9 +203,11 @@ app.include_router(invoice_router, prefix="/api")
 # Public read-only API (OriSpark portal + miniprogram)
 from app.routers.public_api import router as public_router
 from app.routers.chat import router as chat_router
+from app.routers.mini_program import router as mini_program_router
 
 app.include_router(public_router, prefix="/api")
 app.include_router(chat_router, prefix="/api", tags=["Chat"])
+app.include_router(mini_program_router)
 
 
 @app.get("/api/health")

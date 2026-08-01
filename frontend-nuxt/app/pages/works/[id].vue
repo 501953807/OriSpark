@@ -20,7 +20,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import type { Work } from '~/types/public'
+import { fetchPublicWork } from '~/composables/usePublicApi'
 
 const route = useRoute()
 const workId = route.params.id as string
@@ -29,15 +31,20 @@ const work = ref<Work | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-try {
+async function loadWork() {
   loading.value = true
-  const res = await fetchPublicWork(workId)
-  work.value = (res ?? null) as Work | null
-} catch (e) {
-  error.value = e instanceof Error ? e.message : 'Failed to load work'
-} finally {
-  loading.value = false
+  error.value = null
+  try {
+    const res = await fetchPublicWork(workId)
+    work.value = (res ?? null) as Work | null
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load work'
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(loadWork)
 
 useHead({
   title: () => work.value?.title ?? '作品详情 — OriSpark',

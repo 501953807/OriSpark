@@ -5,7 +5,7 @@ export default {
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE_URL || 'http://localhost:8000/api',
+      apiBase: process.env.API_BASE_URL || 'http://localhost:8001/api',
     },
   },
 
@@ -15,6 +15,7 @@ export default {
     '/contracts': { prerender: true },
     '/market': { prerender: true },
     '/opportunities': { prerender: true },
+    '/works/**': { prerender: true },
   },
 
   css: ['~/assets/styles/global.css'],
@@ -29,6 +30,7 @@ export default {
         { property: 'og:title', content: 'OriSpark — AI Creator Trust Hub' },
         { property: 'og:description', content: 'AI时代的创作者权益保护与多边撮合信任枢纽平台' },
         { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://orispark.local' },
         { name: 'twitter:card', content: 'summary_large_image' },
       ],
       link: [

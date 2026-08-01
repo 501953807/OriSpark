@@ -48,7 +48,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
 import type { Work } from '~/types/public'
+import { fetchPublicWorks } from '~/composables/usePublicApi'
 
 useHead({
   title: '作品画廊 — OriSpark',
@@ -60,18 +62,24 @@ const works = ref<Work[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-try {
+async function loadWorks() {
   loading.value = true
-  const params: Record<string, string> = { limit: '50' }
-  if (searchQuery.value) params.search = searchQuery.value
-  if (selectedCategory.value) params.category = selectedCategory.value
-  const res = await fetchPublicWorks(params)
-  works.value = (res ?? []) as Work[]
-} catch (e) {
-  error.value = e instanceof Error ? e.message : 'Failed to load gallery'
-} finally {
-  loading.value = false
+  error.value = null
+  try {
+    const params: Record<string, string> = { limit: '50' }
+    if (searchQuery.value) params.search = searchQuery.value
+    if (selectedCategory.value) params.category = selectedCategory.value
+    const res = await fetchPublicWorks(params)
+    works.value = (res ?? []) as Work[]
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to load gallery'
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(loadWorks)
+watch([searchQuery, selectedCategory], loadWorks)
 </script>
 
 <style scoped>
