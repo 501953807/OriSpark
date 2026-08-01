@@ -1,4 +1,7 @@
-"""POD 利润计算器服务层."""
+"""POD 利润计算器服务层.
+
+⚠️ [已废弃 v5.0] 已被合约分润引擎替代，保留供迁移过渡使用。
+"""
 
 from datetime import datetime
 from typing import Optional

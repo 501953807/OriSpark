@@ -1,7 +1,6 @@
 <!-- src/components/SecureToggle.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useMotionStore } from '@/stores/motion'
 
 const props = defineProps<{
   locked?: boolean
@@ -9,7 +8,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:locked', 'toggle'])
 
-const motionStore = useMotionStore()
 const isLockedRef = ref(!!props.locked)
 
 const toggle = () => {
@@ -23,9 +21,6 @@ watch(() => props.locked, (newVal) => {
     isLockedRef.value = newVal
   }
 })
-
-// Compute if animation should play based on store state
-const playAnimation = computed(() => motionStore.shouldAnimate)
 </script>
 
 <template>
@@ -116,23 +111,13 @@ const playAnimation = computed(() => motionStore.shouldAnimate)
   opacity: 0.9;
 }
 
-/* Bounce effect on change when enabled */
-.secure-toggle-container.animate-change {
-  animation: lockToggleBounce 0.4s ease;
-}
-
-@keyframes lockToggleBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .toggle-track, .toggle-knob, .lock-icon {
     transition: none !important;
   }
 
-  .secure-toggle-container.animate-change {
+  .secure-toggle-container .animate-change {
     animation: none !important;
   }
 }

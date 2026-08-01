@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.models.matchmaking import MatchRequest, MatchTransaction
 
+# [已废弃 v5.0] 合约撮合引擎已替代本模块，保留供迁移过渡使用
+
 
 def create_match_request(db: Session, req: dict) -> MatchRequest:
     """创建撮合请求."""

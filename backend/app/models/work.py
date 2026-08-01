@@ -85,6 +85,7 @@ class Work(Base):
     versions = relationship("WorkVersion", back_populates="work", cascade="all, delete-orphan")
     project = relationship("Project", back_populates="works")
     notary_records = relationship("NotaryRecord", back_populates="work")
+    contribution_scores = relationship("HumanContributionScore", back_populates="work", foreign_keys="HumanContributionScore.work_id", cascade="all, delete-orphan")
     # Fork 父子关系
     parent = relationship("Work", remote_side="Work.id", backref="forks")
     # Creator relationship to User

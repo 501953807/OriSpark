@@ -1,4 +1,7 @@
-"""POD 月度结算服务."""
+"""POD 月度结算服务.
+
+⚠️ [已废弃 v5.0] 已被合约分润执行替代，保留供迁移过渡使用。
+"""
 
 from datetime import datetime, timezone
 from decimal import Decimal

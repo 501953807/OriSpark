@@ -1,9 +1,6 @@
 <!-- src/components/DragDropFeedback.vue -->
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useMotionStore } from '@/stores/motion'
-
-const motionStore = useMotionStore()
 const props = defineProps<{
   active?: boolean
   type?: 'drop' | 'drag' | 'hover'
@@ -31,7 +28,6 @@ const styleMap = {
 
 <template>
   <div
-    v-if="motionStore.shouldAnimate"
     class="drag-drop-feedback"
     :class="[active ? 'active' : '', currentType]"
   >

@@ -96,6 +96,9 @@ from app.models.credit import CreditRating, CreditBehavior
 # 合同风险评估
 from app.models.contract_risk import ContractRiskRule, ContractReview, ContractClause
 
+# 人类贡献度评分 (G-01)
+from app.models.contribution import HumanContributionScore
+
 # AI 训练许可
 from app.models.ai_training_license import AITrainingLicense
 

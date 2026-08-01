@@ -1,7 +1,6 @@
 <!-- src/components/EnhancedToast.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useMotionStore } from '@/stores/motion'
 
 interface ToastOptions {
   message: string
@@ -17,7 +16,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'update:visible'])
 
-const motionStore = useMotionStore()
 const timeoutRef = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const type = computed(() => props.options?.type || 'info')
@@ -35,9 +33,7 @@ const getPulseColor = computed(() => {
   return colors[type.value] || colors.info
 })
 
-const hasRadialPulse = computed(() =>
-  motionStore.immersiveEnabled && motionStore.shouldAnimate
-)
+const hasRadialPulse = computed(() => true)
 
 const startTimer = () => {
   if (duration.value <= 0) return

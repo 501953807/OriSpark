@@ -13,6 +13,7 @@ from app.models.monitor import MonitorResult
 from app.models.photographer_v2 import StockSale
 from app.models.etsy import EtsyOrder
 from app.models.commission import CommissionOrder
+from app.models.contract import ContractInstance, SplitExecutionLog
 from app.schemas.common import (
     DashboardStats,
     ApiResponse,
@@ -62,11 +63,38 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
         Work.status == "active"
     ).order_by(Work.imported_at.desc()).limit(10).all()
 
+    # 合约市场指标 (G-08)
+    active_contracts = (
+        db.query(func.count(ContractInstance.id))
+        .filter(ContractInstance.status.in_(["active", "in_execution", "escrow"]))
+        .scalar() or 0
+    )
+    thirty_days_ago = now - timedelta(days=30)
+    contract_revenue_30d = (
+        float(db.query(func.coalesce(func.sum(ContractInstance.total_amount), 0))
+        .filter(ContractInstance.status == "active",
+                ContractInstance.created_at >= thirty_days_ago)
+        .scalar() or 0)
+    )
+    split_executions_30d = (
+        db.query(func.count(SplitExecutionLog.id))
+        .filter(SplitExecutionLog.status == "success",
+                SplitExecutionLog.executed_at >= thirty_days_ago)
+        .scalar() or 0
+    )
+    total_contracts_ever = (
+        db.query(func.count(ContractInstance.id)).scalar() or 0
+    )
+
     stats = DashboardStats(
         total_works=total_works,
         total_notarized=total_notarized,
         infringement_alerts=infringement_alerts,
         monthly_revenue=round(monthly_rev, 2),
+        active_contracts=int(active_contracts),
+        contract_revenue_30d=round(contract_revenue_30d, 2),
+        split_executions_30d=int(split_executions_30d),
+        total_contracts_ever=int(total_contracts_ever),
         recent_works=[
             {
                 "id": w.id,

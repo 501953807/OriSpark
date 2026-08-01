@@ -155,7 +155,11 @@ def get_progress_dashboard(db: Session, user_id: str) -> dict:
     tasks = STAGE_TASKS.get(evaluation["stage_key"], [])
     completed_count = 0
     if latest:
-        completed_count = latest.total_works  # placeholder: would query GrowthTask table
+        completed_count = (
+            db.query(GrowthTask)
+            .filter(GrowthTask.user_id == user_id, GrowthTask.is_completed == True)
+            .count()
+        )
 
     total_task_count = len(tasks)
 

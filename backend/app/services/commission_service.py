@@ -1,4 +1,7 @@
-"""委托管理服务."""
+"""委托管理服务.
+
+⚠️ [已废弃 v5.0] 已被 split_rule_service.py 替代，保留供迁移过渡使用。
+"""
 
 from datetime import datetime, timezone
 from typing import Optional

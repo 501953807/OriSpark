@@ -36,6 +36,11 @@ class DashboardStats(BaseModel):
     monthly_revenue: float = 0.0
     recent_works: list[dict] = []
     upcoming_reminders: list[dict] = []
+    # 合约市场指标 (G-08)
+    active_contracts: int = 0
+    contract_revenue_30d: float = 0.0
+    split_executions_30d: int = 0
+    total_contracts_ever: int = 0
 
 
 class RevenueByMonth(BaseModel):

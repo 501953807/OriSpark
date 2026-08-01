@@ -386,3 +386,100 @@ def get_user_cases(db: Session, user_id: str) -> list[dict]:
             "overall_roi_percent": overall_roi,
         },
     }
+
+
+# G-02: L1-L4 四级防御执行串联
+
+
+def recommend_defense_tier(contribution_score: float, work_value_yuan: float) -> dict:
+    """根据贡献度评分和作品价值推荐防御层级.
+
+    阈值映射:
+    - 贡献度 >= 0.60 + 高价值作品 → L3 (法律登记确证)
+    - 贡献度 >= 0.60 + 普通作品 → L2 (平台工具监测)
+    - 贡献度 0.40-0.60 → L2 (平台工具监测, 需声明)
+    - 贡献度 < 0.40 → L1 (本地签名存证)
+    """
+    tiers = get_all_defense_tiers()
+
+    if contribution_score < 0.40:
+        tier = tiers[0]  # zero tier (L1)
+        recommendation = "L1"
+        reason = "贡献度低于阈值, 仅启用本地签名存证"
+    elif contribution_score >= 0.60 and work_value_yuan >= 100000:
+        tier = tiers[3]  # high tier (L3-L4)
+        recommendation = "L3"
+        reason = "高贡献度 + 高价值作品, 推荐法律登记确证"
+    elif contribution_score >= 0.60:
+        tier = tiers[1]  # low tier (L2)
+        recommendation = "L2"
+        reason = "高贡献度作品, 推荐平台工具监测"
+    else:  # 0.40-0.60
+        tier = tiers[1]  # low tier (L2)
+        recommendation = "L2"
+        reason = "需声明AI参与, 推荐平台工具监测+自动存证"
+
+    return {
+        "recommendation": recommendation,
+        "tier": tier,
+        "reason": reason,
+        "defense_features": tier["features"],
+        "monthly_cost_range": [tier["monthly_cost_low"], tier["monthly_cost_high"]],
+    }
+
+
+def execute_defense_tier(
+    db: Session,
+    work_id: str,
+    contribution_score: float,
+    work_value_yuan: float,
+) -> dict:
+    """执行推荐层级的版权防御流程.
+
+    串联: 贡献度评分 → 推荐防御层级 → 执行对应保护动作
+    """
+    recommendation = recommend_defense_tier(contribution_score, work_value_yuan)
+    tier_key = recommendation["recommendation"]  # L1/L2/L3
+
+    actions = []
+
+    if tier_key in ("L1", "L2", "L3"):
+        # L1: 本地签名存证 (所有层级都执行)
+        actions.append({
+            "tier": "L1",
+            "action": "本地ECDSA签名存证",
+            "status": "pending",
+        })
+
+    if tier_key in ("L2", "L3"):
+        # L2: 平台工具监测
+        actions.append({
+            "tier": "L2",
+            "action": "启用C2PA元数据+反向图片搜索+RSS监测",
+            "status": "pending",
+        })
+
+    if tier_key == "L3":
+        # L3: 法律登记确证
+        actions.append({
+            "tier": "L3",
+            "action": "提交CNIPA律师审核+版权登记",
+            "status": "pending",
+        })
+
+    if tier_key == "L4":
+        # L4: 司法链/区块链锚定
+        actions.append({
+            "tier": "L4",
+            "action": "司法链存证+Polygon链上锚定",
+            "status": "pending",
+        })
+
+    return {
+        "work_id": work_id,
+        "contribution_score": contribution_score,
+        "recommended_tier": recommendation,
+        "actions": actions,
+        "status": "configured",
+    }
+

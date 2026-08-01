@@ -1,14 +1,9 @@
-<!-- src/components/EChartsBar3D.vue -->
-<script setup lang="ts">
+// src/components/EChartsBar3D.vue
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import VChart from 'vue-echarts'
 import * as echarts from 'echarts'
 // Register echarts-gl for 3D capabilities
 import 'echarts-gl'
-
-import { useMotionStore } from '@/stores/motion'
-
-const motionStore = useMotionStore()
 const chartRef = ref(null)
 
 // Sample data - in real app this would come from API
@@ -96,10 +91,6 @@ const getChartOption = () => ({
 const updateChart = () => {
   if (!chartInstance) return
   const options = getChartOption()
-  // Adjust particle density based on immersion level
-  if (motionStore.immersionLevel === 0) {
-    options.series[0].data = [] // Hide when disabled
-  }
   chartInstance.setOption(options, true)
 }
 
@@ -121,11 +112,8 @@ onMounted(() => {
   })
 })
 
-watch(() => motionStore.immersionLevel, () => {
-  if (chartInstance) {
-    updateChart()
-    chartInstance.resize()
-  }
+watch(() => false, () => {
+  // Animation controls removed
 })
 
 defineExpose({
@@ -138,7 +126,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="echarts-3d-container" v-if="motionStore.shouldAnimate || motionStore.immersionLevel === 0">
+  <div class="echarts-3d-container">
     <VChart
       ref="chartRef"
       :option="getChartOption()"
@@ -146,26 +134,11 @@ defineExpose({
       style="height: 400px; border-radius: 12px; background: white;"
     />
   </div>
-  <!-- Fallback when animations disabled -->
-  <div v-else class="echarts-3d-container">
-    <div class="skeleton-loading" style="height: 400px; display: flex; align-items: center; justify-content: center;">
-      <div class="skeleton"></div>
-    </div>
-  </div>
 </template>
 
 <style scoped>
 .echarts-3d-container {
   padding: 1rem;
-}
-
-.skeleton-loading {
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f9fafb;
-  border-radius: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {

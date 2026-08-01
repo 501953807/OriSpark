@@ -1,30 +1,17 @@
 <!-- src/App.vue -->
 <template>
   <div class="app-root">
-    <!-- Motion Control Panel (fixed position) -->
-    <MotionControlPanel />
-
     <!-- Content is rendered by router-view via SharedElementTransition -->
     <SharedElementTransition />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useMotionStore } from '@/stores/motion'
 import SharedElementTransition from '@/components/SharedElementTransition.vue'
-import MotionControlPanel from '@/components/MotionControlPanel.vue'
-
-const motionStore = useMotionStore()
-
-// Ensure motion store is initialized
-onMounted(() => {
-  // Frame rate monitoring is already started in initMotionStore()
-})
 </script>
 
 <style>
-/* Root app styles with brand motion variables */
+/* Root app styles */
 .app-root {
   min-height: 100vh;
   background: var(--brand-bg-light, #f8fafc);
@@ -53,30 +40,6 @@ select {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-/* Brand pulse ring utility */
-.brand-pulse {
-  position: relative;
-  overflow: hidden;
-}
-
-.brand-pulse::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.3), transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.brand-pulse.active::after {
-  width: 300px;
-  height: 300px;
 }
 
 /* Reduced motion preference */
