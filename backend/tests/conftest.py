@@ -175,10 +175,13 @@ def client(test_db_engine, db_session):
     app.dependency_overrides[get_db] = _override_get_db
 
     # Override auth dependency to return "current_user" for tests
-    from app.deps import get_current_user_id
+    from app.deps import get_current_user_id, require_auth
     def mock_get_current_user_id():
         return "current_user"
+    def mock_require_auth():
+        return "current_user"
     app.dependency_overrides[get_current_user_id] = mock_get_current_user_id
+    app.dependency_overrides[require_auth] = mock_require_auth
 
     with TestClient(app) as c:
         yield c
@@ -188,6 +191,8 @@ def client(test_db_engine, db_session):
         del app.dependency_overrides[get_db]
     if get_current_user_id in app.dependency_overrides:
         del app.dependency_overrides[get_current_user_id]
+    if require_auth in app.dependency_overrides:
+        del app.dependency_overrides[require_auth]
 
 
 @pytest.fixture()

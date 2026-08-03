@@ -103,7 +103,7 @@ async def create_work(
 ):
     """上传单个作品文件 (含自动标签 + 尺寸检测 + 可选重复导入)."""
     svc = WorkManagerService(db)
-    return await svc.create_work(title, description, tags, project_id, allow_duplicate, file)
+    return await svc.create_work(title, description, tags, project_id, allow_duplicate, file, user_id)
 
 
 # ============================================================
