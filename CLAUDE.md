@@ -186,3 +186,17 @@ def create_contract(data: CreateContractRequest, db: Session = Depends(get_db)):
 ---
 
 *本规范于 2026-07-27 更新，与 OriStudio v5.0 项目交付审计保持一致。*
+
+## Agent skills
+
+### Issue tracker
+
+Issues 追踪在 GitHub（501953807/OriSpark），通过 `gh` CLI 操作。详见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+使用默认五标签：`needs-triage`、`needs-info`、`ready-for-agent`、`ready-for-human`、`wontfix`。详见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+单上下文布局：根目录 `CONTEXT.md` + `docs/adr/` 存放架构决策。详见 `docs/agents/domain.md`。
