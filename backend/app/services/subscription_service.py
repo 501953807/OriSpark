@@ -118,6 +118,27 @@ def unsubscribe(db: Session, user_id: str, tier_id: str) -> bool:
     return True
 
 
+def list_subscribers(db: Session, status: Optional[str] = None) -> list[dict]:
+    """获取订阅用户列表（带 tier 关联）."""
+    q = db.query(SubscriptionSubscriber).join(SubscriptionTier)
+    if status:
+        q = q.filter(SubscriptionSubscriber.status == status)
+    subs = q.all()
+    return [
+        {
+            "id": s.id,
+            "user_id": s.user_id,
+            "tier_id": s.tier_id,
+            "tier_name": s.tier.name if s.tier else None,
+            "status": s.status,
+            "subscribed_at": s.subscribed_at.isoformat() if s.subscribed_at else None,
+            "cancelled_at": s.cancelled_at.isoformat() if s.cancelled_at else None,
+            "expires_at": s.expires_at.isoformat() if s.expires_at else None,
+        }
+        for s in subs
+    ]
+
+
 def get_user_subscriptions(db: Session, user_id: str) -> list[dict]:
     """获取用户订阅列表."""
     subs = (

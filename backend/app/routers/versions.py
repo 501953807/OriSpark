@@ -1,151 +1,25 @@
 """版本管理 + 项目分组 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
-端点: 9 (versions)"""
+端点: 9 (versions)
+
+业务逻辑已提取至 version_service.py.
+"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import Optional
-from datetime import datetime
-import shutil
-from pathlib import Path
 
 from app.database import get_db
-from app.models.work import Work, WorkVersion, WorkTag, Project
-from app.services.hasher import compute_sha256
 from app.schemas.common import ApiResponse
-from app.schemas.work import ProjectCreate, ProjectResponse
 from app.deps import require_auth
+from app.services.version_service import (
+    list_versions, get_version, create_version, rollback_version,
+    list_projects, create_project, update_project, delete_project,
+    assign_to_project,
+)
+from app.schemas.work import ProjectCreate
 
-# 使用独立 router 前缀，在 main.py 中挂载到 /api
 router = APIRouter()
-
-# ==================== 版本管理 ====================
-
-@router.get("/works/{work_id}/versions", response_model=ApiResponse[list])
-def list_versions(work_id: str, db: Session = Depends(get_db)):
-    """获取作品版本列表."""
-    work = db.query(Work).filter(Work.id == work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="作品不存在")
-
-    versions = db.query(WorkVersion).filter(
-        WorkVersion.work_id == work_id
-    ).order_by(WorkVersion.version_num.desc()).all()
-
-    return ApiResponse(data=[
-        {
-            "id": v.id, "version_num": v.version_num,
-            "file_hash": v.file_hash, "file_path": v.file_path,
-            "file_size": v.file_size,
-            "notes": v.notes,
-            "created_at": v.created_at.isoformat() if v.created_at else None,
-        }
-        for v in versions
-    ])
-
-
-@router.get("/works/{work_id}/versions/{version_id}", response_model=ApiResponse[dict])
-def get_version(work_id: str, version_id: str, db: Session = Depends(get_db)):
-    """获取单个版本详情."""
-    version = db.query(WorkVersion).filter(
-        WorkVersion.id == version_id,
-        WorkVersion.work_id == work_id,
-    ).first()
-    if not version:
-        raise HTTPException(status_code=404, detail="版本不存在")
-    return ApiResponse(data={
-        "id": version.id,
-        "work_id": version.work_id,
-        "version_num": version.version_num,
-        "file_hash": version.file_hash,
-        "file_path": version.file_path,
-        "file_size": version.file_size,
-        "notes": version.notes,
-        "created_at": version.created_at.isoformat() if version.created_at else None,
-    })
-
-
-@router.post("/works/{work_id}/versions", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def create_version(work_id: str, notes: Optional[str] = None, db: Session = Depends(get_db)):
-    """创建作品版本快照."""
-    work = db.query(Work).filter(Work.id == work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="作品不存在")
-
-    # 获取当前版本号
-    latest = db.query(WorkVersion).filter(
-        WorkVersion.work_id == work_id
-    ).order_by(WorkVersion.version_num.desc()).first()
-
-    version_num = (latest.version_num + 1) if latest else 1
-
-    # 创建版本
-    version = WorkVersion(
-        work_id=work_id,
-        version_num=version_num,
-        file_hash=work.sha256 or compute_sha256(work.file_path),
-        file_path=work.file_path,
-        file_size=work.file_size,
-        notes=notes,
-    )
-    db.add(version)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(version)
-
-    return ApiResponse(
-        message=f"版本 {version_num} 已创建",
-        data={"id": version.id, "version_num": version_num},
-    )
-
-
-@router.post("/works/{work_id}/rollback/{version_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def rollback_version(work_id: str, version_id: str, db: Session = Depends(get_db)):
-    """回滚到指定版本 (更新作品文件哈希和路径)."""
-    work = db.query(Work).filter(Work.id == work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="作品不存在")
-
-    version = db.query(WorkVersion).filter(
-        WorkVersion.id == version_id,
-        WorkVersion.work_id == work_id,
-    ).first()
-    if not version:
-        raise HTTPException(status_code=404, detail="版本不存在")
-
-    # 回滚文件哈希
-    work.sha256 = version.file_hash
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(message=f"已回滚到版本 {version.version_num}")
-
-
-# ==================== 项目管理 ====================
-
-@router.get("/projects", response_model=ApiResponse[list])
-def list_projects(db: Session = Depends(get_db)):
-    """获取项目列表."""
-    projects = db.query(Project).order_by(Project.created_at.desc()).all()
-
-    return ApiResponse(data=[
-        {
-            "id": p.id, "name": p.name, "description": p.description,
-            "cover_work_id": p.cover_work_id,
-            "work_count": db.query(Work).filter(
-                Work.project_id == p.id
-            ).count(),
-            "created_at": p.created_at.isoformat() if p.created_at else None,
-            "updated_at": p.updated_at.isoformat() if p.updated_at else None,
-        }
-        for p in projects
-    ])
 
 
 class ProjectUpdate(BaseModel):
@@ -154,80 +28,82 @@ class ProjectUpdate(BaseModel):
     cover_work_id: Optional[str] = None
 
 
-@router.post("/projects", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
-    """创建项目."""
-    project = Project(
-        name=data.name,
-        description=data.description,
-        cover_work_id=data.cover_work_id,
-    )
-    db.add(project)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(project)
+# ==================== 版本管理 ====================
 
-    return ApiResponse(data={"id": project.id, "name": project.name})
+
+@router.get("/works/{work_id}/versions", response_model=ApiResponse)
+def list_versions_endpoint(work_id: str, db: Session = Depends(get_db)):
+    """获取作品版本列表."""
+    result = list_versions(db, work_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="作品不存在")
+    return ApiResponse(data=result)
+
+
+@router.get("/works/{work_id}/versions/{version_id}", response_model=ApiResponse)
+def get_version_endpoint(work_id: str, version_id: str, db: Session = Depends(get_db)):
+    """获取单个版本详情."""
+    result = get_version(db, work_id, version_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="版本不存在")
+    return ApiResponse(data=result)
+
+
+@router.post("/works/{work_id}/versions", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_version_endpoint(work_id: str, notes: Optional[str] = None, db: Session = Depends(get_db)):
+    """创建作品版本快照."""
+    result = create_version(db, work_id, notes)
+    if not result:
+        raise HTTPException(status_code=404, detail="作品不存在")
+    return ApiResponse(data=result, message=result.get("message", "版本创建成功"))
+
+
+@router.post("/works/{work_id}/rollback/{version_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def rollback_version_endpoint(work_id: str, version_id: str, db: Session = Depends(get_db)):
+    """回滚到指定版本."""
+    result = rollback_version(db, work_id, version_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="版本不存在")
+    return ApiResponse(message=result)
+
+
+# ==================== 项目管理 ====================
+
+
+@router.get("/projects", response_model=ApiResponse)
+def list_projects_endpoint(db: Session = Depends(get_db)):
+    """获取项目列表."""
+    return ApiResponse(data=list_projects(db))
+
+
+@router.post("/projects", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_project_endpoint(data: ProjectCreate, db: Session = Depends(get_db)):
+    """创建项目."""
+    return ApiResponse(data=create_project(db, data), message="项目创建成功")
 
 
 @router.patch("/projects/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db)):
+def update_project_endpoint(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db)):
     """更新项目."""
-    project = db.query(Project).filter(Project.id == project_id).first()
-    if not project:
+    result = update_project(db, project_id, data.model_dump(exclude_unset=True))
+    if not result:
         raise HTTPException(status_code=404, detail="项目不存在")
-
-    for key in ["name", "description", "cover_work_id"]:
-        val = getattr(data, key, None)
-        if val is not None:
-            setattr(project, key, val)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(message="项目已更新")
+    return ApiResponse(message=result)
 
 
 @router.delete("/projects/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def delete_project(project_id: str, db: Session = Depends(get_db)):
+def delete_project_endpoint(project_id: str, db: Session = Depends(get_db)):
     """删除项目 (关联作品的项目字段置空)."""
-    project = db.query(Project).filter(Project.id == project_id).first()
-    if not project:
+    result = delete_project(db, project_id)
+    if not result:
         raise HTTPException(status_code=404, detail="项目不存在")
-
-    # 解除关联
-    db.query(Work).filter(Work.project_id == project_id).update(
-        {"project_id": None}
-    )
-    db.delete(project)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(message="项目已删除")
+    return ApiResponse(message=result)
 
 
 @router.post("/works/{work_id}/assign-project/{project_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def assign_to_project(work_id: str, project_id: str, db: Session = Depends(get_db)):
+def assign_to_project_endpoint(work_id: str, project_id: str, db: Session = Depends(get_db)):
     """将作品分配到项目."""
-    work = db.query(Work).filter(Work.id == work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="作品不存在")
-
-    project = db.query(Project).filter(Project.id == project_id).first()
-    if not project:
-        raise HTTPException(status_code=404, detail="项目不存在")
-
-    work.project_id = project_id
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+    result = assign_to_project(db, work_id, project_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="作品或项目不存在")
+    return ApiResponse(message="作品已分配到项目")

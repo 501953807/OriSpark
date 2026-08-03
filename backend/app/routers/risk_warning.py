@@ -1,4 +1,7 @@
-"""风险预警 API 路由 — Phase 0."""
+"""风险预警 API 路由 — Phase 0.
+
+业务逻辑已提取至 risk_warning_service.py.
+"""
 
 from typing import Optional
 from datetime import date, datetime, timezone
@@ -8,10 +11,18 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.work import Work
-from app.models.risk_warning import RiskWarning, TaxDeadline, HealthMetric
 from app.schemas.common import ApiResponse
-from app.services.risk_warning_service import RiskWarningService, detect_burnout_risk
+from app.services.risk_warning_service import (
+    RiskWarningService,
+    detect_burnout_risk,
+    list_warnings,
+    dismiss_warning,
+    list_tax_deadlines,
+    complete_tax_deadline,
+    create_tax_deadline,
+    log_health_metric,
+    get_work_warnings,
+)
 from app.deps import require_auth
 
 router = APIRouter(prefix="/risk-warning", tags=["risk-warning"])
@@ -44,8 +55,8 @@ class HealthMetricCreate(BaseModel):
 
 
 class BurnoutRisk(BaseModel):
-    risk_level: str  # low, medium, high
-    score: float  # 0-100
+    risk_level: str
+    score: float
     factors: list[str]
     recommendation: str
 
@@ -76,7 +87,7 @@ def _get_service() -> RiskWarningService:
     return RiskWarningService()
 
 
-@router.post("/check", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
+@router.post("/check", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 async def check_risk_warning(
     data: RiskCheckRequest,
     db: Session = Depends(get_db),
@@ -92,7 +103,6 @@ async def check_risk_warning(
         model_name=data.model_name,
         work_title=data.work_title,
     )
-
     return ApiResponse(
         message=f"检测到 {len(results)} 条风险预警",
         data=[
@@ -110,12 +120,12 @@ async def check_risk_warning(
     )
 
 
-@router.post("/batch-check", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
+@router.post("/batch-check", response_model=ApiResponse, dependencies=[Depends(require_auth)])
 async def batch_check_risk_warning(
     payload: BatchCheckRequest,
     db: Session = Depends(get_db),
 ):
-    """批量侵权检测 — 对多个作品/提示词组合并行检测."""
+    """批量侵权检测."""
     service = _get_service()
     items_dict = [item.model_dump() for item in payload.items]
     results = await service.batch_check(
@@ -123,7 +133,6 @@ async def batch_check_risk_warning(
         user_id=payload.user_id,
         db=db,
     )
-
     total_warnings = sum(r["warning_count"] for r in results)
     return ApiResponse(
         message=f"完成 {len(results)} 个作品的批量检测，共检测到 {total_warnings} 条预警",
@@ -131,23 +140,16 @@ async def batch_check_risk_warning(
     )
 
 
-@router.get("/work/{work_id}", response_model=ApiResponse[list])
-def get_work_warnings(
+@router.get("/work/{work_id}", response_model=ApiResponse)
+def get_work_warnings_endpoint(
     work_id: str,
     dismissed: Optional[bool] = None,
     db: Session = Depends(get_db),
 ):
     """获取作品的风险预警记录."""
-    work = db.query(Work).filter(Work.id == work_id).first()
-    if not work:
+    warnings = get_work_warnings(db, work_id, dismissed)
+    if warnings is None:
         raise HTTPException(status_code=404, detail="作品不存在")
-
-    query = db.query(RiskWarning).filter(RiskWarning.work_id == work_id)
-    if dismissed is not None:
-        query = query.filter(RiskWarning.dismissed == dismissed)
-
-    warnings = query.order_by(RiskWarning.created_at.desc()).all()
-
     return ApiResponse(
         data=[
             {
@@ -165,21 +167,14 @@ def get_work_warnings(
     )
 
 
-@router.get("", response_model=ApiResponse[list])
+@router.get("", response_model=ApiResponse)
 def list_all_warnings(
     dismissed: Optional[bool] = None,
     severity: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     """获取所有风险预警记录."""
-    query = db.query(RiskWarning)
-    if dismissed is not None:
-        query = query.filter(RiskWarning.dismissed == dismissed)
-    if severity:
-        query = query.filter(RiskWarning.severity == severity)
-
-    warnings = query.order_by(RiskWarning.created_at.desc()).all()
-
+    warnings = list_warnings(db, dismissed, severity)
     return ApiResponse(
         data=[
             {
@@ -198,42 +193,23 @@ def list_all_warnings(
 
 
 @router.patch("/{warning_id}/dismiss", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def dismiss_warning(
+def dismiss_warning_endpoint(
     warning_id: str,
     db: Session = Depends(get_db),
 ):
     """标记预警为已查看."""
-    warning = db.query(RiskWarning).filter(RiskWarning.id == warning_id).first()
+    warning = dismiss_warning(db, warning_id)
     if not warning:
         raise HTTPException(status_code=404, detail="预警记录不存在")
-
-    warning.dismissed = True
-    from datetime import datetime
-    warning.dismissed_at = datetime.now(timezone.utc)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
     return ApiResponse(message="已标记为查看")
 
 
 # --- Tax Deadline Endpoints ---
 
 @router.post("/tax-deadlines", response_model=TaxDeadlineResponse, dependencies=[Depends(require_auth)])
-def create_tax_deadline(body: TaxDeadlineCreate, db: Session = Depends(get_db)):
+def create_tax_deadline_endpoint(body: TaxDeadlineCreate, db: Session = Depends(get_db)):
     """添加税务截止日期."""
-    deadline = TaxDeadline(
-        user_id="local",
-        tax_type=body.tax_type,
-        due_date=body.due_date,
-        amount_yuan=body.amount_yuan,
-        notes=body.notes,
-    )
-    db.add(deadline)
-    db.commit()
-    db.refresh(deadline)
+    deadline = create_tax_deadline(db, body.tax_type, body.due_date, body.amount_yuan, body.notes)
     return {
         "id": deadline.id,
         "user_id": deadline.user_id,
@@ -247,11 +223,9 @@ def create_tax_deadline(body: TaxDeadlineCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/tax-deadlines", response_model=list[dict])
-def list_tax_deadlines(db: Session = Depends(get_db)):
+def list_tax_deadlines_endpoint(db: Session = Depends(get_db)):
     """获取税务截止日期列表."""
-    deadlines = db.query(TaxDeadline).filter(
-        TaxDeadline.user_id == "local",
-    ).order_by(TaxDeadline.due_date.asc()).all()
+    deadlines = list_tax_deadlines(db, "local")
     return [
         {
             "id": d.id,
@@ -266,34 +240,21 @@ def list_tax_deadlines(db: Session = Depends(get_db)):
 
 
 @router.patch("/tax-deadlines/{deadline_id}/complete", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def complete_tax_deadline(deadline_id: str, db: Session = Depends(get_db)):
+def complete_tax_deadline_endpoint(deadline_id: str, db: Session = Depends(get_db)):
     """标记税务截止日期已完成."""
-    deadline = db.query(TaxDeadline).filter(TaxDeadline.id == deadline_id).first()
+    deadline = complete_tax_deadline(db, deadline_id)
     if not deadline:
         raise HTTPException(status_code=404, detail="截止日期不存在")
-    deadline.is_completed = True
-    deadline.completed_date = date.today()
-    db.commit()
     return ApiResponse(message="已标记完成")
 
 
 # --- Health / Burnout Detection Endpoints ---
 
 @router.post("/health-metrics", response_model=ApiResponse, dependencies=[Depends(require_auth)])
-def log_health_metric(body: HealthMetricCreate, db: Session = Depends(get_db)):
+def log_health_metric_endpoint(body: HealthMetricCreate, db: Session = Depends(get_db)):
     """记录健康指标（用于 burnout 预警）."""
-    metric = HealthMetric(
-        user_id="local",
-        daily_work_hours=body.daily_work_hours,
-        works_created=body.works_created,
-        has_break_taken=body.has_break_taken,
-        mood_score=body.mood_score,
-        recorded_date=body.recorded_date,
-    )
-    db.add(metric)
-    db.commit()
-
-    # 实时 burnout 检测
+    log_health_metric(db, "local", body.daily_work_hours, body.works_created,
+                      body.has_break_taken, body.mood_score, body.recorded_date)
     burnout = detect_burnout_risk(db, "local")
     return ApiResponse(
         message="健康指标已记录",
@@ -302,6 +263,6 @@ def log_health_metric(body: HealthMetricCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/burnout-risk", response_model=BurnoutRisk)
-def get_burnout_risk(db: Session = Depends(get_db)):
+def get_burnout_risk_endpoint(db: Session = Depends(get_db)):
     """获取 burnout 风险评估."""
     return detect_burnout_risk(db, "local")

@@ -1,17 +1,22 @@
 """订阅系统 API 路由 — 对应: docs/modules-v5/04-monetization-engine.md
 Phase 2: 创作者订阅层级
-端点: 7 (subscription)"""
+端点: 7 (subscription)
 
-from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, Query
+业务逻辑已提取至 subscription_service.py.
+"""
+
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.database import get_db
-from app.models.subscription import SubscriptionTier, SubscriptionSubscriber
-from app.schemas.common import ApiResponse, PaginatedResponse, PaginationParams, SuccessResponse
+from app.schemas.common import ApiResponse, SuccessResponse
 from app.deps import require_auth
+from app.services.subscription_service import (
+    list_tiers, create_tier, get_tier, update_tier, delete_tier,
+    subscribe, unsubscribe, get_user_subscriptions, list_subscribers,
+)
 
 router = APIRouter()
 
@@ -45,91 +50,75 @@ class CancelSubscriptionPayload(BaseModel):
     user_id: str
 
 
+def _tier_to_dict(tier) -> dict:
+    return {
+        "id": tier.id,
+        "name": tier.name,
+        "description": tier.description,
+        "price": tier.price,
+        "currency": tier.currency,
+        "period": tier.period,
+        "features": tier.features or [],
+        "is_active": tier.is_active,
+        "subscriber_count": len(tier.subscribers) if hasattr(tier, "subscribers") else 0,
+        "created_at": tier.created_at.isoformat() if tier.created_at else None,
+        "updated_at": tier.updated_at.isoformat() if tier.updated_at else None,
+    }
+
+
+def _sub_to_dict(sub) -> dict:
+    return {
+        "id": sub.id,
+        "user_id": sub.user_id,
+        "tier_id": sub.tier_id,
+        "status": sub.status,
+        "subscribed_at": sub.subscribed_at.isoformat() if sub.subscribed_at else None,
+        "cancelled_at": sub.cancelled_at.isoformat() if sub.cancelled_at else None,
+        "expires_at": sub.expires_at.isoformat() if sub.expires_at else None,
+    }
+
+
 # ============================================================================
 # 9.x 订阅等级管理
 # ============================================================================
 
 
-@router.get("/subscription/tiers", response_model=ApiResponse[list])
-def list_tiers(
+@router.get("/subscription/tiers", response_model=ApiResponse)
+def list_tiers_endpoint(
     is_active: Optional[bool] = None,
     db: Session = Depends(get_db),
 ):
     """获取所有订阅等级列表."""
-    q = db.query(SubscriptionTier)
-    if is_active is not None:
-        q = q.filter(SubscriptionTier.is_active == is_active)
-    tiers = q.order_by(SubscriptionTier.price).all()
-    return ApiResponse(data=[
-        {
-            "id": t.id,
-            "name": t.name,
-            "description": t.description,
-            "price": t.price,
-            "currency": t.currency,
-            "period": t.period,
-            "features": t.features or [],
-            "is_active": t.is_active,
-            "created_at": t.created_at.isoformat() if t.created_at else None,
-        }
-        for t in tiers
-    ])
+    tiers = list_tiers(db, is_active)
+    return ApiResponse(data=[_tier_to_dict(t) for t in tiers])
 
 
-@router.post("/subscription/tiers", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_tier(payload: CreateTierPayload, db: Session = Depends(get_db)):
+@router.post("/subscription/tiers", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_tier_endpoint(payload: CreateTierPayload, db: Session = Depends(get_db)):
     """创建订阅等级."""
-    tier = SubscriptionTier(
-        name=payload.name,
-        description=payload.description,
-        price=float(payload.price),
-        currency=payload.currency,
-        period=payload.period,
-        features=payload.features or [],
-        is_active=payload.is_active,
+    tier = create_tier(
+        db, payload.name, payload.price, payload.period,
+        payload.description, payload.currency, payload.features, payload.is_active,
     )
-    db.add(tier)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(tier)
     return ApiResponse(data=_tier_to_dict(tier), message="等级创建成功")
 
 
-@router.put("/subscription/tiers/{tier_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-@router.patch("/subscription/tiers/{tier_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_tier(tier_id: str, payload: UpdateTierPayload, db: Session = Depends(get_db)):
+@router.put("/subscription/tiers/{tier_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+@router.patch("/subscription/tiers/{tier_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_tier_endpoint(tier_id: str, payload: UpdateTierPayload, db: Session = Depends(get_db)):
     """更新订阅等级."""
-    tier = db.query(SubscriptionTier).filter(SubscriptionTier.id == tier_id).first()
-    if not tier:
+    result = update_tier(db, tier_id, payload.model_dump(exclude_unset=True))
+    if not result:
         raise HTTPException(status_code=404, detail="等级不存在")
-    update_data = payload.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(tier, key, value)
-    tier.updated_at = datetime.now(timezone.utc)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(tier)
-    return ApiResponse(data=_tier_to_dict(tier), message="等级更新成功")
+    return ApiResponse(data=_tier_to_dict(result), message="等级更新成功")
 
 
-@router.delete("/subscription/tiers/{tier_id}", response_model=ApiResponse[SuccessResponse], dependencies=[Depends(require_auth)])
-def delete_tier(tier_id: str, db: Session = Depends(get_db)):
+@router.delete("/subscription/tiers/{tier_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_tier_endpoint(tier_id: str, db: Session = Depends(get_db)):
     """删除订阅等级."""
-    tier = db.query(SubscriptionTier).filter(SubscriptionTier.id == tier_id).first()
-    if not tier:
+    deleted = delete_tier(db, tier_id)
+    if not deleted:
         raise HTTPException(status_code=404, detail="等级不存在")
-    db.delete(tier)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(data={"success": True, "message": "等级已删除"})
 
 
@@ -138,118 +127,39 @@ def delete_tier(tier_id: str, db: Session = Depends(get_db)):
 # ============================================================================
 
 
-@router.get("/subscription/subscribers", response_model=ApiResponse[list], dependencies=[Depends(require_auth)])
-def list_subscribers(
+@router.get("/subscription/subscribers", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def list_subscribers_endpoint(
     user_id: Optional[str] = None,
     status: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     """获取订阅用户列表."""
-    q = db.query(SubscriptionSubscriber).join(SubscriptionTier)
     if user_id:
-        q = q.filter(SubscriptionSubscriber.user_id == user_id)
-    if status:
-        q = q.filter(SubscriptionSubscriber.status == status)
-    subs = q.all()
-    return ApiResponse(data=[
-        {
-            "id": s.id,
-            "user_id": s.user_id,
-            "tier_id": s.tier_id,
-            "tier_name": tier.name if (tier := db.query(SubscriptionTier).filter(SubscriptionTier.id == s.tier_id).first()) else None,
-            "status": s.status,
-            "subscribed_at": s.subscribed_at.isoformat() if s.subscribed_at else None,
-            "cancelled_at": s.cancelled_at.isoformat() if s.cancelled_at else None,
-            "expires_at": s.expires_at.isoformat() if s.expires_at else None,
-        }
-        for s in subs
-    ])
+        subs = get_user_subscriptions(db, user_id)
+    else:
+        # 全量查询 (需鉴权)
+        subs = list_subscribers(db, status=status)
+    return ApiResponse(data=subs)
 
 
-@router.post("/subscription/subscribe", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def subscribe(payload: SubscribePayload, db: Session = Depends(get_db)):
+@router.post("/subscription/subscribe", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def subscribe_endpoint(payload: SubscribePayload, db: Session = Depends(get_db)):
     """订阅某个等级."""
-    user_id = payload.user_id
-    tier_id = payload.tier_id
-    tier = db.query(SubscriptionTier).filter(
-        SubscriptionTier.id == tier_id, SubscriptionTier.is_active == True
-    ).first()
-    if not tier:
-        raise HTTPException(status_code=404, detail="订阅等级不存在或未激活")
-    # Check if already subscribed
-    existing = db.query(SubscriptionSubscriber).filter(
-        SubscriptionSubscriber.user_id == user_id,
-        SubscriptionSubscriber.tier_id == tier_id,
-        SubscriptionSubscriber.status == "active",
-    ).first()
-    if existing:
-        raise HTTPException(status_code=409, detail="已有活跃订阅")
-    sub = SubscriptionSubscriber(
-        user_id=user_id,
-        tier_id=tier_id,
-        status="active",
-        subscribed_at=datetime.now(timezone.utc),
-        expires_at=datetime(9999, 12, 31) if tier.period == "yearly"
-        else datetime.now(timezone.utc).replace(year=datetime.now(timezone.utc).year + 1),
-    )
-    # Cancel previous subscriptions
-    db.query(SubscriptionSubscriber).filter(
-        SubscriptionSubscriber.user_id == user_id,
-        SubscriptionSubscriber.status == "active",
-    ).update({"status": "cancelled", "cancelled_at": datetime.now(timezone.utc)})
-    db.add(sub)
     try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(sub)
-    return ApiResponse(data=_sub_to_dict(sub), message="订阅成功")
+        sub = subscribe(db, payload.user_id, payload.tier_id)
+        return ApiResponse(data=_sub_to_dict(sub), message="订阅成功")
+    except ValueError as e:
+        detail = str(e)
+        raise HTTPException(status_code=409 if "已有" in detail else 404, detail=detail)
 
 
-@router.post("/subscription/cancel", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def cancel_subscription(payload: CancelSubscriptionPayload, db: Session = Depends(get_db)):
+@router.post("/subscription/cancel", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def cancel_subscription_endpoint(payload: CancelSubscriptionPayload, db: Session = Depends(get_db)):
     """取消订阅."""
-    user_id = payload.user_id
-    sub = db.query(SubscriptionSubscriber).filter(
-        SubscriptionSubscriber.user_id == user_id,
-        SubscriptionSubscriber.status == "active",
-    ).first()
-    if not sub:
-        raise HTTPException(status_code=404, detail="无活跃订阅")
-    sub.status = "cancelled"
-    sub.cancelled_at = datetime.now(timezone.utc)
     try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    return ApiResponse(data=_sub_to_dict(sub), message="订阅已取消")
-
-
-def _tier_to_dict(t: SubscriptionTier) -> dict:
-    return {
-        "id": t.id,
-        "name": t.name,
-        "description": t.description,
-        "price": t.price,
-        "currency": t.currency,
-        "period": t.period,
-        "features": t.features or [],
-        "is_active": t.is_active,
-        "subscriber_count": len(t.subscribers) if hasattr(t, "subscribers") else 0,
-        "created_at": t.created_at.isoformat() if t.created_at else None,
-        "updated_at": t.updated_at.isoformat() if t.updated_at else None,
-    }
-
-
-def _sub_to_dict(s: SubscriptionSubscriber) -> dict:
-    return {
-        "id": s.id,
-        "user_id": s.user_id,
-        "tier_id": s.tier_id,
-        "status": s.status,
-        "subscribed_at": s.subscribed_at.isoformat() if s.subscribed_at else None,
-        "cancelled_at": s.cancelled_at.isoformat() if s.cancelled_at else None,
-        "expires_at": s.expires_at.isoformat() if s.expires_at else None,
-    }
+        deleted = unsubscribe(db, payload.user_id, None)
+        if not deleted:
+            raise HTTPException(status_code=404, detail="无活跃订阅")
+        return ApiResponse(message="订阅已取消")
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

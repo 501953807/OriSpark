@@ -41,6 +41,8 @@ class EnforcementAction(Base):
     # takedown / settlement / dismissed / litigation_started
     compensation_amount = Column(Float, nullable=True)
     notes = Column(Text, nullable=True)
+    operator_id = Column(String(32), nullable=True)
+    # 维权行动的创建/操作者用户 ID
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

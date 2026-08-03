@@ -1,10 +1,10 @@
 """存证确权 API 路由 — 对应: docs/modules-v5/02-rights-protection.md
-端点: 18 (notary)"""
+端点: 18 (notary)
+
+所有 DB 操作已提取至 notary_manager_service.py.
+"""
+
 import logging
-
-from app.deps import require_auth
-
-import json
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -16,8 +16,8 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.work import Work
-from app.models.notary import NotaryRecord, Certificate, C2PARecord, NotaryAuditTrail
+from app.deps import require_auth
+from app.schemas.common import ApiResponse
 from app.schemas.notary import (
     NotaryRecordCreate, NotaryRecordResponse, NotaryRecordListResponse,
     CertificateResponse, NotaryPlatformInfo,
@@ -29,7 +29,7 @@ from app.schemas.notary import (
     AuditTrailItem, AuditTrailResponse,
     NotaryVerifyResponse, EvidenceChainItem,
 )
-from app.schemas.common import ApiResponse
+from app.services.notary_manager_service import NotaryManagerService
 from app.services.certificate_service import generate_certificate_pdf
 from app.services.hasher import compute_sha256
 from app.services.local_notary import sign_work, save_signature, generate_ecdsa_keypair
@@ -58,16 +58,6 @@ class AnchorToPolygonPayload(BaseModel):
 class RequestTimestampPayload(BaseModel):
     work_id: str
 
-
-def _record_audit_step(db: Session, record_id: str, step: str, status: str = "success", detail: str = ""):
-    """记录存证审计追踪步骤."""
-    trail = NotaryAuditTrail(
-        notary_record_id=record_id,
-        step=step,
-        status=status,
-        detail=detail,
-    )
-    db.add(trail)
 
 # 存证平台配置
 NOTARY_PLATFORMS = {
@@ -98,10 +88,13 @@ NOTARY_PLATFORMS = {
 }
 
 
+# ==============================================================================
+# Platform endpoints (no DB)
+# ==============================================================================
+
 @router.get("/notary/platforms", response_model=ApiResponse[list[NotaryPlatformInfo]])
 def get_notary_platforms(db: Session = Depends(get_db)):
     """获取可用的存证平台列表 (P1.7.13: dictStore-backed, 硬编码为 fallback)."""
-    # Try dictStore first (P1.7.13)
     try:
         from app.routers.system import get_dict_values_rich
         dict_entries = get_dict_values_rich("notary_platforms", db)
@@ -121,9 +114,12 @@ def get_notary_platforms(db: Session = Depends(get_db)):
                 return ApiResponse(data=platforms)
     except Exception as e:
         logging.getLogger(__name__).exception("Error in get_notary_platforms: %s", str(e))
-    # Fallback: hardcoded data
     return ApiResponse(data=list(NOTARY_PLATFORMS.values()))
 
+
+# ==============================================================================
+# Records CRUD
+# ==============================================================================
 
 @router.get("/notary/records", response_model=ApiResponse[NotaryRecordListResponse])
 def list_notary_records(
@@ -135,28 +131,9 @@ def list_notary_records(
     db: Session = Depends(get_db),
 ):
     """获取存证记录列表."""
-    query = db.query(NotaryRecord)
-
-    if status:
-        query = query.filter(NotaryRecord.status == status)
-    if platform:
-        query = query.filter(NotaryRecord.platform == platform)
-    if work_id:
-        query = query.filter(NotaryRecord.work_id == work_id)
-
-    total = query.count()
-    records = query.order_by(NotaryRecord.created_at.desc()).offset(
-        (page - 1) * page_size
-    ).limit(page_size).all()
-
-    total_pages = (total + page_size - 1) // page_size
-
-    return ApiResponse(data=NotaryRecordListResponse(
-        items=[NotaryRecordResponse.model_validate(r) for r in records],
-        total=total,
-        page=page,
-        page_size=page_size,
-    ))
+    svc = NotaryManagerService(db)
+    result = svc.list_notary_records(page, page_size, status, platform, work_id)
+    return ApiResponse(data=NotaryRecordListResponse(**result))
 
 
 @router.post("/notary/records", response_model=ApiResponse[NotaryRecordResponse])
@@ -166,81 +143,24 @@ def create_notary_record(
     _auth=Depends(require_auth),
 ):
     """创建存证记录 (含 ECDSA L1 本地签名)."""
-    # 验证作品存在
-    work = db.query(Work).filter(Work.id == data.work_id).first()
+    svc = NotaryManagerService(db)
+
+    work = svc.get_work(data.work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    # 验证平台
     if data.platform not in NOTARY_PLATFORMS:
         raise HTTPException(status_code=400, detail="不支持的存证平台")
 
-    # 确保已有哈希
-    if not work.sha256:
-        if not os.path.exists(work.file_path):
-            raise HTTPException(status_code=400, detail="作品文件不存在")
-        work.sha256 = compute_sha256(work.file_path)
-
     platform_info = NOTARY_PLATFORMS[data.platform]
-
-    # 生成支付二维码数据
-    qr_data = f"oristudio:notary:{data.work_id}:{data.platform}:{work.sha256[:16]}"
-
-    record = NotaryRecord(
-        work_id=data.work_id,
-        platform=data.platform,
-        status="pending",
-        fee=platform_info.fee_per_record,
-        payment_status="unpaid",
-        qr_code_url=qr_data,
-        evidence_hash=work.sha256,
-        notes=data.notes,
-        expires_at=datetime.now(timezone.utc) + timedelta(days=365 * 3),  # 3年有效期
-    )
-
-    try:
-        db.add(record)
-        db.commit()
-        db.refresh(record)
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to create notary record: %s", str(e))
-        raise HTTPException(status_code=500, detail="创建存证记录失败")
-
-    # P1.2.7: 记录审计追踪
-    _record_audit_step(db, record.id, "create", "success",
-                       f"Created notary record for work {data.work_id} on {data.platform}")
-
-    # ECDSA L1 本地签名
-    try:
-        sig_data = sign_work(work.sha256)
-        sig_path = save_signature(record.id, sig_data)
-        # 将签名引用存储到记录的 notes 中 (可扩展为独立字段)
-        signature_ref = {"l1_signature": sig_path, "algorithm": sig_data["algorithm"]}
-        record.notes = (record.notes or "") + f"\n[L1 Signature: {sig_path}]"
-        try:
-            db.commit()
-            db.refresh(record)
-        except Exception as e:
-            db.rollback()
-            logging.getLogger(__name__).exception("Failed to update L1 signature: %s", str(e))
-        _record_audit_step(db, record.id, "pending", "success",
-                           f"ECDSA L1 signature completed, sig_path={sig_path}")
-    except Exception as e:
-        # L1 签名失败不影响存证记录创建
-        _record_audit_step(db, record.id, "pending", "failure",
-                           f"ECDSA L1 signature failed: {str(e)}")
-
-    return ApiResponse(data=NotaryRecordResponse.model_validate(record))
+    return ApiResponse(data=svc.create_notary_record(data, platform_info, work))
 
 
 @router.get("/notary/records/{record_id}", response_model=ApiResponse[NotaryRecordResponse])
 def get_notary_record(record_id: str, db: Session = Depends(get_db)):
     """获取存证记录详情."""
-    record = db.query(NotaryRecord).filter(NotaryRecord.id == record_id).first()
-    if not record:
-        raise HTTPException(status_code=404, detail="存证记录不存在")
-    return ApiResponse(data=NotaryRecordResponse.model_validate(record))
+    svc = NotaryManagerService(db)
+    return ApiResponse(data=svc.get_notary_record(record_id))
 
 
 @router.post("/notary/records/{record_id}/confirm", response_model=ApiResponse[NotaryRecordResponse])
@@ -254,73 +174,27 @@ def confirm_notary_record(
     _auth=Depends(require_auth),
 ):
     """确认存证完成并生成证书."""
+    svc = NotaryManagerService(db)
+
     # 兼容 JSON body 和 query params
     if data:
         transaction_hash = data.get("transaction_hash", transaction_hash)
         block_height = data.get("block_height", block_height)
         platform_url = data.get("platform_url", platform_url)
 
-    record = db.query(NotaryRecord).filter(NotaryRecord.id == record_id).first()
-    if not record:
-        raise HTTPException(status_code=404, detail="存证记录不存在")
-
-    work = db.query(Work).filter(Work.id == record.work_id).first()
-
-    # 更新存证记录
-    record.status = "confirmed"
-    record.payment_status = "paid"
-    record.confirmed_at = datetime.now(timezone.utc)
-    if transaction_hash:
-        record.transaction_hash = transaction_hash
-    if block_height:
-        record.block_height = block_height
-    if platform_url:
-        record.platform_url = platform_url
-
-    # 生成 PDF 证书
-    cert_dir = Path("data/certificates")
-    cert_dir.mkdir(parents=True, exist_ok=True)
-
-    cert_path = generate_certificate_pdf(
-        work=work,
-        notary_record=record,
-        output_dir=str(cert_dir),
-    )
-
-    # 创建证书记录
-    certificate = Certificate(
-        notary_record_id=record.id,
-        cert_path=cert_path,
-        qr_code=record.qr_code_url,
-        template_name="default",
-        expires_at=record.expires_at,
-    )
-
-    # 更新作品状态
-    work.is_verified = True
-
     try:
-        db.add(certificate)
-        db.commit()
-        db.refresh(record)
+        record = svc.confirm_notary_record_with_all_ops(
+            record_id, transaction_hash, block_height, platform_url,
+        )
+    except HTTPException:
+        raise
     except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to save certificate: %s", str(e))
-        raise HTTPException(status_code=500, detail="保存证书失败")
-
-    # P1.2.7: 记录审计追踪 - confirm + cert_generate
-    _record_audit_step(db, record.id, "confirm", "success",
-                       f"Notary confirmed with tx={transaction_hash or 'N/A'}, block={block_height or 'N/A'}")
-    _record_audit_step(db, record.id, "cert_generate", "success",
-                       f"Certificate PDF generated at {cert_path}")
-    try:
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to commit audit trail: %s", str(e))
+        logging.getLogger(__name__).exception("Error in confirm_notary_record: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"确认存证失败: {str(e)}")
 
     # P1.7.14: Push notification after notary record confirmed
     try:
+        work = svc.get_work(record.work_id)
         from app.routers.system import push_notification
         push_notification(
             db, user_id="default",
@@ -331,9 +205,9 @@ def confirm_notary_record(
             related_id=record.id,
         )
     except Exception as e:
-        logging.getLogger(__name__).exception("Error in confirm_notary_record: %s", str(e))
+        logging.getLogger(__name__).exception("Error pushing notification: %s", str(e))
 
-    return ApiResponse(data=NotaryRecordResponse.model_validate(record))
+    return ApiResponse(data=record)
 
 
 @router.post("/notary/batch", response_model=ApiResponse)
@@ -343,63 +217,38 @@ def batch_notarize(
     _auth=Depends(require_auth),
 ):
     """批量创建存证记录."""
-    work_ids: list = data.work_ids
+    from app.models.work import Work
+    svc = NotaryManagerService(db)
+
     platform: str = data.platform
     if platform not in NOTARY_PLATFORMS:
         raise HTTPException(status_code=400, detail="不支持的存证平台")
 
     platform_info = NOTARY_PLATFORMS[platform]
-    records = []
-
-    for work_id in work_ids:
-        work = db.query(Work).filter(Work.id == work_id).first()
-        if not work:
-            continue
-
-        if not work.sha256 and os.path.exists(work.file_path):
-            work.sha256 = compute_sha256(work.file_path)
-
-        record = NotaryRecord(
-            work_id=work_id,
-            platform=platform,
-            status="pending",
-            fee=platform_info.fee_per_record,
-            payment_status="unpaid",
-            evidence_hash=work.sha256,
-            expires_at=datetime.now(timezone.utc) + timedelta(days=365 * 3),
-        )
-        records.append(record)
-
-    try:
-        db.add_all(records)
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to batch notarize records: %s", str(e))
-        raise HTTPException(status_code=500, detail="批量存证失败")
+    count = svc.batch_notarize(data.work_ids, platform, platform_info)
 
     return ApiResponse(
-        message=f"成功创建 {len(records)} 条存证记录",
-        data={"count": len(records)},
+        message=f"成功创建 {count} 条存证记录",
+        data={"count": count},
     )
 
+
+# ==============================================================================
+# Certificates
+# ==============================================================================
 
 @router.get("/notary/certificates/{cert_id}", response_model=ApiResponse[CertificateResponse])
 def get_certificate(cert_id: str, db: Session = Depends(get_db)):
     """获取证书详情."""
-    cert = db.query(Certificate).filter(Certificate.id == cert_id).first()
-    if not cert:
-        raise HTTPException(status_code=404, detail="证书不存在")
-
-    return ApiResponse(data=CertificateResponse.model_validate(cert))
+    svc = NotaryManagerService(db)
+    return ApiResponse(data=svc.get_certificate(cert_id))
 
 
 @router.get("/notary/certificates/{cert_id}/download")
 def download_certificate(cert_id: str, db: Session = Depends(get_db)):
     """下载证书 PDF 文件."""
-    cert = db.query(Certificate).filter(Certificate.id == cert_id).first()
-    if not cert:
-        raise HTTPException(status_code=404, detail="证书不存在")
+    svc = NotaryManagerService(db)
+    cert = svc.get_certificate_record(cert_id)
 
     cert_path = Path(cert.cert_path)
     if not cert_path.exists():
@@ -415,9 +264,8 @@ def download_certificate(cert_id: str, db: Session = Depends(get_db)):
 
 
 # ==============================================================================
-# P2.2.4: C2PA embedded verify API
+# C2PA
 # ==============================================================================
-
 
 @router.post("/notary/c2pa/{work_id}/generate", response_model=ApiResponse[C2PAManifestResponse])
 def generate_c2pa_for_work(
@@ -425,40 +273,21 @@ def generate_c2pa_for_work(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """生成并存储 C2PA manifest (P2.2.4).
+    """生成并存储 C2PA manifest (P2.2.4)."""
+    svc = NotaryManagerService(db)
 
-    为指定作品生成 C2PA-compatible manifest，包含:
-    - CreativeWork 断言 (stds.schema-org.CreativeWork)
-    - 哈希断言 (SHA-256)
-    - ECDSA 签名
-    - 素材引用 (ingredient)
-
-    结果存储到 c2pa_records 表，manifest 保存为卫星 JSON 文件。
-    """
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    # 确保文件有哈希
     if not work.sha256:
-        if os.path.exists(work.file_path):
-            work.sha256 = compute_sha256(work.file_path)
-            try:
-                db.commit()
-            except Exception as e:
-                db.rollback()
-                logging.getLogger(__name__).exception("Failed to update work sha256: %s", str(e))
-                raise HTTPException(status_code=500, detail="计算作品哈希失败")
-        else:
-            raise HTTPException(status_code=400, detail="作品文件不存在，无法计算哈希")
+        raise HTTPException(status_code=400, detail="作品文件不存在，无法计算哈希")
 
-    # 读取文件数据用于 C2PA 哈希计算
     file_data = None
     if os.path.exists(work.file_path):
         with open(work.file_path, "rb") as f:
             file_data = f.read()
 
-    # 生成 C2PA manifest 带身份
     manifest, private_pem, public_pem = generate_c2pa_with_identity(
         work_title=work.title,
         author_name="OriStudio Creator",
@@ -466,7 +295,6 @@ def generate_c2pa_for_work(
         file_data=file_data,
     )
 
-    # 保存 manifest 为卫星 JSON 文件
     c2pa_dir = Path("data/c2pa")
     c2pa_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = c2pa_dir / f"{work_id}.c2pa.json"
@@ -474,7 +302,6 @@ def generate_c2pa_for_work(
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
 
-    # 存储私钥到与 local_notary 一致的位置
     keys_dir = Path("data/certificates/signatures")
     keys_dir.mkdir(parents=True, exist_ok=True)
     key_path = keys_dir / f"{work_id}_c2pa_key.json"
@@ -487,44 +314,21 @@ def generate_c2pa_for_work(
     with open(key_path, "w", encoding="utf-8") as f:
         json.dump(key_data, f, ensure_ascii=False, indent=2)
 
-    # 存储到数据库
-    c2pa_record = C2PARecord(
-        work_id=work_id,
-        manifest_json=manifest,
-        is_active=True,
-        validator_url=str(key_path),
-    )
-    db.add(c2pa_record)
-    try:
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to save C2PA record: %s", str(e))
-        raise HTTPException(status_code=500, detail="保存 C2PA 记录失败")
-
     return ApiResponse(
         message="C2PA manifest 生成成功",
-        data=C2PAManifestResponse(
-            work_id=work_id,
-            manifest=manifest,
-        ),
+        data=svc.generate_c2pa_for_work(work, manifest),
     )
 
 
 @router.get("/notary/verify/c2pa/{work_id}", response_model=ApiResponse[C2PAVerifyResponse])
 def verify_c2pa_for_work(work_id: str, db: Session = Depends(get_db)):
-    """验证作品的 C2PA manifest (P2.2.4).
+    """验证作品的 C2PA manifest (P2.2.4)."""
+    svc = NotaryManagerService(db)
 
-    检查内容:
-    - manifest 结构完整性
-    - ECDSA 签名有效性
-    - 断言字段完整性
-    """
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    # 从文件加载 manifest
     manifest_path = Path("data/c2pa") / f"{work_id}.c2pa.json"
     if not manifest_path.exists():
         return ApiResponse(data=C2PAVerifyResponse(
@@ -545,7 +349,6 @@ def verify_c2pa_for_work(work_id: str, db: Session = Depends(get_db)):
             details={"error": f"读取 manifest 失败: {str(e)}"},
         ))
 
-    # 加载密钥
     keys_dir = Path("data/certificates/signatures")
     key_path = keys_dir / f"{work_id}_c2pa_key.json"
 
@@ -589,17 +392,12 @@ def verify_c2pa_for_work(work_id: str, db: Session = Depends(get_db)):
 
 
 # ==============================================================================
-# P2.2.2 & P2.2.3: DID + VC endpoints
+# DID + VC endpoints (no DB)
 # ==============================================================================
-
 
 @router.post("/notary/did/generate", response_model=ApiResponse[DIDDocumentResponse])
 def generate_did_endpoint(_auth=Depends(require_auth)):
-    """生成 W3C DID 标识符和 DID Document (P2.2.2).
-
-    生成 ECDSA 密钥对，并基于公钥创建 did:key 标识符。
-    返回完整的 DID Document (符合 W3C DID Core 规范)。
-    """
+    """生成 W3C DID 标识符和 DID Document (P2.2.2)."""
     private_pem, public_pem = generate_ecdsa_keypair()
     did = generate_did(public_pem)
     did_doc = create_did_document(did, public_pem)
@@ -613,10 +411,7 @@ def generate_did_endpoint(_auth=Depends(require_auth)):
 
 @router.get("/notary/did/resolve", response_model=ApiResponse[DIDDocumentResponse])
 def resolve_did_endpoint(did: str = Query(..., description="要解析的 DID 标识符")):
-    """解析 W3C DID 并返回 DID Document (P2.2.2).
-
-    当前仅支持 did:key 方法。
-    """
+    """解析 W3C DID 并返回 DID Document (P2.2.2)."""
     did_doc = resolve_did(did)
     if did_doc is None:
         raise HTTPException(status_code=400, detail="无法解析该 DID (仅支持 did:key 方法)")
@@ -624,7 +419,7 @@ def resolve_did_endpoint(did: str = Query(..., description="要解析的 DID 标
     return ApiResponse(data=DIDDocumentResponse(
         did=did,
         did_document=did_doc,
-        public_key_pem="",  # 从 did:key 解析时不返回私钥
+        public_key_pem="",
     ))
 
 
@@ -634,31 +429,17 @@ def generate_vc_for_work(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """生成作品的 W3C Verifiable Credential (P2.2.3).
+    """生成作品的 W3C Verifiable Credential (P2.2.3)."""
+    svc = NotaryManagerService(db)
 
-    结合 DID 和 ECDSA 签名，生成符合 W3C VC Data Model 的凭证。
-    """
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    # 确保有哈希
     if not work.sha256:
-        if os.path.exists(work.file_path):
-            work.sha256 = compute_sha256(work.file_path)
-            try:
-                db.commit()
-            except Exception as e:
-                db.rollback()
-                logging.getLogger(__name__).exception("Failed to update VC work sha256: %s", str(e))
-                raise HTTPException(status_code=500, detail="计算作品哈希失败")
-        else:
-            raise HTTPException(status_code=400, detail="作品文件不存在")
+        raise HTTPException(status_code=400, detail="作品文件不存在")
 
-    # 生成 ECDSA 签名
     signature_data = sign_work(work.sha256)
-
-    # 生成 DID 和 VC
     private_pem, public_pem = generate_ecdsa_keypair()
 
     work_dict = {
@@ -676,15 +457,12 @@ def generate_vc_for_work(
         signature_data=signature_data,
     )
 
-    # 保存 VC
     vc_dir = Path("data/vc")
     vc_dir.mkdir(parents=True, exist_ok=True)
     vc_path = vc_dir / f"{work_id}.vc.json"
-
     with open(vc_path, "w", encoding="utf-8") as f:
         json.dump(vc_data["credential"], f, ensure_ascii=False, indent=2)
 
-    # 保存私钥
     keys_dir = Path("data/certificates/signatures")
     keys_dir.mkdir(parents=True, exist_ok=True)
     key_path = keys_dir / f"{work_id}_vc_key.json"
@@ -709,12 +487,8 @@ def generate_vc_for_work(
 
 @router.post("/notary/vc/verify", response_model=ApiResponse[VCVerifyResponse])
 def verify_vc_endpoint(credential: dict, _auth=Depends(require_auth)):
-    """验证 W3C Verifiable Credential (P2.2.3).
-
-    执行结构验证和签名验证。
-    """
+    """验证 W3C Verifiable Credential (P2.2.3)."""
     result = verify_credential(credential)
-
     return ApiResponse(
         message="验证完成" if result["valid"] else "验证失败",
         data=VCVerifyResponse(
@@ -726,9 +500,8 @@ def verify_vc_endpoint(credential: dict, _auth=Depends(require_auth)):
 
 
 # ==============================================================================
-# P1.2.1: Merkle Tree Batch Anchoring
+# Merkle Tree
 # ==============================================================================
-
 
 @router.post("/notary/merkle/batch", response_model=ApiResponse[MerkleBatchResponse])
 def merkle_batch_anchor(
@@ -736,47 +509,20 @@ def merkle_batch_anchor(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """批量作品 Merkle Tree 锚定 (P1.2.1).
+    """批量作品 Merkle Tree 锚定 (P1.2.1)."""
+    svc = NotaryManagerService(db)
 
-    将多个作品的 SHA-256 哈希构建为 Merkle 树，
-    返回 Merkle Root 和各作品的证明路径。
-    根哈希可后续上链/公开保存。
-    """
     if data.platform not in NOTARY_PLATFORMS:
         raise HTTPException(status_code=400, detail="不支持的存证平台")
 
-    # 收集所有作品的哈希
-    work_hashes = []
-    work_map = {}  # hash -> work
-
-    for work_id in data.work_ids:
-        work = db.query(Work).filter(Work.id == work_id).first()
-        if not work:
-            continue
-
-        # 确保有哈希
-        if not work.sha256:
-            if os.path.exists(work.file_path):
-                work.sha256 = compute_sha256(work.file_path)
-                try:
-                    db.commit()
-                except Exception as e:
-                    db.rollback()
-                    logging.getLogger(__name__).exception("Failed to update merkle work sha256: %s", str(e))
-            else:
-                continue
-
-        work_hashes.append(work.sha256)
-        work_map[work.sha256] = work
+    work_hashes, work_map = svc.collect_work_hashes(data.work_ids)
 
     if len(work_hashes) < 2:
         raise HTTPException(status_code=400, detail="至少需要 2 个有 hash 的作品")
 
-    # 构建 Merkle Tree
     tree = build_merkle_tree(work_hashes)
     root = tree.get_root()
 
-    # 为每个作品生成证明
     proofs = []
     for work_hash, work in work_map.items():
         proof = tree.get_proof(work_hash)
@@ -803,11 +549,9 @@ def merkle_batch_anchor(
 
 
 # ==============================================================================
-# P1.2.6: Platform Fee Comparison + AI Recommendation
+# Platform comparison (no DB)
 # ==============================================================================
 
-
-# 平台优劣势数据
 _PLATFORM_PROFILES = {
     "banquanjia": {
         "pros": ["DCI 法律效力最高", "国家版权局体系", "司法认可度强"],
@@ -826,7 +570,6 @@ _PLATFORM_PROFILES = {
     },
 }
 
-# 作品类型平台适配评分
 _WORK_TYPE_SCORES = {
     "image": {"banquanjia": 9, "antchain": 8, "zhixinchain": 9},
     "text": {"banquanjia": 8, "antchain": 8, "zhixinchain": 8},
@@ -840,11 +583,10 @@ def _score_platform(key: str, platform_info, work_type: str, budget: float,
                     legal_level: str, work_count: int, priority: str) -> tuple:
     """综合评分一个平台，返回 (score, reasons)."""
     reasons = []
-    score = 50  # baseline
+    score = 50
 
     profile = _PLATFORM_PROFILES.get(key, {"pros": [], "cons": [], "priority": []})
 
-    # 费用评分
     total_fee = platform_info.fee_per_record * work_count
     if total_fee <= budget:
         score += 20
@@ -853,7 +595,6 @@ def _score_platform(key: str, platform_info, work_type: str, budget: float,
         score -= 15
         reasons.append(f"总费用 {total_fee:.2f} 元超出预算 {budget:.2f} 元")
 
-    # 法律效力匹配
     legal_map = {"national": 30, "judicial": 20, "commercial": 10}
     if platform_info.legal_level == legal_level:
         score += legal_map.get(legal_level, 10)
@@ -862,17 +603,14 @@ def _score_platform(key: str, platform_info, work_type: str, budget: float,
         score += 10
         reasons.append(f"法律等级接近需求 (judicial vs national)")
 
-    # 作品类型适配
     wt_score = _WORK_TYPE_SCORES.get(work_type, {}).get(key, 5)
     score += wt_score * 2
     reasons.append(f"作品类型 '{work_type}' 适配评分: {wt_score}/10")
 
-    # 优先级匹配
     if priority in profile.get("priority", []):
         score += 15
         reasons.append(f"优先维度 '{priority}' 平台优势匹配")
 
-    # 费用优势 (反向评分 - 费用越低分越高)
     fee_rank = {"antchain": 15, "zhixinchain": 8, "banquanjia": 0}
     score += fee_rank.get(key, 0)
     if key == "antchain":
@@ -889,10 +627,7 @@ def compare_notary_platforms(
     legal_level: str = Query("commercial"),
     priority: str = Query("cost"),
 ):
-    """存证平台费用比较 + AI 推荐 (P1.2.6).
-
-    跨平台比较费用，基于作品类型、预算、法律等级给出最优推荐。
-    """
+    """存证平台费用比较 + AI 推荐 (P1.2.6)."""
     platforms = []
     best_key = None
     best_score = -1
@@ -919,7 +654,6 @@ def compare_notary_platforms(
             best_score = score
             best_key = key
 
-    # 按推荐度排序 (费用低的优先作为默认排序)
     platforms.sort(key=lambda p: p.estimated_total)
 
     _, best_reasons = _score_platform(
@@ -947,15 +681,13 @@ def recommend_notary_platform(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """为指定作品推荐最佳存证平台 (P1.2.6).
+    """为指定作品推荐最佳存证平台 (P1.2.6)."""
+    svc = NotaryManagerService(db)
 
-    基于作品类型、已有哈希状态和默认预算给出 AI 推荐。
-    """
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work_for_recommend(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
-    # 从文件扩展名推断作品类型
     ext = (work.file_type or "").lower()
     if ext in ("jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"):
         work_type = "image"
@@ -970,7 +702,6 @@ def recommend_notary_platform(
     else:
         work_type = "image"
 
-    # 默认预算和优先级
     budget = 50.0
     legal_level = "commercial"
     priority = "cost"
@@ -1002,41 +733,23 @@ def recommend_notary_platform(
 
 
 # ==============================================================================
-# P1.2.7: Notary Audit Trail
+# Audit Trail
 # ==============================================================================
-
 
 @router.get("/notary/records/{record_id}/audit-trail", response_model=ApiResponse[AuditTrailResponse])
 def get_notary_audit_trail(record_id: str, db: Session = Depends(get_db)):
-    """获取存证记录的审计追踪 (P1.2.7).
-
-    返回 create → pending → confirm → cert_generate 全流程步骤记录。
-    """
-    record = db.query(NotaryRecord).filter(NotaryRecord.id == record_id).first()
-    if not record:
-        raise HTTPException(status_code=404, detail="存证记录不存在")
-
-    trails = (
-        db.query(NotaryAuditTrail)
-        .filter(NotaryAuditTrail.notary_record_id == record_id)
-        .order_by(NotaryAuditTrail.created_at.asc())
-        .all()
-    )
-
+    """获取存证记录的审计追踪 (P1.2.7)."""
+    svc = NotaryManagerService(db)
+    result = svc.get_notary_audit_trail(record_id)
     return ApiResponse(
-        message=f"Found {len(trails)} audit trail steps",
-        data=AuditTrailResponse(
-            record_id=record_id,
-            status=record.status,
-            steps=[AuditTrailItem.model_validate(t) for t in trails],
-        ),
+        message=f"Found {len(result['steps'])} audit trail steps",
+        data=AuditTrailResponse(**result),
     )
 
 
 # ==============================================================================
-# Phase 0: Polygon + DigiCert TSA endpoints
+# Polygon + DigiCert TSA
 # ==============================================================================
-
 
 @router.post("/notary/polygon", response_model=ApiResponse)
 def anchor_to_polygon(
@@ -1044,14 +757,12 @@ def anchor_to_polygon(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """将作品哈希锚定到 Polygon 公链 (Phase 0).
-
-    body: {"work_id": str}
-    """
+    """将作品哈希锚定到 Polygon 公链 (Phase 0)."""
     from app.gateway.polygon import PolygonNotaryGateway
+    svc = NotaryManagerService(db)
 
     work_id = data.work_id
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1064,21 +775,7 @@ def anchor_to_polygon(
     if not anchor:
         raise HTTPException(status_code=500, detail="Polygon 锚定失败")
 
-    record = NotaryRecord(
-        work_id=work_id,
-        platform="polygon",
-        status="confirmed",
-        transaction_hash=anchor.tx_hash,
-        blockchain=anchor.chain,
-        fee=0.0,
-    )
-    try:
-        db.add(record)
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to anchor to polygon: %s", str(e))
-        raise HTTPException(status_code=500, detail="Polygon 锚定失败")
+    svc.create_polygon_record(work_id, anchor)
 
     return ApiResponse(
         message=f"已锚定到 Polygon: {anchor.tx_hash[:20]}...",
@@ -1096,14 +793,12 @@ async def request_timestamp(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """请求 RFC 3161 时间戳 (Phase 0).
-
-    body: {"work_id": str}
-    """
+    """请求 RFC 3161 时间戳 (Phase 0)."""
     from app.services.timestamp_service import TimestampService
+    svc = NotaryManagerService(db)
 
     work_id = data.work_id
-    work = db.query(Work).filter(Work.id == work_id).first()
+    work = svc.get_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1117,28 +812,7 @@ async def request_timestamp(
         raise HTTPException(status_code=500, detail="时间戳请求失败")
 
     ts_path = await service.save_timestamp(token, work_id)
-
-    record = db.query(NotaryRecord).filter(
-        NotaryRecord.work_id == work_id, NotaryRecord.platform == "tts_timestamp"
-    ).first()
-    try:
-        if record:
-            record.notes = (record.notes or "") + f"\nTimestamp: {ts_path}"
-        else:
-            record = NotaryRecord(
-                work_id=work_id,
-                platform="tts_timestamp",
-                status="confirmed",
-                notes=f"RFC 3161 timestamp: {ts_path}",
-                fee=0.15,
-            )
-            db.add(record)
-
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        logging.getLogger(__name__).exception("Failed to save timestamp: %s", str(e))
-        raise HTTPException(status_code=500, detail="时间戳保存失败")
+    svc.get_or_create_timestamp_record(work_id, ts_path)
 
     return ApiResponse(
         message="RFC 3161 时间戳生成成功",
@@ -1147,36 +821,23 @@ async def request_timestamp(
 
 
 # ==============================================================================
-# P0: Universal Verify Endpoint — aggregates evidence chain for QR code scanning
+# Universal Verify Endpoint
 # ==============================================================================
-
 
 @router.get("/notary/verify/{record_id}", response_model=ApiResponse[NotaryVerifyResponse])
 def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
-    """通用存证验证端点 (P0).
+    """通用存证验证端点 (P0)."""
+    from app.models.notary import C2PARecord
+    svc = NotaryManagerService(db)
 
-    聚合查询 NotaryRecord + Certificate + C2PARecord + AuditTrail，
-    返回完整证据链状态 (L1/L2/L3/L4)。
+    record, work = svc.get_verify_record(record_id)
 
-    前端 VerifyView.vue 通过此端点实现 QR Code 扫码验证。
-    """
-    # 查询存证记录
-    record = db.query(NotaryRecord).filter(NotaryRecord.id == record_id).first()
-    if not record:
-        raise HTTPException(status_code=404, detail="存证记录不存在")
-
-    work = db.query(Work).filter(Work.id == record.work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="关联作品不存在")
-
-    # L1: ECDSA 本地签名验证
     l1_status = "verified" if record.notes and "L1 Signature" in (record.notes or "") else "pending"
     evidence_chain = [EvidenceChainItem(
         level="L1", type="ECDSA 本地签名", status=l1_status,
         details={"sig_ref": "data/certificates/signatures"} if l1_status == "verified" else None,
     )]
 
-    # L2: 区块链存证验证
     l2_status = "verified" if record.status == "confirmed" else ("pending" if record.status == "pending" else "failed")
     evidence_chain.append(EvidenceChainItem(
         level="L2", type=f"区块链 ({NOTARY_PLATFORMS.get(record.platform, {}).get('name', record.platform)})",
@@ -1188,8 +849,7 @@ def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
         } if l2_status == "verified" else None,
     ))
 
-    # L3: C2PA manifest 验证
-    c2pa_record = db.query(C2PARecord).filter(C2PARecord.work_id == record.work_id).first()
+    c2pa_record = svc.get_c2pa_record(record.work_id)
     if c2pa_record:
         manifest = c2pa_record.manifest_json
         is_valid = False
@@ -1207,11 +867,7 @@ def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
             level="L3", type="C2PA 内容凭证", status="not_started",
         ))
 
-    # L4: RFC 3161 时间戳
-    ts_record = db.query(NotaryRecord).filter(
-        NotaryRecord.work_id == record.work_id,
-        NotaryRecord.platform == "tts_timestamp",
-    ).first()
+    ts_record = svc.get_timestamp_record(record.work_id)
     if ts_record and ts_record.status == "confirmed":
         evidence_chain.append(EvidenceChainItem(
             level="L4", type="RFC 3161 时间戳 (DigiCert TSA)", status="verified",
@@ -1222,7 +878,6 @@ def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
             level="L4", type="RFC 3161 时间戳 (DigiCert TSA)", status="not_started",
         ))
 
-    # 综合验证结果：至少 L1+L2 通过即为有效
     valid = l1_status == "verified" and l2_status == "verified"
 
     return ApiResponse(data=NotaryVerifyResponse(
@@ -1238,9 +893,8 @@ def verify_notary_record(record_id: str, db: Session = Depends(get_db)):
 
 
 # ==============================================================================
-# P0-05: AIGC Trace Audit Integration Hub — Unified Provenance Chain
+# AIGC Trace Audit
 # ==============================================================================
-
 
 @router.post("/trace/audit/build", response_model=ApiResponse[dict])
 def build_provenance_chain_endpoint(
@@ -1248,21 +902,8 @@ def build_provenance_chain_endpoint(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """构建完整 AIGC 溯源链并持久化 (P0-05).
-
-    body: {
-        "work_id": str,
-        "file_path": str (可选，默认从作品记录读取),
-        "author_name": str (可选，默认 "OriStudio Creator"),
-        "include_ai_sessions": bool (可选，默认 true)
-    }
-
-    整合四层溯源机制:
-    L1: ECDSA 本地签名
-    L2: RFC 3161 可信时间戳 (异步)
-    L3: C2PA 元数据嵌入
-    L4: 区块链存证锚定
-    """
+    """构建完整 AIGC 溯源链并持久化 (P0-05)."""
+    from app.models.work import Work
     from app.services.aigc_trace_audit_hub import AIGCTraceAuditHub
 
     if not data:
@@ -1272,8 +913,8 @@ def build_provenance_chain_endpoint(
     if not work_id:
         raise HTTPException(status_code=400, detail="缺少 work_id")
 
-    # 验证作品存在
-    work = db.query(Work).filter(Work.id == work_id).first()
+    svc = NotaryManagerService(db)
+    work = svc.get_trace_audit_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1292,10 +933,7 @@ def build_provenance_chain_endpoint(
             author_name=author_name,
             include_ai_sessions=include_ai_sessions,
         )
-        return ApiResponse(
-            message="溯源链构建成功",
-            data=result,
-        )
+        return ApiResponse(message="溯源链构建成功", data=result)
     except Exception as e:
         logging.getLogger(__name__).exception("Failed to build provenance chain: %s", str(e))
         raise HTTPException(status_code=500, detail=f"溯源链构建失败: {str(e)}")
@@ -1307,13 +945,12 @@ def verify_provenance_chain_endpoint(
     file_hash: Optional[str] = Query(None, description="可选的文件哈希用于重新验证"),
     db: Session = Depends(get_db),
 ):
-    """验证作品的完整溯源链 (P0-05).
-
-    聚合查询所有溯源层状态，返回验证结果。
-    """
+    """验证作品的完整溯源链 (P0-05)."""
+    from app.models.work import Work
     from app.services.aigc_trace_audit_hub import AIGCTraceAuditHub
 
-    work = db.query(Work).filter(Work.id == work_id).first()
+    svc = NotaryManagerService(db)
+    work = svc.get_trace_audit_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1337,20 +974,12 @@ def get_trace_audit_status(
     work_id: str,
     db: Session = Depends(get_db),
 ):
-    """获取作品的溯源审计状态摘要 (P0-05).
+    """获取作品的溯源审计状态摘要 (P0-05)."""
+    from pathlib import Path
+    svc = NotaryManagerService(db)
 
-    轻量级状态查询，不执行完整验证。
-    """
-    c2pa_count = db.query(C2PARecord).filter(
-        C2PARecord.work_id == work_id,
-        C2PARecord.is_active == True,
-    ).count()
-
-    notary_count = db.query(NotaryRecord).filter(
-        NotaryRecord.work_id == work_id,
-    ).count()
-
-    # Check local signature file
+    c2pa_count = svc.get_c2pa_count(work_id)
+    notary_count = svc.get_notary_record_count(work_id)
     sig_path = Path("data/certificates/signatures") / f"{work_id}.json"
     has_signature = sig_path.exists()
 
@@ -1368,9 +997,8 @@ def get_trace_audit_status(
 
 
 # ==============================================================================
-# P0-06: C2PA/TSA/Blockchain Triple Authentication Pipeline
+# Triple Authentication Pipeline
 # ==============================================================================
-
 
 @router.post("/trace/triple/authenticate", response_model=ApiResponse[dict])
 def run_triple_authentication_endpoint(
@@ -1378,20 +1006,8 @@ def run_triple_authentication_endpoint(
     db: Session = Depends(get_db),
     _auth=Depends(require_auth),
 ):
-    """执行 C2PA/TSA/Blockchain 三重认证管线 (P0-06).
-
-    body: {
-        "work_id": str,
-        "file_path": str (可选，默认从作品记录读取),
-        "author_name": str (可选),
-        "blockchain_platform": str (可选，默认 local_ecdsa)
-    }
-
-    三层认证:
-    - L1: C2PA manifest 生成 + 嵌入
-    - L2: RFC 3161 可信时间戳
-    - L3: 区块链存证锚定
-    """
+    """执行 C2PA/TSA/Blockchain 三重认证管线 (P0-06)."""
+    from app.models.work import Work
     from app.services.triple_auth_pipeline import TripleAuthenticationPipeline
 
     if not data:
@@ -1401,8 +1017,8 @@ def run_triple_authentication_endpoint(
     if not work_id:
         raise HTTPException(status_code=400, detail="缺少 work_id")
 
-    # 验证作品存在
-    work = db.query(Work).filter(Work.id == work_id).first()
+    svc = NotaryManagerService(db)
+    work = svc.get_triple_auth_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1437,13 +1053,12 @@ def verify_triple_authentication_endpoint(
     file_hash: Optional[str] = Query(None, description="可选的文件哈希用于重新验证"),
     db: Session = Depends(get_db),
 ):
-    """验证作品的三重认证结果 (P0-06).
-
-    聚合查询 C2PA、TSA、Blockchain 三层认证状态。
-    """
+    """验证作品的三重认证结果 (P0-06)."""
+    from app.models.work import Work
     from app.services.triple_auth_pipeline import TripleAuthenticationPipeline
 
-    work = db.query(Work).filter(Work.id == work_id).first()
+    svc = NotaryManagerService(db)
+    work = svc.get_triple_auth_work(work_id)
     if not work:
         raise HTTPException(status_code=404, detail="作品不存在")
 
@@ -1460,4 +1075,3 @@ def verify_triple_authentication_endpoint(
     except Exception as e:
         logging.getLogger(__name__).exception("Failed to verify triple auth: %s", str(e))
         raise HTTPException(status_code=500, detail=f"三重认证验证失败: {str(e)}")
-

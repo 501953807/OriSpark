@@ -2322,10 +2322,10 @@ class IprService:
             notes=data.notes)
         self.db.add(record)
         try:
-            db.commit()
+            self.db.commit()
             self.db.refresh(record)
         except SQLAlchemyError:
-            db.rollback()
+            self.db.rollback()
             raise
         return ApiResponse(message="IP 登记记录已创建", data={"id": record.id})
 
@@ -2384,9 +2384,9 @@ class IprService:
             setattr(record, key, value)
 
         try:
-            db.commit()
+            self.db.commit()
         except SQLAlchemyError:
-            db.rollback()
+            self.db.rollback()
             raise
 
         # P1.7.14: Push notification on status change
@@ -2427,9 +2427,9 @@ class IprService:
             raise HTTPException(status_code=404, detail="记录不存在")
         self.db.delete(record)
         try:
-            db.commit()
+            self.db.commit()
         except SQLAlchemyError:
-            db.rollback()
+            self.db.rollback()
             raise
         return ApiResponse(message="已删除")
 

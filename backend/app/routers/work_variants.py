@@ -1,8 +1,9 @@
 """作品变体组 API 路由 — 对应: docs/modules-v5/01-creative-assets.md
 Phase 3: 横竖屏版本管理
-端点: 10 (work_variants)"""
+端点: 10 (work_variants)
 
-from datetime import datetime, timezone
+业务逻辑已提取至 work_variant_service.py.
+"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -10,16 +11,15 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.database import get_db
-from app.models.work_variant import WorkVariantGroup, WorkVariant
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
+from app.services.work_variant_service import (
+    list_groups, get_group, create_group, update_group, delete_group,
+    list_variants, add_variant, update_variant, delete_variant,
+    generate_variants,
+)
 
 router = APIRouter()
-
-
-# ============================================================================
-# Request schemas
-# ============================================================================
 
 
 class GroupCreate(BaseModel):
@@ -53,129 +53,52 @@ class GenerateVariantsRequest(BaseModel):
 
 
 # ============================================================================
-# Helpers
-# ============================================================================
-
-
-def _calc_aspect_ratio(width: int, height: int) -> float:
-    import math
-    gcd = math.gcd(width, height)
-    return round(width / gcd / (height / gcd), 4)
-
-
-def _group_to_dict(g: WorkVariantGroup) -> dict:
-    return {
-        "id": g.id,
-        "work_id": g.work_id,
-        "name": g.name,
-        "description": g.description,
-        "created_at": g.created_at.isoformat() if g.created_at else None,
-        "updated_at": g.updated_at.isoformat() if g.updated_at else None,
-    }
-
-
-def _variant_to_dict(v: WorkVariant) -> dict:
-    return {
-        "id": v.id,
-        "group_id": v.group_id,
-        "name": v.name,
-        "width": v.width,
-        "height": v.height,
-        "aspect_ratio": v.aspect_ratio,
-        "sort_order": v.sort_order,
-        "created_at": v.created_at.isoformat() if v.created_at else None,
-    }
-
-
-# ============================================================================
 # Group endpoints
 # ============================================================================
 
 
-@router.get("/work-variants/groups", response_model=ApiResponse[list])
-def list_groups(
+@router.get("/work-variants/groups", response_model=ApiResponse)
+def list_groups_endpoint(
     work_id: Optional[str] = Query(None),
     db: Session = Depends(get_db),
 ):
     """获取所有变体组列表，可按 work_id 过滤."""
-    q = db.query(WorkVariantGroup)
-    if work_id:
-        q = q.filter(WorkVariantGroup.work_id == work_id)
-    groups = q.order_by(WorkVariantGroup.created_at.desc()).all()
-    return ApiResponse(data=[_group_to_dict(g) for g in groups])
+    return ApiResponse(data=list_groups(db, work_id))
 
 
-@router.get("/work-variants/groups/{group_id}", response_model=ApiResponse[dict])
-def get_group(group_id: str, db: Session = Depends(get_db)):
+@router.get("/work-variants/groups/{group_id}", response_model=ApiResponse)
+def get_group_endpoint(group_id: str, db: Session = Depends(get_db)):
     """获取指定变体组及其变体."""
-    group = db.query(WorkVariantGroup).filter(WorkVariantGroup.id == group_id).first()
-    if not group:
+    result = get_group(db, group_id)
+    if not result:
         raise HTTPException(status_code=404, detail="变体组不存在")
-    result = _group_to_dict(group)
-    result["variants"] = [
-        _variant_to_dict(v)
-        for v in db.query(WorkVariant)
-        .filter(WorkVariant.group_id == group_id)
-        .order_by(WorkVariant.sort_order.asc())
-        .all()
-    ]
     return ApiResponse(data=result)
 
 
-@router.post("/work-variants/groups", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def create_group(payload: GroupCreate, db: Session = Depends(get_db)):
+@router.post("/work-variants/groups", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def create_group_endpoint(payload: GroupCreate, db: Session = Depends(get_db)):
     """创建新的变体组."""
-    # Verify work exists
-    if payload.work_id:
-        from app.models.work import Work
-        if not db.query(Work).filter(Work.id == payload.work_id).first():
-            raise HTTPException(status_code=404, detail="作品不存在")
-    group = WorkVariantGroup(
-        work_id=payload.work_id,
-        name=payload.name,
-        description=payload.description,
-    )
-    db.add(group)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(group)
-    return ApiResponse(data=_group_to_dict(group), message="变体组创建成功")
+    result = create_group(db, payload.work_id, payload.name, payload.description)
+    if not result:
+        raise HTTPException(status_code=404, detail="作品不存在")
+    return ApiResponse(data=result, message="变体组创建成功")
 
 
-@router.put("/work-variants/groups/{group_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_group(group_id: str, payload: GroupUpdate, db: Session = Depends(get_db)):
+@router.put("/work-variants/groups/{group_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_group_endpoint(group_id: str, payload: GroupUpdate, db: Session = Depends(get_db)):
     """更新变体组."""
-    group = db.query(WorkVariantGroup).filter(WorkVariantGroup.id == group_id).first()
-    if not group:
+    result = update_group(db, group_id, payload.model_dump(exclude_unset=True))
+    if not result:
         raise HTTPException(status_code=404, detail="变体组不存在")
-    for key in ("name", "description"):
-        if key in payload.model_fields_set:
-            setattr(group, key, getattr(payload, key))
-    group.updated_at = datetime.now(timezone.utc)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(group)
-    return ApiResponse(data=_group_to_dict(group), message="变体组更新成功")
+    return ApiResponse(data=result, message="变体组更新成功")
 
 
-@router.delete("/work-variants/groups/{group_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def delete_group(group_id: str, db: Session = Depends(get_db)):
+@router.delete("/work-variants/groups/{group_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_group_endpoint(group_id: str, db: Session = Depends(get_db)):
     """删除变体组及其所有变体."""
-    group = db.query(WorkVariantGroup).filter(WorkVariantGroup.id == group_id).first()
-    if not group:
+    deleted = delete_group(db, group_id)
+    if not deleted:
         raise HTTPException(status_code=404, detail="变体组不存在")
-    db.delete(group)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(data={"success": True, "message": "变体组已删除"})
 
 
@@ -184,94 +107,47 @@ def delete_group(group_id: str, db: Session = Depends(get_db)):
 # ============================================================================
 
 
-@router.get("/work-variants/groups/{group_id}/variants", response_model=ApiResponse[list])
-def list_variants(
+@router.get("/work-variants/groups/{group_id}/variants", response_model=ApiResponse)
+def list_variants_endpoint(
     group_id: str,
     db: Session = Depends(get_db),
 ):
     """获取变体组内所有变体."""
-    group = db.query(WorkVariantGroup).filter(WorkVariantGroup.id == group_id).first()
-    if not group:
+    result = list_variants(db, group_id)
+    if not result:
         raise HTTPException(status_code=404, detail="变体组不存在")
-    variants = (
-        db.query(WorkVariant)
-        .filter(WorkVariant.group_id == group_id)
-        .order_by(WorkVariant.sort_order.asc())
-        .all()
-    )
-    return ApiResponse(data=[_variant_to_dict(v) for v in variants])
+    return ApiResponse(data=result)
 
 
-@router.post("/work-variants/groups/{group_id}/variants", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def add_variant(group_id: str, payload: VariantCreate, db: Session = Depends(get_db)):
+@router.post("/work-variants/groups/{group_id}/variants", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def add_variant_endpoint(group_id: str, payload: VariantCreate, db: Session = Depends(get_db)):
     """向变体组添加新变体."""
-    group = db.query(WorkVariantGroup).filter(WorkVariantGroup.id == group_id).first()
-    if not group:
+    result = add_variant(db, group_id, payload.model_dump(exclude_unset=True))
+    if not result:
         raise HTTPException(status_code=404, detail="变体组不存在")
-    variant = WorkVariant(
-        group_id=group_id,
-        name=payload.name,
-        width=payload.width,
-        height=payload.height,
-        aspect_ratio=_calc_aspect_ratio(payload.width, payload.height),
-        sort_order=payload.sort_order,
-    )
-    db.add(variant)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(variant)
-    return ApiResponse(data=_variant_to_dict(variant), message="变体创建成功")
+    return ApiResponse(data=result, message="变体创建成功")
 
 
-@router.put("/work-variants/groups/{group_id}/variants/{variant_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def update_variant(
+@router.put("/work-variants/groups/{group_id}/variants/{variant_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def update_variant_endpoint(
     group_id: str,
     variant_id: str,
     payload: VariantUpdate,
     db: Session = Depends(get_db),
 ):
     """更新变体信息."""
-    variant = db.query(WorkVariant).filter(
-        WorkVariant.id == variant_id,
-        WorkVariant.group_id == group_id,
-    ).first()
-    if not variant:
+    result = update_variant(db, group_id, variant_id, payload.model_dump(exclude_unset=True))
+    if not result:
         raise HTTPException(status_code=404, detail="变体不存在")
-    for key in ("name", "width", "height", "sort_order"):
-        if key in payload.model_fields_set:
-            setattr(variant, key, getattr(payload, key))
-    # Recalculate aspect ratio if dimensions changed
-    if "width" in payload.model_fields_set or "height" in payload.model_fields_set:
-        w = payload.width if payload.width is not None else variant.width
-        h = payload.height if payload.height is not None else variant.height
-        variant.aspect_ratio = _calc_aspect_ratio(w, h)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    db.refresh(variant)
-    return ApiResponse(data=_variant_to_dict(variant), message="变体更新成功")
+    return ApiResponse(data=result, message="变体更新成功")
 
 
-@router.delete("/work-variants/groups/{group_id}/variants/{variant_id}", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
-def delete_variant(group_id: str, variant_id: str, db: Session = Depends(get_db)):
+@router.delete("/work-variants/groups/{group_id}/variants/{variant_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def delete_variant_endpoint(group_id: str, variant_id: str, db: Session = Depends(get_db)):
     """删除变体."""
-    variant = db.query(WorkVariant).filter(
-        WorkVariant.id == variant_id,
-        WorkVariant.group_id == group_id,
-    ).first()
-    if not variant:
+    deleted = delete_variant(db, group_id, variant_id)
+    if not deleted:
         raise HTTPException(status_code=404, detail="变体不存在")
-    db.delete(variant)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(data={"success": True, "message": "变体已删除"})
 
 
@@ -287,84 +163,10 @@ class GenerateResponse(BaseModel):
     variants_created: int
 
 
-@router.post("/work-variants/{work_id}/generate", response_model=ApiResponse[GenerateResponse], dependencies=[Depends(require_auth)])
-def generate_variants(payload: GenerateVariantsRequest, db: Session = Depends(get_db)):
-    """为作品生成标准宽高比变体。
-
-    支持的标准宽高比: 16:9, 9:16, 1:1, 4:3, 3:4, 4:5, 5:4
-    """
-    # Verify work exists
-    from app.models.work import Work
-    work = db.query(Work).filter(Work.id == payload.work_id).first()
-    if not work:
-        raise HTTPException(status_code=404, detail="作品不存在")
-
-    # Get or create group
-    group = db.query(WorkVariantGroup).filter(
-        WorkVariantGroup.id == payload.group_id,
-        WorkVariantGroup.work_id == payload.work_id,
-    ).first()
-    if not group:
-        group = WorkVariantGroup(
-            work_id=payload.work_id,
-            name=payload.group_id,
-        )
-        db.add(group)
-        db.flush()
-
-    # Standard aspect ratios to generate
-    standard_ratios = [
-        ("16:9", 16, 9),
-        ("9:16", 9, 16),
-        ("1:1", 1, 1),
-        ("4:3", 4, 3),
-        ("3:4", 3, 4),
-        ("4:5", 4, 5),
-        ("5:4", 5, 4),
-    ]
-
-    # Use the work's width as base, scale heights accordingly
-    base_width = 1920
-    variants_created = 0
-    now = datetime.now(timezone.utc)
-
-    for name, w_num, h_num in standard_ratios:
-        # Already exists? skip
-        existing = db.query(WorkVariant).filter(
-            WorkVariant.group_id == group.id,
-            WorkVariant.name == name,
-        ).first()
-        if existing:
-            continue
-
-        scaled_width = base_width * w_num
-        scaled_height = base_width * h_num // w_num
-        variant = WorkVariant(
-            group_id=group.id,
-            name=name,
-            width=scaled_width,
-            height=scaled_height,
-            aspect_ratio=w_num / h_num,
-            sort_order=w_num + h_num,
-            created_at=now,
-        )
-        db.add(variant)
-        variants_created += 1
-
-    if variants_created > 0:
-        try:
-            db.commit()
-        except Exception:
-            db.rollback()
-            raise
-    else:
-        db.refresh(group)
-
-    return ApiResponse(
-        data=GenerateResponse(
-            success=True,
-            message=f"生成了 {variants_created} 个新变体" if variants_created > 0 else "变体已存在，无需新建",
-            group_id=group.id,
-            variants_created=variants_created,
-        )
-    )
+@router.post("/work-variants/{work_id}/generate", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def generate_variants_endpoint(payload: GenerateVariantsRequest, db: Session = Depends(get_db)):
+    """为作品生成标准宽高比变体."""
+    result = generate_variants(db, payload.work_id, payload.group_id)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return ApiResponse(data=GenerateResponse(**result))

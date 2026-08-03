@@ -1,8 +1,9 @@
 """内容分发中心 API 路由 — 对应: docs/modules-v5/05-content-distribution.md
 Phase 1: AI文案、排期、Verified Badge、Feed导出
-端点: 26 (publish)"""
-import logging
+端点: 26 (publish)
 
+所有 DB 操作已提取至 publish_manager_service.py.
+"""
 
 import csv
 import io
@@ -18,9 +19,9 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import require_auth
-from app.models.publish import Product, ProductPublishing, RevenueRecord, PublishSchedule, PublishContent, PublishAnalytics
 from app.schemas.common import ApiResponse
 from app.gateway.ollama import OllamaGateway
+from app.services.publish_manager_service import PublishManagerService
 
 # ──────────────────────────────────────────────
 # Request Body Models (replaces bare dict params)
@@ -211,78 +212,34 @@ Style requirements:
 @router.get("/publish/products", response_model=ApiResponse[list])
 def list_products(db: Session = Depends(get_db)):
     """获取商品列表."""
-    products = db.query(Product).order_by(Product.created_at.desc()).all()
-
-    return ApiResponse(data=[
-        {
-            "id": p.id, "work_id": p.work_id, "title": p.title,
-            "description": p.description, "ai_description": p.ai_description,
-            "price": p.price, "category": p.category,
-            "csv_export_path": p.csv_export_path,
-            "created_at": p.created_at.isoformat() if p.created_at else None,
-        }
-        for p in products
-    ])
+    svc = PublishManagerService(db)
+    return ApiResponse(data=svc.list_products())
 
 
 @router.post("/publish/products", response_model=ApiResponse)
 async def create_product(data: CreateProductRequest, db: Session = Depends(get_db), _=Depends(require_auth)):
     """创建商品."""
-    try:
-        product = Product(
-            work_id=data.work_id,
-            title=data.title,
-            description=data.description,
-            price=data.price,
-            category=data.category,
-            specifications=data.specifications,
-            images=data.images,
-        )
-        db.add(product)
-        db.commit()
-        db.refresh(product)
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(message="商品已创建", data={"id": product.id})
+    svc = PublishManagerService(db)
+    result = svc.create_product(
+        data.work_id, data.title, data.description, data.price,
+        data.category, data.specifications, data.images,
+    )
+    return ApiResponse(message="商品已创建", data={"id": result})
 
 
 @router.put("/publish/products/{product_id}", response_model=ApiResponse)
 async def update_product(product_id: str, data: UpdateProductRequest, db: Session = Depends(get_db), _=Depends(require_auth)):
     """更新商品."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
-
-    try:
-        for key, value in data.model_dump(exclude_unset=True).items():
-            if hasattr(product, key) and key != "id":
-                setattr(product, key, value)
-
-        db.commit()
-        db.refresh(product)
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(message="商品已更新", data={"id": product.id})
+    svc = PublishManagerService(db)
+    svc.update_product(product_id, data.model_dump(exclude_unset=True))
+    return ApiResponse(message="商品已更新", data={"id": product_id})
 
 
 @router.delete("/publish/products/{product_id}", response_model=ApiResponse)
 async def delete_product(product_id: str, db: Session = Depends(get_db), _=Depends(require_auth)):
     """删除商品."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
-
-    try:
-        db.delete(product)
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
+    svc = PublishManagerService(db)
+    svc.delete_product(product_id)
     return ApiResponse(message="商品已删除")
 
 
@@ -312,15 +269,10 @@ async def generate_ai_description(
     db: Session = Depends(get_db),
     _=Depends(require_auth),
 ):
-    """AI 生成商品描述 — 支持6种平台风格，Ollama 优先 + 模板回退.
-
-    请求体:
-        style: xiaohongshu/taobao/douyin/shopify/etsy/kickstarter (默认 xiaohongshu)
-        language: zh/en (可选，部分风格有固定语言)
-    """
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
+    """AI 生成商品描述 — 支持6种平台风格，Ollama 优先 + 模板回退."""
+    import logging
+    svc = PublishManagerService(db)
+    product = svc.get_product(product_id)
 
     style = data.style
     if style not in DESCRIBE_STYLES:
@@ -332,7 +284,6 @@ async def generate_ai_description(
     style_config = DESCRIBE_STYLES[style]
     lang = data.language or style_config["lang"]
 
-    # 构建用户提示词
     user_prompt = f"""产品名称：{product.title}
 产品品类：{product.category or '创意作品'}
 产品价格：¥{product.price}
@@ -358,20 +309,11 @@ async def generate_ai_description(
 
     # Ollama 不可用时使用模板回退
     if ollama_description is None or source == "template":
-        ollama_description = _fallback_style_description(
-            product, style, style_config, lang
-        )
+        ollama_description = _fallback_style_description(product, style, style_config, lang)
         source = "template"
 
     # 保存到数据库
-    try:
-        product.ai_description = ollama_description
-        product.ai_desc_platform = style  # type: ignore[attr-defined]
-        product.ai_desc_generated_at = datetime.now(timezone.utc)  # type: ignore[attr-defined]
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+    svc.save_ai_description(product_id, ollama_description, style)
 
     return ApiResponse(
         data={
@@ -510,54 +452,13 @@ Help us bring original art to more people. Back this project today and be part o
 @router.get("/publish/export/{product_id}", response_model=ApiResponse)
 def export_product_csv(product_id: str, platform: str = Query(default="taobao"), db: Session = Depends(get_db)):
     """导出商品 CSV (按平台模板)."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
-
     if platform not in PLATFORM_TEMPLATES:
         raise HTTPException(status_code=400, detail=f"不支持的平台: {platform}")
 
+    svc = PublishManagerService(db)
     template = PLATFORM_TEMPLATES[platform]
-    output = io.StringIO()
-    writer = csv.DictWriter(output, fieldnames=template["fields"], extrasaction='ignore')
-    writer.writeheader()
-
-    row = {
-        "title": product.title,
-        "description": product.ai_description or product.description or "",
-        "price": product.price,
-        "quantity": 1,
-        "stock": 1,
-        "sku": product.id[:12],
-        "images": ",".join(product.images) if product.images else "",
-        "category": product.category or "",
-        "tags": "原创,创意",
-        "specs": str(product.specifications or ""),
-        "vendor": "OriStudio",
-    }
-    writer.writerow(row)
-
-    csv_dir = Path("data/certificates")
-    csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"product_{product_id}_{platform}.csv"
-
-    with open(csv_path, "w", encoding="utf-8-sig") as f:
-        f.write(output.getvalue())
-
-    product.csv_export_path = str(csv_path)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
-    return ApiResponse(
-        data={
-            "csv_content": output.getvalue(),
-            "file_path": str(csv_path),
-            "platform": platform,
-        }
-    )
+    result = svc.export_product_csv(product_id, platform, template)
+    return ApiResponse(data=result)
 
 
 @router.get("/publish/platforms", response_model=ApiResponse)
@@ -575,31 +476,14 @@ def get_publish_platforms():
 @router.post("/publish/publish/{product_id}", response_model=ApiResponse)
 async def publish_product(product_id: str, platform: str = Query(...), db: Session = Depends(get_db), _=Depends(require_auth)):
     """记录发布到指定平台 (不执行实际发布，由 ERP/MCP 自行拉取)."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
-
     if platform not in PLATFORM_TEMPLATES:
         raise HTTPException(status_code=400, detail=f"不支持的平台: {platform}")
 
-    try:
-        publish = ProductPublishing(
-            product_id=product.id,
-            platform=platform,
-            status="published",
-            listing_url=f"https://www.{platform}.com/item/{product.id[:12]}",
-            published_at=datetime.now(timezone.utc),
-        )
-        db.add(publish)
-        db.commit()
-        db.refresh(publish)
-    except Exception:
-        db.rollback()
-        raise
-
+    svc = PublishManagerService(db)
+    result = svc.publish_product(product_id, platform)
     return ApiResponse(
         message=f"已标记发布到{PLATFORM_TEMPLATES[platform]['name']}",
-        data={"publish_id": publish.id, "listing_url": publish.listing_url},
+        data=result,
     )
 
 
@@ -610,34 +494,14 @@ async def publish_product(product_id: str, platform: str = Query(...), db: Sessi
 @router.post("/publish/products/{product_id}/verified-badge", response_model=ApiResponse)
 async def generate_verified_badge(product_id: str, db: Session = Depends(get_db), _=Depends(require_auth)):
     """为产品生成 OriStudio Verified 徽章 (QR码 + SVG + PNG + Embed代码)."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
+    svc = PublishManagerService(db)
+    svc.get_product(product_id)  # validate exists
 
     from app.services.verified_badge import VerifiedBadgeService
-
     service = VerifiedBadgeService()
-    result = service.generate(product_id=product.id, product_title=product.title)
+    result = service.generate(product_id=product_id, product_title="")
 
-    try:
-        # 保存徽章记录 (更新或插入)
-        from app.models.publish import VerifiedMark
-        existing = db.query(VerifiedMark).filter(VerifiedMark.product_id == product_id).first()
-        if existing:
-            existing.qr_code = result["qr_url"]
-            existing.cert_url = result["verify_url"]
-        else:
-            mark = VerifiedMark(
-                product_id=product.id,
-                qr_code=result["qr_url"],
-                cert_url=result["verify_url"],
-            )
-            db.add(mark)
-
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+    svc.save_verified_mark(product_id, result["qr_url"], result["verify_url"])
 
     return ApiResponse(
         message="Verified 徽章已生成",
@@ -648,14 +512,12 @@ async def generate_verified_badge(product_id: str, db: Session = Depends(get_db)
 @router.get("/publish/verified-mark/{product_id}/embed", response_model=ApiResponse)
 def get_verified_embed(product_id: str, db: Session = Depends(get_db)):
     """获取 OriStudio Verified 徽章嵌入代码 (HTML/JS snippet)."""
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="商品不存在")
+    svc = PublishManagerService(db)
+    svc.get_product(product_id)  # validate exists
 
     from app.services.verified_badge import VerifiedBadgeService
-
     service = VerifiedBadgeService()
-    embed = service.generate_embed_snippet(product_id=product.id, product_title=product.title)
+    embed = service.generate_embed_snippet(product_id=product_id, product_title="")
 
     return ApiResponse(data=embed)
 
@@ -671,10 +533,8 @@ def get_product_feed(
     db: Session = Depends(get_db),
 ):
     """生成标准 JSON Product Feed (Schema 1.0)."""
-    query = db.query(Product)
-    if category:
-        query = query.filter(Product.category == category)
-    products = query.order_by(Product.created_at.desc()).all()
+    svc = PublishManagerService(db)
+    products = svc.get_product_feed(category)
 
     from app.services.json_feed import JsonFeedService
     feed_service = JsonFeedService()
@@ -703,10 +563,7 @@ def export_feed(
     category: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
-    """按目标平台格式导出 Product Feed.
-
-    支持: universal (标准), google (Google Merchant Center), shopify
-    """
+    """按目标平台格式导出 Product Feed."""
     supported = {"universal", "google", "shopify"}
     if platform not in supported:
         raise HTTPException(
@@ -714,10 +571,8 @@ def export_feed(
             detail=f"不支持的平台: {platform}。支持: {', '.join(supported)}",
         )
 
-    query = db.query(Product)
-    if category:
-        query = query.filter(Product.category == category)
-    products = query.order_by(Product.created_at.desc()).all()
+    svc = PublishManagerService(db)
+    products = svc.get_product_feed(category)
 
     from app.services.json_feed import JsonFeedService
     feed_service = JsonFeedService()
@@ -741,62 +596,11 @@ def get_revenue_summary(
     period: str = Query(default="month"),
     db: Session = Depends(get_db),
 ):
-    """收入汇总 — 支持 month/year 聚合维度.
-
-    返回: 总收入、订单数、按平台分组、按产品分组、月度趋势
-    """
-    records = db.query(RevenueRecord).all()
-
-    now = date.today()
-    if period == "month":
-        filtered = [r for r in records if r.date and r.date.year == now.year and r.date.month == now.month]
-        label = f"{now.year}年{now.month}月"
-    elif period == "year":
-        filtered = [r for r in records if r.date and r.date.year == now.year]
-        label = f"{now.year}年"
-    else:
-        filtered = records
-        label = "全部"
-
-    total_amount = sum(r.amount or 0 for r in filtered)
-    total_orders = sum(r.order_count or 0 for r in filtered)
-    total_refunds = sum(getattr(r, 'refund_amount', 0) or 0 for r in filtered)
-
-    # 按平台分组
-    by_platform: dict[str, float] = {}
-    for r in filtered:
-        p = r.platform or "unknown"
-        by_platform[p] = by_platform.get(p, 0) + (r.amount or 0)
-
-    # 按产品分组
-    by_product: dict[str, dict] = {}
-    for r in filtered:
-        pid = r.product_id or "unknown"
-        if pid not in by_product:
-            by_product[pid] = {"product_id": pid, "amount": 0, "order_count": 0}
-        by_product[pid]["amount"] += r.amount or 0
-        by_product[pid]["order_count"] += r.order_count or 0
-
-    # 月度趋势
-    monthly_trend: dict[str, float] = {}
-    for r in records:
-        if r.date:
-            key = r.date.strftime("%Y-%m")
-            monthly_trend[key] = monthly_trend.get(key, 0) + (r.amount or 0)
-
-    return ApiResponse(
-        data={
-            "period": period,
-            "label": label,
-            "total_amount": round(total_amount, 2),
-            "total_orders": total_orders,
-            "total_refunds": round(total_refunds, 2),
-            "platform_count": len(by_platform),
-            "by_platform": by_platform,
-            "by_product": sorted(by_product.values(), key=lambda x: x["amount"], reverse=True),
-            "monthly_trend": dict(sorted(monthly_trend.items())),
-        }
-    )
+    """收入汇总 — 支持 month/year 聚合维度."""
+    from app.models.publish import RevenueRecord
+    svc = PublishManagerService(db)
+    all_records = svc.list_revenue_records()
+    return ApiResponse(data=svc.get_revenue_summary(all_records, period))
 
 
 MAX_CSV_SIZE = 5 * 1024 * 1024  # 5MB
@@ -807,15 +611,7 @@ async def import_revenue_csv(
     db: Session = Depends(get_db),
     _=Depends(require_auth),
 ):
-    """导入平台对账单 CSV.
-
-    支持的 CSV 格式:
-    - 通用格式: platform,amount,date,order_count,product_sku,notes
-    - 淘宝格式: 自动解析
-    - 抖音格式: 自动解析
-
-    返回: 导入记录数、总金额
-    """
+    """导入平台对账单 CSV."""
     if not file.filename or not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="请上传 CSV 文件")
 
@@ -830,73 +626,52 @@ async def import_revenue_csv(
         raise HTTPException(status_code=400, detail="CSV 文件为空或格式不正确")
 
     fieldnames = [f.strip().lower() for f in reader.fieldnames]
-    imported = 0
-    total_amount = 0.0
-    errors = []
-
-    # 自动检测平台格式
+    rows = []
     is_taobao = "商品名称" in fieldnames or "订单金额" in fieldnames or "商品id" in fieldnames
     is_douyin = "douyin" in " ".join(fieldnames) or "支付金额" in fieldnames
 
-    for idx, row in enumerate(reader, start=1):
+    for row in reader:
+        normalized = {k.strip().lower(): v.strip() for k, v in row.items()}
+        if is_taobao:
+            platform = "taobao"
+            amount = float(normalized.get("订单金额", normalized.get("amount", 0)))
+            record_date_str = normalized.get("订单创建时间", normalized.get("date", ""))
+            order_count = int(normalized.get("订单数", normalized.get("order_count", 1)))
+            notes = normalized.get("商品名称", normalized.get("notes", ""))
+        elif is_douyin:
+            platform = "douyin"
+            amount = float(normalized.get("支付金额", normalized.get("amount", 0)))
+            record_date_str = normalized.get("下单时间", normalized.get("date", ""))
+            order_count = int(normalized.get("订单数", normalized.get("order_count", 1)))
+            notes = normalized.get("商品名称", normalized.get("notes", ""))
+        else:
+            platform = normalized.get("platform", "imported")
+            amount = float(normalized.get("amount", 0))
+            record_date_str = normalized.get("date", "")
+            order_count = int(normalized.get("order_count", 1))
+            notes = normalized.get("notes", "")
+
         try:
-            normalized = {k.strip().lower(): v.strip() for k, v in row.items()}
+            record_date = datetime.strptime(record_date_str[:10], "%Y-%m-%d").date()
+        except (ValueError, IndexError):
+            record_date = date.today()
 
-            if is_taobao:
-                platform = "taobao"
-                amount = float(normalized.get("订单金额", normalized.get("amount", 0)))
-                product_sku = normalized.get("商品id", normalized.get("product_sku", ""))
-                record_date_str = normalized.get("订单创建时间", normalized.get("date", ""))
-                order_count = int(normalized.get("订单数", normalized.get("order_count", 1)))
-                notes = normalized.get("商品名称", normalized.get("notes", ""))
-            elif is_douyin:
-                platform = "douyin"
-                amount = float(normalized.get("支付金额", normalized.get("amount", 0)))
-                product_sku = normalized.get("商品id", normalized.get("product_sku", ""))
-                record_date_str = normalized.get("下单时间", normalized.get("date", ""))
-                order_count = int(normalized.get("订单数", normalized.get("order_count", 1)))
-                notes = normalized.get("商品名称", normalized.get("notes", ""))
-            else:
-                platform = normalized.get("platform", "imported")
-                amount = float(normalized.get("amount", 0))
-                product_sku = normalized.get("product_sku", normalized.get("sku", ""))
-                record_date_str = normalized.get("date", "")
-                order_count = int(normalized.get("order_count", 1))
-                notes = normalized.get("notes", "")
+        rows.append({
+            "platform": platform,
+            "amount": amount,
+            "date": record_date,
+            "order_count": order_count,
+            "notes": f"[CSV导入] {notes}" if notes else "[CSV导入]",
+        })
 
-            # 解析日期
-            try:
-                record_date = datetime.strptime(record_date_str[:10], "%Y-%m-%d").date()
-            except (ValueError, IndexError):
-                record_date = date.today()
-
-            record = RevenueRecord(
-                platform=platform,
-                amount=amount,
-                date=record_date,
-                order_count=order_count,
-                notes=f"[CSV导入] {notes}" if notes else "[CSV导入]",
-            )
-            db.add(record)
-            imported += 1
-            total_amount += amount
-
-        except (ValueError, KeyError) as e:
-            errors.append({"row": idx, "error": str(e)})
-            continue
-
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
+    svc = PublishManagerService(db)
+    result = svc.import_revenue_records(rows)
     return ApiResponse(
-        message=f"已导入 {imported} 条收入记录",
+        message=f"已导入 {result['imported']} 条收入记录",
         data={
-            "imported": imported,
-            "total_amount": round(total_amount, 2),
-            "errors": errors,
+            "imported": result["imported"],
+            "total_amount": result["total_amount"],
+            "errors": result["errors"],
             "detected_format": "taobao" if is_taobao else ("douyin" if is_douyin else "generic"),
         },
     )
@@ -912,21 +687,8 @@ def list_revenue(
     db: Session = Depends(get_db),
 ):
     """获取收入记录."""
-    query = db.query(RevenueRecord)
-    if platform:
-        query = query.filter(RevenueRecord.platform == platform)
-
-    records = query.order_by(RevenueRecord.date.desc()).all()
-
-    return ApiResponse(data=[
-        {
-            "id": r.id, "product_id": r.product_id,
-            "platform": r.platform, "amount": r.amount,
-            "currency": r.currency, "date": r.date.isoformat() if r.date else None,
-            "order_count": r.order_count, "notes": r.notes,
-        }
-        for r in records
-    ])
+    svc = PublishManagerService(db)
+    return ApiResponse(data=svc.list_revenue(platform))
 
 
 @router.post("/publish/revenue", response_model=ApiResponse)
@@ -939,21 +701,15 @@ async def add_revenue(data: AddRevenueRequest, db: Session = Depends(get_db), _=
         except (ValueError, IndexError):
             pass
 
-    record = RevenueRecord(
+    svc = PublishManagerService(db)
+    svc.add_revenue(
         product_id=data.product_id,
         platform=data.platform,
         amount=data.amount,
-        date=record_date,
+        date_val=record_date,
         order_count=data.order_count,
         notes=data.notes,
     )
-    db.add(record)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-
     return ApiResponse(message="收入记录已添加")
 
 
@@ -966,121 +722,52 @@ async def create_schedule(data: CreateScheduleRequest, db: Session = Depends(get
     sched_time = None
     if data.scheduled_time:
         sched_time = datetime.fromisoformat(data.scheduled_time.replace("Z", "+00:00"))
-    schedule = PublishSchedule(
-        product_id=data.product_id,
-        listing_id=data.listing_id,
-        work_id=data.work_id,
-        platform=data.platform,
-        scheduled_time=sched_time or datetime.now(timezone.utc),
-        content_preview=data.content_preview,
+    svc = PublishManagerService(db)
+    svc.create_schedule(
+        data.product_id, data.listing_id, data.work_id,
+        data.platform, sched_time or datetime.now(timezone.utc), data.content_preview,
     )
-    db.add(schedule)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(message="排期已创建")
 
 
 @router.get("/publish/schedules", response_model=ApiResponse[list])
 def list_schedules(db: Session = Depends(get_db)):
     """获取排期列表."""
-    schedules = db.query(PublishSchedule).order_by(
-        PublishSchedule.scheduled_time.desc()
-    ).all()
-    return ApiResponse(data=[
-        {
-            "id": s.id,
-            "platform": s.platform,
-            "scheduled_time": s.scheduled_time.isoformat() if s.scheduled_time else None,
-            "status": s.status,
-            "content_preview": s.content_preview,
-            "executed_at": s.executed_at.isoformat() if s.executed_at else None,
-        }
-        for s in schedules
-    ])
+    svc = PublishManagerService(db)
+    return ApiResponse(data=svc.list_schedules())
 
 
 @router.delete("/publish/schedules/{schedule_id}", response_model=ApiResponse)
 async def delete_schedule(schedule_id: str, db: Session = Depends(get_db), _=Depends(require_auth)):
     """取消排期."""
-    schedule = db.query(PublishSchedule).filter(PublishSchedule.id == schedule_id).first()
-    if not schedule:
-        raise HTTPException(status_code=404, detail="排期不存在")
-    if schedule.status != "scheduled":
-        raise HTTPException(status_code=400, detail="只能取消待发布的排期")
-    schedule.status = "cancelled"
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+    svc = PublishManagerService(db)
+    svc.cancel_schedule(schedule_id)
     return ApiResponse(message="排期已取消")
 
 
 @router.get("/publish/contents", response_model=ApiResponse[list])
 def list_publish_contents(db: Session = Depends(get_db)):
     """获取发布内容列表."""
-    contents = db.query(PublishContent).order_by(
-        PublishContent.created_at.desc()
-    ).all()
-    return ApiResponse(data=[
-        {
-            "id": c.id,
-            "title": c.title,
-            "content_type": c.content_type,
-            "text_content": c.text_content,
-            "image_paths": c.image_paths,
-            "created_at": c.created_at.isoformat() if c.created_at else None,
-        }
-        for c in contents
-    ])
+    svc = PublishManagerService(db)
+    return ApiResponse(data=svc.list_contents())
 
 
 @router.post("/publish/contents", response_model=ApiResponse)
 async def create_publish_content(data: CreatePublishContentRequest, db: Session = Depends(get_db), _=Depends(require_auth)):
     """创建发布内容."""
-    content = PublishContent(
-        work_id=data.work_id,
-        product_id=data.product_id,
-        title=data.title,
-        content_type=data.content_type,
-        text_content=data.text_content,
-        image_paths=data.image_paths,
+    svc = PublishManagerService(db)
+    svc.create_content(
+        data.work_id, data.product_id, data.title,
+        data.content_type, data.text_content, data.image_paths,
     )
-    db.add(content)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(message="发布内容已创建")
 
 
 @router.get("/publish/analytics", response_model=ApiResponse[list])
 def list_publish_analytics(platform: Optional[str] = None, db: Session = Depends(get_db)):
     """获取影响力分析数据."""
-    query = db.query(PublishAnalytics)
-    if platform:
-        query = query.filter(PublishAnalytics.platform == platform)
-    analytics = query.order_by(PublishAnalytics.date.desc()).all()
-    return ApiResponse(data=[
-        {
-            "id": a.id,
-            "platform": a.platform,
-            "work_id": a.work_id,
-            "product_id": a.product_id,
-            "views": a.views,
-            "likes": a.likes,
-            "comments": a.comments,
-            "shares": a.shares,
-            "saves": a.saves,
-            "date": a.date.isoformat() if a.date else None,
-            "notes": a.notes,
-        }
-        for a in analytics
-    ])
+    svc = PublishManagerService(db)
+    return ApiResponse(data=svc.list_analytics(platform))
 
 
 @router.post("/publish/analytics", response_model=ApiResponse)
@@ -1089,10 +776,11 @@ async def add_publish_analytics(data: AddPublishAnalyticsRequest, db: Session = 
     record_date = date.today()
     if data.date:
         try:
-            record_date = d.strptime(data.date[:10], "%Y-%m-%d")
+            record_date = datetime.strptime(data.date[:10], "%Y-%m-%d").date()
         except (ValueError, IndexError):
             pass
-    analytics = PublishAnalytics(
+    svc = PublishManagerService(db)
+    svc.add_analytics(
         platform=data.platform,
         work_id=data.work_id,
         product_id=data.product_id,
@@ -1101,13 +789,7 @@ async def add_publish_analytics(data: AddPublishAnalyticsRequest, db: Session = 
         comments=data.comments,
         shares=data.shares,
         saves=data.saves,
-        date=record_date,
+        date_val=record_date,
         notes=data.notes,
     )
-    db.add(analytics)
-    try:
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
     return ApiResponse(message="影响力数据已录入")

@@ -13,7 +13,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from app.models.risk_warning import RiskWarning, HealthMetric
+from app.models.risk_warning import RiskWarning, HealthMetric, TaxDeadline
 from app.gateway.trademark import TrademarkGateway, MockTrademarkGateway
 from app.gateway.model_source import ModelSourceGateway, MockModelSourceGateway
 
@@ -372,3 +372,109 @@ def detect_burnout_risk(db, user_id: str) -> BurnoutRisk:
         factors=factors,
         recommendation=rec,
     )
+
+
+# ============================================================================
+# 辅助 CRUD 函数 — 供 router 层调用
+# ============================================================================
+
+def list_warnings(db: Session, dismissed: Optional[bool] = None, severity: Optional[str] = None) -> list:
+    """查询风险预警记录."""
+    query = db.query(RiskWarning)
+    if dismissed is not None:
+        query = query.filter(RiskWarning.dismissed == dismissed)
+    if severity:
+        query = query.filter(RiskWarning.severity == severity)
+    return query.order_by(RiskWarning.created_at.desc()).all()
+
+
+def dismiss_warning(db: Session, warning_id: str) -> Optional[RiskWarning]:
+    """标记预警为已查看."""
+    from datetime import datetime, timezone
+    warning = db.query(RiskWarning).filter(RiskWarning.id == warning_id).first()
+    if warning:
+        warning.dismissed = True
+        warning.dismissed_at = datetime.now(timezone.utc)
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+    return warning
+
+
+def list_tax_deadlines(db: Session, user_id: str = "local") -> list:
+    """查询税务截止日期."""
+    from datetime import date
+    return db.query(TaxDeadline).filter(
+        TaxDeadline.user_id == user_id,
+    ).order_by(TaxDeadline.due_date.asc()).all()
+
+
+def complete_tax_deadline(db: Session, deadline_id: str) -> Optional[TaxDeadline]:
+    """标记税务截止日期已完成."""
+    from datetime import date
+    deadline = db.query(TaxDeadline).filter(TaxDeadline.id == deadline_id).first()
+    if deadline:
+        deadline.is_completed = True
+        deadline.completed_date = date.today()
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+    return deadline
+
+
+def create_tax_deadline(db: Session, tax_type: str, due_date: date,
+                        amount_yuan: Optional[float] = None,
+                        notes: Optional[str] = None,
+                        user_id: str = "local") -> TaxDeadline:
+    """创建税务截止日期记录."""
+    from app.models.risk_warning import TaxDeadline as TD
+    deadline = TD(
+        user_id=user_id,
+        tax_type=tax_type,
+        due_date=due_date,
+        amount_yuan=amount_yuan,
+        notes=notes,
+    )
+    db.add(deadline)
+    db.commit()
+    db.refresh(deadline)
+    return deadline
+
+
+def log_health_metric(db: Session, user_id: str, daily_work_hours: float,
+                      works_created: int = 0, has_break_taken: bool = False,
+                      mood_score: Optional[int] = None,
+                      recorded_date: date = None) -> HealthMetric:
+    """记录健康指标."""
+    if recorded_date is None:
+        from datetime import date as _date
+        recorded_date = _date.today()
+    metric = HealthMetric(
+        user_id=user_id,
+        daily_work_hours=daily_work_hours,
+        works_created=works_created,
+        has_break_taken=has_break_taken,
+        mood_score=mood_score,
+        recorded_date=recorded_date,
+    )
+    db.add(metric)
+    db.commit()
+    db.refresh(metric)
+    return metric
+
+
+def get_work_warnings(db: Session, work_id: str, dismissed: Optional[bool] = None) -> Optional[list]:
+    """查询作品的风险预警记录."""
+    from app.models.work import Work as W
+    work = db.query(W).filter(W.id == work_id).first()
+    if not work:
+        return None
+
+    query = db.query(RiskWarning).filter(RiskWarning.work_id == work_id)
+    if dismissed is not None:
+        query = query.filter(RiskWarning.dismissed == dismissed)
+    return query.order_by(RiskWarning.created_at.desc()).all()

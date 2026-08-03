@@ -58,5 +58,8 @@ class Settings(BaseSettings):
     GOOGLE_VISION_API_KEY: Optional[str] = None
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
+    # 认证
+    AUTH_USERS_FILE: str = "data/config/users.json"
+
 
 settings = Settings()

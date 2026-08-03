@@ -11,6 +11,40 @@ from typing import Optional, Tuple, Dict, Any
 
 logger = logging.getLogger("oristudio.works")
 
+# 文件存储根目录
+UPLOAD_DIR = Path("data/workspace")
+THUMBNAIL_DIR = Path("data/thumbnails")
+
+# 支持的文件类型 (P1.7.13: dictStore-backed with hardcoded fallback)
+ALLOWED_EXTENSIONS = {
+    "jpg", "jpeg", "png", "webp", "gif", "svg", "bmp", "tiff",
+    "mp3", "wav", "flac", "ogg", "aac", "m4a",
+    "mp4", "mov", "webm", "avi", "mkv",
+    "pdf", "docx", "doc", "txt", "md", "rtf",
+    "psd", "ai", "fig", "sketch",
+    "py", "js", "ts", "html", "css", "json", "zip",
+}
+
+# P2-1: RAW camera image extensions (case-insensitive matching)
+RAW_EXTENSIONS = {
+    "cr2", "cr3", "nef", "arw", "raf", "orf", "pef", "dng", "heic", "heif",
+    "rw2", "x3f", "iiq", "sr2", "mos", "mef", "k25", "kdc", "srf", "bay", "ptx", "dcraw", "raw",
+}
+
+MAX_FILE_SIZE = 500 * 1024 * 1024  # 500MB
+
+
+def _get_allowed_extensions(db) -> set:
+    """Get allowed file extensions (dictStore-backed, P1.7.13)."""
+    try:
+        from app.routers.system import get_dict_values
+        dict_exts = get_dict_values("file_extensions", db)
+        if dict_exts:
+            return set(dict_exts)
+    except Exception as e:
+        logger.exception("Error in _get_allowed_extensions: %s", str(e))
+    return ALLOWED_EXTENSIONS
+
 
 def get_image_dimensions(file_path: str) -> Tuple[Optional[int], Optional[int]]:
     try:
@@ -21,7 +55,7 @@ def get_image_dimensions(file_path: str) -> Tuple[Optional[int], Optional[int]]:
         return None, None
 
 
-def detect_file_type(extension: str) -> str:
+def detect_file_type(extension: str, content: bytes = b"") -> str:
     ext = extension.lower()
     # P2-1: RAW format support
     raw_exts = {"cr2","nef","arw","dng","rw2","orf","pef","raf","x3f","iiq","sr2","mos","mef","k25","kdc","srf","bay","ptx","dcraw","raw"}
@@ -251,3 +285,154 @@ def get_all_metadata(file_path: str, file_type: str) -> Dict[str, Any]:
     elif file_type == "document":
         meta.update(extract_document_metadata(file_path))
     return meta
+
+
+# ==============================
+# Security sanitization helpers
+# ==============================
+
+def sanitize_tag(tag: str) -> str:
+    """Sanitize a tag string by removing HTML tags, control characters, and limiting length."""
+    if not tag or not isinstance(tag, str):
+        return ""
+    clean_tag = re.sub(r'<[^>]*>', '', tag)
+    clean_tag = re.sub(r'[\x00-\x1f\x7f]', '', clean_tag)
+    clean_tag = clean_tag.strip()
+    clean_tag = clean_tag[:100]
+    return clean_tag
+
+
+def sanitize_filename(filename: str) -> str:
+    """Sanitize a filename by removing dangerous characters and path components."""
+    if not filename or not isinstance(filename, str):
+        return "uploaded_file"
+    filename = os.path.basename(filename)
+    filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
+    filename = re.sub(r'[\x00-\x1f\x7f]', '', filename)
+    filename = filename.strip()
+    if not filename:
+        filename = "uploaded_file"
+    return filename
+
+
+# ═══════════════════════════════════════════
+# Phase 1.1: 自动元数据提取辅助函数
+# ═══════════════════════════════════════════
+
+def _extract_title_from_filename(filename: str) -> str:
+    """Extract title from filename with sanitization."""
+    cleaned_name = sanitize_filename(filename)
+    name = os.path.splitext(cleaned_name)[0]
+    name = re.sub(r'^[\d\-_]{6,}', '', name).strip('_ ')
+    name = re.sub(r'^(IMG|DSC|PXL|DSCF|MVI|VID)_?\d*[_\-]?', '', name, flags=re.IGNORECASE).strip('_ ')
+    return name or "未命名作品"
+
+
+def _extract_completion_date(exif_data, file_path: str):
+    if exif_data:
+        for key in ("DateTimeOriginal", "DateTimeDigitized", "DateTime"):
+            if exif_data.get(key):
+                dt = str(exif_data[key])
+                parts = dt.replace(" ", ":").split(":")
+                if len(parts) >= 3:
+                    return f"{parts[0]}-{parts[1]}-{parts[2]}"
+                return dt
+    try:
+        from datetime import datetime
+        return datetime.fromtimestamp(os.path.getmtime(file_path)).strftime("%Y-%m-%d")
+    except OSError:
+        return None
+
+
+def _extract_creation_tool(exif_data, full_meta: dict):
+    if exif_data:
+        for key in ("Software", "HostComputer", "ProcessingSoftware"):
+            if exif_data.get(key):
+                return str(exif_data[key])
+    if full_meta:
+        for key in ("encoder", "producer", "software"):
+            if full_meta.get(key):
+                return str(full_meta[key])
+    return None
+
+
+def _extract_creation_location(exif_data):
+    if not exif_data:
+        return None
+    gps_lat = exif_data.get("GPSLatitude") or exif_data.get("GPSInfo")
+    gps_lon = exif_data.get("GPSLongitude")
+    if gps_lat and gps_lon:
+        return f"{gps_lat}, {gps_lon}"
+    return None
+
+
+def _build_auto_rights(exif_data):
+    rights: dict = {}
+    if exif_data:
+        if exif_data.get("Artist"):
+            rights["author_name"] = str(exif_data["Artist"])
+        if exif_data.get("Copyright"):
+            rights["copyright_year"] = str(exif_data["Copyright"])[:30]
+    return rights
+
+
+def _detect_creator_type(file_type: str, exif_data: Optional[dict], full_meta: Optional[dict]) -> str:
+    """Detect creator type from file characteristics."""
+    if file_type == "image" and exif_data:
+        camera_signals = ("CameraMake", "CameraModel", "LensModel", "Model")
+        if any(exif_data.get(k) for k in camera_signals):
+            return "photographer"
+    if file_type == "audio":
+        return "musician"
+    if file_type == "video":
+        return "video"
+    if file_type == "document":
+        if full_meta and any(k in full_meta for k in ("software", "Application", "Producer")):
+            app = str(full_meta.get("software", "") + full_meta.get("Application", "") + full_meta.get("Producer", ""))
+            if any(kw in app.lower() for kw in ("autocad", "solidworks", "sketchup")):
+                return "craftsman"
+        return "writer"
+    if file_type == "design":
+        return "illustrator"
+    return "illustrator"
+
+
+def _thumb_to_api_path(thumb_path: Optional[str]) -> Optional[str]:
+    """将本地缩略图绝对路径转为 API 可访问的相对路径."""
+    if not thumb_path:
+        return None
+    try:
+        p = Path(thumb_path)
+        rel = p.relative_to(Path("data").resolve())
+        return f"/api/files/{rel.as_posix()}"
+    except (ValueError, OSError):
+        return None
+
+
+def _work_to_response(work) -> dict:
+    """将 Work ORM 对象转为前端友好的响应格式 (Phase 1.1: 含自动元数据)."""
+    from app.schemas.work import WorkResponse
+    data = WorkResponse.model_validate(work).model_dump()
+    if work.file_path:
+        try:
+            rel = Path(work.file_path).relative_to(Path("data").resolve())
+            data["file_url"] = f"/api/files/{rel.as_posix()}"
+        except (ValueError, OSError):
+            data["file_url"] = None
+    else:
+        data["file_url"] = None
+
+    data["thumbnail_url"] = _thumb_to_api_path(work.thumbnail_path)
+
+    cm = work.custom_metadata or {}
+    for key in ("completion_date", "creation_tool", "creation_location", "auto_tags"):
+        if cm.get(key) and key not in data:
+            data[key] = cm[key]
+
+    data["verified_status"] = "已存证 ✅" if work.is_verified else None
+
+    data["is_raw_original"] = work.is_raw_original
+    data["raw_sidecar_path"] = work.raw_sidecar_path
+    data["raw_processed_variant_id"] = work.raw_processed_variant_id
+
+    return data

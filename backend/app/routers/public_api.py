@@ -2,6 +2,8 @@
 
 所有端点无需认证，返回聚合后的公开数据。
 响应字段使用 snake_case（Pydantic 默认），前端已对齐。
+
+业务逻辑已提取至 public_api_service.py.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -9,17 +11,21 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from sqlalchemy import text
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
-from app.database import SessionLocal
+from app.database import get_db
 from app.models.work import Work
 from app.models.listing import Listing, ListingStatus
 from app.models.contract import ContractInstance
 from app.models.system import Notification
 from app.models.case_study import CaseStudy
 from app.models.private_traffic import FanCommunity
+from app.services.public_api_service import (
+    get_work_categories, list_public_works, get_public_work,
+    list_public_listings, list_public_contracts, get_dashboard_stats,
+    list_public_notifications, get_market_trends,
+    list_public_case_studies, list_public_opportunities, get_gallery_categories,
+)
 
 router = APIRouter()
 
@@ -92,185 +98,70 @@ class PublicNotificationOut(BaseModel):
     created_at: Optional[datetime] = None
 
 
-# ── Helper ────────────────────────────────────────────────────────
-
-def get_public_db():
-    """Get a read-only DB session for public endpoints."""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-def _safe_query(db, query_fn, fallback=None):
-    """Run a DB query safely; return fallback on missing tables."""
-    try:
-        return query_fn()
-    except OperationalError:
-        return fallback
-
-
-# ── Endpoints ─────────────────────────────────────────────────────
+# ── Endpoints ───────────────────────────────────────────────────────
 
 @router.get("/public/work-categories", response_model=list[str])
-def get_work_categories(db: Session = Depends(get_public_db)):
+def get_work_categories_endpoint(db: Session = Depends(get_db)):
     """获取作品分类统计（用于画廊筛选）."""
-    def q():
-        return [r[0] for r in db.query(Work.file_type)
-                .filter(Work.status == "active").distinct().all() if r[0]]
-    return _safe_query(db, q, [])
+    return get_work_categories(db)
 
 
 @router.get("/public/works", response_model=list[PublicWorkOut])
-def list_public_works(
+def list_public_works_endpoint(
     category: Optional[str] = Query(None, description="按 file_type 过滤"),
     search: Optional[str] = Query(None, description="标题模糊搜索"),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
-    db: Session = Depends(get_public_db),
+    db: Session = Depends(get_db),
 ):
     """公开作品列表（仅 active、有缩略图的）."""
-    def q():
-        return db.query(Work).filter(
-            Work.status == "active",
-            Work.thumbnail_path.isnot(None),
-            Work.deleted_at.is_(None),
-        )
-    filtered = _safe_query(db, q, db.query(Work))
-    if category:
-        filtered = filtered.filter(Work.file_type == category)
-    if search:
-        filtered = filtered.filter(Work.title.ilike(f"%{search}%"))
-    works = filtered.order_by(Work.created_at.desc()).offset(offset).limit(limit).all()
-    return works
+    return list_public_works(db, category, search, limit, offset)
 
 
 @router.get("/public/works/{work_id}", response_model=PublicWorkOut | dict)
-def get_public_work(work_id: str, db: Session = Depends(get_public_db)):
+def get_public_work_endpoint(work_id: str, db: Session = Depends(get_db)):
     """公开作品详情."""
-    work = db.query(Work).filter(
-        Work.id == work_id,
-        Work.status == "active",
-        Work.deleted_at.is_(None),
-    ).first()
+    work = get_public_work(db, work_id)
     if not work:
         return {"error": "作品不存在或已被删除"}
     return work
 
 
 @router.get("/public/listings", response_model=list[PublicWorkOut])
-def list_public_listings(
+def list_public_listings_endpoint(
     status: Optional[str] = Query(None, description="挂牌状态过滤"),
     limit: int = Query(20, ge=1, le=100),
-    db: Session = Depends(get_public_db),
+    db: Session = Depends(get_db),
 ):
     """公开挂牌列表（关联作品）."""
-    try:
-        from app.models.work import Work as W
-        q = db.query(W).join(Listing, W.id == Listing.work_id).filter(
-            W.status == "active",
-            W.thumbnail_path.isnot(None),
-            Listing.status == ListingStatus.ACTIVE,
-            W.deleted_at.is_(None),
-        )
-        if status:
-            q = q.filter(Listing.status == status)
-        listings = q.order_by(Listing.created_at.desc()).limit(limit).all()
-        return listings
-    except OperationalError:
-        return []
+    return list_public_listings(db, status, limit)
 
 
 @router.get("/public/contracts", response_model=list[PublicContractOut])
-def list_public_contracts(
+def list_public_contracts_endpoint(
     contract_type: Optional[str] = Query(None, description="合约类型过滤"),
     status: Optional[str] = Query(None, description="状态过滤"),
     recent: bool = Query(False, description="仅最近 30 天"),
     limit: int = Query(20, ge=1, le=100),
-    db: Session = Depends(get_public_db),
+    db: Session = Depends(get_db),
 ):
     """公开合约列表（仅 approved + 活跃状态）."""
-    try:
-        q = db.query(ContractInstance).filter(
-            ContractInstance.verified == "approved",
-            ContractInstance.status.in_(["listed", "active", "executing"]),
-        )
-        if contract_type:
-            q = q.filter(ContractInstance.contract_type == contract_type)
-        if status:
-            q = q.filter(ContractInstance.status == status)
-        if recent:
-            cutoff = datetime.now(timezone.utc) - timedelta(days=30)
-            q = q.filter(ContractInstance.published_at >= cutoff)
-        contracts = q.order_by(
-            ContractInstance.published_at.desc().nullslast()
-        ).limit(limit).all()
-        return contracts
-    except OperationalError:
-        return []
+    return list_public_contracts(db, contract_type, status, recent, limit)
 
 
 @router.get("/public/dashboard-stats", response_model=DashboardStatsOut)
-def get_dashboard_stats(db: Session = Depends(get_public_db)):
+def get_dashboard_stats_endpoint(db: Session = Depends(get_db)):
     """平台统计数据（首页仪表盘）."""
-    now = datetime.now(timezone.utc)
-    month_ago = now - timedelta(days=30)
-
-    def count_works():
-        return db.query(Work).filter(
-            Work.status == "active", Work.deleted_at.is_(None)
-        ).count()
-
-    def count_contracts():
-        return db.query(ContractInstance).filter(
-            ContractInstance.status.in_(["listed", "active", "executing"])
-        ).count()
-
-    def count_listings():
-        return db.query(Listing).filter(
-            Listing.status == ListingStatus.ACTIVE
-        ).count()
-
-    def count_users():
-        return db.query(ContractInstance.creator_id).distinct().count()
-
-    def count_active_contracts():
-        return db.query(ContractInstance).filter(
-            ContractInstance.status == "active"
-        ).count()
-
-    return DashboardStatsOut(
-        total_works=_safe_query(db, count_works, 0),
-        total_contracts=_safe_query(db, count_contracts, 0),
-        total_listings=_safe_query(db, count_listings, 0),
-        total_users=_safe_query(db, count_users, 0),
-        active_contracts=_safe_query(db, count_active_contracts, 0),
-        monthly_transaction_volume=0.0,
-    )
+    return get_dashboard_stats(db)
 
 
 @router.get("/public/notifications", response_model=list[PublicNotificationOut])
-def list_public_notifications(
+def list_public_notifications_endpoint(
     limit: int = Query(20, ge=1, le=50),
-    db: Session = Depends(get_public_db),
+    db: Session = Depends(get_db),
 ):
     """公开通知列表（系统公告等）."""
-    # Check if is_public column exists
-    has_is_public = _safe_query(db, lambda: db.execute(text(
-        "PRAGMA table_info(notifications)"
-    )).fetchall(), [])
-    has_pub_col = any(row[1] == 'is_public' for row in has_is_public) if has_is_public else False
-
-    if has_pub_col:
-        notifs = db.query(Notification).filter(
-            Notification.is_public == True  # noqa: E712
-        ).order_by(Notification.created_at.desc()).limit(limit).all()
-    else:
-        notifs = db.query(Notification).order_by(
-            Notification.created_at.desc()
-        ).limit(limit).all()
-
+    notifs = list_public_notifications(db, limit)
     return [
         PublicNotificationOut(
             id=n.id, title=n.title, body=n.content or "",
@@ -281,49 +172,18 @@ def list_public_notifications(
 
 
 @router.get("/public/market/trends", response_model=list[MarketTrendOut])
-def get_market_trends(
+def get_market_trends_endpoint(
     period: str = Query("monthly", description="daily|weekly|monthly"),
-    db: Session = Depends(get_public_db),
+    db: Session = Depends(get_db),
 ):
     """市场趋势数据（基于挂牌统计）."""
-    if period != "monthly":
-        return []
-
-    def q():
-        rows = db.query(
-            text("strftime('%Y-%m', created_at) as period, COUNT(*) as volume")
-        ).filter(text("status = 'active'")).group_by(
-            text("period")
-        ).order_by(text("period")).limit(12).all()
-        return rows
-
-    trends = []
-    try:
-        rows = db.query(
-            text("strftime('%Y-%m', created_at) as period, COUNT(*) as volume")
-        ).select_from(Listing).filter(
-            Listing.status == ListingStatus.ACTIVE
-        ).group_by(
-            text("period")
-        ).order_by(
-            text("period")
-        ).limit(12).all()
-        for r in rows:
-            p = getattr(r, 'period', '') or ''
-            trends.append(MarketTrendOut(
-                period=p, value=int(getattr(r, 'volume', 0) or 0), label=p
-            ))
-    except OperationalError:
-        pass
-    return trends
+    return get_market_trends(db, period)
 
 
 @router.get("/public/case-studies", response_model=list[CaseStudyOut])
-def list_public_case_studies(db: Session = Depends(get_public_db)):
+def list_public_case_studies_endpoint(db: Session = Depends(get_db)):
     """案例研究列表."""
-    cases = _safe_query(db, lambda: db.query(CaseStudy).order_by(
-        CaseStudy.created_at.desc()
-    ).limit(20).all(), [])
+    cases = list_public_case_studies(db)
     return [
         CaseStudyOut(
             id=c.id, title=c.title, category=c.category,
@@ -334,11 +194,9 @@ def list_public_case_studies(db: Session = Depends(get_public_db)):
 
 
 @router.get("/public/opportunities", response_model=list[OpportunityOut])
-def list_public_opportunities(db: Session = Depends(get_public_db)):
+def list_public_opportunities_endpoint(db: Session = Depends(get_db)):
     """合作机会曝光（从粉丝社群聚合）."""
-    communities = _safe_query(db, lambda: db.query(FanCommunity).filter(
-        FanCommunity.is_active == True  # noqa: E712
-    ).order_by(FanCommunity.created_at.desc()).limit(20).all(), [])
+    communities = list_public_opportunities(db)
     return [
         OpportunityOut(
             id=c.id, title=c.name, type=c.platform or "operator",
@@ -349,9 +207,6 @@ def list_public_opportunities(db: Session = Depends(get_public_db)):
 
 
 @router.get("/public/gallery/categories", response_model=list[str])
-def get_gallery_categories(db: Session = Depends(get_public_db)):
+def get_gallery_categories_endpoint(db: Session = Depends(get_db)):
     """画廊分类（作品类型）."""
-    cats = _safe_query(db, lambda: [r[0] for r in db.query(Work.file_type)
-                                     .filter(Work.status == "active")
-                                     .distinct().all() if r[0]], [])
-    return cats
+    return get_gallery_categories(db)
