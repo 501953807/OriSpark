@@ -46,7 +46,7 @@ def _preset_to_response(preset: WatermarkPreset) -> WatermarkPresetResponse:
 
 
 @router.get(
-    "/api/watermark-presets",
+    "/watermark-presets",
     response_model=ApiResponse[WatermarkPresetListResponse],
 )
 def list_watermark_presets(
@@ -64,7 +64,7 @@ def list_watermark_presets(
 
 
 @router.post(
-    "/api/watermark-presets",
+    "/watermark-presets",
     response_model=ApiResponse[WatermarkPresetResponse],
     dependencies=[Depends(require_auth)],
 )
@@ -75,15 +75,15 @@ def create_watermark_preset(
     """创建新的水印预设."""
     try:
         preset_dict = watermark_service.create_preset(
+            db=db,
             name=payload.name,
             position=payload.position,
             opacity=payload.opacity,
             text=payload.text,
             image_path=payload.image_path,
         )
-        preset = WatermarkPreset.model_validate(preset_dict)
         return ApiResponse(
-            data=_preset_to_response(preset),
+            data=WatermarkPresetResponse.model_validate(preset_dict),
             message="水印预设创建成功"
         )
     except ValueError as e:
@@ -93,7 +93,7 @@ def create_watermark_preset(
 
 
 @router.put(
-    "/api/watermark-presets/{preset_id}",
+    "/watermark-presets/{preset_id}",
     response_model=ApiResponse[WatermarkPresetResponse],
     dependencies=[Depends(require_auth)],
 )
@@ -117,9 +117,8 @@ def update_watermark_preset(
             text=text,
             image_path=image_path,
         )
-        preset = WatermarkPreset.model_validate(preset_dict)
         return ApiResponse(
-            data=_preset_to_response(preset),
+            data=WatermarkPresetResponse.model_validate(preset_dict),
             message="水印预设更新成功"
         )
     except ValueError as e:
@@ -129,7 +128,7 @@ def update_watermark_preset(
 
 
 @router.delete(
-    "/api/watermark-presets/{preset_id}",
+    "/watermark-presets/{preset_id}",
     response_model=ApiResponse[SuccessResponse],
     dependencies=[Depends(require_auth)],
 )
@@ -156,7 +155,7 @@ def delete_watermark_preset(
 
 
 @router.post(
-    "/api/watermarks/{work_id}/apply",
+    "/watermarks/{work_id}/apply",
     response_model=ApiResponse[ApplyWatermarkResult],
     dependencies=[Depends(require_auth)],
 )

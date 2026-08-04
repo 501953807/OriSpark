@@ -97,7 +97,7 @@ class TestUnlockBadge:
         from app.models.achievement import UserAchievement
         ua = UserAchievement(
             id="ua_test_001",
-            user_id="test_user",
+            user_id="current_user",
             badge_id=test_badge.id,
         )
         db_session.add(ua)
@@ -124,7 +124,7 @@ class TestMyAchievements:
         from app.models.achievement import UserAchievement
         ua = UserAchievement(
             id="ua_achieve_test",
-            user_id="test_user",
+            user_id="current_user",
             badge_id=test_badge.id,
         )
         db_session.add(ua)
@@ -138,7 +138,7 @@ class TestMyAchievements:
         assert isinstance(data, list)
         assert len(data) >= 1
         # Verify the user_id matches the token issuer
-        assert data[0]["user_id"] == "test_user"
+        assert data[0]["user_id"] == "current_user"
 
     def test_empty_for_new_user(self, client):
         resp = client.get(

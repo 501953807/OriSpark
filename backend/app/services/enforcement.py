@@ -328,7 +328,7 @@ def update_action_status(
 
 # ── 6. create_action_from_work ──────────────────────────────────
 
-def create_action_from_work(db: Session, work_id: str) -> dict:
+def create_action_from_work(db: Session, work_id: str, actor_id: str = "system") -> dict:
     """Bridge endpoint: from a work directly start enforcement flow."""
     task_ids = [
         t.id for t in db.query(MonitorTask.id).filter(

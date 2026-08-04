@@ -95,7 +95,7 @@ class TestListActionsByWork:
     """GET /enforcement/actions/by-work/{work_id}"""
 
     def test_list_by_work(self, client):
-        resp = client.get(f"{_BASE}/actions/by-work/test_work")
+        resp = client.get(f"{_BASE}/actions/work/test_work")
         assert resp.status_code == 200
         data = resp.json()
         # Returns a list directly (not wrapped in {"data": ...})

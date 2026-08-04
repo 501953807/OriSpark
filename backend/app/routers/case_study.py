@@ -60,7 +60,7 @@ def create(data: CaseStudyCreate, actor_id: str = Depends(get_current_user_id), 
     """创建新案例."""
     if data.category not in CATEGORIES:
         raise HTTPException(status_code=400, detail=f"Invalid category: {data.category}")
-    if data.category and data.category not in [c["key"] for c in CATEGORIES.values()]:
+    if data.category and data.category not in CATEGORIES:
         raise HTTPException(status_code=400, detail="Invalid category")
     result = create_case(db, actor_id, **data.model_dump())
     AuditLog.log(db, "create_case", f"Created case by {actor_id}", actor_id)

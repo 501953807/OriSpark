@@ -64,7 +64,7 @@ class WorkManagerService:
         user_id: str,
     ) -> ApiResponse:
         """上传单个作品文件 (含自动标签 + 尺寸检测 + 可选重复导入)."""
-        ext = Path(file.filename).suffix.lower() if "." in file.filename else ""
+        ext = Path(file.filename).suffix.lower().lstrip(".") if "." in file.filename else ""
         allowed = _get_allowed_extensions(self.db)
         if ext not in allowed:
             raise HTTPException(status_code=400, detail=f"不支持的文件类型: .{ext}")
@@ -991,7 +991,7 @@ class WorkManagerService:
                 file_dir = workspace_dir / file_uuid[:2] / file_uuid
                 file_dir.mkdir(parents=True, exist_ok=True)
 
-                ext = Path(clean_name).suffix.lower() if "." in clean_name else ""
+                ext = Path(clean_name).suffix.lower().lstrip(".") if "." in clean_name else ""
                 safe_filename = f"{file_uuid}.{ext}" if ext else f"{file_uuid}.dat"
                 file_path_local = file_dir / safe_filename
                 file_path_local.write_bytes(content)

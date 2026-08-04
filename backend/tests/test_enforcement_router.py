@@ -191,6 +191,7 @@ class TestGetAction:
             action_type="platform_complaint",
             platform="baidu",
             status="pending_review",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
@@ -223,6 +224,7 @@ class TestUpdateAction:
             action_type="dmca_notice",
             platform="generic",
             status="evidence_gathered",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
@@ -248,6 +250,7 @@ class TestUpdateAction:
             action_type="dmca_notice",
             platform="generic",
             status="complaint_filed",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
@@ -274,6 +277,7 @@ class TestUpdateAction:
             action_type="dmca_notice",
             platform="generic",
             status="pending_review",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
@@ -315,11 +319,12 @@ class TestGatherEvidence:
             action_type="dmca_notice",
             platform="generic",
             status="confirmed",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
 
-        resp = client.post(f"/api/enforcement/actions/{action.id}/evidence")
+        resp = client.post(f"/api/enforcement/actions/{action.id}/gather-evidence")
         assert resp.status_code == 200
         data = resp.json()
         assert data["status"] == "evidence_gathered"
@@ -328,7 +333,7 @@ class TestGatherEvidence:
 
     def test_gather_evidence_nonexistent_action(self, client):
         """Gathering evidence for a non-existent action returns 404."""
-        resp = client.post("/api/enforcement/actions/nonexistent-act-999/evidence")
+        resp = client.post("/api/enforcement/actions/nonexistent-act-999/gather-evidence")
         assert resp.status_code == 404
 
 
@@ -348,11 +353,12 @@ class TestSubmitComplaint:
             action_type="dmca_notice",
             platform="generic",
             status="evidence_gathered",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
 
-        resp = client.post(f"/api/enforcement/actions/{action.id}/submit")
+        resp = client.post(f"/api/enforcement/actions/{action.id}/submit-complaint", json={})
         assert resp.status_code == 200
         data = resp.json()
         assert data["action_id"] == action.id
@@ -361,7 +367,7 @@ class TestSubmitComplaint:
 
     def test_submit_complaint_nonexistent_action(self, client):
         """Submitting complaint for a non-existent action returns 404."""
-        resp = client.post("/api/enforcement/actions/nonexistent-act-999/submit")
+        resp = client.post("/api/enforcement/actions/nonexistent-act-999/submit-complaint", json={})
         assert resp.status_code == 404
 
 
@@ -436,6 +442,8 @@ class TestSeedTemplates:
         db_session.query(EnforcementTemplate).delete()
         db_session.commit()
 
+        import os
+        os.environ["ADMIN_IDS"] = "current_user"
         resp = client.post("/api/enforcement/templates/seed")
         assert resp.status_code == 200
         data = resp.json()
@@ -447,6 +455,8 @@ class TestSeedTemplates:
         _ensure_enforcement_tables(db_session)
         _seed_templates(db_session)
 
+        import os
+        os.environ["ADMIN_IDS"] = "current_user"
         resp = client.post("/api/enforcement/templates/seed")
         assert resp.status_code == 200
         data = resp.json()
@@ -479,7 +489,7 @@ class TestListActionsByWork:
 
     def test_by_work_no_actions(self, client):
         """Work with no linked actions returns empty list."""
-        resp = client.get("/api/enforcement/actions/by-work/nonexistent-work-999")
+        resp = client.get("/api/enforcement/actions/work/nonexistent-work-999")
         assert resp.status_code == 200
         data = resp.json()
         assert isinstance(data, list)
@@ -498,11 +508,12 @@ class TestListActionsByWork:
             action_type="dmca_notice",
             platform="generic",
             status="pending_review",
+            operator_id="current_user",
         )
         db_session.add(action)
         db_session.commit()
 
-        resp = client.get(f"/api/enforcement/actions/by-work/{work_id}")
+        resp = client.get(f"/api/enforcement/actions/work/{work_id}")
         assert resp.status_code == 200
         data = resp.json()
         assert isinstance(data, list)

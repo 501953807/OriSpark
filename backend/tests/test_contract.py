@@ -29,7 +29,7 @@ def _create_contract(db_session: Session, **kwargs) -> dict:
     """Helper: create a contract via ContractStateService and return its id."""
     from app.services.contract_state_service import ContractStateService
 
-    creator_id = kwargs.get("creator_id", "test_creator")
+    creator_id = kwargs.get("creator_id", "current_user")
     _create_user(db_session, creator_id)
     _create_user(db_session, "current_user")  # router default actor_id
 

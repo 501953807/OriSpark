@@ -60,6 +60,7 @@ class WatermarkPreset(Base):
             "opacity": self.opacity,
             "text": self.text,
             "image_path": self.image_path,
+            "updated_at": None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 
