@@ -108,6 +108,7 @@ class TestFieldCRUD:
         field_resp = client.post(f"{_BASE}/{template_id}/fields", json={
             "field_key": "update_me",
             "label": "Original Label",
+            "field_type": "string",
         })
         if field_resp.status_code != 200:
             pytest.skip("Cannot create field")
@@ -129,6 +130,7 @@ class TestFieldCRUD:
         field_resp = client.post(f"{_BASE}/{template_id}/fields", json={
             "field_key": "delete_me",
             "label": "To Delete",
+            "field_type": "string",
         })
         if field_resp.status_code != 200:
             pytest.skip("Cannot create field")

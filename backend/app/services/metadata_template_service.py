@@ -113,8 +113,8 @@ def list_templates(db: Session, is_default: bool = False):
     ]
 
 
-def create_template(db: Session, name: str, description: Optional[str],
-                    fields: Optional[list], is_default: bool = False):
+def create_template(db: Session, name: str, description: Optional[str] = None,
+                    fields: Optional[list] = None, is_default: bool = False):
     """创建元数据模板."""
     template = MetadataTemplate(
         name=name,
