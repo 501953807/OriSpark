@@ -68,7 +68,7 @@ class TestDismissWarning:
             description="Similar work found",
             confidence=0.85,
             dismissed=False,
-            created_at=datetime.utcnow() - timedelta(days=1),
+            created_at=datetime.now(timezone.utc) - timedelta(days=1),
         )
         db_session.add(warning)
         db_session.flush()

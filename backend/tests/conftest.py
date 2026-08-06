@@ -196,6 +196,27 @@ def client(test_db_engine, db_session):
 
 
 @pytest.fixture()
+def client_no_auth(test_db_engine, db_session):
+    """Test client without auth mocking — for testing missing auth scenarios."""
+    from app.main import app
+    from app.database import get_db
+    from starlette.testclient import TestClient
+
+    def _override_get_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = _override_get_db
+
+    # Do NOT override auth — let it fail as expected
+
+    with TestClient(app) as c:
+        yield c
+
+    if get_db in app.dependency_overrides:
+        del app.dependency_overrides[get_db]
+
+
+@pytest.fixture()
 def sample_work_file():
     """Create a temporary file with known content for SHA-256 tests."""
     content = b"hello world for sha256 test"

@@ -446,7 +446,7 @@ def delete_production_batch(batch_id: str, db: Session = Depends(get_db)):
 
 
 # ===========================================================================
-# Orders (placeholder — aggregates factory quotes)
+# Orders — aggregates factory quotes from RFQ responses
 # ===========================================================================
 
 @router.get("/craftsman/orders", response_model=ApiResponse[list])

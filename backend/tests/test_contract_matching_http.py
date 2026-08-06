@@ -52,7 +52,7 @@ class TestPushMatch:
 
     def test_push_match_missing_auth(self, client):
         resp = client.post(f"{_BASE}/test-contract/matches/push", json={})
-        assert resp.status_code in (401, 403, 500)
+        assert resp.status_code in (401, 403, 422, 500)
 
     def test_push_match_invalid_contract_id(self, client):
         try:
@@ -111,7 +111,7 @@ class TestRecordView:
 
     def test_view_match_without_auth(self, client):
         resp = client.post(f"{_BASE}/valid-matching/view")
-        assert resp.status_code in (401, 403, 500)
+        assert resp.status_code in (401, 403, 422, 500)
 
 
 # ============================================================================

@@ -214,7 +214,7 @@ def test_full_enforcement_workflow(db_session):
         "act001",
         new_status="resolved",
         resolution_type="takedown",
-        resolved_at=datetime.utcnow(),
+        resolved_at=datetime.now(timezone.utc),
     )
     assert action.status == "resolved"
     assert action.resolved_at is not None

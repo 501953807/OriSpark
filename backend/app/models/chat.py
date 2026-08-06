@@ -55,5 +55,5 @@ class Message(Base):
 
     __table_args__ = (
         Index("idx_msg_conv", "conversation_id"),
-        Index("idx_msg_sender", "sender_id"),
+        Index("idx_msg_chat_sender", "sender_id"),
     )

@@ -24,6 +24,7 @@ from app.services.insurance_service import (
     submit_claim,
     get_claim_status,
 )
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/insurance", tags=["copyright-insurance"])
 

@@ -159,7 +159,7 @@ def _create_subscriber(db_session: Session, user_id: str) -> str:
         user_id=user_id,
         tier_id=tier.id,
         status="active",
-        subscribed_at=datetime.utcnow(),
+        subscribed_at=datetime.now(timezone.utc),
     )
     db_session.add(sub)
     db_session.commit()

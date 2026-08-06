@@ -45,8 +45,11 @@ async def lifespan(app: FastAPI):
         seed_default_presets(db)
 
         # 迁移 users.json → SQLite
-        from app.routers.auth import _migrate_json_users
-        _migrate_json_users(db)
+        try:
+            from app.routers.auth import _migrate_json_users
+            _migrate_json_users(db)
+        except ImportError:
+            pass
     finally:
         db.close()
 

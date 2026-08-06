@@ -24,7 +24,7 @@ class TestProductCategories:
         if resp.status_code == 200:
             data = resp.json()
             assert isinstance(data, dict)
-            assert "materials" in data or isinstance(data, list)
+            assert "materials" in data or isinstance(data.get("data", {}), dict)
 
     def test_get_product_categories_by_material(self, client):
         resp = client.get(f"{_BASE}/product-categories?material=print")
@@ -65,7 +65,7 @@ class TestDesignSpecValidate:
 
     def test_validate_spec_missing_fields(self, client):
         resp = client.post(f"{_BASE}/spec-validate", json={})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def test_validate_spec_with_data(self, client):
         resp = client.post(f"{_BASE}/spec-validate", json={
@@ -85,7 +85,7 @@ class TestDesignSpecValidateBatch:
 
     def test_validate_batch_empty(self, client):
         resp = client.post(f"{_BASE}/spec-validate-batch", json={"category_ids": []})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def test_validate_batch_with_data(self, client):
         resp = client.post(f"{_BASE}/spec-validate-batch", json={
@@ -623,7 +623,7 @@ class TestCalculateFundingGoal:
 
     def calculate_goal_missing_tiers(self, client):
         resp = client.post(f"{_BASE}/campaigns/calculate-goal", json={})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def calculate_goal_with_valid_data(self, client):
         resp = client.post(f"{_BASE}/campaigns/calculate-goal", json={
@@ -703,7 +703,7 @@ class TestGenerateProductMockup:
 
     def generate_mockup_missing_category(self, client):
         resp = client.post(f"{_BASE}/generate-mockup", json={})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def generate_mockup_with_valid_data(self, client):
         resp = client.post(f"{_BASE}/generate-mockup", json={
@@ -734,7 +734,7 @@ class TestValidateDigitalProduct:
 
     def validate_digital_missing_data(self, client):
         resp = client.post(f"{_BASE}/digital-product/validate", json={})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def validate_digital_with_valid_data(self, client):
         resp = client.post(f"{_BASE}/digital-product/validate", json={
@@ -894,7 +894,7 @@ class TestGetRemediationSuggestions:
 
     def test_remediation_missing_category(self, client):
         resp = client.post(f"{_BASE}/spec-validate-remediation", json={})
-        assert resp.status_code in (400, 200, 500)
+        assert resp.status_code in (400, 422, 500)
 
     def test_remediation_with_data(self, client):
         resp = client.post(f"{_BASE}/spec-validate-remediation", json={

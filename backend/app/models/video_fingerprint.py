@@ -1,7 +1,7 @@
 """视频感知哈希模型 (P3-3)."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -24,8 +24,8 @@ class VideoFingerprintConfig(Base):
     threshold = Column(Float, default=0.85)  # new field for similarity threshold
     is_active = Column(Integer, default=1)  # renamed from enabled, using integer as boolean storage
     settings = Column(JSON, default={})  # new field for additional configuration
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
 
 class VideoFrameFingerprint(Base):
@@ -34,15 +34,15 @@ class VideoFrameFingerprint(Base):
 
     id = Column(String(32), primary_key=True, default=generate_uuid)
     work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=False)  # renamed from video_work_id
-    config_id = Column(String(32), ForeignKey("video_fingerprint_config.id", ondelete="SET_NULL"), nullable=True)  # new foreign key
+    config_id = Column(String(32), ForeignKey("video_fingerprint_config.id", ondelete="SET NULL"), nullable=True)  # new foreign key
     frame_hash = Column(String(64), nullable=False)  # renamed from perceptual_hash
     frame_number = Column(Integer, nullable=False)  # kept existing frame_number
     timestamp_ms = Column(Float, default=0.0)  # renamed from timestamp, in ms
     similarity_score = Column(Float, nullable=True)  # new field for match score
     matched_work_id = Column(String(32), nullable=True)  # new field for referenced work ID
     hash_type = Column(String(20), default="dhash")  # dhash/phash/ahash/whash
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_vff_work", "work_id", "frame_number"),

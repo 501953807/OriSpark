@@ -12,7 +12,7 @@ def place_bid(db: Session, auction_id: str, buyer_id: str, amount_yuan: float,
         return None
     if amount_yuan < auction.current_bid_yuan + auction.min_increment_yuan:
         return None
-    if auction.ends_at and datetime.now(timezone.utc) > auction.ends_at:
+    if auction.ends_at and datetime.now(timezone.utc) > auction.ends_at.replace(tzinfo=timezone.utc) if auction.ends_at.tzinfo is None else auction.ends_at:
         return None
 
     bid = Bid(

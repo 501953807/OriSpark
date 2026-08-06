@@ -18,6 +18,7 @@ from app.services.content_pipeline_service import (
     simulate_publish, get_publish_stats,
 )
 from app.models.content_pipeline import PlatformAccount
+from app.utils.audit import AuditLog
 
 router = APIRouter(prefix="/content-pipeline", tags=["content-pipeline"])
 
