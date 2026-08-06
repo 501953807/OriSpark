@@ -25,7 +25,7 @@ watch(() => route.fullPath, (newVal, oldVal) => {
       :css="true"
     >
       <keep-alive>
-        <component :is="Component" :key="'app-layout'" />
+        <component :is="Component" :key="route.path" />
       </keep-alive>
     </transition>
   </router-view>
