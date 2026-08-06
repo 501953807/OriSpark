@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models.settlement import TaxCalculation, MultiCurrencySettlement
 from app.models.tax_settlement import TaxReport
-from app.services.avalara_gateway import MockAvalaraGateway, TaxCalculationResult
+from app.services.avalara_gateway import get_avalara_gateway, TaxCalculationResult
 
 
 async def calculate_tax(
@@ -21,7 +21,7 @@ async def calculate_tax(
     transaction_id: Optional[str] = None,
 ) -> TaxCalculation:
     """执行税务计算并持久化结果."""
-    gateway = MockAvalaraGateway()
+    gateway = get_avalara_gateway()
     result: TaxCalculationResult = await gateway.calculate_tax(
         seller_location, buyer_location, product_type, amount, currency,
     )

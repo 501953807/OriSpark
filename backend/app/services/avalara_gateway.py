@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 """Avalara 税务计算 Gateway ABC 模式."""
 
+import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from decimal import Decimal
@@ -66,11 +67,22 @@ class AvalaraGateway(GatewayABC):
     """真实 Avalara API 实现 — 需要 API key."""
 
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or ""
+        self.api_key = api_key or os.environ.get("AVALARA_LICENSE_KEY", "")
 
     @property
     def _is_configured(self) -> bool:
         return bool(self.api_key)
+
+
+def get_avalara_gateway() -> GatewayABC:
+    """根据环境变量选择 Avalara 网关实现.
+
+    生产环境: 配置 AVALARA_LICENSE_KEY 使用真实 API
+    开发/测试: 未配置时使用 Mock 实现
+    """
+    if os.environ.get("AVALARA_LICENSE_KEY"):
+        return AvalaraGateway()
+    return MockAvalaraGateway()
 
     async def calculate_tax(
         self,
