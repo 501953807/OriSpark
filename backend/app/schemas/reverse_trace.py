@@ -38,6 +38,8 @@ class TraceLinkSchema(BaseModel):
     utm_source: Optional[str] = None
     utm_medium: Optional[str] = None
     utm_campaign: Optional[str] = None
+    branch_link_id: Optional[str] = None
+    deep_link_url: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

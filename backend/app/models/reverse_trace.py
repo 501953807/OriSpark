@@ -25,6 +25,8 @@ class ReverseTraceLink(Base):
     utm_source = Column(String(50), nullable=True)
     utm_medium = Column(String(50), nullable=True)
     utm_campaign = Column(String(100), nullable=True)
+    branch_link_id = Column(String(100), nullable=True)  # Branch.io link ID
+    deep_link_url = Column(Text, nullable=True)  # 原始深度链接 URL
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

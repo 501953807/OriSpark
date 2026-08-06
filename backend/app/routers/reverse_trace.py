@@ -129,3 +129,33 @@ def get_analytics(link_id: str, db: Session = Depends(get_db)):
     service = ReverseTraceService(db)
     summary = service.get_attribution_summary(link_id)
     return ApiResponse(data=AttributionSummary(**summary).model_dump())
+
+
+@router.get("/trace/config/ios")
+def get_ios_config():
+    """返回 iOS Universal Links 配置 (Associated Domains)."""
+    return {
+        "version": 1,
+        "applications": [{
+            "appId": "com.oristudio.app",  # 替换为实际 App ID
+            "details": [{
+                "appID": "com.oristudio.app",
+                "components": [{
+                    "/": "/trace/redirect/*",
+                    "comment": "匹配所有短链跳转"
+                }]
+            }]
+        }]
+    }
+
+
+@router.get("/trace/config/android/{packageName}")
+def get_android_config(packageName: str):
+    """返回 Android App Links 配置 (assetlinks.json)."""
+    return [{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "web",
+            "site": "https://router.oristudio.com"
+        }
+    }]
