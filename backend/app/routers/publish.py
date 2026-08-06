@@ -224,7 +224,7 @@ async def create_product(data: CreateProductRequest, db: Session = Depends(get_d
         data.work_id, data.title, data.description, data.price,
         data.category, data.specifications, data.images,
     )
-    return ApiResponse(message="商品已创建", data={"id": result})
+    return ApiResponse(message="商品已创建", data=result)
 
 
 @router.put("/publish/products/{product_id}", response_model=ApiResponse)
@@ -495,11 +495,10 @@ async def publish_product(product_id: str, platform: str = Query(...), db: Sessi
 async def generate_verified_badge(product_id: str, db: Session = Depends(get_db), _=Depends(require_auth)):
     """为产品生成 OriStudio Verified 徽章 (QR码 + SVG + PNG + Embed代码)."""
     svc = PublishManagerService(db)
-    svc.get_product(product_id)  # validate exists
-
+    product = svc.get_product(product_id)
     from app.services.verified_badge import VerifiedBadgeService
     service = VerifiedBadgeService()
-    result = service.generate(product_id=product_id, product_title="")
+    result = service.generate(product_id=product_id, product_title=product.title)
 
     svc.save_verified_mark(product_id, result["qr_url"], result["verify_url"])
 
@@ -513,11 +512,10 @@ async def generate_verified_badge(product_id: str, db: Session = Depends(get_db)
 def get_verified_embed(product_id: str, db: Session = Depends(get_db)):
     """获取 OriStudio Verified 徽章嵌入代码 (HTML/JS snippet)."""
     svc = PublishManagerService(db)
-    svc.get_product(product_id)  # validate exists
-
+    product = svc.get_product(product_id)
     from app.services.verified_badge import VerifiedBadgeService
     service = VerifiedBadgeService()
-    embed = service.generate_embed_snippet(product_id=product_id, product_title="")
+    embed = service.generate_embed_snippet(product_id=product_id, product_title=product.title)
 
     return ApiResponse(data=embed)
 

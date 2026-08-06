@@ -47,7 +47,7 @@ def simulate(data: ProductConfigCreate):
 def record_sale(data: SaleRecord, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """记录一笔 POD 销售."""
     result = log_sale(
-        db, actor_id,
+        db, actor_id, None,
         platform=data.platform,
         product_type=data.product_type,
         sale_price_usd=data.sale_price_usd,

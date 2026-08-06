@@ -55,6 +55,8 @@ class SCRRatingService:
         if not rating:
             raise ValueError("评级不存在")
 
+        if rating.expires_at and rating.expires_at.tzinfo is None:
+            rating.expires_at = rating.expires_at.replace(tzinfo=timezone.utc)
         if rating.expires_at and rating.expires_at < datetime.now(timezone.utc):
             rating.status = "suspended"
 
