@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 import zipfile
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import text
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -203,7 +203,7 @@ def test_full_enforcement_workflow(db_session):
     assert tpl is not None
 
     action = update_action_status(
-        db_session, "act001", new_status="complaint_filed", sent_at=datetime.utcnow()
+        db_session, "act001", new_status="complaint_filed", sent_at=datetime.now(timezone.utc)
     )
     assert action.status == "complaint_filed"
     assert action.sent_at is not None

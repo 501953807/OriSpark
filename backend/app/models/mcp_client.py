@@ -1,6 +1,6 @@
 """MCP Client 外部创作工具连接配置模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, Boolean, DateTime, JSON, Index, ForeignKey,
@@ -26,8 +26,8 @@ class MCPClientConfig(Base):
     is_active = Column(Boolean, default=True)
     last_connected_at = Column(DateTime, nullable=True)
     last_error = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_mcp_config_name", "name"),
@@ -46,11 +46,11 @@ class ToolEvent(Base):
     work_id = Column(String(32), nullable=True, comment="关联的作品 ID")
     user_id = Column(String(32), nullable=True, comment="触发事件的用户 ID")
     session_id = Column(String(32), nullable=True, comment="关联的 AI 会话 ID")
-    received_at = Column(DateTime, default=datetime.utcnow, index=True)
+    received_at = Column(DateTime, default=datetime.now(timezone.utc), index=True)
     processed = Column(Boolean, default=False)
     processed_at = Column(DateTime, nullable=True)
     error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_tool_event_config", "config_id"),
@@ -72,8 +72,8 @@ class ExternalToolConnection(Base):
     last_heartbeat_at = Column(DateTime, nullable=True)
     event_count = Column(Integer, default=0)
     conn_metadata = Column(JSON, nullable=True, comment="连接元数据（如工具版本、插件名）")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_ext_conn_config", "config_id"),

@@ -4,7 +4,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Index, Text, JSON
 from sqlalchemy.orm import relationship
@@ -24,8 +24,8 @@ class WorkVariantGroup(Base):
     work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=False)
     name = Column(String(100), nullable=False, default="默认变体组")
     description = Column(String(500), nullable=True, default=None)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     variants = relationship("WorkVariant", back_populates="group", cascade="all, delete-orphan")
 
@@ -49,7 +49,7 @@ class WorkVariant(Base):
     height = Column(Integer, nullable=False)
     aspect_ratio = Column(Float, nullable=False)
     sort_order = Column(Integer, nullable=False, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     # -- 摄影师 v2 扩展字段 --
     camera_model = Column(String(100), nullable=True)       # 相机型号

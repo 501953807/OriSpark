@@ -10,7 +10,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Float, Text, DateTime,
@@ -37,8 +37,8 @@ class ForkMergeWork(Base):
     status = Column(String(20), nullable=False, default="active", comment="active/closed/archived")
     visibility = Column(String(20), nullable=False, default="private", comment="public/private")
     base_commit_sha = Column(String(64), nullable=True, comment="初始基线提交 SHA")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     branches = relationship("ForkMergeBranch", back_populates="work", cascade="all, delete-orphan")
     commits = relationship("ForkMergeCommit", back_populates="work", cascade="all, delete-orphan")
@@ -61,7 +61,7 @@ class ForkMergeBranch(Base):
     name = Column(String(100), nullable=False, default="main", comment="分支名，默认 main")
     commit_id = Column(String(32), ForeignKey("fork_merge_commits.id", ondelete="SET NULL", use_alter=True), nullable=True, comment="当前 HEAD 提交 ID")
     is_default = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     work = relationship("ForkMergeWork", back_populates="branches")
     commit = relationship("ForkMergeCommit", foreign_keys=[commit_id])
@@ -84,7 +84,7 @@ class ForkMergeCommit(Base):
     message = Column(Text, nullable=False, default="")
     content_hash = Column(String(64), nullable=True, comment="内容 SHA256")
     metadata_json = Column(JSON, nullable=True, comment="扩展元数据（文件变更、AI 工具使用等）")
-    committed_at = Column(DateTime, default=datetime.utcnow)
+    committed_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     work = relationship("ForkMergeWork", back_populates="commits")
     branch = relationship("ForkMergeBranch", foreign_keys=[branch_id])
@@ -111,8 +111,8 @@ class ForkMergePullRequest(Base):
     merge_method = Column(String(20), nullable=True, comment="merge/squash/rebase")
     conflict_detail = Column(JSON, nullable=True, comment="冲突详情")
     review_comments = Column(JSON, nullable=True, comment="评审意见列表")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     work = relationship("ForkMergeWork", back_populates="pull_requests")
 
@@ -132,7 +132,7 @@ class ForkMergeCollaborator(Base):
     user_id = Column(String(32), nullable=False, index=True, comment="协作用户 ID")
     role = Column(String(20), nullable=False, default="contributor", comment="owner/collaborator/contributor/viewer")
     permissions = Column(JSON, nullable=True, comment="细粒度权限")
-    joined_at = Column(DateTime, default=datetime.utcnow)
+    joined_at = Column(DateTime, default=datetime.now(timezone.utc))
     left_at = Column(DateTime, nullable=True)
 
     work = relationship("ForkMergeWork", back_populates="collaborators")
@@ -153,7 +153,7 @@ class ForkMergeSplitLock(Base):
     work_id = Column(String(32), ForeignKey("fork_merge_works.id", ondelete="CASCADE"), nullable=False)
     contributor_id = Column(String(32), nullable=False, index=True, comment="贡献者用户 ID")
     split_pct = Column(Float, nullable=False, default=0.0, comment="分润比例百分比")
-    locked_at = Column(DateTime, default=datetime.utcnow)
+    locked_at = Column(DateTime, default=datetime.now(timezone.utc))
     locked_by = Column(String(32), nullable=False, comment="锁定操作者 ID")
     status = Column(String(20), nullable=False, default="locked", comment="locked/released/modified")
 

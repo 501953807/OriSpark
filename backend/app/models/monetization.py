@@ -4,7 +4,7 @@ Adds: ProductTemplate, Campaign, License, MonetizationChannel, RevenueRecord (en
 Extends: Partner with manufacturing capabilities, Order with order_type and sample mgmt.
 """
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Date, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -43,8 +43,8 @@ class ProductTemplate(Base):
     production_time_days = Column(Integer, nullable=True)
     shipping_regions = Column(JSON, nullable=True)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_pt_platform_cat", "platform", "product_category"),
@@ -68,8 +68,8 @@ class MonetizationChannel(Base):
     connected_at = Column(DateTime, nullable=True)
     last_sync_at = Column(DateTime, nullable=True)
     status = Column(String(20), default="active")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_mc_platform", "platform"),
@@ -110,8 +110,8 @@ class Campaign(Base):
     related_work_ids = Column(JSON, nullable=True)
     listing_id = Column(String(32), ForeignKey("design_listings.id", ondelete="SET NULL"), nullable=True)  # P2: FK to listing
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     listing = relationship("DesignListing", back_populates="campaigns")  # P2
 
@@ -147,8 +147,8 @@ class License(Base):
     total_revenue = Column(Float, default=0)
 
     status = Column(String(20), default="active")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     listing = relationship("DesignListing", back_populates="licenses")  # P2
 

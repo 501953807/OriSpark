@@ -1,6 +1,6 @@
 """维权流水线数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, ForeignKey, Index, Float, JSON,
@@ -43,8 +43,8 @@ class EnforcementAction(Base):
     notes = Column(Text, nullable=True)
     operator_id = Column(String(32), nullable=True)
     # 维权行动的创建/操作者用户 ID
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     materials = relationship(
         "ComplaintMaterial", back_populates="action", cascade="all, delete-orphan",
@@ -76,7 +76,7 @@ class EnforcementTemplate(Base):
     required_evidence = Column(JSON, nullable=True)
     # ["work_ownership_proof", "infringement_url", ...]
     filing_url = Column(String(2000), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_template_platform", "platform"),
@@ -100,7 +100,7 @@ class ComplaintMaterial(Base):
     # pdf_package / prefilled_url / api_config
     material_path = Column(String(2000), nullable=True)
     variables = Column(JSON, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     action = relationship("EnforcementAction", back_populates="materials")
 

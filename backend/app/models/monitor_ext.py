@@ -7,7 +7,7 @@
 - WhitelistSuggestion: 白名单自动建议
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -27,7 +27,7 @@ class LocalFingerprint(Base):
     hash_type = Column(String(20), nullable=False)  # dhash/phash/whash/average_hash
     hash_value = Column(String(256), nullable=False)  # 哈希字符串 (hex)
     hash_size = Column(Integer, default=16)  # 哈希尺寸 e.g. 16x16
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_fp_work_id", "work_id"),
@@ -49,8 +49,8 @@ class BrandWatch(Base):
     last_scan_at = Column(DateTime, nullable=True)
     total_matches = Column(Integer, default=0)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     scans = relationship("BrandScanResult", back_populates="brand", cascade="all, delete-orphan")
 
@@ -70,7 +70,7 @@ class BrandScanResult(Base):
     item_title = Column(String(500), nullable=True)
     similarity = Column(Float, default=0.0)  # 0-100
     thumbnail_url = Column(String(2000), nullable=True)
-    found_at = Column(DateTime, default=datetime.utcnow)
+    found_at = Column(DateTime, default=datetime.now(timezone.utc))
     status = Column(String(20), default="pending_review")  # pending_review/infringing/ignored
     notes = Column(Text, nullable=True)
 
@@ -96,8 +96,8 @@ class DomainWatch(Base):
     creation_date = Column(DateTime, nullable=True)
     expiry_date = Column(DateTime, nullable=True)
     status_notes = Column(Text, nullable=True)  # WHOIS 状态备注
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_domain_active", "is_active"),
@@ -113,10 +113,10 @@ class WhitelistSuggestion(Base):
     pattern_url = Column(String(2000), nullable=False)  # URL 或域名模式
     pattern_type = Column(String(20), default="domain")  # domain/url/regex
     occurrence_count = Column(Integer, default=1)
-    last_seen_at = Column(DateTime, default=datetime.utcnow)
-    suggested_at = Column(DateTime, default=datetime.utcnow)
+    last_seen_at = Column(DateTime, default=datetime.now(timezone.utc))
+    suggested_at = Column(DateTime, default=datetime.now(timezone.utc))
     status = Column(String(20), default="suggested")  # suggested/accepted/declined
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_whitelist_status", "status"),

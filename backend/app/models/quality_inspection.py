@@ -6,7 +6,7 @@ v3 激活.
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -37,6 +37,6 @@ class QualityInspection(Base):
     defect_details = Column(JSON, nullable=True)
     inspection_notes = Column(Text, nullable=True)
     inspected_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_qi_batch", "batch_id"),)

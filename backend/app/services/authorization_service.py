@@ -90,7 +90,7 @@ def update_authorization(
             license_rec.cc_protocol = cc_protocol
         if price_per_use_cents is not None:
             license_rec.price_per_use_cents = price_per_use_cents
-        license_rec.updated_at = datetime.utcnow()
+        license_rec.updated_at = datetime.now(timezone.utc)
 
     db.commit()
     db.refresh(license_rec)

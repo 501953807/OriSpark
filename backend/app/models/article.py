@@ -4,7 +4,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, DateTime,
@@ -39,8 +39,8 @@ class Article(Base):
     reading_time_minutes = Column(Integer, nullable=True)
     status = Column(String(20), default="draft")  # draft/published/archived
     published_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     author = relationship("User", backref="articles")
     work_variant = relationship("WorkVariant", back_populates="articles")

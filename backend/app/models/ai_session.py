@@ -1,6 +1,6 @@
 """AI 创作会话记录数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, DateTime, ForeignKey, Index, JSON,
@@ -27,8 +27,8 @@ class AiCreationSession(Base):
     lora_names = Column(JSON, nullable=True)
     output_images = Column(JSON, nullable=True)
     human_interventions = Column(JSON, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_ai_session_work", "work_id"),

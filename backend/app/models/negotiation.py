@@ -1,6 +1,6 @@
 """议价协商数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Numeric, Index
 from sqlalchemy.orm import relationship
@@ -24,8 +24,8 @@ class TradeNegotiation(Base):
     final_price_yuan = Column(Numeric(12, 2), nullable=True)
     status = Column(String(20), default="pending", index=True)
     message_log = Column(Text, nullable=True)  # JSON string
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_nego_buyer", "buyer_id"),

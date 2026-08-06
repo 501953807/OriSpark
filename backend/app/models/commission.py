@@ -1,6 +1,6 @@
 """委托项目管理数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index, JSON, Float, Numeric, Integer
 from sqlalchemy.orm import relationship
@@ -23,8 +23,8 @@ class CommissionProject(Base):
     client_name = Column(String(200), nullable=True)
     status = Column(String(20), default="brief")  # brief/proposal/production/delivery/settlement
     payment_terms = Column(JSON, nullable=True)  # [{stage, percentage, amount, due_date}]
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     milestones = relationship(
         "CommissionMilestone",
@@ -71,7 +71,7 @@ class CommissionOrder(Base):
     order_type = Column(String(50), nullable=False)
     amount = Column(Float, nullable=False, default=0.0)
     status = Column(String(20), default="pending")  # pending/completed/overdue
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     project = relationship("CommissionProject", back_populates="orders")
 
@@ -93,7 +93,7 @@ class CommissionMessage(Base):
     )
     sender_id = Column(String(32), nullable=False)
     content = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     project = relationship("CommissionProject", back_populates="messages")
 
@@ -118,8 +118,8 @@ class CommissionMilestone(Base):
     due_date = Column(DateTime, nullable=True)
     description = Column(Text, nullable=True)
     order_index = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     project = relationship("CommissionProject", back_populates="milestones")
 
@@ -149,7 +149,7 @@ class CommissionPayment(Base):
     status = Column(String(20), default="pending")  # pending|received|partial|overdue
     paid_at = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     project = relationship("CommissionProject", back_populates="payments")
 
@@ -173,7 +173,7 @@ class CommissionRevision(Base):
     client_feedback = Column(Text, nullable=True)
     files = Column(JSON, nullable=True)  # uploaded file paths
     created_by = Column(String(50), nullable=False)  # 'artist' or 'client'
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     project = relationship("CommissionProject", back_populates="revisions")
 

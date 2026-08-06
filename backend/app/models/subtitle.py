@@ -1,7 +1,7 @@
 """字幕管理数据模型 (P3-2)."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Index
 from sqlalchemy.orm import relationship
@@ -22,8 +22,8 @@ class Subtitle(Base):
     language = Column(String(10), nullable=False)  # zh, en, ja, etc.
     file_path = Column(String(2000), nullable=False)
     format_type = Column(String(10), default="srt")  # srt/ass/vtt
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     work = relationship("Work", backref="subtitles")
 
@@ -42,6 +42,6 @@ class ProjectFileFormat(Base):
     extension = Column(String(10), nullable=False)
     mime_type = Column(String(100), nullable=True)
     description = Column(String(500), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_pff_ext", "extension"),)

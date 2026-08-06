@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Integer, Text, JSON
 from app.database import Base
@@ -21,7 +21,7 @@ class MatchRequest(Base):
     status = Column(String(20), default="pending")  # pending/matching/awarded/closed
     matched_seller_ids = Column(JSON, nullable=True)  # recommended seller IDs
     awarded_to = Column(String(32), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class MatchTransaction(Base):
@@ -38,4 +38,4 @@ class MatchTransaction(Base):
     delivery_status = Column(String(20), default="pending")  # pending/delivered/accepted/rejected
     delivery_date = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

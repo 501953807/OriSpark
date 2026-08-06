@@ -1,6 +1,6 @@
 """存证确权数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, ForeignKey, Index, Float, JSON,
@@ -33,8 +33,8 @@ class NotaryRecord(Base):
     confirmed_at = Column(DateTime, nullable=True)
     expires_at = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     work = relationship("Work", back_populates="notary_records")
     certificates = relationship("Certificate", back_populates="notary_record", cascade="all, delete-orphan")
@@ -57,10 +57,10 @@ class Certificate(Base):
     cert_path = Column(String(2000), nullable=False)  # PDF 证书文件路径
     qr_code = Column(String(2000), nullable=True)  # 验证二维码数据
     template_name = Column(String(100), default="default")
-    issued_at = Column(DateTime, default=datetime.utcnow)
+    issued_at = Column(DateTime, default=datetime.now(timezone.utc))
     expires_at = Column(DateTime, nullable=True)
     metadata_json = Column(JSON, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     notary_record = relationship("NotaryRecord", back_populates="certificates")
 
@@ -76,10 +76,10 @@ class C2PARecord(Base):
     id = Column(String(32), primary_key=True, default=generate_uuid)
     work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=False)
     manifest_json = Column(JSON, nullable=True)
-    embedded_at = Column(DateTime, default=datetime.utcnow)
+    embedded_at = Column(DateTime, default=datetime.now(timezone.utc))
     is_active = Column(Boolean, default=True)
     validator_url = Column(String(2000), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_c2pa_work", "work_id"),
@@ -99,7 +99,7 @@ class NotaryAuditTrail(Base):
     step = Column(String(50), nullable=False)  # create/pending/confirm/cert_generate/fail
     status = Column(String(20), nullable=False, default="success")  # success/failure
     detail = Column(Text, nullable=True)  # 步骤详情
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_audit_notary_record", "notary_record_id"),

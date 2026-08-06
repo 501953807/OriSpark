@@ -1,6 +1,6 @@
 """POD 月度结算数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, ForeignKey, Numeric, Text, Index
 from sqlalchemy.orm import relationship
@@ -24,8 +24,8 @@ class PodSettlement(Base):
     confirmed_at = Column(DateTime, nullable=True)
     settled_at = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     items = relationship("PodSettlementItem", back_populates="settlement", cascade="all, delete-orphan")
 
@@ -46,7 +46,7 @@ class PodSettlementItem(Base):
     cost_yuan = Column(Numeric(12, 2), nullable=False)
     creator_earning_yuan = Column(Numeric(12, 2), nullable=False)
     platform_fee_yuan = Column(Numeric(12, 2), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     settlement = relationship("PodSettlement", back_populates="items")
 

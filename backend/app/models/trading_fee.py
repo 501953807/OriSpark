@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Integer, Boolean, JSON
 from app.database import Base
@@ -27,7 +27,7 @@ class TransactionFee(Base):
     tier = Column(String(20), nullable=False, default="tier_1")
     is_discounted = Column(Boolean, default=False)
     discount_reason = Column(String(200), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class CommissionRule(Base):
@@ -43,4 +43,4 @@ class CommissionRule(Base):
     credit_bonus_rate_bps = Column(Integer, default=0)
     active = Column(Boolean, default=True)
     notes = Column(String(500), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
 
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone, timezone
 from sqlalchemy import text
 from app.services.revenue_service import (
     calculate_diversity_index,
@@ -54,7 +54,7 @@ def test_single_source_low_diversity(db_session):
             user_id="u1",
             income_category="ad_revenue",
             amount=1000,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         ),
     ]
     result = calculate_diversity_index(records)
@@ -70,13 +70,13 @@ def test_two_sources_moderate_diversity(db_session):
             user_id="u2",
             income_category="ad_revenue",
             amount=500,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         ),
         RevenueRecord(
             user_id="u2",
             income_category="subscription",
             amount=500,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         ),
     ]
     result = calculate_diversity_index(records)
@@ -92,7 +92,7 @@ def test_multiple_sources_high_diversity(db_session):
             user_id="u3",
             income_category=cat,
             amount=200,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         )
         for cat in categories
     ]
@@ -109,13 +109,13 @@ def test_single_source_warning(db_session):
             user_id="u4",
             income_category="ad_revenue",
             amount=900,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         ),
         RevenueRecord(
             user_id="u4",
             income_category="subscription",
             amount=100,
-            recorded_date=datetime.utcnow(),
+            recorded_date=datetime.now(timezone.utc),
         ),
     ]
     result = calculate_diversity_index(records)
@@ -137,7 +137,7 @@ def test_record_revenue(db_session):
 def test_get_revenue_summary(db_session):
     """Test revenue summary calculation."""
     # Add some records
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     for i in range(3):
         record_revenue(
             db_session, "u6", "subscription", 100.0,

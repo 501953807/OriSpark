@@ -4,7 +4,7 @@
 - watermark_presets: 创作者保存的水印预设配置
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, Integer, JSON,
@@ -27,8 +27,8 @@ class WatermarkPreset(Base):
     config = Column(JSON, nullable=False, default=dict)  # 具体配置
     is_default = Column(Boolean, default=False)
     created_by = Column(String(32), ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_wp_created", "created_at"),

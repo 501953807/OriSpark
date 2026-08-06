@@ -1,7 +1,7 @@
 """分发回流引擎数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Integer, Float, Boolean, JSON, Text, ForeignKey, Index
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -27,8 +27,8 @@ class ReverseTraceLink(Base):
     utm_campaign = Column(String(100), nullable=True)
     branch_link_id = Column(String(100), nullable=True)  # Branch.io link ID
     deep_link_url = Column(Text, nullable=True)  # 原始深度链接 URL
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     events = relationship(
         "ReverseTraceEvent",
@@ -63,7 +63,7 @@ class ReverseTraceEvent(Base):
     custom_params = Column(JSON, nullable=True)
     converted = Column(Boolean, default=False)
     conversion_value = Column(Float, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     link = relationship("ReverseTraceLink", back_populates="events")
 

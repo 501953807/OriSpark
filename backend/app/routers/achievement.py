@@ -46,7 +46,7 @@ def my_achievements(user_id: str = Depends(require_auth), db: Session = Depends(
 @router.get("/leaderboard", response_model=ApiResponse[list])
 def leaderboard(
     creator_type: str = Query("illustrator", description="创作者类型"),
-    period: str = Query("monthly", regex="^(weekly|monthly|all_time)$"),
+    period: str = Query("monthly", pattern="^(weekly|monthly|all_time)$"),
     limit: int = Query(50, ge=1, le=200),
     db: Session = Depends(get_db),
 ):
@@ -57,7 +57,7 @@ def leaderboard(
 @router.post("/leaderboard/update", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
 def refresh_leaderboard(
     creator_type: str = Query(...),
-    period: str = Query("monthly", regex="^(weekly|monthly|all_time)$"),
+    period: str = Query("monthly", pattern="^(weekly|monthly|all_time)$"),
     db: Session = Depends(get_db),
 ):
     """刷新排行榜数据."""

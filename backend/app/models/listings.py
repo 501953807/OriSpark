@@ -13,7 +13,7 @@ This enables:
 - Cross-path product relationship (one listing → POD + crowdfunding + IP license)
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -74,8 +74,8 @@ class DesignListing(Base):
     design_file_path = Column(String(2000), nullable=True)
 
     # Timestamps
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     # Relationships
     publications = relationship(
@@ -124,7 +124,7 @@ class DesignTemplateCompatibility(Base):
     warning_count = Column(Integer, default=0)
     compatible = Column(Boolean, default=False)  # True when spec_result == "pass"
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_dtc_work", "work_id"),

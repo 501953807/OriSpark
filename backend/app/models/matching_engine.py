@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Integer, Boolean, JSON, Text
 from app.database import Base
@@ -37,7 +37,7 @@ class AuctionRecord(Base):
     winner_buyer_id = Column(String(32), nullable=True)
     winner_amount_yuan = Column(Float, nullable=True)
     auto_extend_seconds = Column(Integer, default=300)  # 最后5分钟未结束则延长
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class Bid(Base):
@@ -50,7 +50,7 @@ class Bid(Base):
     amount_yuan = Column(Float, nullable=False)
     status = Column(String(20), default=BidStatus.OPEN)
     notes = Column(String(500), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class LicensingMatch(Base):
@@ -71,4 +71,4 @@ class LicensingMatch(Base):
     status = Column(String(20), default="pending")  # pending/negotiating/agreed/rejected/terminated
     notes = Column(Text, nullable=True)
     agreed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

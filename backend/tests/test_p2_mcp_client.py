@@ -2,7 +2,7 @@
 
 import pytest
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest.mock import patch, MagicMock
 
 from app.models.mcp_client import MCPClientConfig, ToolEvent, ExternalToolConnection
@@ -200,7 +200,7 @@ class TestAutoLinkSession:
             file_type="image",
             file_extension="png",
             status="active",
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
         )
         db_session.add(work)
         db_session.flush()
@@ -210,7 +210,7 @@ class TestAutoLinkSession:
             work_id=work.id,
             tool_name="DALL-E",
             prompt="a sunset over mountains",
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
         )
         db_session.add(session)
         db_session.flush()

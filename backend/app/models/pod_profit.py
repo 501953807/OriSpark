@@ -1,7 +1,7 @@
 """POD (Print-on-Demand) 利润计算器数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -20,8 +20,8 @@ class PODProduct(Base):
     shipping_cost_usd = Column(Float, default=0)  # 运费
     markup_rate = Column(Float, default=0.2)  # 加价率 (0.2 = 20%)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class PODDesign(Base):
@@ -38,7 +38,7 @@ class PODDesign(Base):
     total_sales = Column(Integer, default=0)
     total_revenue_cny = Column(Float, default=0)
     total_profit_cny = Column(Float, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class PODSale(Base):
@@ -58,4 +58,4 @@ class PODSale(Base):
     profit_usd = Column(Float, default=0)
     profit_cny = Column(Float, default=0)
     exchange_rate = Column(Float, default=7.2)  # USD/CNY 汇率
-    sold_at = Column(DateTime, default=datetime.utcnow)
+    sold_at = Column(DateTime, default=datetime.now(timezone.utc))

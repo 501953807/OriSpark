@@ -1,7 +1,7 @@
 """创作者导航数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, Text, DateTime, Boolean, Integer, JSON, Index
 
@@ -21,7 +21,7 @@ class NavigationTask(Base):
     priority = Column(Integer, default=0)  # 数值越小越优先
     check_expression = Column(Text, nullable=True)  # Python 表达式检查完成条件
     auto_complete = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_nav_category", "category", "priority"),
@@ -39,8 +39,8 @@ class CreatorNavigation(Base):
     current_task_key = Column(String(50), nullable=True)
     progress_percent = Column(Float, default=0.0)
     last_completed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_nav_user", "user_id"),

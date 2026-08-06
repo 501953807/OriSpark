@@ -1,6 +1,6 @@
 """佣金提现数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, ForeignKey, Numeric, Text, Index
 from sqlalchemy.orm import relationship
@@ -27,8 +27,8 @@ class WithdrawalRequest(Base):
     rejected_reason = Column(Text, nullable=True)
     settled_at = Column(DateTime, nullable=True)
     transaction_ref = Column(String(100), nullable=True)  # 银行流水号
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_withdraw_user", "user_id"),

@@ -44,8 +44,8 @@ class CreditRating(Base):
     tier = Column(String(20), default=CreditTier.NEWBIE)
     tier_history = Column(JSON, nullable=True)  # [{"tier": "good", "at": "..."}]
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class CreditBehavior(Base):
@@ -59,7 +59,7 @@ class CreditBehavior(Base):
     score_delta = Column(Integer, default=0)  # +5, -10, etc.
     related_transaction_id = Column(String(32), nullable=True)
     description = Column(String(500), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 # 行为分数权重

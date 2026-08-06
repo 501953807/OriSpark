@@ -1,6 +1,6 @@
 """SCR 分布式信誉系统数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index, Numeric, Integer
 from sqlalchemy.orm import relationship
@@ -23,8 +23,8 @@ class SCRScore(Base):
     complaint_count = Column(Integer, default=0, nullable=False)
     cleared_count = Column(Integer, default=0, nullable=False)
     avg_response_hours = Column(Numeric(6, 1), default=24.0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     history = relationship(
         "SCRHistory",
@@ -49,7 +49,7 @@ class SCRHistory(Base):
     reason = Column(String(50), nullable=False)  # fulfillment/default/late_review/complaint/cleared
     related_transaction_id = Column(String(100), nullable=True)
     description = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     score_id = Column(String(32), ForeignKey("scr_scores.id"), nullable=True)
     score = relationship("SCRScore", back_populates="history")

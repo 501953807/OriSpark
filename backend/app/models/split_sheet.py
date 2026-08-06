@@ -4,7 +4,7 @@ Musician v4: Split Sheets — 创作分成协议管理.
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Index, JSON
 
@@ -30,8 +30,8 @@ class SplitSheet(Base):
     master_share = Column(Float, nullable=True)  # 录音版权分成
     status = Column(String(20), default="draft")  # draft/signing/signed/active
     signed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_split_status", "status"),

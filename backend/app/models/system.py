@@ -14,7 +14,7 @@
 - password_resets: 密码重置令牌 (P2.7.12)
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, Boolean, Integer, BigInteger, Index, JSON, ForeignKey, Float
 from sqlalchemy.orm import relationship
@@ -32,7 +32,7 @@ class SystemSetting(Base):
     category = Column(String(50), default="general")
     description = Column(Text, nullable=True)
     is_public = Column(Boolean, default=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class AuditLog(Base):
@@ -46,7 +46,7 @@ class AuditLog(Base):
     module = Column(String(50), nullable=True)
     ip = Column(String(50), nullable=True)
     user_agent = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_audit_logs_created", "created_at"),
@@ -69,7 +69,7 @@ class BackupRecord(Base):
     schedule_cron = Column(String(100), nullable=True)  # cron expression
     status = Column(String(20), default="completed")  # completed/failed/in_progress
     restored_from = Column(String(2000), nullable=True)  # 从哪个备份恢复
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_backup_created", "created_at"),
@@ -89,8 +89,8 @@ class DictionaryGroup(Base):
     description = Column(Text, nullable=True)
     is_extensible = Column(Boolean, default=False)
     sort_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     items = relationship("DictionaryItem", back_populates="group", cascade="all, delete-orphan")
 
@@ -107,8 +107,8 @@ class DictionaryItem(Base):
     extra = Column(JSON, nullable=True)  # {icon, color, description, parent_key, ...}
     is_active = Column(Boolean, default=True)
     sort_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_dict_items_group", "group_key", "item_key"),
@@ -189,8 +189,8 @@ class User(Base):
     password_strength_score = Column(Integer, nullable=True)  # 0-100
     password_updated_at = Column(DateTime, nullable=True)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_users_email", "email"),
@@ -208,7 +208,7 @@ class UserLoginHistory(Base):
     ip = Column(String(50), nullable=True)
     user_agent = Column(Text, nullable=True)
     success = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_login_history_user", "user_id", "created_at"),
@@ -233,7 +233,7 @@ class Notification(Base):
     is_sent = Column(Boolean, default=False)
     sent_at = Column(DateTime, nullable=True)
     read_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_notif_user", "user_id", "is_read", "created_at"),
@@ -258,8 +258,8 @@ class Plugin(Base):
     config = Column(JSON, default=dict)  # plugin-specific config
     entry_point = Column(String(500), nullable=True)  # Python module path
     priority = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_plugins_enabled", "enabled"),
@@ -277,7 +277,7 @@ class EmailVerification(Base):
     code = Column(String(6), nullable=False)
     expires_at = Column(DateTime, nullable=False)
     verified = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 # -- P2.7.12: 密码重置 --
@@ -291,7 +291,7 @@ class PasswordReset(Base):
     token = Column(String(128), nullable=False, unique=True, index=True)
     expires_at = Column(DateTime, nullable=False)
     used = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 # -- v3 免责声明管理 --
@@ -312,8 +312,8 @@ class Disclaimer(Base):
     is_active = Column(Boolean, default=True)
     display_mode = Column(String(20), default="banner")  # modal/banner/footer
     trigger_pages = Column(JSON, nullable=True)  # ["ipr", "monitor", "pod_channel"]
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     acceptances = relationship("DisclaimerAcceptance", back_populates="disclaimer", cascade="all, delete-orphan")
 
@@ -325,7 +325,7 @@ class DisclaimerAcceptance(Base):
     id = Column(String(32), primary_key=True, default=generate_uuid)
     user_id = Column(String(32), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     disclaimer_id = Column(String(32), ForeignKey("disclaimers.id", ondelete="CASCADE"), nullable=False)
-    accepted_at = Column(DateTime, default=datetime.utcnow)
+    accepted_at = Column(DateTime, default=datetime.now(timezone.utc))
     accepted_version = Column(String(20), default="1.0")
     context = Column(String(100), nullable=True)  # trigger_page
 

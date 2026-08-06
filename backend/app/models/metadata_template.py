@@ -6,7 +6,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, Boolean, DateTime,
@@ -28,8 +28,8 @@ class MetadataTemplate(Base):
     fields = Column(JSON, nullable=True)  # [{"key":"title","label":"标题","type":"string","required":true}, ...]
     is_default = Column(Boolean, default=False)
     created_by = Column(String(32), ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     fields_list = relationship(
         "TemplateField",
@@ -56,8 +56,8 @@ class TemplateField(Base):
     default_value = Column(JSON, nullable=True)
     choices = Column(JSON, nullable=True)  # for choice type
     sort_order = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     template = relationship("MetadataTemplate", back_populates="fields_list")
 

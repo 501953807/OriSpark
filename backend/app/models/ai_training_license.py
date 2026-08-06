@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Boolean, Integer, ForeignKey, Enum as SAEnum, Text
 from app.database import Base
@@ -27,5 +27,5 @@ class AITrainingLicense(Base):
     exclude_ai_training_clause = Column(Text, nullable=True)  # AI排除条款文本
     total_uses = Column(Integer, default=0)  # 累计被使用次数
     total_revenue_cents = Column(Integer, default=0)  # 累计收入（美分）
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))

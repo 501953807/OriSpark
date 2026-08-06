@@ -6,7 +6,7 @@
 
 import uuid
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, DateTime, Boolean, Enum as SAEnum, Index,
@@ -42,7 +42,7 @@ class WatermarkPreset(Base):
     opacity = Column(Integer, nullable=False, default=100)  # 0-100
     text = Column(Text, nullable=True)  # 可选水印文本
     image_path = Column(Text, nullable=True)  # 可选水印图片路径
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     # 索引优化
     __table_args__ = (

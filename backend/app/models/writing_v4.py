@@ -5,7 +5,7 @@ v1: 建表+字段注释 "v4激活".
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -38,8 +38,8 @@ class Chapter(Base):
     word_count = Column(Integer, default=0)
     status = Column(String(20), default="draft")  # draft/published/archived
     published_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_ch_work", "work_id", "chapter_number"),
@@ -61,7 +61,7 @@ class ChapterComment(Base):
     anchor_offset = Column(Integer, nullable=True)  # 正文偏移量，段评定位
     reply_to_id = Column(String(32), nullable=True)  # 回复评论
     likes = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_cc_chapter", "chapter_id"),
@@ -84,7 +84,7 @@ class ChapterRevision(Base):
     word_count = Column(Integer, default=0)
     change_summary = Column(Text, nullable=True)
     created_by = Column(String(32), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_cr_chapter", "chapter_id"),)
 
@@ -112,7 +112,7 @@ class ExportConfig(Base):
     include_cover = Column(Boolean, default=True)
     include_toc = Column(Boolean, default=True)
     is_default = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_ec_user", "user_id"),)
 
@@ -142,8 +142,8 @@ class EbookProduct(Base):
     page_count = Column(Integer, nullable=True)
     is_active = Column(Boolean, default=True)
     sales_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_ep_user", "user_id"),
@@ -175,8 +175,8 @@ class AudiobookProduction(Base):
     estimated_duration_minutes = Column(Integer, nullable=True)
     price = Column(Float, nullable=True)
     currency = Column(String(10), default="CNY")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_abp_user", "user_id"),
@@ -199,6 +199,6 @@ class AudiobookChapter(Base):
     duration_seconds = Column(Integer, nullable=True)
     word_count = Column(Integer, nullable=True)
     status = Column(String(20), default="pending")  # pending/recording/done
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_abc_prod", "production_id"),)

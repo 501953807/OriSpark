@@ -8,7 +8,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, BigInteger, Float, Text, DateTime,
@@ -75,9 +75,9 @@ class Work(Base):
     ai_tools_used = Column(JSON, nullable=True)
     creator_type = Column(String(30), default="illustrator")
     # P2-2: EXIF advanced search fields (stored in custom_metadata JSON, queried via JSON path)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    imported_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    imported_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     deleted_at = Column(DateTime, nullable=True)
 
     # 关系
@@ -117,7 +117,7 @@ class WorkVersion(Base):
     file_path = Column(String(2000), nullable=False)
     file_size = Column(BigInteger, nullable=False)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     work = relationship("Work", back_populates="versions")
 
@@ -134,7 +134,7 @@ class WorkTag(Base):
     id = Column(String(32), primary_key=True, default=generate_uuid)
     work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=False)
     tag = Column(String(100), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     work = relationship("Work", back_populates="tags")
 
@@ -152,7 +152,7 @@ class Project(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
     cover_work_id = Column(String(32), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     works = relationship("Work", back_populates="project")

@@ -27,8 +27,8 @@ class SCRRating(Base):
     consensus_count = Column(Integer, nullable=False, default=0, comment="达成共识的评分者数量")
     min_required_consensus = Column(Integer, nullable=False, default=3, comment="所需最少共识数")
 
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     expires_at = Column(DateTime, nullable=True, comment="过期时间")
 
     metadata_json = Column(JSON, nullable=True, comment="扩展元数据")
@@ -56,7 +56,7 @@ class SCRBehavior(Base):
     behavior_type = Column(String(50), nullable=False)
     score_delta = Column(Float, nullable=False, default=0.0)
     description = Column(String(500), nullable=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
 
     rating = relationship("SCRRating", back_populates="behaviors")
 
@@ -76,8 +76,8 @@ class SCRTrustLink(Base):
     target_user_id = Column(String(32), nullable=False, index=True, comment="被信任方")
     trust_score = Column(Float, nullable=False, default=0.0, comment="信任分数 0-1")
     weight = Column(Float, nullable=False, default=1.0, comment="权重")
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     expires_at = Column(DateTime, nullable=True)
 
     source_rating = relationship("SCRRating", back_populates="trust_links", foreign_keys=[rating_id])

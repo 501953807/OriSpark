@@ -1,7 +1,7 @@
 """工厂连接数据模型 (P3-6: RFQ + Samples + Quality Reports)."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -25,8 +25,8 @@ class RFQRequest(Base):
     quantity = Column(Integer, nullable=True)
     deadline = Column(String(20), nullable=True)
     status = Column(String(20), default="draft")  # draft/sent/accepted/rejected/closed
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_rfq_user", "user_id"),
@@ -44,7 +44,7 @@ class Sample(Base):
     shipped_at = Column(DateTime, nullable=True)
     received_at = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_samples_rfq", "rfq_id"),)
 
@@ -60,7 +60,7 @@ class QualityReport(Base):
     passed = Column(Integer, default=0)
     total_inspected = Column(Integer, default=0)
     inspector_notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_qr_sample", "sample_id"),)
 
@@ -83,8 +83,8 @@ class Factory(Base):
     contact = Column(String(100), nullable=True)            # 联系人
     rating = Column(Float, nullable=True)                   # 评分 (1-5)
     capabilities = Column(JSON, nullable=True)              # 生产能力标签
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_factory_rating", "rating"),
@@ -108,8 +108,8 @@ class CraftProduct(Base):
     moq = Column(Integer, default=1)                        # 最小起订量
     unit_price = Column(Float, nullable=True)               # 单价
     production_time_days = Column(Integer, nullable=True)   # 生产周期(天)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_craft_work_variant", "work_variant_id"),
@@ -135,8 +135,8 @@ class RFQ(Base):
     status = Column(String(20), default="open")  # open/quoted/awarded/closed
     quoted_factories = Column(JSON, nullable=True)          # [{"factory_id", "quote"]}
     created_by = Column(String(32), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_rfqs_status", "status"),

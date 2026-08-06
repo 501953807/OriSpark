@@ -1,6 +1,6 @@
 """IP 登记数据模型 (仅指引，不做法律判断)."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Date, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -40,8 +40,8 @@ class IPRegistration(Base):
     notes = Column(Text, nullable=True)
     lawyer_consulted = Column(String(3), nullable=True)  # v3 UPL合规: A(已咨询律师)/B(自行承担风险)/C(暂不提交)
     disclaimer_accepted_at = Column(DateTime, nullable=True)  # v3: 首次进入IP登记模块时的免责声明接受时间
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     work = relationship("Work", foreign_keys=[work_id])
 
@@ -84,8 +84,8 @@ class CopyrightRegistration(Base):
     certificate_path = Column(String(2000), nullable=True)
     registration_url = Column(String(2000), nullable=True)  # 官方平台链接
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_copyright_work", "work_id"),
@@ -107,8 +107,8 @@ class TrademarkRegistration(Base):
     trademark_office = Column(String(100), default="cnipa")  # 商标局
     agent_name = Column(String(200), nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_tm_reg_name", "name"),
@@ -130,7 +130,7 @@ class TrademarkMonitoring(Base):
     status = Column(String(30), default="monitoring")
     action_type = Column(String(50), nullable=True)  # opposition/invalidation/monitoring
     action_date = Column(Date, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_tm_monitor_name", "monitored_name"),
@@ -156,8 +156,8 @@ class ApplicationTemplate(Base):
     estimated_duration = Column(String(50), nullable=True)
     legal_basis = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_at_type_jur", "ip_type", "jurisdiction"),
@@ -176,7 +176,7 @@ class NiceClassification(Base):
     is_creative_relevant = Column(Boolean, default=False)
     common_for_creators = Column(JSON, nullable=True)  # 创作者常用子项
     updated_year = Column(Integer, default=2026)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_nice_class_no", "class_no"),

@@ -1,7 +1,7 @@
 """版权登记指南数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -23,8 +23,8 @@ class GuideRegistration(Base):
     certificate_url = Column(String(500), nullable=True)
     fee_yuan = Column(Float, default=0)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class RegistrationGuide(Base):

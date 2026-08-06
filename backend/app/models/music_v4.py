@@ -5,7 +5,7 @@ v1: 建表+字段注释 "v4激活".
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -38,7 +38,7 @@ class AlbumTrack(Base):
     isrc = Column(String(20), nullable=True)
     duration_seconds = Column(Integer, nullable=True)
     is_explicit = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_at_album", "album_id"),
@@ -68,7 +68,7 @@ class WorkCollaborator(Base):
     publishing_share = Column(Float, nullable=True)  # 词曲版税分成
     contact_email = Column(String(200), nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_wc_work", "work_id"),)
 
@@ -95,8 +95,8 @@ class DistributionRelease(Base):
     planned_date = Column(DateTime, nullable=True)
     released_date = Column(DateTime, nullable=True)
     barcode = Column(String(20), nullable=True)  # UPC/EAN
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_dr_user", "user_id"),
@@ -120,7 +120,7 @@ class DistroPlatform(Base):
     rejection_reason = Column(Text, nullable=True)
     live_url = Column(String(2000), nullable=True)
     synced_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_dp_release", "release_id"),
@@ -150,6 +150,6 @@ class SampleClearance(Base):
     clearance_fee = Column(Float, nullable=True)
     cleared_at = Column(DateTime, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_sc_work", "work_id"),)

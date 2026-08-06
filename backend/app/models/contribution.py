@@ -30,8 +30,8 @@ class HumanContributionScore(Base):
     requires_disclosure = Column(Boolean, nullable=False, default=False, comment="是否需要声明AI参与")
     eligible_for_registration = Column(Boolean, nullable=False, default=True, comment="是否可进入确权")
 
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("ix_contribution_work_author", "work_id", "author_id"),

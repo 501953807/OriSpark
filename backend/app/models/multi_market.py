@@ -1,7 +1,7 @@
 """多市场扩展数据模型."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Date, ForeignKey, JSON
 from app.database import Base
 
@@ -22,7 +22,7 @@ class MarketInfo(Base):
     is_open_to_foreign_creators = Column(Boolean, default=True)
     copyright_protection_level = Column(String(20), default="berne")  # berne / us_registration_required
     language_barrier = Column(String(20), default="high")  # low / medium / high
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class ExpansionPlan(Base):
@@ -38,8 +38,8 @@ class ExpansionPlan(Base):
     start_date = Column(Date, nullable=True)
     expected_revenue_increase_percent = Column(Float, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class TaxGuide(Base):

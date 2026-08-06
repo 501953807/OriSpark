@@ -1,7 +1,7 @@
 """物流商数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Index, Text
 from sqlalchemy.orm import relationship
@@ -23,8 +23,8 @@ class LogisticsProvider(Base):
     status = Column(String(20), default="active")
     rating = Column(Float, default=0.0)
     contract_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_logistics_status", "status"),
@@ -79,8 +79,8 @@ class LogisticsShipment(Base):
     shipping_cost = Column(Float, nullable=True)
     currency = Column(String(10), default="CNY")
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_shipment_contract", "contract_id"),
@@ -128,8 +128,8 @@ class LogisticsTrackingEvent(Base):
     event_type = Column(String(30), nullable=False)
     location = Column(String(200), nullable=True)
     description = Column(Text, nullable=True)
-    occurred_at = Column(DateTime, default=datetime.utcnow)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    occurred_at = Column(DateTime, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_tracking_event_shipment", "shipment_id"),

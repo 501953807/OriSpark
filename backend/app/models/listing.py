@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Integer, Boolean, JSON
 from app.database import Base
@@ -36,5 +36,5 @@ class Listing(Base):
     platform_fee_rate_bps = Column(Integer, default=200)  # 平台费率(2%=200bps)
     tags = Column(JSON, nullable=True)                   # 搜索标签
     extra_metadata = Column(JSON, nullable=True)               # 扩展元数据
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))

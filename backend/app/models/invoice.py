@@ -1,7 +1,7 @@
 """Invoice 数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, DateTime, Boolean, Integer, ForeignKey, Index, Text
 from sqlalchemy.orm import relationship
@@ -29,8 +29,8 @@ class Invoice(Base):
     payment_method = Column(String(50), nullable=True)  # bank_transfer / ewallet / qris
     payment_proof_path = Column(String(500), nullable=True)
     is_auto_renewal = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_invoice_user", "user_id"),
@@ -56,8 +56,8 @@ class SubscriptionAutoRenewal(Base):
     next_renewal_date = Column(DateTime, nullable=True)
     failed_attempts = Column(Integer, default=0)
     max_failed_attempts = Column(Integer, default=3)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     subscriber = relationship("SubscriptionSubscriber")
 

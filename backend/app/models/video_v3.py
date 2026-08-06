@@ -5,7 +5,7 @@ v1: 建表+字段注释 "v3激活".
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -40,8 +40,8 @@ class BrandCampaign(Base):
     currency = Column(String(10), default="CNY")
     status = Column(String(20), default="draft")  # draft/negotiating/in_progress/delivered/closed
     deadline = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_bc_user", "user_id"),
@@ -64,7 +64,7 @@ class BrandTask(Base):
     deliverable_type = Column(String(50), nullable=True)  # video/image/script
     status = Column(String(20), default="pending")  # pending/in_review/approved/rejected
     due_date = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_bt_campaign", "campaign_id"),)
 
@@ -83,7 +83,7 @@ class BrandMessage(Base):
     receiver_id = Column(String(32), nullable=False)
     content = Column(Text, nullable=False)
     attachment_url = Column(String(2000), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_bm_campaign", "campaign_id"),)
 
@@ -108,7 +108,7 @@ class PlatformGoal(Base):
     target_value = Column(Integer, nullable=False)
     period_start = Column(DateTime, nullable=False)
     period_end = Column(DateTime, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_pg_user", "user_id"),
@@ -132,7 +132,7 @@ class PlatformEarning(Base):
     currency = Column(String(10), default="CNY")
     period = Column(String(20), nullable=True)  # 2024-01
     recorded_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_pe_user", "user_id"),

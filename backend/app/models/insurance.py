@@ -1,7 +1,7 @@
 """版权保险市场数据模型."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Date, ForeignKey, CheckConstraint
 from app.database import Base
 
@@ -19,7 +19,7 @@ class InsuranceProvider(Base):
     webhook_secret = Column(String(255), nullable=True)
     contact_email = Column(String(200), nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class InsuranceProduct(Base):
@@ -42,8 +42,8 @@ class InsuranceProduct(Base):
     coverage_description = Column(Text, nullable=True)
     max_coverage_yuan = Column(Float, nullable=True)  # 最高赔付金额
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class InsurancePolicy(Base):
@@ -65,8 +65,8 @@ class InsurancePolicy(Base):
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
     external_policy_ref = Column(String(255), nullable=True)  # 外部系统保单引用
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class InsuranceClaim(Base):
@@ -88,5 +88,5 @@ class InsuranceClaim(Base):
     status = Column(String(20), default="submitted")
     resolution = Column(Text, nullable=True)
     resolved_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))

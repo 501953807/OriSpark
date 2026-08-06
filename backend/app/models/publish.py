@@ -1,6 +1,6 @@
 """发布变现数据模型."""
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Date, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -41,8 +41,8 @@ class Product(Base):
     csv_export_path = Column(String(2000), nullable=True)
 
     status = Column(String(20), default="active")
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     publishings = relationship("ProductPublishing", back_populates="product", cascade="all, delete-orphan")
     marks = relationship("VerifiedMark", back_populates="product", cascade="all, delete-orphan")
@@ -70,8 +70,8 @@ class ProductPublishing(Base):
     status = Column(String(20), default="draft")  # draft/publishing/published/failed
     error_message = Column(Text, nullable=True)
     published_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     product = relationship("Product", back_populates="publishings")
     listing = relationship("DesignListing", back_populates="publications")  # P2
@@ -91,7 +91,7 @@ class VerifiedMark(Base):
     product_id = Column(String(32), ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     qr_code = Column(String(2000), nullable=True)  # 验证二维码
     cert_url = Column(String(2000), nullable=True)  # 验证页面 URL
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     product = relationship("Product", back_populates="marks")
 
@@ -124,7 +124,7 @@ class RevenueRecord(Base):
     extra_metadata = Column(JSON, nullable=True)  # order_id, link, etc.
 
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     product = relationship("Product", back_populates="revenues")
     listing = relationship("DesignListing", back_populates="revenues")  # P2
@@ -152,8 +152,8 @@ class PublishSchedule(Base):
     content_preview = Column(Text, nullable=True)  # 文案预览
     executed_at = Column(DateTime, nullable=True)
     error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_schedule_platform", "platform"),
@@ -173,7 +173,7 @@ class PublishContent(Base):
     content_type = Column(String(20), default="work")  # work / product / pure_text
     text_content = Column(Text, nullable=True)
     image_paths = Column(JSON, nullable=True)  # 图片路径列表
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_content_work", "work_id"),
@@ -196,7 +196,7 @@ class PublishAnalytics(Base):
     saves = Column(Integer, default=0)
     date = Column(Date, default=date.today)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_analytics_platform", "platform"),

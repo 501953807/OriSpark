@@ -4,7 +4,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, ForeignKey,
@@ -60,8 +60,8 @@ class EtsyListing(Base):
     favorites_count = Column(Integer, default=0)
     sales_count = Column(Integer, default=0)
     revenue = Column(Float, default=0.0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_etsy_listing_user", "user_id"),
@@ -103,8 +103,8 @@ class EtsyOrder(Base):
     status = Column(String(20), default="paid")  # paid/shipped/completed/cancelled
     tracking_number = Column(String(100), nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_etsy_order_user", "user_id"),
@@ -137,8 +137,8 @@ class EtsyShop(Base):
     refresh_token = Column(String(500), nullable=True)  # encrypted
     token_expires_at = Column(DateTime, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_etsy_shop_user", "user_id"),

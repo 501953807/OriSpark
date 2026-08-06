@@ -4,7 +4,7 @@ Musician v4: Music Releases — 音频发行与分发管理.
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Index
 
@@ -35,8 +35,8 @@ class MusicRelease(Base):
     mood = Column(String(50), nullable=True)
     bpm = Column(Integer, nullable=True)
     distribution_status = Column(String(20), default="pending")  # pending/distributing/distributed
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_release_isrc", "isrc"),

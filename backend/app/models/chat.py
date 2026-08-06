@@ -1,6 +1,6 @@
 """聊天会话数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index
 from sqlalchemy.orm import relationship
@@ -18,9 +18,9 @@ class Conversation(Base):
     participant_b_id = Column(String(32), nullable=False)  # 接收方 user_id
     last_message = Column(Text, nullable=True)
     last_message_at = Column(DateTime, nullable=True)
-    is_active = Column(DateTime, default=datetime.utcnow)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    is_active = Column(DateTime, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     messages = relationship(
         "Message",
@@ -49,7 +49,7 @@ class Message(Base):
     sender_id = Column(String(32), nullable=False)
     content = Column(Text, nullable=False)
     is_read = Column(DateTime, nullable=True)  # NULL = unread
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     conversation = relationship("Conversation", back_populates="messages")
 

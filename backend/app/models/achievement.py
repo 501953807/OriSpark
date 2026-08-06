@@ -1,7 +1,7 @@
 """Achievement Badge 数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, Boolean, ForeignKey, Index, Text
 from sqlalchemy.orm import relationship
@@ -22,7 +22,7 @@ class AchievementBadge(Base):
     color_hex = Column(String(7), nullable=True)  # e.g., "#FFD700"
     xp_reward = Column(Integer, default=100)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_achievement_key", "badge_key"),
@@ -42,7 +42,7 @@ class UserAchievement(Base):
         ForeignKey("achievement_badges.id", ondelete="CASCADE"),
         nullable=False,
     )
-    unlocked_at = Column(DateTime, default=datetime.utcnow)
+    unlocked_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     badge = relationship("AchievementBadge")
 
@@ -66,7 +66,7 @@ class LeaderboardEntry(Base):
     period = Column(String(20), default="monthly")  # weekly / monthly / all_time
     period_start = Column(DateTime, nullable=True)
     period_end = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_leaderboard_user", "user_id"),

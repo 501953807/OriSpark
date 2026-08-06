@@ -1,7 +1,7 @@
 """案例知识库数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -22,8 +22,8 @@ class CaseStudy(Base):
     source_url = Column(String(500), nullable=True)
     creator_role = Column(String(200), nullable=True)  # 创作者角色/行业
     takeaways = Column(JSON, default=list)  # ["关键经验点1", "关键经验点2"]
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class CaseTag(Base):

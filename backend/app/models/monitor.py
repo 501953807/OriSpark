@@ -1,6 +1,6 @@
 """侵权监测数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -25,8 +25,8 @@ class MonitorTask(Base):
     status = Column(String(20), default="active")  # active/paused/completed
     quota_used_today = Column(Integer, default=0)
     priority_score = Column(Float, default=0.0)  # P1.3.7: 扫描优先级评分 (0-100)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     results = relationship("MonitorResult", back_populates="task", cascade="all, delete-orphan")
 
@@ -48,7 +48,7 @@ class MonitorResult(Base):
     similarity = Column(Float, default=0.0)  # 相似度 0-100
     matched_thumbnail_url = Column(String(2000), nullable=True)
     screenshot_path = Column(String(2000), nullable=True)
-    found_at = Column(DateTime, default=datetime.utcnow)
+    found_at = Column(DateTime, default=datetime.now(timezone.utc))
     status = Column(String(20), default="pending_review")
     # pending_review/infringing/ignored/whitelisted
     action_taken = Column(String(50), nullable=True)
@@ -58,8 +58,8 @@ class MonitorResult(Base):
     is_mock = Column(Integer, default=0)  # 1 = mock data, 0 = real
     match_type = Column(String(50), nullable=True)  # image/audio/text/video_fingerprint/text_similarity
     confidence = Column(Float, default=0.0)  # 0-100 confidence score for the match
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     task = relationship("MonitorTask", back_populates="results")
 
@@ -81,7 +81,7 @@ class EvidencePackage(Base):
     package_path = Column(String(2000), nullable=False)  # ZIP 文件路径
     package_type = Column(String(50), default="complaint")  # complaint/lawyer_letter/evidence
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_evidence_work", "work_id"),
@@ -101,8 +101,8 @@ class ScanSchedule(Base):
     cron_expression = Column(String(100), nullable=False)
     last_run_at = Column(DateTime, nullable=True)
     next_run_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_scan_schedule_enabled", "is_enabled"),

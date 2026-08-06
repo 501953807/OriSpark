@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """视频指纹配置 CRUD 服务层 — 扩展自 video_fingerprint_service.py."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -73,7 +73,7 @@ def update_config(db: Session, config_id: str, payload: dict) -> Optional[dict]:
     for key, value in payload.items():
         if value is not None:
             setattr(config, key, value)
-    config.updated_at = datetime.utcnow()
+    config.updated_at = datetime.now(timezone.utc)
     try:
         db.commit()
     except Exception:

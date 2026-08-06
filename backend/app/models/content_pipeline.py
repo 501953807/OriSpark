@@ -1,7 +1,7 @@
 """多平台内容分发流水线数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -18,8 +18,8 @@ class PlatformAccount(Base):
     account_id = Column(String(200), nullable=True)  # 平台返回的账号ID
     follower_count = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class ContentTemplate(Base):
@@ -34,7 +34,7 @@ class ContentTemplate(Base):
     description_template = Column(Text, nullable=True)
     tags_template = Column(JSON, default=list)  # ["tag1", "tag2"]
     cover_style = Column(String(50), default="auto")  # "auto", "square", "vertical", "horizontal"
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class MultiPlatformSchedule(Base):
@@ -54,7 +54,7 @@ class MultiPlatformSchedule(Base):
     status = Column(String(20), default="scheduled")  # "scheduled", "published", "failed", "cancelled"
     published_at = Column(DateTime, nullable=True)
     error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class PublishLog(Base):
@@ -71,4 +71,4 @@ class PublishLog(Base):
     status = Column(String(20), nullable=False)  # "success", "failed"
     response_data = Column(JSON, nullable=True)
     error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

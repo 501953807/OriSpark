@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
 
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 @pytest.fixture(autouse=True)
@@ -33,7 +33,7 @@ class TestCreateAuction:
                 "description": "A test auction description",
                 "starting_price_yuan": 100.0,
                 "min_increment_yuan": 10.0,
-                "ends_at": (datetime.utcnow() + timedelta(hours=1)).isoformat(),
+                "ends_at": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
                 "auto_extend_seconds": 300,
             },
         )
@@ -56,7 +56,7 @@ class TestCreateAuction:
                 "seller_id": "s2",
                 "title": "Minimal Auction",
                 "starting_price_yuan": 50.0,
-                "ends_at": (datetime.utcnow() + timedelta(hours=2)).isoformat(),
+                "ends_at": (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat(),
             },
         )
         assert resp.status_code == 200
@@ -73,7 +73,7 @@ class TestCreateAuction:
                 "seller_id": "s3",
                 "title": "Default Increment",
                 "starting_price_yuan": 200.0,
-                "ends_at": (datetime.utcnow() + timedelta(hours=3)).isoformat(),
+                "ends_at": (datetime.now(timezone.utc) + timedelta(hours=3)).isoformat(),
             },
         )
         assert resp.status_code == 200
@@ -86,7 +86,7 @@ class TestPlaceBid:
 
     def test_place_bid_success(self, client):
         # Create auction via API first
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -112,7 +112,7 @@ class TestPlaceBid:
         assert data["amount_yuan"] == 150.0
 
     def test_place_bid_insufficient_amount(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -137,7 +137,7 @@ class TestPlaceBid:
 
     def test_place_bid_expired_auction(self, client):
         # Create auction already expired
-        ends_at = (datetime.utcnow() - timedelta(minutes=5)).isoformat()
+        ends_at = (datetime.now(timezone.utc) - timedelta(minutes=5)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -166,7 +166,7 @@ class TestPlaceBid:
         assert resp.status_code == 400
 
     def test_place_bid_with_notes(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -190,7 +190,7 @@ class TestPlaceBid:
         assert data["amount_yuan"] == 150.0
 
     def test_place_bid_exact_min_increment(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -217,7 +217,7 @@ class TestCloseAuction:
     """POST /api/matching/auctions/{auction_id}/close"""
 
     def test_close_auction_with_winner(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -247,7 +247,7 @@ class TestCloseAuction:
         assert data["winning_amount"] == 150
 
     def test_close_empty_auction(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -273,7 +273,7 @@ class TestCloseAuction:
         assert resp.status_code == 400
 
     def test_close_already_closed_auction(self, client):
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={
@@ -298,7 +298,7 @@ class TestCloseAuction:
 
     def test_close_expired_auction(self, client):
         # Close an already-closed auction (router checks status=="active", not expiry)
-        ends_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        ends_at = (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
         create_resp = client.post(
             "/api/matching/auctions",
             json={

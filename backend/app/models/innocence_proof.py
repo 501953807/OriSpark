@@ -4,7 +4,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Enum, ForeignKey, Index,
@@ -35,8 +35,8 @@ class InnocenceProof(Base):
         nullable=False,
         default="pending",
     )  # 证明状态：待处理/已完成/已审核
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
 
     # 关系 - 引用对应的工作
     work = relationship("Work", backref="innocence_proofs")

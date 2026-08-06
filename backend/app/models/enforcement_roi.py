@@ -1,7 +1,7 @@
 """维权ROI计算器数据模型."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, ForeignKey, JSON, CheckConstraint
 from app.database import Base
 
@@ -28,7 +28,7 @@ class EnforcementCase(Base):
     compensation_received_yuan = Column(Float, default=0)
     outcome = Column(String(20), nullable=False)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class CaseReference(Base):

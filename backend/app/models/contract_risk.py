@@ -1,7 +1,7 @@
 """合约风险评估数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, Text, DateTime, Boolean, Integer, ForeignKey, Index
 
@@ -22,8 +22,8 @@ class ContractRiskRule(Base):
     description = Column(Text, nullable=True)
     suggestion = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_rule_category", "category", "clause_type"),
@@ -45,7 +45,7 @@ class ContractReview(Base):
     risk_level = Column(String(20), default="safe")  # safe/low/medium/high/critical
     clauses_found = Column(Integer, default=0)
     risk_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_review_user", "user_id", "created_at"),
@@ -66,7 +66,7 @@ class ContractClause(Base):
     risk_description = Column(Text, nullable=True)
     suggestion = Column(Text, nullable=True)
     is_flagged = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_clause_review", "review_id", "clause_index"),

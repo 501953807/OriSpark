@@ -1,6 +1,6 @@
 """税务代理和税务报告数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy import Column, String, Text, DateTime, JSON, Index, Numeric, Integer, ForeignKey
@@ -24,7 +24,7 @@ class TaxAgent(Base):
     status = Column(String(20), default="pending", nullable=False)  # pending/approved/suspended/deactivated
     rating = Column(Numeric(3, 2), nullable=True)
     review_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
     approved_at = Column(DateTime, nullable=True)
 
     reports = relationship(
@@ -55,7 +55,7 @@ class TaxReport(Base):
     generated_by = Column(String(50), nullable=True)
     status = Column(String(20), default="draft")  # draft/final/submitted
     file_path = Column(String(500), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
     finalized_at = Column(DateTime, nullable=True)
 
     agent = relationship("TaxAgent", back_populates="reports")

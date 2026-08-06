@@ -1,7 +1,7 @@
 """私域流量管理数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -19,8 +19,8 @@ class SubscriptionLink(Base):
     monthly_revenue = Column(Float, default=0)
     currency = Column(String(10), default="CNY")
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class FanCommunity(Base):
@@ -37,7 +37,7 @@ class FanCommunity(Base):
     tags = Column(JSON, nullable=True)  # ["核心粉", "付费用户", "活跃"]
     description = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class ConversionFunnel(Base):

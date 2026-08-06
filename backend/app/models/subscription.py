@@ -1,6 +1,6 @@
 """订阅系统数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Text, DateTime, Boolean, ForeignKey, Index, Float, JSON
 from sqlalchemy.orm import relationship
@@ -21,8 +21,8 @@ class SubscriptionTier(Base):
     period = Column(String(20), nullable=False, default="monthly")  # monthly / yearly
     features = Column(JSON, nullable=True)  # [{key, label, value}]
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     subscribers = relationship(
         "SubscriptionSubscriber",
@@ -48,7 +48,7 @@ class SubscriptionSubscriber(Base):
         nullable=False,
     )
     status = Column(String(20), default="active")  # active / cancelled / expired
-    subscribed_at = Column(DateTime, default=datetime.utcnow)
+    subscribed_at = Column(DateTime, default=datetime.now(timezone.utc))
     cancelled_at = Column(DateTime, nullable=True)
     expires_at = Column(DateTime, nullable=True)
 

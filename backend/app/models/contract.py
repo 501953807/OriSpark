@@ -1,7 +1,7 @@
 """合约实例数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Index, Text, DECIMAL
 from sqlalchemy.orm import relationship
@@ -74,8 +74,8 @@ class ContractInstance(Base):
     verified = Column(String(30), default="pending")  # pending/approved/rejected
     review_comment = Column(Text, nullable=True)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_contract_status", "status"),
@@ -112,7 +112,7 @@ class SplitRule(Base):
     locked_at = Column(DateTime, nullable=True)
     changed_at = Column(DateTime, nullable=True)
     change_reason = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_split_rule_contract", "contract_id"),
@@ -136,11 +136,11 @@ class SplitExecutionLog(Base):
     total_amount = Column(DECIMAL(12, 2), nullable=False)
     platform_fee = Column(DECIMAL(12, 2), nullable=True)  # 平台 3‰
     executor = Column(String(30), nullable=True)  # stripe_transfer / manual
-    executed_at = Column(DateTime, default=datetime.utcnow)
+    executed_at = Column(DateTime, default=datetime.now(timezone.utc))
     status = Column(String(20), default="pending")  # pending/success/failed/refunded
     error_message = Column(Text, nullable=True)
     detail_json = Column(Text, nullable=True)  # 各方分润明细 JSON
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_split_exec_contract", "contract_id"),
@@ -164,12 +164,12 @@ class ContractMatching(Base):
     participant_id = Column(String(32), nullable=False)
     match_score = Column(Float, nullable=True)  # 0.0 - 1.0
     match_reason = Column(Text, nullable=True)
-    pushed_at = Column(DateTime, default=datetime.utcnow)
+    pushed_at = Column(DateTime, default=datetime.now(timezone.utc))
     viewed_at = Column(DateTime, nullable=True)
     responded_at = Column(DateTime, nullable=True)
     response = Column(String(30), nullable=True)  # accepted/declined/counter_offer
     counter_offer_json = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_contract_matching_contract", "contract_id"),

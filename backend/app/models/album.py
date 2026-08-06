@@ -4,7 +4,7 @@ Musician v4: Albums — 专辑/EP/单曲管理.
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, DateTime, Index
 
@@ -30,8 +30,8 @@ class Album(Base):
     label = Column(String(200), nullable=True)  # 唱片公司
     total_tracks = Column(Integer, nullable=True)
     duration_seconds = Column(Integer, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_album_type", "album_type"),

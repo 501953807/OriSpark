@@ -1,6 +1,6 @@
 """供应链协作数据模型."""
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 
 from sqlalchemy import (
     Column, String, Text, DateTime, Date, Boolean, ForeignKey, Index, Float, Integer, JSON,
@@ -40,8 +40,8 @@ class Partner(Base):
     tags = Column(JSON, nullable=True)
     status = Column(String(20), default="active")  # active/inactive
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     orders = relationship("Order", back_populates="partner")
     qualifications = relationship("PartnerQualification", back_populates="partner", cascade="all, delete-orphan")
@@ -63,7 +63,7 @@ class PartnerQualification(Base):
     file_path = Column(String(2000), nullable=False)
     expire_date = Column(Date, nullable=True)
     verified = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     partner = relationship("Partner", back_populates="qualifications")
 
@@ -122,8 +122,8 @@ class Order(Base):
     delivery_date = Column(DateTime, nullable=True)          # 交期
     etasync_status = Column(String(20), default="idle")      # idle/syncing/synced/error
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     partner = relationship("Partner", back_populates="orders")
     listing = relationship("DesignListing", back_populates="orders")  # P2
@@ -150,7 +150,7 @@ class OrderPayment(Base):
     payment_type = Column(String(30), default="deposit")  # deposit/progress/balance/other
     payment_date = Column(Date, default=date.today)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     order = relationship("Order", back_populates="payments")
 
@@ -168,7 +168,7 @@ class OrderCommunication(Base):
     content = Column(Text, nullable=False)
     attachment_path = Column(String(2000), nullable=True)
     direction = Column(String(10), default="out")  # out/in
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     order = relationship("Order", back_populates="communications")
 
@@ -183,7 +183,7 @@ class Reminder(Base):
     title = Column(String(500), nullable=False)
     remind_at = Column(DateTime, nullable=False)
     status = Column(String(20), default="pending")  # pending/sent/dismissed
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_reminder_status", "status"),

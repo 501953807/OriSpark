@@ -5,7 +5,7 @@ v1: 建表+字段注释 "v2激活".
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -37,7 +37,7 @@ class RawFormat(Base):
     sensor_width = Column(Integer, nullable=True)  # 传感器分辨率
     sensor_height = Column(Integer, nullable=True)
     color_space = Column(String(50), nullable=True)  # AdobeRGB/sRGB/ProPhoto
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     work = relationship("Work")
 
@@ -67,8 +67,8 @@ class StockChannel(Base):
     api_secret = Column(String(255), nullable=True)
     account_id = Column(String(100), nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_stock_user", "user_id"),
@@ -91,7 +91,7 @@ class StockUpload(Base):
     status = Column(String(20), default="pending")  # pending/approved/rejected
     rejection_reason = Column(Text, nullable=True)
     uploaded_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_stock_upload_channel", "channel_id"),
@@ -114,7 +114,7 @@ class StockSale(Base):
     currency = Column(String(10), default="USD")
     buyer_country = Column(String(10), nullable=True)
     sale_date = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_stock_sale_upload", "upload_id"),
@@ -141,7 +141,7 @@ class DigitalDownload(Base):
     download_url = Column(String(2000), nullable=True)  # presigned URL
     max_downloads = Column(Integer, nullable=True)  # None=不限
     download_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_dd_work", "work_id"),)
 
@@ -167,6 +167,6 @@ class FineArtPrintConfig(Base):
     framing_available = Column(Boolean, default=False)
     price_multiplier = Column(Float, default=1.0)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_fap_work", "work_id"),)

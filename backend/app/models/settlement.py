@@ -1,6 +1,6 @@
 """多币种结算和税务计算数据模型."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Any
 
@@ -28,7 +28,7 @@ class TaxCalculation(Base):
     tax_jurisdiction = Column(String(200), nullable=True)
     exemption_status = Column(String(50), nullable=True)
     calculated_by = Column(String(20), default="manual")  # avalara/manual
-    calculated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    calculated_at = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_tc_calculated_at", "calculated_at"),
@@ -52,7 +52,7 @@ class MultiCurrencySettlement(Base):
     settled_at = Column(DateTime, nullable=True)
     status = Column(String(20), default="pending")  # pending/settled/failed/refunded
     error_message = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_mcs_status", "status"),

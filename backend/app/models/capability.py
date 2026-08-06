@@ -1,7 +1,7 @@
 """创作者能力评估数据模型."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, ForeignKey, CheckConstraint, Integer, JSON
 from app.database import Base
 
@@ -17,7 +17,7 @@ class CapabilityDimension(Base):
     description = Column(Text, nullable=True)
     weight = Column(Float, nullable=False, default=1.0)  # 权重 0-1
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class CreatorAssessment(Base):
@@ -32,8 +32,8 @@ class CreatorAssessment(Base):
     skill_premium_percent = Column(Float, nullable=True)  # 技能组合溢价
     ai_risk_level = Column(String(20), nullable=True)  # low/medium/high
     ai_risk_description = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 
 class LearningPath(Base):
@@ -48,4 +48,4 @@ class LearningPath(Base):
     max_score = Column(Float, nullable=True)  # 该阶段最高分（None 表示无上限）
     recommended_skills = Column(JSON, nullable=True)  # 推荐提升的技能维度
     milestone_tasks = Column(JSON, nullable=True)  # 阶段里程碑任务
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

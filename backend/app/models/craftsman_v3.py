@@ -5,7 +5,7 @@ v1: 建表+字段注释 "v3激活".
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, DateTime, ForeignKey, JSON, Index
 from sqlalchemy.orm import relationship
@@ -43,8 +43,8 @@ class PhysicalProduct(Base):
     stock_quantity = Column(Integer, default=1)  # 原作通常=1
     shipping_regions = Column(JSON, nullable=True)  # ["CN","US","JP"]
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_pp_user", "user_id"),
@@ -76,7 +76,7 @@ class MaterialInventory(Base):
     unit_cost = Column(Float, nullable=True)
     location = Column(String(200), nullable=True)  # 仓库位置
     last_counted_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_mi_user", "user_id"),)
 
@@ -97,7 +97,7 @@ class MaterialTransaction(Base):
     reference_id = Column(String(32), nullable=True)
     operator_id = Column(String(32), nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (Index("idx_mt_material", "material_id"),)
 
@@ -125,7 +125,7 @@ class ProductionBatch(Base):
     status = Column(String(20), default="planned")  # planned/in_production/done/shipped
     started_at = Column(DateTime, nullable=True)
     completed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
         Index("idx_pb_user", "user_id"),

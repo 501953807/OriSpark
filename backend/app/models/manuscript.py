@@ -4,7 +4,7 @@
 """
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column, String, Integer, Text, DateTime,
@@ -34,8 +34,8 @@ class Manuscript(Base):
     word_count = Column(Integer, nullable=True)
     status = Column(String(20), default="draft")  # draft/revising/final
     version = Column(Integer, default=1)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     book = relationship("Book", back_populates="manuscripts")
 

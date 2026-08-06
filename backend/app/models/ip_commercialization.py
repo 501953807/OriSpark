@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Enum as SAEnum, Text, Integer, JSON
 from app.database import Base
@@ -34,5 +34,5 @@ class IPAsset(Base):
     brand_premium_estimate = Column(Float, nullable=True)  # 品牌溢价预估(%)
     trademark_classes = Column(JSON, nullable=True)  # 推荐商标类别
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))

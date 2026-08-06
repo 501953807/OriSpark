@@ -1,6 +1,6 @@
 """风险预警数据模型."""
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 
 from sqlalchemy import (
     Column, String, Float, Text, DateTime, Boolean, ForeignKey, Index, Date, JSON, Integer,
@@ -24,7 +24,7 @@ class RiskWarning(Base):
     matched_entity = Column(String(500), nullable=True)
     confidence = Column(Float, nullable=True)
     suggestion = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
     dismissed = Column(Boolean, default=False)
     dismissed_at = Column(DateTime, nullable=True)
 
@@ -48,7 +48,7 @@ class TaxDeadline(Base):
     is_completed = Column(Boolean, default=False)
     completed_date = Column(Date, nullable=True)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class HealthMetric(Base):

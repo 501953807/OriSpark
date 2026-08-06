@@ -1,7 +1,7 @@
 """创作者成长阶段数据模型."""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, Integer, JSON
 from app.database import Base
 
@@ -21,7 +21,7 @@ class CreatorGrowthStage(Base):
     credit_score = Column(Float, default=50)
     overall_progress_percent = Column(Float, default=0)  # 当前阶段内进度 0-100
     next_stage_progress_percent = Column(Float, default=0)  # 距下一阶段进度
-    evaluated_at = Column(DateTime, default=datetime.utcnow)
+    evaluated_at = Column(DateTime, default=datetime.now(timezone.utc))
 
 
 class GrowthTask(Base):
@@ -38,4 +38,4 @@ class GrowthTask(Base):
     is_completed = Column(Boolean, default=False)
     completed_at = Column(DateTime, nullable=True)
     priority = Column(Integer, default=5)  # 1=highest
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
