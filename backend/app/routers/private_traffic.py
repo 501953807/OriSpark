@@ -46,7 +46,8 @@ def get_subscriptions(actor_id: str = Depends(get_current_user_id), db: Session 
 @router.patch("/subscriptions/{link_id}")
 def patch_subscription(link_id: str, body: dict, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """更新订阅链接."""
-    return update_subscription_count(link_id, body.get("subscriber_count", 0))
+    from app.services.private_traffic_service import update_subscription_count
+    return update_subscription_count(db, link_id, body.get("subscriber_count", 0))
 
 
 @router.post("/communities", response_model=FanCommunityResponse)
