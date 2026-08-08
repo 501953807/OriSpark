@@ -26,6 +26,8 @@ celery_app.conf.update(
         "app.tasks.monitor_tasks",
         "app.tasks.cert_tasks",
         "app.tasks.backup_tasks",
+        "app.tasks.contract_tasks",
+        "app.tasks.report_tasks",
     ],
 )
 
@@ -46,5 +48,17 @@ celery_app.conf.beat_schedule = {
     "check-reminders": {
         "task": "app.tasks.backup_tasks.check_reminders",
         "schedule": 3600.0,  # 每小时
+    },
+    "contract-expiration-check": {
+        "task": "app.tasks.contract_tasks.check_contract_expirations",
+        "schedule": 3600.0,  # 每小时检查
+    },
+    "weekly-report": {
+        "task": "app.tasks.report_tasks.generate_weekly_report",
+        "schedule": 604800.0,  # 每周
+    },
+    "monthly-report": {
+        "task": "app.tasks.report_tasks.generate_monthly_report",
+        "schedule": 2592000.0,  # 每月
     },
 }
