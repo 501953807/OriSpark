@@ -56,6 +56,11 @@ class Settings(BaseSettings):
     ZHIXINCHAIN_API_SECRET: Optional[str] = None
     BAIDU_VISION_API_KEY: Optional[str] = None
     GOOGLE_VISION_API_KEY: Optional[str] = None
+    YOUTUBE_API_KEY: Optional[str] = None
+    TIKTOK_APP_KEY: Optional[str] = None
+    TIKTOK_ACCESS_TOKEN: Optional[str] = None
+    XIAOHONGSHU_API_KEY: Optional[str] = None
+    XIAOHONGSHU_ACCESS_TOKEN: Optional[str] = None
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
     # 认证

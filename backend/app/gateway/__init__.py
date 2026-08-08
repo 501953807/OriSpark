@@ -18,6 +18,9 @@ from app.gateway.society6 import Society6Gateway
 from app.gateway.gelato import GelatoGateway
 from app.gateway.zazzle import ZazzleGateway
 from app.gateway.spring import SpringGateway
+from app.gateway.tiktok import TikTokSearchGateway
+from app.gateway.youtube import YouTubeSearchGateway
+from app.gateway.xiaohongshu import XiaohongshuSearchGateway
 
 __all__ = [
     "NotaryGateway", "SearchGateway", "PublishingGateway",
@@ -34,4 +37,7 @@ __all__ = [
     "GelatoGateway",
     "ZazzleGateway",
     "SpringGateway",
+    "TikTokSearchGateway",
+    "YouTubeSearchGateway",
+    "XiaohongshuSearchGateway",
 ]

@@ -118,6 +118,35 @@ class ConnectionManager:
             "timestamp": datetime.now(timezone.utc).isoformat(),
         })
 
+    async def notify_monitor_alert(self, work_id: str, alert_type: str, severity: str):
+        """通知监测告警."""
+        await self.broadcast({
+            "type": "monitor_alert",
+            "work_id": work_id,
+            "alert_type": alert_type,
+            "severity": severity,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+
+    async def notify_contract_change(self, contract_id: str, status: str):
+        """通知合约状态变更."""
+        await self.broadcast({
+            "type": "contract_change",
+            "contract_id": contract_id,
+            "status": status,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+
+    async def notify_notification(self, title: str, body: str, category: str):
+        """通知系统通知."""
+        await self.broadcast({
+            "type": "notification",
+            "title": title,
+            "body": body,
+            "category": category,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+
     @property
     def active_connections(self) -> int:
         return sum(len(v) for v in self._connections.values())

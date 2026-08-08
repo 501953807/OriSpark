@@ -39,7 +39,7 @@ class StorageResult:
 @dataclass
 class StorageConfig:
     """对象存储配置."""
-    provider: str              # "minio" | "s3" | "oss"
+    provider: str              # "minio" | "s3" | "oss" | "cos"
     endpoint: str
     bucket: str
     region: str = "us-east-1"
@@ -336,6 +336,9 @@ def create_storage_gateway(config: StorageConfig) -> StorageGateway:
         return S3Gateway(config)
     elif config.provider == "oss":
         return OSSGateway(config)
+    elif config.provider == "cos":
+        from app.gateway.cos import COSGateway
+        return COSGateway(config)
     else:
         raise ValueError(f"不支持的存储提供商: {config.provider}")
 

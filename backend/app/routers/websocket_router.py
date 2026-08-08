@@ -42,6 +42,66 @@ async def websocket_notify(websocket: WebSocket):
         manager.disconnect(websocket, client_id)
 
 
+# ── 心跳超时检测 ────────────────────────────────────────────────────────
+
+import asyncio
+from datetime import datetime, timezone
+
+HEARTBEAT_TIMEOUT = 30  # 秒
+
+
+async def _heartbeat_checker(websocket: WebSocket, last_ping: asyncio.Event):
+    """心跳检测任务 — 30秒无响应则断开."""
+    while True:
+        await asyncio.sleep(10)
+        if not last_ping.is_set():
+            # 超时未收到心跳，断开连接
+            try:
+                await websocket.close(code=1001)
+            except Exception:
+                pass
+            break
+        last_ping.clear()
+
+
+@router.websocket("/ws/heartbeat")
+async def websocket_heartbeat(websocket: WebSocket):
+    """WebSocket 心跳端点 — 客户端每 10 秒发送 ping，超时 30 秒断开."""
+    client_id = f"heartbeat_{datetime.now(timezone.utc).timestamp()}"
+    last_ping = asyncio.Event()
+    last_ping.set()  # 初始化为已响应
+
+    await manager.connect(websocket, client_id)
+    await websocket.send_json({
+        "type": "connected",
+        "message": "WebSocket 心跳已连接",
+        "client_id": client_id,
+    })
+
+    # 启动心跳检测任务
+    heartbeat_task = asyncio.create_task(_heartbeat_checker(websocket, last_ping))
+
+    try:
+        while True:
+            data = await websocket.receive_json()
+            msg_type = data.get("type", "")
+
+            if msg_type == "ping":
+                last_ping.set()
+                await websocket.send_json({"type": "pong"})
+            elif msg_type == "subscribe":
+                client_id = data.get("client_id", client_id)
+                manager.disconnect(websocket, f"heartbeat_{websocket.__hash__()}")
+                await manager.connect(websocket, client_id)
+    except WebSocketDisconnect:
+        pass
+    except Exception:
+        pass
+    finally:
+        heartbeat_task.cancel()
+        manager.disconnect(websocket, client_id)
+
+
 # ── Chat WebSocket ────────────────────────────────────────────────
 
 # 会话级 WebSocket 连接管理
