@@ -1,11 +1,13 @@
-from datetime import datetime, timezone
 """Avalara 税务计算 Gateway ABC 模式."""
 
+import logging
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -73,17 +75,6 @@ class AvalaraGateway(GatewayABC):
     def _is_configured(self) -> bool:
         return bool(self.api_key)
 
-
-def get_avalara_gateway() -> GatewayABC:
-    """根据环境变量选择 Avalara 网关实现.
-
-    生产环境: 配置 AVALARA_LICENSE_KEY 使用真实 API
-    开发/测试: 未配置时使用 Mock 实现
-    """
-    if os.environ.get("AVALARA_LICENSE_KEY"):
-        return AvalaraGateway()
-    return MockAvalaraGateway()
-
     async def calculate_tax(
         self,
         seller_location: dict[str, str],
@@ -94,66 +85,71 @@ def get_avalara_gateway() -> GatewayABC:
     ) -> TaxCalculationResult:
         if not self._is_configured:
             mock = MockAvalaraGateway()
-            return await mock.calculate_tax(seller_location, buyer_location, product_type, amount, currency)
-
-        # Actual Avalara API implementation with HTTP POST to /tax/v2/compute
-        # Includes fallback to MockAvalaraGateway on network/authentication errors
-
-        import httpx
-        import asyncio
-
-        url = "https://api.avalara.com/v2/tax/compute"
-        headers = {
-            "Authorization": f"Basic {self.api_key}",  # Simplified - in production use proper OAuth2
-            "Content-Type": "application/json",
-        }
-
-        payload = {
-            "from_address": {
-                "country": seller_location.get("country", "US"),
-                "city": seller_location.get("city", ""),
-                "region": seller_location.get("state", ""),
-                "postal_code": seller_location.get("zip", ""),
-            },
-            "to_address": {
-                "country": buyer_location.get("country", "US"),
-                "city": buyer_location.get("city", ""),
-                "region": buyer_location.get("state", ""),
-                "postal_code": buyer_location.get("zip", ""),
-            },
-            "purchase_price": amount,
-            "product_type": product_type,
-            "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-        }
+            return await mock.calculate_tax(
+                seller_location, buyer_location, product_type, amount, currency
+            )
 
         try:
+            import httpx
+            from datetime import datetime, timezone
+
+            url = "https://api.avalara.com/v2/tax/compute"
+            headers = {
+                "Authorization": f"Basic {self.api_key}",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "from_address": {
+                    "country": seller_location.get("country", "US"),
+                    "city": seller_location.get("city", ""),
+                    "region": seller_location.get("state", ""),
+                    "postal_code": seller_location.get("zip", ""),
+                },
+                "to_address": {
+                    "country": buyer_location.get("country", "US"),
+                    "city": buyer_location.get("city", ""),
+                    "region": buyer_location.get("state", ""),
+                    "postal_code": buyer_location.get("zip", ""),
+                },
+                "purchase_price": amount,
+                "product_type": product_type,
+                "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            }
+
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.post(url, json=payload, headers=headers)
                 response.raise_for_status()
 
                 result = response.json()
-                # Extract tax information from Avalara response format
-                tax_amount = result.get("taxAmount", amount * 0.07)
-                tax_rate = result.get("taxRate", 0.07)
-                jurisdiction = result.get("jurisdiction", f"{buyer_location.get('country','Unknown')} Local")
-
                 return TaxCalculationResult(
-                    tax_amount=float(tax_amount),
-                    tax_rate=float(tax_rate),
-                    tax_jurisdiction=jurisdiction,
+                    tax_amount=float(result.get("taxAmount", amount * 0.07)),
+                    tax_rate=float(result.get("taxRate", 0.07)),
+                    tax_jurisdiction=result.get(
+                        "jurisdiction",
+                        f"{buyer_location.get('country', 'Unknown')} Local",
+                    ),
                     exemption_status=result.get("exemptionStatus", "none"),
                 )
         except httpx.RequestError as e:
-            # Network error - fall back to mock calculations
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.warning(f"Avalara API call failed, falling back to mock calculation: {e}")
+            logger.warning(f"Avalara API request failed, using mock: {e}")
             mock = MockAvalaraGateway()
-            return await mock.calculate_tax(seller_location, buyer_location, product_type, amount, currency)
+            return await mock.calculate_tax(
+                seller_location, buyer_location, product_type, amount, currency
+            )
         except Exception as e:
-            # API error (authentication, invalid response, etc.) - fallback
-            import logging
-            logger = logging.getLogger(__name__)
             logger.error(f"Avalara API error: {e}")
             mock = MockAvalaraGateway()
-            return await mock.calculate_tax(seller_location, buyer_location, product_type, amount, currency)
+            return await mock.calculate_tax(
+                seller_location, buyer_location, product_type, amount, currency
+            )
+
+
+def get_avalara_gateway() -> GatewayABC:
+    """根据环境变量选择 Avalara 网关实现.
+
+    生产环境: 配置 AVALARA_LICENSE_KEY 使用真实 API
+    开发/测试: 未配置时使用 Mock 实现
+    """
+    if os.environ.get("AVALARA_LICENSE_KEY"):
+        return AvalaraGateway()
+    return MockAvalaraGateway()
