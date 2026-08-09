@@ -35,13 +35,17 @@ onMounted(async () => {
   }
 })
 
-async function onFinish(payload: { creatorType: string; importCount: number }) {
+async function onFinish(payload: { creatorType: string; participantRole: string; importCount: number }) {
   try {
-    await systemApi.completeOnboarding({ creator_type: payload.creatorType })
+    await systemApi.completeOnboarding({
+      creator_type: payload.creatorType,
+      participant_role: payload.participantRole,
+    })
   } catch {
     // Silently fail — localStorage already has the data
   }
   localStorage.setItem('oristudio-onboarded', 'true')
+  localStorage.setItem('oristudio-participant-role', payload.participantRole)
   router.push('/app')
 }
 </script>

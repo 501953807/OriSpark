@@ -52,7 +52,7 @@ class TestDismissWarning:
 
     def test_dismiss_after_create_warning(self, client, db_session):
         from app.models.risk_warning import RiskWarning
-        from datetime import datetime, timedelta
+        from datetime import datetime, timedelta, timezone
         from app.models.work import Work
 
         # Ensure a Work exists (FK constraint)

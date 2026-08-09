@@ -324,50 +324,49 @@ class TestCalendar:
 class TestDashboard:
     """GET /commission/dashboard - requires auth"""
 
-    def test_dashboard_anonymous(self, client):
-        resp = client.get(f"{_BASE}/dashboard")
-        assert resp.status_code in (401, 200)  # May return 401 unauth or 200 empty
+    def test_dashboard_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/dashboard")
+        assert resp.status_code in (401, 403)
 
 
 class TestBalance:
     """GET /commission/balance - requires auth"""
 
-    def test_balance_anonymous(self, client):
-        resp = client.get(f"{_BASE}/balance")
-        assert resp.status_code in (401, 200)
+    def test_balance_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/balance")
+        assert resp.status_code in (401, 403)
 
 
 class TestWithdraw:
     """POST /commission/withdraw - requires auth"""
 
-    def test_withdraw_anonymous(self, client):
-        resp = client.post(f"{_BASE}/withdraw", json={
+    def test_withdraw_anonymous(self, client_no_auth):
+        resp = client_no_auth.post(f"{_BASE}/withdraw", json={
             "amount": 100.0,
             "method": "bank",
         })
-        # May return 401 (unauthorized), 400 (missing auth session), or 200
-        assert resp.status_code in (401, 400, 200)
+        assert resp.status_code in (401, 403)
 
 
 class TestWithdrawals:
     """GET /commission/withdrawals - requires auth"""
 
-    def test_withdrawals_anonymous(self, client):
-        resp = client.get(f"{_BASE}/withdrawals")
-        assert resp.status_code in (401, 200)
+    def test_withdrawals_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/withdrawals")
+        assert resp.status_code in (401, 403)
 
 
 class TestStatisticsMonthly:
     """GET /commission/statistics/monthly - requires auth"""
 
-    def test_statistics_monthly_anonymous(self, client):
-        resp = client.get(f"{_BASE}/statistics/monthly")
-        assert resp.status_code in (401, 200)
+    def test_statistics_monthly_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/statistics/monthly")
+        assert resp.status_code in (401, 403)
 
 
 class TestStatisticsYearly:
     """GET /commission/statistics/yearly - requires auth"""
 
-    def test_statistics_yearly_anonymous(self, client):
-        resp = client.get(f"{_BASE}/statistics/yearly")
-        assert resp.status_code in (401, 200)
+    def test_statistics_yearly_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/statistics/yearly")
+        assert resp.status_code in (401, 403)

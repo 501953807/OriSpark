@@ -31,7 +31,9 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref('')
 
   const isLoggedIn = computed(() => !!token.value)
-  const displayName = computed(() => user.value?.username || user.value?.email || '创作者')
+  const displayName = computed(() => user.value?.username || user.value?.email || '用户')
+  const participantRoles = computed(() => user.value?.participant_roles || [])
+  const hasRole = (role: string) => participantRoles.value.includes(role)
 
   // ── Login ──────────────────────────────────────────────────────
 
@@ -116,7 +118,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     token, user, loading, error,
-    isLoggedIn, displayName,
+    isLoggedIn, displayName, participantRoles, hasRole,
     login, register, logout, fetchUser, clearError,
   }
 })

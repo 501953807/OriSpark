@@ -1,23 +1,11 @@
 <!-- app/components/HeroBanner.vue -->
 <script setup lang="ts">
-import { useMotionStore } from '@/stores/motion'
-import ThreeScene from '@/components/ThreeScene.vue'
-import DynamicWaveFill from '@/components/DynamicWaveFill.vue'
-
-const motionStore = useMotionStore()
 </script>
 
 <template>
   <section class="hero-banner">
-    <!-- Three.js 粒子背景 -->
-    <ThreeScene v-if="motionStore.shouldAnimate" />
-
-    <!-- SVG 波浪覆盖层 -->
-    <DynamicWaveFill v-if="motionStore.immersiveEnabled" />
-
-    <!-- 内容层 -->
     <div class="hero-content">
-      <h1 class="hero-title" :class="{ 'brand-entrance': motionStore.shouldAnimate }">
+      <h1 class="hero-title">
         OriSpark — AI 时代的创作者信任枢纽
       </h1>
       <p class="hero-subtitle">
@@ -93,7 +81,7 @@ const motionStore = useMotionStore()
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
@@ -116,64 +104,12 @@ const motionStore = useMotionStore()
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-hero-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-/* 品牌入口动画：蓝脉流动效应 */
-.brand-entrance {
-  animation: brandEntrance 1.2s ease-out forwards;
-}
-
-@keyframes brandEntrance {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  20% {
-    transform: translateY(10px) scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* 按钮入场序列 */
-.btn-hero, .btn-hero-secondary {
-  animation: buttonEntrance 1s ease-out forwards;
-  opacity: 0;
-}
-
-.btn-hero { animation-delay: 0.3s; }
-.btn-hero-secondary { animation-delay: 0.5s; }
-
-@keyframes buttonEntrance {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 减速模式时简化动画 */
-@media (prefers-reduced-motion: reduce) {
-  .brand-entrance, .btn-hero, .btn-hero-secondary {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .btn-hero { opacity: 1; transform: none; }
-  .btn-hero-secondary { opacity: 1; transform: none; }
 }
 
 @media (max-width: 768px) {

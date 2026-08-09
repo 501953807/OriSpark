@@ -4,7 +4,7 @@ import pytest
 import time
 import json
 import base64
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
@@ -48,8 +48,8 @@ class TestCreateInvoice:
         data = resp.json()["data"]
         assert data["amount_yuan"] == 100.0
         assert data["status"] == "pending"
-        # user_id should come from the JWT token (the "sub" claim)
-        assert data["user_id"] == "test_user_1"
+        # user_id comes from the mocked auth dependency (returns "current_user" in tests)
+        assert data["user_id"] == "current_user"
         assert "invoice_number" in data
         assert data["invoice_number"].startswith("INV/")
 

@@ -1,11 +1,22 @@
 <template>
-  <div class="dashboard-view">
-    <!-- Stats row -->
-    <div class="stats-row">
+  <div class="dashboard-view" :class="{ 'dashboard-view--loading': dashboardStore.loading }">
+    <div v-if="dashboardStore.loading" class="page-loading-overlay">
+      <LoadingSpinner full-screen text="正在加载数据..." />
+    </div>
+    <!-- Stats row (only for creator role) -->
+    <div v-if="isCreatorRole" class="stats-row">
       <StatCard icon="🎨" label="作品总数" :value="stats?.total_works ?? 0" to="/app/works" color="green" />
       <StatCard icon="🔒" label="已存证" :value="stats?.total_notarized ?? 0" to="/app/notary" color="purple" />
       <StatCard icon="🛡️" label="侵权告警" :value="stats?.infringement_alerts ?? 0" to="/app/monitor" color="orange" />
       <StatCard icon="💰" label="本月收入" :value="`¥${fmtMoney(stats?.monthly_revenue ?? 0)}`" color="blue" />
+    </div>
+
+    <!-- Role-specific stats (non-creator) -->
+    <div v-else class="stats-row">
+      <StatCard icon="📝" label="关联合约" :value="stats?.total_works ?? 0" to="/app/contract-market" color="blue" />
+      <StatCard icon="🤝" label="进行中交易" :value="stats?.infringement_alerts ?? 0" to="/app/contract-market" color="green" />
+      <StatCard icon="⚠️" label="风险预警" :value="0" to="/app/risk-warning" color="orange" />
+      <StatCard icon="💰" label="本月收益" :value="`¥${fmtMoney(stats?.monthly_revenue ?? 0)}`" color="blue" />
     </div>
 
     <!-- Business Overview -->
@@ -62,8 +73,8 @@
       </div>
     </div>
 
-    <!-- Two-column panels -->
-    <div class="panels-row">
+    <!-- Two-column panels (only for creator role) -->
+    <div v-if="isCreatorRole" class="panels-row">
       <div class="panel card">
         <div class="panel-header">
           <h3 class="panel-title">最近作品</h3>
@@ -110,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, computed } from 'vue'
 import StatCard from '@/components/common/StatCard.vue'
 import StatusBadge from '@/components/common/StatusBadge.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
@@ -118,26 +129,100 @@ import LazyImage from '@/components/common/LazyImage.vue'
 import RevenueChart from '@/components/dashboard/RevenueChart.vue'
 import TrendChart from '@/components/dashboard/TrendChart.vue'
 import { useDashboardStore } from '@/stores/useDashboardStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { storeToRefs } from 'pinia'
+import { PARTICIPANT_ROLES } from '@/types/roles'
 
 const dashboardStore = useDashboardStore()
+const authStore = useAuthStore()
 const { stats, recentWorks } = storeToRefs(dashboardStore)
+
+// Determine current participant role
+const currentRole = computed(() => {
+  const roles = authStore.participantRoles
+  if (roles.length > 0) return roles[0]
+  return 'creator'
+})
+
+const isCreatorRole = computed(() => currentRole.value === 'creator')
 
 const fileTypeEmoji: Record<string, string> = {
   image: '🖼️', audio: '🎵', video: '🎬',
   document: '📄', design: '🎨', code: '💻',
 }
 
-const modules = [
-  { path: '/app/works', icon: '🎨', name: '作品管理', desc: '导入、分类、搜索你的创作作品' },
-  { path: '/app/projects', icon: '📁', name: '项目分组', desc: '按项目组织你的作品' },
-  { path: '/app/notary', icon: '🔒', name: '存证确权', desc: '区块链存证，保护你的版权' },
-  { path: '/app/monitor', icon: '🛡️', name: '侵权监测', desc: '自动扫描，发现侵权行为' },
-  { path: '/app/ipr', icon: '📋', name: 'IP 登记', desc: '商标/版权/专利申请指引' },
-  { path: '/app/supply', icon: '🏭', name: '供应链', desc: '管理工厂合作与订单' },
-  { path: '/app/publish', icon: '🚀', name: '发布变现', desc: '一键发布，多渠道销售' },
-  { path: '/app/business', icon: '💼', name: '经营管理', desc: '收入、订单、合作伙伴概览' },
-]
+// Role-specific dashboard modules
+const roleModules: Record<string, Array<{ path: string; icon: string; name: string; desc: string }>> = {
+  creator: [
+    { path: '/app/works', icon: '🎨', name: '作品管理', desc: '导入、分类、搜索你的创作作品' },
+    { path: '/app/projects', icon: '📁', name: '项目分组', desc: '按项目组织你的作品' },
+    { path: '/app/notary', icon: '🔒', name: '存证确权', desc: '区块链存证，保护你的版权' },
+    { path: '/app/monitor', icon: '🛡️', name: '侵权监测', desc: '自动扫描，发现侵权行为' },
+    { path: '/app/ipr', icon: '📋', name: 'IP 登记', desc: '商标/版权/专利申请指引' },
+    { path: '/app/supply', icon: '🏭', name: '供应链', desc: '管理工厂合作与订单' },
+    { path: '/app/publish', icon: '🚀', name: '发布变现', desc: '一键发布，多渠道销售' },
+    { path: '/app/business', icon: '💼', name: '经营管理', desc: '收入、订单、合作伙伴概览' },
+  ],
+  operator: [
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '浏览和参与版权交易合约' },
+    { path: '/app/multimarket', icon: '🌍', name: '多市场扩展', desc: '多渠道分发与推广' },
+    { path: '/app/negotiation', icon: '🤝', name: '交易谈判', desc: '与版权方协商合作条款' },
+    { path: '/app/capability', icon: '🧠', name: '能力评估', desc: '评估版权方创作能力' },
+    { path: '/app/credit-improvement', icon: '💳', name: '信用提升', desc: '提升商业信用评级' },
+    { path: '/app/business', icon: '💼', name: '经营管理', desc: '运营数据与收益分析' },
+  ],
+  legal_rep: [
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '审查合约条款与风险' },
+    { path: '/app/contract-risk', icon: '📋', name: '合同风险评估', desc: '评估合约法律风险' },
+    { path: '/app/negotiation', icon: '🤝', name: '交易谈判', desc: '参与合约条款协商' },
+    { path: '/app/risk-center', icon: '🔔', name: '风控中心', desc: '监控法律风险事件' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  tax_agent: [
+    { path: '/app/tax-settlement', icon: '💱', name: '税务结算', desc: '处理跨国税务申报' },
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '查看关联合约税务信息' },
+    { path: '/app/risk-warning', icon: '⚠️', name: '风险预警', desc: '税务合规风险提示' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  logistics: [
+    { path: '/app/supply', icon: '🏭', name: '供应链管理', desc: '管理物流订单与配送' },
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '查看关联合约物流信息' },
+    { path: '/app/risk-warning', icon: '⚠️', name: '风险预警', desc: '物流状态异常提醒' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  insurer: [
+    { path: '/app/insurance', icon: '🛡️', name: '保险市场', desc: '管理版权与履约保险' },
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '查看关联合约保险信息' },
+    { path: '/app/risk-warning', icon: '⚠️', name: '风险预警', desc: '风险评估与理赔提醒' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  trader: [
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '浏览和订阅版权合约' },
+    { path: '/app/marketplace', icon: '🤝', name: '商业撮合', desc: '发现匹配的版权方' },
+    { path: '/app/multimarket', icon: '🌍', name: '多市场扩展', desc: '多渠道版权采购' },
+    { path: '/app/capability', icon: '🧠', name: '能力评估', desc: '评估版权方创作能力' },
+    { path: '/app/credit-improvement', icon: '💳', name: '信用提升', desc: '提升采购信用评级' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  payment_provider: [
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '管理合约支付托管' },
+    { path: '/app/business', icon: '💼', name: '经营管理', desc: '查看交易结算数据' },
+    { path: '/app/risk-warning', icon: '⚠️', name: '风险预警', desc: '支付风险监控' },
+    { path: '/app/settings', icon: '⚙️', name: '偏好设置', desc: '系统配置与管理' },
+  ],
+  platform: [
+    { path: '/app', icon: '📊', name: '工作台', desc: '平台运营总览' },
+    { path: '/app/contract-market', icon: '📝', name: '合约市场', desc: '管理所有交易合约' },
+    { path: '/app/marketplace', icon: '🤝', name: '商业撮合', desc: '撮合交易管理' },
+    { path: '/app/supply', icon: '🏭', name: '供应链管理', desc: '管理供应链网络' },
+    { path: '/app/insurance', icon: '🛡️', name: '保险市场', desc: '管理保险产品' },
+    { path: '/app/risk-center', icon: '🔔', name: '风控中心', desc: '平台风险监控' },
+    { path: '/app/enforcement-dashboard', icon: '⚖️', name: '维权流水线', desc: '维权案件管理' },
+    { path: '/app/settings', icon: '⚙️', name: '系统设置', desc: '平台全局配置' },
+  ],
+}
+
+const modules = computed(() => roleModules[currentRole.value] || roleModules['creator'])
 
 const overview = reactive({
   total_revenue: 0,
@@ -151,9 +236,9 @@ function fmtMoney(n: number): string {
 }
 
 onMounted(async () => {
-  try {
-    await dashboardStore.refreshAll()
-    // Load business overview from supply dashboard API
+  // 并行加载 dashboard 数据和 supply 概览，互不阻塞
+  const loadDashboard = dashboardStore.refreshAll()
+  const loadSupply = (async () => {
     try {
       const { supplyApi } = await import('@/api/supply')
       const r = await supplyApi.dashboard()
@@ -166,6 +251,9 @@ onMounted(async () => {
     } catch {
       // Silently continue if supply API unavailable
     }
+  })()
+  try {
+    await Promise.all([loadDashboard, loadSupply])
   } catch {
     ;(window as any).$toast?.show('加载仪表盘数据失败', 'error')
   }
@@ -304,4 +392,28 @@ onMounted(async () => {
 .work-info { flex: 1; min-width: 0; }
 .work-name { font-size: 0.85rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .work-meta { font-size: 0.72rem; color: var(--muted); }
+
+/* Full-screen loading overlay */
+.dashboard-view--loading {
+  position: relative;
+  pointer-events: none;
+  user-select: none;
+}
+.dashboard-view--loading > *:not(.page-loading-overlay) {
+  opacity: 0.3;
+  filter: blur(2px);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.page-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg, oklch(98% 0.002 240));
+}
+.dark .page-loading-overlay {
+  background: var(--bg, oklch(13% 0.01 240));
+}
 </style>

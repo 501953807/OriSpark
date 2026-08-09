@@ -14,12 +14,9 @@ _BASE = "/api/growth-stages"
 class TestDashboard:
     """GET /growth-stages/dashboard — requires auth."""
 
-    def test_dashboard_anonymous(self, client):
-        resp = client.get(f"{_BASE}/dashboard")
-        assert resp.status_code in (200, 401)
-        if resp.status_code == 200:
-            data = resp.json()
-            assert isinstance(data, dict)
+    def test_dashboard_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/dashboard")
+        assert resp.status_code in (401, 403)
 
     def test_dashboard_authenticated(self, client):
         resp = client.get(f"{_BASE}/dashboard")

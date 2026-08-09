@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
+import client from '@/api/client'
+import type { User } from '@/types/user'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -102,14 +104,33 @@ const router = createRouter({
 })
 
 // 路由守卫 — 集中 auth store 管理
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   if (to.meta.requiresAuth) {
     const auth = useAuthStore()
     if (!auth.isLoggedIn) {
-      // 本地模式: 自动生成 token 跳过登录
-      const fakeToken = 'local-' + Date.now()
-      auth.token = fakeToken
-      auth.user = { id: 'local', username: '创作者', email: 'local@oristudio', role: '本地用户' }
+      // 本地模式: 通过后端真实 API 获取 token 和用户数据
+      try {
+        const resp = await client.post('/auth/local-login')
+        const data = resp.data.data as { token: string; user: User }
+        auth.token = data.token
+        auth.user = data.user
+        localStorage.setItem('oristudio-token', data.token)
+        localStorage.setItem('oristudio-user', JSON.stringify(data.user))
+        client.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+      } catch {
+        // 后端不可用时 fallback（仅本地开发）
+        const savedRole = localStorage.getItem('oristudio-participant-role')
+        const fallbackUser: User = {
+          id: 'local',
+          username: '创作者',
+          email: 'local@oristudio',
+          role: '本地用户',
+          participant_roles: savedRole ? [savedRole] : [],
+          participant_role_names: savedRole ? [savedRole] : [],
+          creator_type: 'illustrator',
+        }
+        auth.user = fallbackUser
+      }
     }
   }
 })

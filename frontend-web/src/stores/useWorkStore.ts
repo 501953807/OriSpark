@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import type { Work, WorkListParams } from '@/types/work'
 import { worksApi } from '@/api/works'
 import { useAppStore } from '@/stores/useAppStore'
+import { useGlobalEvents } from '@/composables/useGlobalEvents'
 
 export const useWorkStore = defineStore('work', () => {
   // State
@@ -20,6 +21,8 @@ export const useWorkStore = defineStore('work', () => {
     sort_by: 'imported_at',
     sort_order: 'desc',
   })
+
+  const { emit } = useGlobalEvents()
 
   // Actions
   async function fetchWorks() {
@@ -51,6 +54,8 @@ export const useWorkStore = defineStore('work', () => {
   async function uploadWork(formData: FormData) {
     try {
       const res = await worksApi.create(formData)
+      const workId = res.data.data?.id
+      emit('work:created', { workId: workId || '' })
       await fetchWorks()
       return res.data.data
     } catch (e) {
@@ -62,6 +67,7 @@ export const useWorkStore = defineStore('work', () => {
   async function updateWork(id: string, data: Partial<Work>) {
     try {
       const res = await worksApi.update(id, data)
+      emit('work:updated', { workId: id })
       await fetchWorks()
       return res.data.data
     } catch (e) {
@@ -73,6 +79,7 @@ export const useWorkStore = defineStore('work', () => {
   async function deleteWork(id: string) {
     try {
       await worksApi.delete(id)
+      emit('work:deleted', { workId: id })
       await fetchWorks()
     } catch (e) {
       console.error(`deleteWork(${id}) failed:`, e)

@@ -20,7 +20,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
   // ---------------------------------------------------------------------
 
   async function fetchStats() {
-    loading.value = true
     try {
       const res = await dashboardApi.stats()
       stats.value = res.data.data
@@ -33,7 +32,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
         infringement_alerts: stats.value.infringement_alerts,
       })
     } finally {
-      loading.value = false
+      // loading 状态由 refreshAll 统一管理，子方法不单独控制
     }
   }
 

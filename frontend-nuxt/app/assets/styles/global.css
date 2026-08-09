@@ -168,6 +168,7 @@ button {
   100% {
     transform: scale(1);
   }
+}
 
 /* Pulse ring for brand signature effect */
 .brand-pulse-ring {

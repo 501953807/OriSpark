@@ -37,7 +37,7 @@
         @change="handleInput"
       />
     </div>
-    <!-- File list preview -->
+    <!-- File list preview with confirm button -->
     <div v-if="files.length" class="file-list">
       <div v-for="(f, i) in files" :key="i" class="file-item">
         <span class="file-icon">{{ getFileIcon(f) }}</span>
@@ -47,8 +47,8 @@
       </div>
       <div class="file-actions">
         <button class="btn btn-secondary" @click="clearFiles">取消</button>
-        <button class="btn btn-primary" @click="uploadFiles" :disabled="!files.length">
-          导入 {{ files.length }} 个文件
+        <button class="btn btn-primary" @click="confirmUpload" :disabled="uploading">
+          {{ uploading ? '上传中...' : `确认上传 ${files.length} 个文件` }}
         </button>
       </div>
     </div>
@@ -72,6 +72,7 @@ const inputRef = ref<HTMLInputElement>()
 const isDragOver = ref(false)
 const files = ref<File[]>([])
 const isFolderMode = ref(false)
+const uploading = ref(false)
 
 function handleDrop(e: DragEvent) {
   isDragOver.value = false
@@ -99,11 +100,17 @@ function removeFile(index: number) {
 
 function clearFiles() {
   files.value = []
+  uploading.value = false
 }
 
-function uploadFiles() {
-  emit('upload', [...files.value])
-  files.value = []
+async function confirmUpload() {
+  if (!files.value.length || uploading.value) return
+  uploading.value = true
+  try {
+    emit('upload', [...files.value])
+  } finally {
+    uploading.value = false
+  }
 }
 
 function getFileIcon(f: File): string {
@@ -210,5 +217,9 @@ function formatSize(bytes: number): string {
   justify-content: flex-end;
   gap: 10px;
   margin-top: 12px;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

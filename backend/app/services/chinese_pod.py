@@ -3,11 +3,10 @@
 包含 印鸽、云打、定制链、闪印 四个中文 POD 平台的：
 - 平台元数据 (名称、网址、模式、地区)
 - 产品类别映射
-
-⚠️ [已废弃 v5.0] POD 渠道已被合约市场替代，保留供迁移过渡使用。
-"""
 - 设计规格要求
 - API 端点描述 (如可用)
+
+⚠️ [已废弃 v5.0] POD 渠道已被合约市场替代，保留供迁移过渡使用。
 """
 
 # ---------------------------------------------------------------------------
@@ -182,7 +181,7 @@ CHINESE_POD_SPECS = {
 
 
 def get_chinese_pod_platform(platform_id: str) -> dict | None:
-    """获取中国 POD 平台元数据。"""
+    """Get Chinese POD platform metadata."""
     for p in CHINESE_POD_PLATFORMS:
         if p["id"] == platform_id:
             return p
@@ -190,10 +189,10 @@ def get_chinese_pod_platform(platform_id: str) -> dict | None:
 
 
 def get_chinese_pod_categories(platform_id: str) -> dict:
-    """获取平台支持的品类。"""
+    """Get platform supported categories."""
     return CHINESE_POD_CATEGORY_MAPPING.get(platform_id, {})
 
 
 def get_chinese_pod_specs(platform_id: str) -> dict:
-    """获取平台设计规格要求。"""
+    """Get platform design spec requirements."""
     return CHINESE_POD_SPECS.get(platform_id, {})

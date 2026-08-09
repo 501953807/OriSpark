@@ -34,7 +34,7 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
         v-for="work in featuredWorks"
         :key="work.id"
         :title="work.title || '未命名作品'"
-        :thumbnail="work.thumbnail || 'https://via.placeholder.com/300x200?text=No+Image'"
+        :thumbnail="work.thumbnail || '/images/placeholder-work.svg'"
         :id="work.id"
       />
     </div>

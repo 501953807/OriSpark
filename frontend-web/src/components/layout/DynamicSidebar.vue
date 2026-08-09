@@ -9,130 +9,153 @@
     @mouseenter="isCollapsed && (isHovering = true)"
     @mouseleave="isHovering = false"
   >
+    <!-- Brand and badge -->
     <router-link to="/app" class="sb-brand" aria-label="OriStudio 首页">
-      <div class="sb-logo" aria-hidden="true" :style="{ background: typeInfo?.color }">O</div>
+      <div class="sb-logo" aria-hidden="true" :style="{ background: (hasNonCreatorRole ? roleInfo?.color : typeInfo?.color) ?? 'var(--accent)' }">O</div>
       <div v-if="!isCollapsed" class="sb-brand-text-wrap">
         <div class="sb-brand-text">OriStudio</div>
-        <div class="sb-brand-sub">{{ typeInfo?.description ?? '创作者全链路助手' }}</div>
+        <div class="sb-brand-sub">{{ hasNonCreatorRole ? (roleInfo?.description ?? '用户工作台') : (typeInfo?.description ?? '创作者全链路助手') }}</div>
       </div>
     </router-link>
 
-    <!-- Current type badge -->
-    <div v-if="!isCollapsed && typeInfo" class="sb-type-badge">
+    <!-- Role badge for non-creator roles -->
+    <div v-if="!isCollapsed && hasNonCreatorRole && roleInfo" class="sb-type-badge">
+      <span class="sb-type-dot" :style="{ background: roleInfo.color }"></span>
+      <span>{{ roleInfo.label }}</span>
+    </div>
+    <!-- Type badge for creator roles -->
+    <div v-else-if="!isCollapsed && typeInfo" class="sb-type-badge">
       <span class="sb-type-dot" :style="{ background: typeInfo.color }"></span>
       <span>{{ typeInfo.label }}</span>
     </div>
 
     <nav class="sb-nav">
-      <!-- Core business chain — shared across all types -->
-      <div v-if="!isCollapsed" class="sb-section-title">概览</div>
-      <router-link to="/app" class="sb-link" active-class="active">
-        <span class="sb-icon">📊</span>
-        <span v-if="!isCollapsed">工作台</span>
-      </router-link>
-
-      <!-- Type-specific core features -->
-      <template v-if="typeInfo">
-        <div v-if="!isCollapsed" class="sb-section-title">核心功能</div>
-
+      <!-- Non-creator role: show role-specific navigation -->
+      <template v-if="hasNonCreatorRole && roleInfo?.sidebarItems">
         <router-link
-          v-for="routeName in typeInfo.routes"
-          :key="routeName"
-          :to="`/app/${routeName}`"
+          v-for="item in roleInfo.sidebarItems"
+          :key="item.path"
+          :to="item.path"
           class="sb-link"
           active-class="active"
         >
-          <span class="sb-icon">{{ routeIcon(routeName) }}</span>
-          <span v-if="!isCollapsed">{{ routeLabel(routeName) }}</span>
-        </router-link>
-
-        <!-- Creative tools section (shared) -->
-        <div v-if="!isCollapsed" class="sb-section-title">创作工具</div>
-
-        <router-link to="/app/projects" class="sb-link" active-class="active">
-          <span class="sb-icon">📂</span>
-          <span v-if="!isCollapsed">项目分组</span>
-        </router-link>
-        <router-link to="/app/recycle" class="sb-link" active-class="active">
-          <span class="sb-icon">🗑️</span>
-          <span v-if="!isCollapsed">回收站</span>
+          <span class="sb-icon">{{ item.icon }}</span>
+          <span v-if="!isCollapsed">{{ item.label }}</span>
         </router-link>
       </template>
 
-      <!-- Rights & Protection (shared) -->
-      <template v-if="!isCollapsed">
-        <div class="sb-section-title" v-if="hasSharedSection('rights')">权利保护</div>
-        <router-link v-if="hasSharedRoute('rights')" to="/app/rights" class="sb-link" active-class="active">
-          <span class="sb-icon">🛡️</span>
-          <span v-if="!isCollapsed">权利存证</span>
+      <!-- Creator role: show existing creator-type-based navigation -->
+      <template v-else>
+        <!-- Core business chain — shared across all types -->
+        <div v-if="!isCollapsed" class="sb-section-title">概览</div>
+        <router-link to="/app" class="sb-link" active-class="active">
+          <span class="sb-icon">📊</span>
+          <span v-if="!isCollapsed">工作台</span>
         </router-link>
-        <router-link v-if="hasSharedRoute('monitor')" to="/app/monitor" class="sb-link" active-class="active">
-          <span class="sb-icon">👁️</span>
-          <span v-if="!isCollapsed">侵权监测</span>
+
+        <!-- Type-specific core features -->
+        <template v-if="typeInfo">
+          <div v-if="!isCollapsed" class="sb-section-title">核心功能</div>
+
+          <router-link
+            v-for="routeName in typeInfo.routes"
+            :key="routeName"
+            :to="`/app/${routeName}`"
+            class="sb-link"
+            active-class="active"
+          >
+            <span class="sb-icon">{{ routeIcon(routeName) }}</span>
+            <span v-if="!isCollapsed">{{ routeLabel(routeName) }}</span>
+          </router-link>
+
+          <!-- Creative tools section (shared) -->
+          <div v-if="!isCollapsed" class="sb-section-title">创作工具</div>
+
+          <router-link to="/app/projects" class="sb-link" active-class="active">
+            <span class="sb-icon">📂</span>
+            <span v-if="!isCollapsed">项目分组</span>
+          </router-link>
+          <router-link to="/app/recycle" class="sb-link" active-class="active">
+            <span class="sb-icon">🗑️</span>
+            <span v-if="!isCollapsed">回收站</span>
+          </router-link>
+        </template>
+
+        <!-- Rights & Protection (shared) -->
+        <template v-if="!isCollapsed">
+          <div class="sb-section-title" v-if="hasSharedSection('rights')">权利保护</div>
+          <router-link v-if="hasSharedRoute('rights')" to="/app/rights" class="sb-link" active-class="active">
+            <span class="sb-icon">🛡️</span>
+            <span v-if="!isCollapsed">权利存证</span>
+          </router-link>
+          <router-link v-if="hasSharedRoute('monitor')" to="/app/monitor" class="sb-link" active-class="active">
+            <span class="sb-icon">👁️</span>
+            <span v-if="!isCollapsed">侵权监测</span>
+          </router-link>
+        </template>
+
+        <!-- Monetization (shared) -->
+        <template v-if="!isCollapsed">
+          <div class="sb-section-title" v-if="hasSharedSection('supply')">商业变现</div>
+          <router-link v-if="hasSharedRoute('supply')" to="/app/supply" class="sb-link" active-class="active">
+            <span class="sb-icon">💰</span>
+            <span v-if="!isCollapsed">商业转化</span>
+          </router-link>
+          <router-link v-if="hasSharedRoute('marketplace')" to="/app/marketplace" class="sb-link" active-class="active">
+            <span class="sb-icon">🤝</span>
+            <span v-if="!isCollapsed">商业撮合</span>
+          </router-link>
+          <router-link v-if="hasSharedRoute('business')" to="/app/business" class="sb-link" active-class="active">
+            <span class="sb-icon">📈</span>
+            <span v-if="!isCollapsed">经营管理</span>
+          </router-link>
+          <router-link v-if="hasSharedRoute('contract-market')" to="/app/contract-market" class="sb-link" active-class="active">
+            <span class="sb-icon">{{ routeIcon('contract-market') }}</span>
+            <span v-if="!isCollapsed">合约市场</span>
+          </router-link>
+        </template>
+
+        <!-- AI Growth (shared) -->
+        <template v-if="!isCollapsed">
+          <div class="sb-section-title" v-if="hasSharedSection('ai')">AI增长引擎</div>
+          <router-link v-if="hasSharedRoute('ai-growth')" to="/app/ai-growth" class="sb-link" active-class="active">
+            <span class="sb-icon">🤖</span>
+            <span v-if="!isCollapsed">AI增长引擎</span>
+          </router-link>
+        </template>
+
+        <!-- Risk & Compliance (shared) -->
+        <template v-if="!isCollapsed">
+          <div class="sb-section-title" v-if="hasSharedSection('credit')">风险合规</div>
+          <router-link v-if="hasSharedRoute('risk-warning')" to="/app/risk-warning" class="sb-link" active-class="active">
+            <span class="sb-icon">⚠️</span>
+            <span v-if="!isCollapsed">风险预警</span>
+          </router-link>
+          <router-link v-if="hasSharedRoute('credit-improvement')" to="/app/credit-improvement" class="sb-link" active-class="active">
+            <span class="sb-icon">💳</span>
+            <span v-if="!isCollapsed">信用提升</span>
+          </router-link>
+        </template>
+
+        <!-- Settings section -->
+        <div v-if="!isCollapsed" class="sb-section-title">系统设置</div>
+        <router-link to="/app/settings" class="sb-link" active-class="active">
+          <span class="sb-icon">⚙️</span>
+          <span v-if="!isCollapsed">偏好设置</span>
+        </router-link>
+        <router-link to="/app/settings/watermarks" class="sb-link" active-class="active">
+          <span class="sb-icon">💧</span>
+          <span v-if="!isCollapsed">水印预设</span>
+        </router-link>
+        <router-link to="/app/settings/templates" class="sb-link" active-class="active">
+          <span class="sb-icon">📐</span>
+          <span v-if="!isCollapsed">元数据模板</span>
+        </router-link>
+        <router-link to="/app/settings/subscriptions" class="sb-link" active-class="active">
+          <span class="sb-icon">🏷️</span>
+          <span v-if="!isCollapsed">订阅分级</span>
         </router-link>
       </template>
-
-      <!-- Monetization (shared) -->
-      <template v-if="!isCollapsed">
-        <div class="sb-section-title" v-if="hasSharedSection('supply')">商业变现</div>
-        <router-link v-if="hasSharedRoute('supply')" to="/app/supply" class="sb-link" active-class="active">
-          <span class="sb-icon">💰</span>
-          <span v-if="!isCollapsed">商业转化</span>
-        </router-link>
-        <router-link v-if="hasSharedRoute('marketplace')" to="/app/marketplace" class="sb-link" active-class="active">
-          <span class="sb-icon">🤝</span>
-          <span v-if="!isCollapsed">商业撮合</span>
-        </router-link>
-        <router-link v-if="hasSharedRoute('business')" to="/app/business" class="sb-link" active-class="active">
-          <span class="sb-icon">📈</span>
-          <span v-if="!isCollapsed">经营管理</span>
-        </router-link>
-        <router-link v-if="hasSharedRoute('contract-market')" to="/app/contract-market" class="sb-link" active-class="active">
-          <span class="sb-icon">{{ routeIcon('contract-market') }}</span>
-          <span v-if="!isCollapsed">合约市场</span>
-        </router-link>
-      </template>
-
-      <!-- AI Growth (shared) -->
-      <template v-if="!isCollapsed">
-        <div class="sb-section-title" v-if="hasSharedSection('ai')">AI增长引擎</div>
-        <router-link v-if="hasSharedRoute('ai-growth')" to="/app/ai-growth" class="sb-link" active-class="active">
-          <span class="sb-icon">🤖</span>
-          <span v-if="!isCollapsed">AI增长引擎</span>
-        </router-link>
-      </template>
-
-      <!-- Risk & Compliance (shared) -->
-      <template v-if="!isCollapsed">
-        <div class="sb-section-title" v-if="hasSharedSection('credit')">风险合规</div>
-        <router-link v-if="hasSharedRoute('risk-warning')" to="/app/risk-warning" class="sb-link" active-class="active">
-          <span class="sb-icon">⚠️</span>
-          <span v-if="!isCollapsed">风险预警</span>
-        </router-link>
-        <router-link v-if="hasSharedRoute('credit-improvement')" to="/app/credit-improvement" class="sb-link" active-class="active">
-          <span class="sb-icon">💳</span>
-          <span v-if="!isCollapsed">信用提升</span>
-        </router-link>
-      </template>
-
-      <!-- Settings section -->
-      <div v-if="!isCollapsed" class="sb-section-title">系统设置</div>
-      <router-link to="/app/settings" class="sb-link" active-class="active">
-        <span class="sb-icon">⚙️</span>
-        <span v-if="!isCollapsed">偏好设置</span>
-      </router-link>
-      <router-link to="/app/settings/watermarks" class="sb-link" active-class="active">
-        <span class="sb-icon">💧</span>
-        <span v-if="!isCollapsed">水印预设</span>
-      </router-link>
-      <router-link to="/app/settings/templates" class="sb-link" active-class="active">
-        <span class="sb-icon">📐</span>
-        <span v-if="!isCollapsed">元数据模板</span>
-      </router-link>
-      <router-link to="/app/settings/subscriptions" class="sb-link" active-class="active">
-        <span class="sb-icon">🏷️</span>
-        <span v-if="!isCollapsed">订阅分级</span>
-      </router-link>
     </nav>
 
     <!-- Collapse button -->
@@ -144,8 +167,19 @@
       {{ isCollapsed ? '>>' : '<<' }}
     </button>
 
-    <!-- User footer — clickable avatar area -->
-    <div v-if="!isCollapsed" class="sb-footer">
+    <!-- Role info footer for non-creator roles -->
+    <div v-if="!isCollapsed && hasNonCreatorRole && roleInfo" class="sb-footer">
+      <div class="sb-type-selector">
+        <div class="sb-avatar" :style="{ background: roleInfo.color }">{{ roleInfo.icon }}</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">{{ roleInfo.label }}</div>
+          <div class="sb-user-role">{{ roleInfo.description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User footer for creator roles -->
+    <div v-else-if="!isCollapsed" class="sb-footer">
       <div class="sb-type-selector" @click="togglePicker">
         <div class="sb-avatar" :style="{ background: pickerTypeInfo?.color }">创</div>
         <div class="sb-user-info">
@@ -181,8 +215,11 @@
 import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { getAllCreators } from '@/types/creator'
+import { PARTICIPANT_ROLES, getParticipantRoleInfo } from '@/types/roles'
 import type { CreatorType } from '@/types/creator'
+import type { ParticipantRole } from '@/types/roles'
 
 const props = defineProps<{
   creatorType?: CreatorType
@@ -191,12 +228,26 @@ const props = defineProps<{
 
 const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
+const authStore = useAuthStore()
+
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const isHovering = ref(false)
 const pickerOpen = ref(false)
 
 const allTypes = getAllCreators()
 const currentType = computed(() => typeStore.getCurrentType())
+
+// Determine participant role from auth store
+const participantRole = computed<ParticipantRole | null>(() => {
+  const roles = authStore.participantRoles
+  if (roles.length === 0) return null
+  return roles[0] as ParticipantRole
+})
+
+const roleInfo = computed(() => {
+  if (!participantRole.value) return null
+  return getParticipantRoleInfo(participantRole.value)
+})
 
 const iconEmoji: Record<string, string> = {
   illustrator: '🖌️',
@@ -219,6 +270,12 @@ const typeInfo = computed(() =>
       ? typeStore.getTypeInfo(typeStore.getCurrentType())
       : null,
 )
+
+// Check if user has a non-creator participant role
+const hasNonCreatorRole = computed(() => {
+  const role = participantRole.value
+  return role && role !== 'creator'
+})
 
 function togglePicker() {
   pickerOpen.value = !pickerOpen.value

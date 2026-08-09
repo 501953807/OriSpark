@@ -118,13 +118,9 @@ class TestSaveEnforcementCase:
 class TestMyCases:
     """GET /enforcement-roi/my-cases — user-specific cases and stats."""
 
-    def test_my_cases_anonymous(self, client):
-        resp = client.get(f"{_BASE}/my-cases")
-        assert resp.status_code in (200, 401)
-        if resp.status_code == 200:
-            data = resp.json()
-            assert isinstance(data, dict)
-            assert "cases" in data or "statistics" in data
+    def test_my_cases_anonymous(self, client_no_auth):
+        resp = client_no_auth.get(f"{_BASE}/my-cases")
+        assert resp.status_code in (401, 403)
 
     def test_my_cases_authenticated(self, client):
         # Using auth'd client for successful case

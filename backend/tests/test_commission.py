@@ -1,10 +1,49 @@
 """Tests for commission project CRUD and related endpoints."""
 
 import pytest
+import time
+import json
+import base64
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
+
+
+def _create_token(user_id: str) -> str:
+    """Create a valid JWT token using the deps._sign function signature."""
+    header = {"alg": "HS256", "typ": "JWT"}
+    exp = int(time.time()) + 3600
+    payload = {"sub": user_id, "iat": int(time.time()), "exp": exp}
+
+    def b64encode(data: str) -> str:
+        return base64.urlsafe_b64encode(data.encode()).rstrip(b"=").decode()
+
+    h = b64encode(json.dumps(header))
+    p = b64encode(json.dumps(payload))
+    from app.deps import _sign
+    sig = _sign(f"{h}.{p}")
+    return f"{h}.{p}.{sig}"
+
+
+def _auth_headers(user_id: str = "current_user") -> dict:
+    """Return headers with a valid JWT token for the given user_id."""
+    token = _create_token(user_id)
+    return {"Authorization": f"Bearer {token}"}
+
+
+def _create_user(db_session: Session, user_id: str) -> None:
+    """Ensure a user exists in the DB to satisfy FK constraints."""
+    from app.models.system import User
+    existing = db_session.query(User).filter(User.id == user_id).first()
+    if not existing:
+        user = User(
+            id=user_id,
+            username=user_id,
+            email=f"{user_id}@test.local",
+        )
+        db_session.add(user)
+        db_session.flush()
 
 
 def _create_sample_project(db_session: Session) -> dict:
@@ -403,11 +442,12 @@ class TestWithdraw:
     """Test commission withdraw endpoints."""
 
     def test_create_withdrawal(self, client: TestClient, db_session: Session):
+        _create_user(db_session, "current_user")
         resp = client.post("/api/commission/withdraw", json={
             "amount_yuan": 100.0,
             "method": "bank_transfer",
             "account_info": {"bank": "ICBC", "account": "123456"},
-        })
+        }, headers=_auth_headers("current_user"))
         assert resp.status_code == 200
         data = resp.json()["data"]
         assert "id" in data
@@ -421,22 +461,23 @@ class TestWithdraw:
         assert resp.status_code == 400
 
     def test_get_withdrawals(self, client: TestClient, db_session: Session):
-        # Create a withdrawal first
+        _create_user(db_session, "current_user")
         client.post("/api/commission/withdraw", json={
             "amount_yuan": 50.0,
             "method": "alipay",
-        })
-        resp = client.get("/api/commission/withdrawals?limit=10")
+        }, headers=_auth_headers("current_user"))
+        resp = client.get("/api/commission/withdrawals?limit=10", headers=_auth_headers("current_user"))
         assert resp.status_code == 200
         data = resp.json()["data"]
         assert isinstance(data, list)
 
     def test_get_withdrawals_filtered(self, client: TestClient, db_session: Session):
+        _create_user(db_session, "current_user")
         client.post("/api/commission/withdraw", json={
             "amount_yuan": 200.0,
             "method": "bank_transfer",
-        })
-        resp = client.get("/api/commission/withdrawals?status=pending&limit=10")
+        }, headers=_auth_headers("current_user"))
+        resp = client.get("/api/commission/withdrawals?status=pending&limit=10", headers=_auth_headers("current_user"))
         assert resp.status_code == 200
         data = resp.json()["data"]
         assert isinstance(data, list)

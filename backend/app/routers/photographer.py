@@ -228,14 +228,15 @@ def stock_upload(
     db: Session = Depends(get_db),
 ):
     """将作品上传到指定的图库销售渠道."""
+    import asyncio
     svc = StockService(db)
-    result = svc.upload_to_channel(
+    result = asyncio.run(svc.upload_to_channel(
         channel_id=payload.channel_id,
         work_id=payload.work_id,
         file_path=payload.file_path,
         keywords=payload.keywords,
         categories=payload.categories,
-    )
+    ))
     return ApiResponse(
         data=StockUploadResult(**result),
         message="上传已提交",
@@ -314,7 +315,8 @@ def sync_sales(
     svc = StockService(db)
     sd = datetime.fromisoformat(start_date)
     ed = datetime.fromisoformat(end_date) if end_date else datetime.now(timezone.utc)
-    svc.sync_sales(channel_id, sd, ed)
+    import asyncio
+    asyncio.run(svc.sync_sales(channel_id, sd, ed))
 
     # Refresh summary from DB
     svc_mgr = PhotographerManagerService(db)
@@ -348,10 +350,10 @@ def validate_stock_file(
     v, file_path = svc.get_variant_with_file_path(work_id)
     if not file_path:
         raise HTTPException(status_code=400, detail="No file path found for work variant")
+    import asyncio
+    result = asyncio.run(stock_svc.validate_file(v.id, channel_name, file_path))
     return ApiResponse(
-        data=StockValidateResult(
-            **stock_svc.validate_file(v.id, channel_name, file_path),
-        ),
+        data=StockValidateResult(**result),
     )
 
 

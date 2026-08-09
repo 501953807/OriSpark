@@ -175,11 +175,14 @@ export const systemApi = {
     client.post('/system/notification/prefs', data),
 
   // ─── Onboarding (P2) ───
-  completeOnboarding: (data: { creator_type: string }) =>
+  completeOnboarding: (data: { creator_type: string; participant_role: string }) =>
     client.post('/auth/complete-onboarding', data),
 
   onboardingStatus: () =>
     client.get('/system/onboarding-status'),
+
+  participantRoles: () =>
+    client.get('/api/participant-roles'),
 
   // ─── Metadata Templates (P2-4) ───
   metadataTemplates: (params?: { is_default?: boolean }) =>

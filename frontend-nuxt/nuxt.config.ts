@@ -57,8 +57,8 @@ export default {
     dirs: ['composables', 'stores'],
   },
 
-  plugins: [
-    '~/plugins/motion.ts',
+  modules: [
+    '@pinia/nuxt',
   ],
 
   eslint: {

@@ -22,7 +22,7 @@
       :id="'main-content'"
       :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
     >
-      <AppTopbar @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
+      <AppTopbar :is-collapsed="isCollapsed" @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
         <router-view v-slot="{ Component }">

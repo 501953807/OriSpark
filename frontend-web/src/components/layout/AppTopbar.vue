@@ -21,20 +21,60 @@
 
       <!-- 集成 -->
       <router-link to="/app/integrations" class="btn btn-ghost" aria-label="第三方对接">🔌</router-link>
+
+      <!-- 用户下拉菜单 -->
+      <div class="user-menu" ref="userMenuRef">
+        <button class="user-menu-btn" @click="userMenuOpen = !userMenuOpen" aria-label="用户菜单">
+          <div class="user-avatar">{{ (authStore.displayName || 'U').charAt(0).toUpperCase() }}</div>
+          <span v-if="!isCollapsed" class="user-name">{{ authStore.displayName }}</span>
+          <span class="chevron">{{ userMenuOpen ? '▲' : '▼' }}</span>
+        </button>
+        <Teleport to="body">
+          <div v-if="userMenuOpen" class="user-menu-overlay" @click="userMenuOpen = false"></div>
+          <Transition name="fade">
+            <div v-if="userMenuOpen" class="user-dropdown">
+              <div class="dropdown-header">
+                <div class="dropdown-avatar">{{ (authStore.displayName || 'U').charAt(0).toUpperCase() }}</div>
+                <div class="dropdown-info">
+                  <div class="dropdown-name">{{ authStore.displayName }}</div>
+                  <div class="dropdown-role">{{ authStore.user?.role || '用户' }}</div>
+                </div>
+              </div>
+              <div class="dropdown-divider"></div>
+              <router-link to="/app/settings/subscriptions" class="dropdown-item" @click="userMenuOpen = false">
+                <span class="dropdown-icon">💎</span> 订阅管理
+              </router-link>
+              <router-link to="/app/settings" class="dropdown-item" @click="userMenuOpen = false">
+                <span class="dropdown-icon">⚙️</span> 偏好设置
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item dropdown-logout" @click="handleLogout">
+                <span class="dropdown-icon">🚪</span> 退出登录
+              </button>
+            </div>
+          </Transition>
+        </Teleport>
+      </div>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import NotificationPanel from '@/components/common/NotificationPanel.vue'
 
+defineProps<{ isCollapsed?: boolean }>()
 defineEmits(['toggleMobile'])
 
 const route = useRoute()
 const appStore = useAppStore()
+const authStore = useAuthStore()
+const userMenuOpen = ref(false)
+const userMenuRef = ref<HTMLElement | null>(null)
+
 const isDark = computed(() => appStore.isDark)
 
 const pageTitles: Record<string, string> = {
@@ -65,6 +105,27 @@ const pageTitle = computed(() => {
 function toggleTheme() {
   appStore.toggleTheme()
 }
+
+async function handleLogout() {
+  await authStore.logout()
+  userMenuOpen.value = false
+  window.location.href = '/login'
+}
+
+// 点击外部关闭下拉菜单
+function handleClickOutside(event: MouseEvent) {
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target as Node)) {
+    userMenuOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>
@@ -129,5 +190,147 @@ function toggleTheme() {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* 用户下拉菜单 */
+.user-menu {
+  position: relative;
+}
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--fg);
+  transition: background 0.2s;
+}
+.user-menu-btn:hover {
+  background: oklch(96% 0.004 240);
+}
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.user-name {
+  font-weight: 500;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chevron {
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  z-index: 200;
+  overflow: hidden;
+}
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.dropdown-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.dropdown-info {
+  flex: 1;
+  min-width: 0;
+}
+.dropdown-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dropdown-role {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: var(--fg);
+  text-decoration: none;
+  transition: background 0.15s;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: left;
+}
+.dropdown-item:hover {
+  background: oklch(96% 0.004 240);
+}
+.dropdown-icon {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+.dropdown-logout {
+  color: #ef4444;
+}
+.dropdown-logout:hover {
+  background: oklch(65% 0.15 10 / 0.08) !important;
+}
+.user-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

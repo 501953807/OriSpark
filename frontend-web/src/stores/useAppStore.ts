@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useGlobalEvents } from '@/composables/useGlobalEvents'
 
 export const useAppStore = defineStore('app', () => {
   // State
@@ -8,6 +9,13 @@ export const useAppStore = defineStore('app', () => {
   const workCount = ref(0)
   const notaryCount = ref(0)
   const alertCount = ref(0)
+
+  // 跨 store 数据同步：监听全局事件自动更新统计
+  const { on } = useGlobalEvents()
+  on('work:created', () => { workCount.value++ })
+  on('work:deleted', () => { workCount.value = Math.max(0, workCount.value - 1) })
+  on('work:notarized', () => { notaryCount.value++ })
+  on('alert:new', () => { alertCount.value++ })
 
   // Actions
   function toggleTheme() {

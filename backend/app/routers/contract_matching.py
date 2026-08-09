@@ -27,7 +27,7 @@ class MatchResponseRequest(BaseModel):
 @router.get("/matches/listed")
 async def get_listed_contracts(
     participant_type: str = Query(default="operator"),
-    limit: int = Query(default=20, le=100),
+    limit: int = Query(default=20, ge=0, le=100),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):

@@ -178,7 +178,7 @@ def extract_exif(file_path: str) -> Optional[dict]:
             if isinstance(val, bytes):
                 try:
                     val = val.decode("utf-8", errors="replace")
-                except:
+                except UnicodeDecodeError:
                     val = val.hex()
             result[final_name] = str(val)
         return result

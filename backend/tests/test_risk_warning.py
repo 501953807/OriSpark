@@ -67,7 +67,7 @@ class TestTaxDeadlines:
         mock_db = MagicMock()
         mock_db.query.return_value.filter.return_value.order_by.return_value.all.return_value = [mock_deadline]
 
-        from app.routers.risk_warning import list_tax_deadlines
-        result = list_tax_deadlines(mock_db)
+        from app.routers.risk_warning import list_tax_deadlines_endpoint
+        result = list_tax_deadlines_endpoint(mock_db)
         assert len(result) == 1
         assert result[0]["days_remaining"] == 30

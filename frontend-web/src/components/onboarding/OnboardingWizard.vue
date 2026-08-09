@@ -1,10 +1,38 @@
 <template>
   <div class="onboarding-card animate-fade-in">
-    <!-- ===== Step 0: 选择创作者类型 ===== -->
+    <!-- ===== Step 0: 选择参与角色 ===== -->
     <div v-if="currentStep === 0">
       <div class="ob-header">
-        <span class="ob-badge">Step 1/3</span>
+        <span class="ob-badge">Step 1/4</span>
         <h2 class="ob-title">👋 欢迎来到 OriStudio</h2>
+        <p class="ob-desc">选择你在合约市场中的参与角色，每个账户只能选择一个主身份</p>
+      </div>
+
+      <div class="role-grid">
+        <div v-for="role in participantRoles" :key="role.key"
+          :class="['role-card', { selected: selectedRole === role.key, disabled: role.requires_license }]"
+          @click="role.requires_license ? null : selectRole(role.key)"
+        >
+          <span class="role-icon">{{ role.icon }}</span>
+          <strong>{{ role.label }}</strong>
+          <p>{{ role.description }}</p>
+          <small v-if="role.requires_license">需公司资质认证</small>
+          <small v-else>个人可注册</small>
+        </div>
+      </div>
+
+      <div class="ob-actions">
+        <button class="btn btn-primary btn-lg" :disabled="!selectedRole || selectedRole === 'creator'" @click="nextStep">
+          {{ selectedRole && selectedRole !== 'creator' ? '下一步 →' : '请选择参与角色' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Step 1: 创作者类型（仅 creator 角色显示）===== -->
+    <div v-else-if="currentStep === 1 && selectedRole === 'creator'">
+      <div class="ob-header">
+        <span class="ob-badge">Step 2/4</span>
+        <h2 class="ob-title">🎨 选择创作者类型</h2>
         <p class="ob-desc">选择你的创作者类型，系统会自动调整最合适的功能</p>
       </div>
 
@@ -22,21 +50,22 @@
       </div>
 
       <div class="ob-actions">
+        <button class="btn btn-secondary" @click="prevStep">← 上一步</button>
         <button class="btn btn-primary btn-lg" :disabled="!selectedCreator" @click="nextStep">
           {{ selectedCreator ? '下一步 →' : '请先选择创作者类型' }}
         </button>
       </div>
     </div>
 
-    <!-- ===== Step 1: 导入第一批作品 ===== -->
     <div v-else-if="currentStep === 1">
       <div class="ob-header">
-        <span class="ob-badge">Step 2/3</span>
-        <h2 class="ob-title">📂 导入你的第一批作品</h2>
-        <p class="ob-desc">拖拽文件或文件夹到下方区域，支持批量导入</p>
+        <span class="ob-badge">Step 2/4</span>
+        <h2 class="ob-title">📂 导入你的作品（可选）</h2>
+        <p class="ob-desc">如果你是创作者，可以导入作品；其他角色可跳过此步骤</p>
       </div>
 
       <FileDropZone
+        v-if="selectedRole === 'creator'"
         :multiple="true"
         @uploaded="onFilesImported"
       />
@@ -52,26 +81,26 @@
       <div class="ob-header">
         <div class="ob-success-icon">✨</div>
         <h2 class="ob-title">你已经准备好了！</h2>
-        <p class="ob-desc">系统已根据你选择的创作者类型自动配置</p>
+        <p class="ob-desc">系统已根据你的角色 {{ roleLabel }} 自动配置</p>
       </div>
 
       <div class="workflow-cards">
-        <div class="wf-card">
+        <div v-if="selectedRole === 'creator'" class="wf-card">
           <span class="wf-icon">🎨</span>
           <strong>管理作品</strong>
           <p>{{ importCount > 0 ? `查看刚导入的 ${importCount} 个作品` : '拖拽导入作品' }}</p>
         </div>
-        <div class="wf-arrow">→</div>
-        <div class="wf-card">
+        <div v-if="selectedRole === 'creator'" class="wf-arrow">→</div>
+        <div v-if="selectedRole === 'creator'" class="wf-card">
           <span class="wf-icon">🛡️</span>
           <strong>保护版权</strong>
           <p>选中作品一键存证</p>
         </div>
-        <div class="wf-arrow">→</div>
+        <div v-if="selectedRole === 'creator'" class="wf-arrow">→</div>
         <div class="wf-card">
-          <span class="wf-icon">💰</span>
-          <strong>开始变现</strong>
-          <p>将作品变成产品销售</p>
+          <span class="wf-icon">{{ roleIcon }}</span>
+          <strong>{{ roleLabel }}</strong>
+          <p>开始使用 {{ roleLabel }} 功能</p>
         </div>
       </div>
 
@@ -84,8 +113,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import FileDropZone from '@/components/common/FileDropZone.vue'
+import { systemApi } from '@/api/system'
+import { PARTICIPANT_ROLES } from '@/types/roles'
+import type { ParticipantRole } from '@/types/roles'
 
 const props = withDefaults(defineProps<{
   initialCreatorType?: string
@@ -95,13 +127,25 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  finish: [payload: { creatorType: string; importCount: number }]
+  finish: [payload: { creatorType: string; participantRole: string; importCount: number }]
   skip: []
 }>()
 
 const currentStep = ref(0)
+const selectedRole = ref<ParticipantRole>('creator')
 const selectedCreator = ref(props.initialCreatorType || '')
 const importCount = ref(0)
+const participantRoles = ref<any[]>([])
+
+const roleLabel = computed(() => {
+  if (!selectedRole.value) return ''
+  return PARTICIPANT_ROLES[selectedRole.value]?.label || selectedRole.value
+})
+
+const roleIcon = computed(() => {
+  if (!selectedRole.value) return '🎨'
+  return PARTICIPANT_ROLES[selectedRole.value]?.icon || '🎨'
+})
 
 const creatorTypes = [
   {
@@ -136,13 +180,20 @@ const creatorTypes = [
   },
 ]
 
+function selectRole(key: string) {
+  selectedRole.value = key as ParticipantRole
+  localStorage.setItem('oristudio-participant-role', key)
+}
+
 function selectCreator(key: string) {
   selectedCreator.value = key
+  localStorage.setItem('oristudio-creator-type', key)
 }
 
 function nextStep() {
-  if (selectedCreator.value) {
-    localStorage.setItem('oristudio-creator-type', selectedCreator.value)
+  if (currentStep.value === 0 && selectedRole.value && selectedRole.value !== 'creator') {
+    currentStep.value++
+  } else if (currentStep.value === 1 && (selectedRole.value !== 'creator' || selectedCreator.value)) {
     currentStep.value++
   }
 }
@@ -162,17 +213,33 @@ function skipImport() {
 
 function handleFinish() {
   emit('finish', {
-    creatorType: selectedCreator.value,
+    creatorType: selectedRole.value === 'creator' ? selectedCreator.value : '',
+    participantRole: selectedRole.value,
     importCount: importCount.value,
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const res = await systemApi.participantRoles()
+    participantRoles.value = res.data.data || []
+  } catch {
+    // Fallback to static definition
+    participantRoles.value = Object.values(PARTICIPANT_ROLES)
+  }
+
   // Restore from localStorage if no initial prop
-  if (props.autoStart && !selectedCreator.value) {
-    const saved = localStorage.getItem('oristudio-creator-type')
-    if (saved) {
-      selectedCreator.value = saved
+  if (props.autoStart) {
+    const savedRole = localStorage.getItem('oristudio-participant-role')
+    const savedCreator = localStorage.getItem('oristudio-creator-type')
+    if (savedRole) {
+      selectedRole.value = savedRole as ParticipantRole
+      if (savedCreator && selectedRole.value === 'creator') {
+        selectedCreator.value = savedCreator
+        currentStep.value = 2 // Skip to import step
+      } else {
+        currentStep.value = 1
+      }
     }
   }
 })
@@ -197,6 +264,18 @@ onMounted(() => {
 .ob-desc { font-size: 0.92rem; color: var(--text-secondary); margin: 0; }
 
 .creator-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.role-card {
+  position: relative; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
+  cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);
+}
+.role-card:hover:not(.disabled) { border-color: var(--accent); }
+.role-card.selected { border-color: var(--accent); background: oklch(56% 0.12 170 / 0.04); }
+.role-card.disabled { opacity: 0.5; cursor: not-allowed; }
+.role-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.role-card strong { font-size: 0.9rem; display: block; color: var(--text-primary); }
+.role-card p { font-size: 0.76rem; color: var(--text-secondary); margin: 4px 0; }
+.role-card small { font-size: 0.7rem; color: var(--muted); display: block; margin-top: 4px; }
 .creator-card {
   position: relative; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
   cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);

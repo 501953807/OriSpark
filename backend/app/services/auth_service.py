@@ -94,11 +94,25 @@ def _migrate_json_users(db: Session):
 
 def _user_to_dict(user: User) -> dict:
     """用户对象转字典."""
+    roles = user.participant_roles or []
+    role_name_map = {
+        "creator": "创作者",
+        "operator": "运营方",
+        "legal_rep": "法务代表",
+        "tax_agent": "税务代理",
+        "logistics": "物流方",
+        "insurer": "保险方",
+        "trader": "采购方",
+        "payment_provider": "支付托管方",
+        "platform": "平台方",
+    }
     return {
         "id": user.id,
         "username": user.username,
         "email": user.email,
         "role": "管理员" if user.role == "admin" else ("本地用户" if user.role == "local" else "注册用户"),
+        "participant_roles": roles,
+        "participant_role_names": [role_name_map.get(r, r) for r in roles],
         "avatar_url": user.avatar_url,
         "google_name": user.google_name,
         "google_picture": user.google_picture,
@@ -110,12 +124,50 @@ def _user_to_dict(user: User) -> dict:
         "status": user.status,
         "last_login_at": user.last_login_at.isoformat() if user.last_login_at else None,
         "last_login_provider": user.last_login_provider,
+        "creator_type": user.creator_type,
     }
 
 
 # ================================================================
 # -- 核心业务函数 --
 # ================================================================
+
+
+def get_or_create_local_user(db: Session) -> tuple[dict, str]:
+    """获取或创建本地演示用户，用于开发/演示模式免登录."""
+    _migrate_json_users(db)
+
+    local_user = db.query(User).filter(User.id == "local").first()
+    if local_user:
+        local_user.last_login_at = datetime.now(timezone.utc)
+        local_user.last_login_provider = "local"
+        local_user.login_count = (local_user.login_count or 0) + 1
+        db.add(UserLoginHistory(
+            id=hashlib.md5(f"login_local_{time.time()}".encode()).hexdigest()[:16],
+            user_id="local",
+            provider="local",
+            success=True,
+        ))
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+        return _user_to_dict(local_user)
+
+    user = User(
+        id="local",
+        username="创作者",
+        email="local@oristudio",
+        password_hash=_hash_password("local"),
+        role="local",
+        status="active",
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    token = _create_token("local")
+    return _user_to_dict(user), token
+
 
 def register_user(db: Session, username: str, email: str, password: str) -> tuple[dict, str]:
     """用户注册. Returns: (user_dict, token)."""
@@ -291,13 +343,14 @@ def change_user_password(db: Session, user_id: str, current_password: str, new_p
     return True
 
 
-def complete_onboarding(db: Session, user_id: str, creator_type: str) -> dict:
+def complete_onboarding(db: Session, user_id: str, creator_type: str, participant_role: str) -> dict:
     """完成 Onboarding 向导. Returns: result dict."""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise ValueError("用户不存在")
 
     user.creator_type = creator_type
+    user.participant_roles = [participant_role]
 
     setting = db.query(SystemSetting).filter(SystemSetting.key == "onboarding_completed").first()
     if setting:
@@ -320,7 +373,8 @@ def complete_onboarding(db: Session, user_id: str, creator_type: str) -> dict:
         db.rollback()
         raise
 
-    return {"creator_type": creator_type, "onboarding_completed": True, "default_platforms": default_platforms}
+    return {"creator_type": creator_type, "participant_role": participant_role,
+            "onboarding_completed": True, "default_platforms": default_platforms}
 
 
 def create_user_from_wechat_openid(db: Session, openid: str) -> User:

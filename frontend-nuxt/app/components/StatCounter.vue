@@ -1,7 +1,6 @@
 <!-- app/components/StatCounter.vue -->
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useMotionStore } from '@/stores/motion'
 
 const props = defineProps<{
   value: number
@@ -12,7 +11,6 @@ const props = defineProps<{
 
 const valueEl = ref<HTMLSpanElement | null>(null)
 let animationId: number | null = null
-const motionStore = useMotionStore()
 
 const animateValue = (start: number, end: number, duration: number) => {
   const startTime = performance.now()
@@ -26,9 +24,9 @@ const animateValue = (start: number, end: number, duration: number) => {
       valueEl.value.textContent = Math.round(current).toLocaleString()
     }
 
-    if (progress < 1 && motionStore.shouldAnimate) {
+    if (progress < 1) {
       animationId = requestAnimationFrame(update)
-    } else if (!motionStore.shouldAnimate && valueEl.value) {
+    } else if (valueEl.value) {
       valueEl.value.textContent = end.toLocaleString()
     }
   }
@@ -44,7 +42,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (animationId) cancelAnimationFrame(animationId)
-}
+})
 
 // 响应式更新值
 watch(() => props.value, (newVal) => {
@@ -54,7 +52,7 @@ watch(() => props.value, (newVal) => {
 </script>
 
 <template>
-  <div class="stat-card" :class="{ 'fade-in': motionStore.shouldAnimate }">
+  <div class="stat-card">
     <div class="stat-label">{{ label || '' }}</div>
     <div class="stat-value">
       <span ref="valueEl">0</span>{{ suffix }}
@@ -111,8 +109,7 @@ watch(() => props.value, (newVal) => {
 
 /* 减速模式时简化动画 */
 @media (prefers-reduced-motion: reduce) {
-  .stat-card, .fade-in {
-    animation: none !important;
+  .stat-card {
     transition: none !important;
   }
 }

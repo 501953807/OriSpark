@@ -5,7 +5,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 defineProps<{
   title: string
   thumbnail: string
-  id: number
+  id: string | number
 }>()
 
 const card = ref<HTMLDivElement | null>(null)
@@ -51,7 +51,7 @@ onMounted(() => {
     card.value.addEventListener('touchend', handleLeave)
     card.value.addEventListener('touchcancel', handleLeave)
   }
-}
+})
 
 onBeforeUnmount(() => {
   if (card.value) {
@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
     card.value.removeEventListener('touchend', handleLeave)
     card.value.removeEventListener('touchcancel', handleLeave)
   }
-}
+})
 </script>
 
 <template>

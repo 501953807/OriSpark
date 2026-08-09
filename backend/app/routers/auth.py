@@ -30,7 +30,7 @@ from app.services.auth_service import (
     register_user, login_user, get_user_by_id, update_user_profile,
     get_user_by_openid, create_user_from_openid, unbind_provider,
     list_user_sessions, change_user_password, complete_onboarding,
-    VALID_CREATOR_TYPES, _create_token,
+    VALID_CREATOR_TYPES, _create_token, get_or_create_local_user,
 )
 
 router = APIRouter()
@@ -68,6 +68,7 @@ class ChangePasswordRequest(BaseModel):
 
 class CompleteOnboardingRequest(BaseModel):
     creator_type: str
+    participant_role: str
 
 
 # ================================================================
@@ -300,7 +301,7 @@ def complete_onboarding_endpoint(
     user_id: str = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ):
-    """完成 Onboarding 向导, 持久化 creator_type 和默认配置."""
+    """完成 Onboarding 向导, 持久化 creator_type, participant_role 和默认配置."""
     if user_id == "local":
         raise HTTPException(status_code=401, detail="请先登录")
 
@@ -308,8 +309,45 @@ def complete_onboarding_endpoint(
     if not creator_type or creator_type not in VALID_CREATOR_TYPES:
         raise HTTPException(status_code=400, detail=f"无效的创作者类型，可选值: {', '.join(VALID_CREATOR_TYPES)}")
 
+    from app.services.role_permission_service import PARTICIPANT_ROLES
+    participant_role = data.participant_role
+    if not participant_role or participant_role not in PARTICIPANT_ROLES:
+        raise HTTPException(status_code=400,
+            detail=f"无效的参与角色，可选值: {', '.join(PARTICIPANT_ROLES.keys())}")
+
     try:
-        result = complete_onboarding(db, user_id, creator_type)
+        result = complete_onboarding(db, user_id, creator_type, participant_role)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     return ApiResponse(data=result, message="Onboarding 完成")
+
+
+PARTICIPANT_ROLE_INFO = [
+    {"key": "creator", "name": "创作者", "desc": "内容/作品原创者，无资质要求", "requires_license": False},
+    {"key": "operator", "name": "运营方", "desc": "作品运营/推广代理，需公司资质", "requires_license": True},
+    {"key": "legal_rep", "name": "法务代表", "desc": "法律事务代理人，需律师资质", "requires_license": True},
+    {"key": "tax_agent", "name": "税务代理", "desc": "税务申报/合规代理，需执业资质", "requires_license": True},
+    {"key": "logistics", "name": "物流方", "desc": "实体商品配送，需物流经营资质", "requires_license": True},
+    {"key": "insurer", "name": "保险方", "desc": "版权/履约保险，需保险经营许可", "requires_license": True},
+    {"key": "trader", "name": "采购方", "desc": "商业授权采购者，需企业注册", "requires_license": True},
+    {"key": "payment_provider", "name": "支付托管方", "desc": "资金托管/结算，需支付牌照", "requires_license": True},
+    {"key": "platform", "name": "平台方", "desc": "OriStudio 平台运营", "requires_license": True},
+]
+
+@router.post("/auth/local-login", response_model=ApiResponse)
+def local_login_endpoint(db: Session = Depends(get_db)):
+    """本地演示模式登录 — 创建或获取 local 用户，返回真实 JWT token.
+
+    用于开发/演示环境跳过注册登录流程.
+    """
+    try:
+        user_dict, token = get_or_create_local_user(db)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    return ApiResponse(data={"token": token, "user": user_dict})
+
+
+@router.get("/api/participant-roles", response_model=ApiResponse)
+def get_participant_roles_endpoint(db: Session = Depends(get_db)):
+    """获取 9 方参与角色定义列表."""
+    return ApiResponse(data=PARTICIPANT_ROLE_INFO, message="ok")
