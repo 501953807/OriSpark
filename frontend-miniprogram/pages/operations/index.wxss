@@ -1,0 +1,152 @@
+/* pages/operations/index.wxss */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 24rpx;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+  overflow-x: auto;
+  padding-bottom: 8rpx;
+}
+
+.filter-item {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  background: #fff;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 32rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.filter-item.active {
+  background: #059669;
+  color: #fff;
+  border-color: #059669;
+}
+
+.operation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.operation-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.05);
+}
+
+.op-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.op-work {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f2937;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-left: 16rpx;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-badge.accepted {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.status-badge.rejected {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.op-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  font-size: 22rpx;
+  color: #6b7280;
+  margin-bottom: 12rpx;
+}
+
+.op-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  font-size: 22rpx;
+  color: #374151;
+  margin-bottom: 12rpx;
+}
+
+.op-notes {
+  font-size: 24rpx;
+  color: #4b5563;
+  padding: 12rpx;
+  background: #f9fafb;
+  border-radius: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.op-footer {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f3f4f6;
+}
+
+.btn-accept {
+  flex: 1;
+  padding: 16rpx;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.btn-reject {
+  flex: 1;
+  padding: 16rpx;
+  background: #fff;
+  color: #ef4444;
+  border: 1rpx solid #ef4444;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.loading-text,
+.empty-state {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #9ca3af;
+  font-size: 28rpx;
+}

@@ -1,0 +1,38 @@
+<!--pages/operations/index.wxml-->
+<view class="container">
+  <view class="section-title">运营合作</view>
+
+  <!-- 状态筛选 -->
+  <view class="filter-bar">
+    <view class="filter-item {{activeTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">全部</view>
+    <view class="filter-item {{activeTab === 'pending' ? 'active' : ''}}" bindtap="switchTab" data-tab="pending">待处理</view>
+    <view class="filter-item {{activeTab === 'accepted' ? 'active' : ''}}" bindtap="switchTab" data-tab="accepted">已接受</view>
+    <view class="filter-item {{activeTab === 'rejected' ? 'active' : ''}}" bindtap="switchTab" data-tab="rejected">已拒绝</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+  <view wx:elif="{{operations.length === 0}}" class="empty-state">暂无合作记录</view>
+  <view wx:else class="operation-list">
+    <view wx:for="{{operations}}" wx:key="id" class="operation-card">
+      <view class="op-header">
+        <text class="op-work">{{item.work_title || item.work_id}}</text>
+        <view class="status-badge {{item.status}}">{{item.status === 'pending' ? '待处理' : item.status === 'accepted' ? '已接受' : item.status === 'rejected' ? '已拒绝' : item.status}}</view>
+      </view>
+      <view class="op-meta">
+        <text wx:if="{{item.creator_name}}">创作者: {{item.creator_name}}</text>
+        <text wx:if="{{item.operator_name}}">运营者: {{item.operator_name}}</text>
+        <text class="op-time">{{formatTime(item.created_at)}}</text>
+      </view>
+      <view class="op-scope" wx:if="{{item.scope}}">
+        <text wx:if="{{item.scope.regions && item.scope.regions.length}}">地区: {{item.scope.regions.join(',')}}</text>
+        <text wx:if="{{item.scope.channels && item.scope.channels.length}}">渠道: {{item.scope.channels.join(',')}}</text>
+        <text wx:if="{{item.scope.duration_months}}">期限: {{item.scope.duration_months}}个月</text>
+      </view>
+      <view class="op-notes" wx:if="{{item.notes}}">{{item.notes}}</view>
+      <view class="op-footer" wx:if="{{item.status === 'pending'}}">
+        <button class="btn-accept" bindtap="handleAccept" data-id="{{item.id}}">接受</button>
+        <button class="btn-reject" bindtap="handleReject" data-id="{{item.id}}">拒绝</button>
+      </view>
+    </view>
+  </view>
+</view>

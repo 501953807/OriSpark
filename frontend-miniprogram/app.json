@@ -6,7 +6,9 @@
     "pages/contracts/index",
     "pages/contracts/detail",
     "pages/notifications/index",
-    "pages/profile/index"
+    "pages/profile/index",
+    "pages/operations/index",
+    "pages/data/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#059669",
