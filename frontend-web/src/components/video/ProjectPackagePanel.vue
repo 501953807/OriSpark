@@ -126,6 +126,7 @@
 import { ref, computed, watch } from 'vue'
 import { useVideoStore } from '@/stores/useVideoStore'
 import type { VideoWork } from '@/types/video'
+import { videoApi } from '@/api/video'
 
 interface HistoryEntry {
   name: string
@@ -160,11 +161,17 @@ const materialAssets = ref<AssetItem[]>([])
 const effectAssets = ref<AssetItem[]>([])
 
 async function loadAssets(workId: string) {
-  // TODO: Replace with videoApi.getProjectPackageAssets(workId) when backend endpoint is ready
-  // const res = await videoApi.getProjectPackageAssets(workId)
-  // timelineAssets.value = res.data.timeline
-  // materialAssets.value = res.data.materials
-  // effectAssets.value = res.data.effects
+  try {
+    const res = await videoApi.getProjectPackage(workId)
+    const data = res.data as { timeline?: AssetItem[]; materials?: AssetItem[]; effects?: AssetItem[] } | null
+    timelineAssets.value = data?.timeline ?? []
+    materialAssets.value = data?.materials ?? []
+    effectAssets.value = data?.effects ?? []
+  } catch {
+    timelineAssets.value = []
+    materialAssets.value = []
+    effectAssets.value = []
+  }
 }
 
 // ── Download history ───────────────────────────────────────────

@@ -303,6 +303,19 @@ class WorkManagerService:
             raise HTTPException(status_code=404, detail="作品不存在")
         return ApiResponse(data=_work_to_response(work))
 
+    def get_project_package(self, work_id: str) -> ApiResponse:
+        """获取作品的项目包数据 (P3-1)."""
+        work = self.db.query(Work).filter(Work.id == work_id).first()
+        if not work:
+            raise HTTPException(status_code=404, detail="作品不存在")
+        if not work.project_files:
+            return ApiResponse(data={"timeline": [], "materials": [], "effects": []})
+        try:
+            files = json.loads(work.project_files) if isinstance(work.project_files, str) else work.project_files
+            return ApiResponse(data=files)
+        except (json.JSONDecodeError, TypeError):
+            return ApiResponse(data={"timeline": [], "materials": [], "effects": []})
+
     def update_work(self, work_id: str, data: WorkUpdate) -> ApiResponse:
         work = self.db.query(Work).filter(Work.id == work_id).first()
         if not work:

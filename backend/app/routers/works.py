@@ -462,3 +462,18 @@ def single_cull(
     """单个作品策展操作 (P2-3)."""
     svc = WorkManagerService(db)
     return svc.single_cull(work_id, data.action)
+
+
+# ============================================================
+# 26. GET /works/{work_id}/project-package — get_project_package
+# ============================================================
+
+@router.get("/works/{work_id}/project-package", response_model=ApiResponse)
+def get_project_package(
+    work_id: str,
+    user_id: str = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
+    """获取视频项目包数据 (timeline/materials/effects)."""
+    svc = WorkManagerService(db)
+    return svc.get_project_package(work_id)

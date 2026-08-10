@@ -33,7 +33,7 @@ export const videoApi = {
 
   /** 获取工程包 */
   getProjectPackage: (workId: string) =>
-    client.get<{ data: unknown }>(`/work/${workId}/project-package`),
+    client.get<{ data: { timeline?: unknown[]; materials?: unknown[]; effects?: unknown[] } }>(`/works/${workId}/project-package`),
 
   /** 分发到平台 */
   distributeToPlatform: (workId: string, data: { platform: string; title: string; description?: string }) =>
