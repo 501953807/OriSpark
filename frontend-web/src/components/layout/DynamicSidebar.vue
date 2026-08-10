@@ -208,6 +208,16 @@
         </Transition>
       </Teleport>
     </div>
+
+    <!-- Dev mode role switcher -->
+    <div v-if="!isCollapsed && isDevMode" class="sb-dev-tools">
+      <div class="sb-dev-label">调试: 角色</div>
+      <select class="sb-dev-select" :value="currentDevRole" @change="switchDevRole">
+        <option v-for="r in allRoles" :key="r.key" :value="r.key">
+          {{ r.label }}
+        </option>
+      </select>
+    </div>
   </aside>
 </template>
 
@@ -289,6 +299,44 @@ function selectType(type: CreatorType) {
   typeStore.switchType(type)
   pickerOpen.value = false
 }
+
+// ── Dev Mode Role Switcher ─────────────────────────────────────────────────
+const isDevMode = import.meta.env.DEV
+const DEV_ROLES: { key: ParticipantRole; label: string }[] = [
+  { key: 'creator', label: '创作者' },
+  { key: 'operator', label: '运营方' },
+  { key: 'legal_rep', label: '法务代表' },
+  { key: 'tax_agent', label: '税务代理' },
+  { key: 'logistics', label: '物流商' },
+  { key: 'insurer', label: '保险公司' },
+  { key: 'trader', label: '贸易商' },
+  { key: 'payment_provider', label: '支付机构' },
+  { key: 'platform', label: '平台方' },
+]
+const currentDevRole = ref<ParticipantRole>('operator')
+
+function switchDevRole(e: Event) {
+  const role = (e.target as HTMLSelectElement).value as ParticipantRole
+  currentDevRole.value = role
+  // Simulate role change by updating localStorage (mimics real login)
+  localStorage.setItem('oristudio-participant-role', role)
+  const userData = authStore.user || { id: 'local', username: '创作者', email: 'local@test.com', role: '本地用户' }
+  localStorage.setItem('oristudio-user', JSON.stringify({
+    ...userData,
+    participant_roles: [role],
+    participant_role_names: [getParticipantRoleInfo(role)?.label ?? role],
+    login_platform: 'web',
+  }))
+  // Refresh the auth store
+  authStore.user = {
+    ...userData,
+    participant_roles: [role],
+    participant_role_names: [getParticipantRoleInfo(role)?.label ?? role],
+    login_platform: 'web',
+  }
+}
+
+const allRoles = DEV_ROLES
 
 const iconMap: Record<string, string> = {
   works: '🎨',
@@ -671,5 +719,34 @@ function hasSharedSection(sectionRoute: string): boolean {
 .picker-fade-enter-from,
 .picker-fade-leave-to {
   opacity: 0;
+}
+
+/* Dev mode role switcher */
+.sb-dev-tools {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-dev-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.sb-dev-select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.sb-dev-select:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 </style>
