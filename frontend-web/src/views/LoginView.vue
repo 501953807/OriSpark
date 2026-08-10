@@ -51,20 +51,10 @@
           <label for="login-password">密码</label>
           <input id="login-password" v-model="form.password" type="password" class="form-input" placeholder="••••••" required minlength="6" autocomplete="current-password" />
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" :disabled="loading">
+        <button type="submit" class="btn btn-primary login-submit-btn" :disabled="loading">
           {{ loading ? '处理中...' : mode === 'login' ? '登录' : '注册' }}
         </button>
       </form>
-
-      <!-- Divider -->
-      <div class="login-divider">
-        <span>或</span>
-      </div>
-
-      <!-- Skip button -->
-      <router-link to="/app" class="btn btn-ghost" style="justify-content:center;width:100%">
-        💡 跳过登录，直接进入（本地模式）
-      </router-link>
 
       <!-- Back to landing -->
       <router-link to="/" class="login-back">← 返回首页</router-link>
@@ -207,4 +197,12 @@ function oauthLogin(provider: string) {
   font-size: 0.85rem; color: var(--muted); text-decoration: none;
 }
 .login-back:hover { color: var(--fg); }
+.login-submit-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+  align-self: stretch;
+  padding: 14px 20px;
+  font-size: 1rem;
+}
 </style>

@@ -213,3 +213,34 @@ def get_current_user(
     """
     user_id = get_current_user_id(authorization)
     return db.query(UserModel).filter(UserModel.id == user_id).first()
+
+
+# ================================================================
+# -- v6.0 平台角色依赖 --
+# ================================================================
+
+def require_creator(
+    authorization: Optional[str] = Header(None, alias="Authorization"),
+    db: Session = Depends(get_db),
+) -> UserModel:
+    """要求创作者角色登录. 非创作者返回 403."""
+    user = get_current_user(authorization, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="认证失败")
+    if not user.creator_type:
+        raise HTTPException(status_code=403, detail="需要创作者账号")
+    return user
+
+
+def require_operator(
+    authorization: Optional[str] = Header(None, alias="Authorization"),
+    db: Session = Depends(get_db),
+) -> UserModel:
+    """要求非创作者角色登录. 创作者返回 403."""
+    user = get_current_user(authorization, db)
+    if not user:
+        raise HTTPException(status_code=401, detail="认证失败")
+    roles = user.participant_roles or []
+    if not roles or roles == ["creator"]:
+        raise HTTPException(status_code=403, detail="需要运营者账号")
+    return user

@@ -125,6 +125,10 @@ def _user_to_dict(user: User) -> dict:
         "last_login_at": user.last_login_at.isoformat() if user.last_login_at else None,
         "last_login_provider": user.last_login_provider,
         "creator_type": user.creator_type,
+        "company_name": user.company_name,
+        "company_license_no": user.company_license_no,
+        "qualification_verified": user.qualification_verified,
+        "login_platform": user.login_platform,
     }
 
 
@@ -185,6 +189,78 @@ def register_user(db: Session, username: str, email: str, password: str) -> tupl
         password_hash=_hash_password(password),
         role="user",
         status="active",
+    )
+    db.add(user)
+    db.add(UserLoginHistory(
+        id=hashlib.md5(f"reg_{user_id}_{time.time()}".encode()).hexdigest()[:16],
+        user_id=user_id,
+        provider="email",
+    ))
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    token = _create_token(user_id)
+    return _user_to_dict(user), token
+
+
+def register_creator(db: Session, username: str, email: str, password: str) -> tuple[dict, str]:
+    """创作者注册 — 设置 login_platform='web'."""
+    _migrate_json_users(db)
+
+    existing = db.query(User).filter(User.email == email).first()
+    if existing:
+        raise ValueError("该邮箱已注册")
+
+    user_id = hashlib.md5(email.encode()).hexdigest()[:16]
+    user = User(
+        id=user_id,
+        username=username,
+        email=email,
+        password_hash=_hash_password(password),
+        role="user",
+        status="active",
+        login_platform="web",
+    )
+    db.add(user)
+    db.add(UserLoginHistory(
+        id=hashlib.md5(f"reg_{user_id}_{time.time()}".encode()).hexdigest()[:16],
+        user_id=user_id,
+        provider="email",
+    ))
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    token = _create_token(user_id)
+    return _user_to_dict(user), token
+
+
+def register_operator(db: Session, username: str, email: str, password: str,
+                      participant_roles: list[str]) -> tuple[dict, str]:
+    """非创作者注册 — 设置 login_platform='nuxt'."""
+    _migrate_json_users(db)
+
+    existing = db.query(User).filter(User.email == email).first()
+    if existing:
+        raise ValueError("该邮箱已注册")
+
+    user_id = hashlib.md5(email.encode()).hexdigest()[:16]
+    user = User(
+        id=user_id,
+        username=username,
+        email=email,
+        password_hash=_hash_password(password),
+        role="user",
+        status="active",
+        login_platform="nuxt",
+        participant_roles=participant_roles,
     )
     db.add(user)
     db.add(UserLoginHistory(
@@ -343,7 +419,18 @@ def change_user_password(db: Session, user_id: str, current_password: str, new_p
     return True
 
 
-def complete_onboarding(db: Session, user_id: str, creator_type: str, participant_role: str) -> dict:
+def complete_onboarding(
+    db: Session,
+    user_id: str,
+    creator_type: str,
+    participant_role: str,
+    company_name: Optional[str] = None,
+    company_license_no: Optional[str] = None,
+    company_address: Optional[str] = None,
+    company_contact: Optional[str] = None,
+    company_phone: Optional[str] = None,
+    company_email: Optional[str] = None,
+) -> dict:
     """完成 Onboarding 向导. Returns: result dict."""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -351,6 +438,21 @@ def complete_onboarding(db: Session, user_id: str, creator_type: str, participan
 
     user.creator_type = creator_type
     user.participant_roles = [participant_role]
+
+    # v6.0: 根据角色设置登录平台
+    if participant_role == "creator" or (creator_type and not participant_roles):
+        user.login_platform = "web"
+    elif participant_role != "creator" or participant_roles:
+        user.login_platform = "nuxt"
+
+    # 保存公司资质信息 (非创作者角色)
+    if participant_role != 'creator':
+        user.company_name = company_name
+        user.company_license_no = company_license_no
+        user.company_address = company_address
+        user.company_contact = company_contact
+        user.company_phone = company_phone
+        user.company_email = company_email
 
     setting = db.query(SystemSetting).filter(SystemSetting.key == "onboarding_completed").first()
     if setting:

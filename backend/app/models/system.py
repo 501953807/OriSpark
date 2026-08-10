@@ -169,6 +169,9 @@ class User(Base):
     # v3 创作者类型 (Onboarding Step1 选择)
     creator_type = Column(String(20), nullable=True)  # illustrator/photographer/video_creator/crafter/musician/writer
 
+    # v6.0 登录平台路由标识
+    login_platform = Column(String(20), default="web")  # 'web' | 'nuxt' | 'miniprogram'
+
     # 合约市场 9 方参与角色 (v5.0) — creator/operator/legal_rep/tax_agent/logistics/insurer/trader/payment_provider/platform
     participant_roles = Column(JSON, default=list)
     # 平台运营角色标识
@@ -179,6 +182,15 @@ class User(Base):
     is_insurer = Column(Boolean, default=False)
     # 物流方标识
     is_logistics = Column(Boolean, default=False)
+    # 公司资质信息 (非创作者角色需要)
+    company_name = Column(String(500), nullable=True)
+    company_license_no = Column(String(200), nullable=True)
+    company_address = Column(Text, nullable=True)
+    company_contact = Column(String(200), nullable=True)
+    company_phone = Column(String(50), nullable=True)
+    company_email = Column(String(200), nullable=True)
+    qualification_verified = Column(Boolean, default=False)
+    qualification_verified_at = Column(DateTime, nullable=True)
 
     # 登录信息
     last_login_at = Column(DateTime, nullable=True)

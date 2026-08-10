@@ -129,7 +129,7 @@ h3 { font-size: 1.5rem; }
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   font-family: var(--font-body);
-  align-self: flex-end; /* Align buttons at bottom of cards */
+  align-self: auto; /* Override flex-end for form buttons */
 }
 
 .btn:active:not(:disabled) {

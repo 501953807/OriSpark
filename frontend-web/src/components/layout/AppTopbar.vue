@@ -16,9 +16,6 @@
       <!-- 通知面板 -->
       <NotificationPanel />
 
-      <!-- 设置 -->
-      <router-link to="/app/settings" class="btn btn-ghost" aria-label="偏好设置">⚙️</router-link>
-
       <!-- 集成 -->
       <router-link to="/app/integrations" class="btn btn-ghost" aria-label="第三方对接">🔌</router-link>
 

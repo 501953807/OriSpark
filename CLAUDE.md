@@ -4,10 +4,11 @@
 
 ```
 OriSpark/
-├── docs/                     # 核心开发文档
+├── docs/                     # 核心开发文档（仅本地参考，不提交 Git）
 │   ├── DESIGN.md             # 系统总纲、版本路线图、模块全景
-│   ├── ARCHITECTURE.md       # 五层业务架构 + 六层技术架构
+│   ├── ARCHITECTURE.md       # 五层业务架构 + 六层技术架构 + 双平台架构
 │   ├── UX.md                 # UI 交互设计规范
+│   ├── v6.0-redesign-plan.md # v6.0 系统改造方案（双平台分离 + 全维度纠偏）
 │   ├── modules-v5/           # 16 个模块详细功能设计
 │   └── test-reports/         # 审计自测报告、测试日志
 │
@@ -34,8 +35,8 @@ OriSpark/
 │   │   └── router/           # Vue Router 配置
 │
 ├── frontend-electron/        # Electron 桌面端 (复用 frontend-web)
-├── frontend-nuxt/            # Nuxt 3 SSR 宣传门户 (Phase 2)
-├── frontend-miniprogram/     # 微信小程序 (Phase 3 远期)
+├── frontend-nuxt/            # Nuxt 3 交易后台（Phase 2）— 清透极简商务风 + Hero Page
+├── frontend-miniprogram/     # 微信小程序（Phase 3 远期）— frontend-nuxt 微信端映射
 ├── design/                   # HTML 高保真原型
 ├── .archive/                 # 过期文档归档 (历史参考)
 ├── data/                     # SQLite 数据库开发文件 (.db, .shm, .wal)

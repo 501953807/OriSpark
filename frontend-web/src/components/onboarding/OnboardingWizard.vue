@@ -10,20 +10,65 @@
 
       <div class="role-grid">
         <div v-for="role in participantRoles" :key="role.key"
-          :class="['role-card', { selected: selectedRole === role.key, disabled: role.requires_license }]"
-          @click="role.requires_license ? null : selectRole(role.key)"
+          :class="['role-card', { selected: selectedRole === role.key }]"
+          @click="selectRole(role.key)"
         >
           <span class="role-icon">{{ role.icon }}</span>
           <strong>{{ role.label }}</strong>
           <p>{{ role.description }}</p>
-          <small v-if="role.requires_license">需公司资质认证</small>
-          <small v-else>个人可注册</small>
+          <small v-if="role.requires_license" class="license-hint">🏢 需公司资质认证</small>
+          <small v-else class="personal-hint">👤 个人可注册</small>
         </div>
       </div>
 
       <div class="ob-actions">
-        <button class="btn btn-primary btn-lg" :disabled="!selectedRole || selectedRole === 'creator'" @click="nextStep">
-          {{ selectedRole && selectedRole !== 'creator' ? '下一步 →' : '请选择参与角色' }}
+        <button class="btn btn-primary btn-lg" :disabled="!selectedRole" @click="nextStep">
+          {{ selectedRole ? '下一步 →' : '请选择参与角色' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Step 1: 公司资质信息（非创作者角色）===== -->
+    <div v-else-if="currentStep === 1 && selectedRole && selectedRole !== 'creator'">
+      <div class="ob-header">
+        <span class="ob-badge">Step 2/4</span>
+        <h2 class="ob-title">🏢 公司资质信息</h2>
+        <p class="ob-desc">请填写您的公司信息，用于合约市场身份验证</p>
+      </div>
+
+      <div class="company-form">
+        <div class="form-group">
+          <label>公司名称 *</label>
+          <input v-model="companyForm.company_name" class="form-input" placeholder="请输入公司全称" />
+        </div>
+        <div class="form-group">
+          <label>统一社会信用代码</label>
+          <input v-model="companyForm.company_license_no" class="form-input" placeholder="18位统一社会信用代码" />
+        </div>
+        <div class="form-group">
+          <label>公司地址</label>
+          <input v-model="companyForm.company_address" class="form-input" placeholder="请输入公司地址" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>联系人</label>
+            <input v-model="companyForm.company_contact" class="form-input" placeholder="联系人姓名" />
+          </div>
+          <div class="form-group">
+            <label>联系电话</label>
+            <input v-model="companyForm.company_phone" class="form-input" placeholder="联系电话" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>公司邮箱</label>
+          <input v-model="companyForm.company_email" class="form-input" type="email" placeholder="company@example.com" />
+        </div>
+      </div>
+
+      <div class="ob-actions">
+        <button class="btn btn-secondary" @click="prevStep">← 上一步</button>
+        <button class="btn btn-primary btn-lg" :disabled="!companyForm.company_name" @click="nextStep">
+          下一步 →
         </button>
       </div>
     </div>
@@ -57,9 +102,10 @@
       </div>
     </div>
 
-    <div v-else-if="currentStep === 1">
+    <!-- ===== Step 2: 导入作品（可选）===== -->
+    <div v-else-if="currentStep === 2">
       <div class="ob-header">
-        <span class="ob-badge">Step 2/4</span>
+        <span class="ob-badge">Step 3/4</span>
         <h2 class="ob-title">📂 导入你的作品（可选）</h2>
         <p class="ob-desc">如果你是创作者，可以导入作品；其他角色可跳过此步骤</p>
       </div>
@@ -76,8 +122,8 @@
       </div>
     </div>
 
-    <!-- ===== Step 2: 快速上手 ===== -->
-    <div v-else-if="currentStep === 2">
+    <!-- ===== Step 3: 快速上手 ===== -->
+    <div v-else-if="currentStep === 3">
       <div class="ob-header">
         <div class="ob-success-icon">✨</div>
         <h2 class="ob-title">你已经准备好了！</h2>
@@ -97,7 +143,12 @@
           <p>选中作品一键存证</p>
         </div>
         <div v-if="selectedRole === 'creator'" class="wf-arrow">→</div>
-        <div class="wf-card">
+        <div v-if="selectedRole === 'creator'" class="wf-card">
+          <span class="wf-icon">💰</span>
+          <strong>商业转化</strong>
+          <p>授权变现、交易撮合</p>
+        </div>
+        <div v-else class="wf-card">
           <span class="wf-icon">{{ roleIcon }}</span>
           <strong>{{ roleLabel }}</strong>
           <p>开始使用 {{ roleLabel }} 功能</p>
@@ -127,7 +178,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  finish: [payload: { creatorType: string; participantRole: string; importCount: number }]
+  finish: [payload: { creatorType: string; participantRole: string; importCount: number; companyInfo?: any }]
   skip: []
 }>()
 
@@ -136,6 +187,16 @@ const selectedRole = ref<ParticipantRole>('creator')
 const selectedCreator = ref(props.initialCreatorType || '')
 const importCount = ref(0)
 const participantRoles = ref<any[]>([])
+
+// 公司资质表单
+const companyForm = ref({
+  company_name: '',
+  company_license_no: '',
+  company_address: '',
+  company_contact: '',
+  company_phone: '',
+  company_email: '',
+})
 
 const roleLabel = computed(() => {
   if (!selectedRole.value) return ''
@@ -183,6 +244,17 @@ const creatorTypes = [
 function selectRole(key: string) {
   selectedRole.value = key as ParticipantRole
   localStorage.setItem('oristudio-participant-role', key)
+  // Reset company form when switching roles
+  if (key !== 'creator') {
+    companyForm.value = {
+      company_name: '',
+      company_license_no: '',
+      company_address: '',
+      company_contact: '',
+      company_phone: '',
+      company_email: '',
+    }
+  }
 }
 
 function selectCreator(key: string) {
@@ -191,10 +263,19 @@ function selectCreator(key: string) {
 }
 
 function nextStep() {
-  if (currentStep.value === 0 && selectedRole.value && selectedRole.value !== 'creator') {
-    currentStep.value++
-  } else if (currentStep.value === 1 && (selectedRole.value !== 'creator' || selectedCreator.value)) {
-    currentStep.value++
+  if (currentStep.value === 0) {
+    // 从角色选择跳转到下一步
+    if (selectedRole.value === 'creator') {
+      currentStep.value = 1 // 创作者类型
+    } else {
+      currentStep.value = 1 // 公司资质
+    }
+  } else if (currentStep.value === 1) {
+    // 从创作者类型或公司资质跳转到导入作品
+    currentStep.value = 2
+  } else if (currentStep.value === 2) {
+    // 从导入作品跳转到完成
+    currentStep.value = 3
   }
 }
 
@@ -216,6 +297,14 @@ function handleFinish() {
     creatorType: selectedRole.value === 'creator' ? selectedCreator.value : '',
     participantRole: selectedRole.value,
     importCount: importCount.value,
+    companyInfo: selectedRole.value !== 'creator' ? {
+      company_name: companyForm.value.company_name,
+      company_license_no: companyForm.value.company_license_no,
+      company_address: companyForm.value.company_address,
+      company_contact: companyForm.value.company_contact,
+      company_phone: companyForm.value.company_phone,
+      company_email: companyForm.value.company_email,
+    } : undefined,
   })
 }
 
@@ -237,6 +326,8 @@ onMounted(async () => {
       if (savedCreator && selectedRole.value === 'creator') {
         selectedCreator.value = savedCreator
         currentStep.value = 2 // Skip to import step
+      } else if (savedRole !== 'creator') {
+        currentStep.value = 1 // Skip to company qualification step
       } else {
         currentStep.value = 1
       }
@@ -263,33 +354,51 @@ onMounted(async () => {
 .ob-title { font-size: 1.5rem; font-weight: 700; margin: 8px 0 4px; color: var(--text-primary); }
 .ob-desc { font-size: 0.92rem; color: var(--text-secondary); margin: 0; }
 
-.creator-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .role-card {
   position: relative; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
   cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);
 }
-.role-card:hover:not(.disabled) { border-color: var(--accent); }
+.role-card:hover { border-color: var(--accent); }
 .role-card.selected { border-color: var(--accent); background: oklch(56% 0.12 170 / 0.04); }
-.role-card.disabled { opacity: 0.5; cursor: not-allowed; }
 .role-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
 .role-card strong { font-size: 0.9rem; display: block; color: var(--text-primary); }
 .role-card p { font-size: 0.76rem; color: var(--text-secondary); margin: 4px 0; }
-.role-card small { font-size: 0.7rem; color: var(--muted); display: block; margin-top: 4px; }
+.role-card small { font-size: 0.7rem; display: block; margin-top: 4px; }
+.license-hint { color: #f59e0b; }
+.personal-hint { color: var(--muted); }
+
+.creator-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .creator-card {
   position: relative; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
   cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);
 }
 .creator-card:hover { border-color: var(--accent); }
 .creator-card.selected { border-color: var(--accent); background: oklch(56% 0.12 170 / 0.04); }
-.creator-card.disabled { opacity: 0.65; }
 .creator-card.highlighted { border-color: var(--accent); border-width: 3px; box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.12); }
 .creator-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
 .creator-card strong { font-size: 0.9rem; display: block; color: var(--text-primary); }
 .creator-card p { font-size: 0.76rem; color: var(--text-secondary); margin: 4px 0; }
 .creator-card small { font-size: 0.7rem; color: var(--muted); display: block; margin-top: 4px; }
 .creator-recommend { position: absolute; top: -8px; right: -8px; padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; background: var(--accent); color: #fff; }
-.creator-badge { position: absolute; top: 8px; right: 8px; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
+
+/* 公司资质表单 */
+.company-form {
+  display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;
+  padding: 20px; background: oklch(96% 0.004 240); border-radius: 12px;
+}
+.dark .company-form { background: oklch(22% 0.01 240); }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group label {
+  font-size: 0.82rem; font-weight: 600; color: var(--muted);
+}
+.form-input {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-family: var(--font-body); color: var(--fg);
+  background: var(--surface); outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
 
 .workflow-cards { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
 .wf-card { padding: 16px; border: 1px solid var(--border); border-radius: 12px; text-align: center; min-width: 120px; background: var(--surface); }
@@ -298,22 +407,16 @@ onMounted(async () => {
 .wf-card p { font-size: 0.74rem; color: var(--text-secondary); margin: 2px 0 0; }
 .wf-arrow { font-size: 1.2rem; color: var(--accent); font-weight: 700; }
 
-.ob-actions { text-align: center; margin-top: 24px; display: flex; gap: 12px; justify-content: center; align-items: center; }
-.ob-success-icon { font-size: 3rem; animation: pop-in 0.5s ease; margin-bottom: 8px; }
-@keyframes pop-in { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-.btn { padding: 10px 20px; border-radius: 8px; font-size: 0.88rem; cursor: pointer; border: none; font-family: inherit; }
+.ob-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.btn { padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: var(--font-body); }
 .btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.9; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-secondary { background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); }
-.btn-lg { padding: 14px 36px; font-size: 1rem; font-weight: 600; }
-.btn-link { background: none; border: none; color: var(--muted); font-size: 0.84rem; cursor: pointer; text-decoration: underline; }
+.btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }
+.btn-secondary:hover { background: oklch(96% 0.004 240); }
+.btn-link { background: none; color: var(--accent); padding: 10px 0; }
+.btn-link:hover { text-decoration: underline; }
+.btn-lg { padding: 14px 28px; font-size: 1rem; }
 
-@media (max-width: 768px) {
-  .creator-grid { grid-template-columns: 1fr 1fr; }
-  .onboarding-card { padding: 24px; }
-}
-@media (max-width: 480px) {
-  .creator-grid { grid-template-columns: 1fr; }
-}
+.ob-success-icon { font-size: 3rem; margin-bottom: 12px; }
 </style>

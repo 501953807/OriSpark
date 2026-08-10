@@ -31,6 +31,7 @@ from app.services.auth_service import (
     get_user_by_openid, create_user_from_openid, unbind_provider,
     list_user_sessions, change_user_password, complete_onboarding,
     VALID_CREATOR_TYPES, _create_token, get_or_create_local_user,
+    register_creator, register_operator,
 )
 
 router = APIRouter()
@@ -53,6 +54,19 @@ class RegisterRequest(BaseModel):
     password: str
 
 
+class RegisterCreatorRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class RegisterOperatorRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+    participant_roles: list[str]
+
+
 class OAuthCallbackRequest(BaseModel):
     """OAuth 回调通用请求体."""
     code: Optional[str] = None
@@ -69,6 +83,13 @@ class ChangePasswordRequest(BaseModel):
 class CompleteOnboardingRequest(BaseModel):
     creator_type: str
     participant_role: str
+    # 公司资质信息 (非创作者角色需要)
+    company_name: Optional[str] = None
+    company_license_no: Optional[str] = None
+    company_address: Optional[str] = None
+    company_contact: Optional[str] = None
+    company_phone: Optional[str] = None
+    company_email: Optional[str] = None
 
 
 # ================================================================
@@ -77,9 +98,30 @@ class CompleteOnboardingRequest(BaseModel):
 
 @router.post("/auth/register", response_model=ApiResponse)
 def register_endpoint(data: RegisterRequest, db: Session = Depends(get_db)):
-    """用户注册."""
+    """用户注册 (通用端点，login_platform 在 onboarding 时设置)."""
     try:
         user_dict, token = register_user(db, data.username, data.email, data.password)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return ApiResponse(data={"token": token, "user": user_dict})
+
+
+@router.post("/auth/register/creator", response_model=ApiResponse)
+def register_creator_endpoint(data: RegisterCreatorRequest, db: Session = Depends(get_db)):
+    """创作者注册 — 设置 login_platform='web'."""
+    try:
+        user_dict, token = register_creator(db, data.username, data.email, data.password)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return ApiResponse(data={"token": token, "user": user_dict})
+
+
+@router.post("/auth/register/operator", response_model=ApiResponse)
+def register_operator_endpoint(data: RegisterOperatorRequest, db: Session = Depends(get_db)):
+    """非创作者注册 — 设置 login_platform='nuxt'."""
+    try:
+        user_dict, token = register_operator(db, data.username, data.email, data.password,
+                                             data.participant_roles)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     return ApiResponse(data={"token": token, "user": user_dict})
@@ -316,7 +358,15 @@ def complete_onboarding_endpoint(
             detail=f"无效的参与角色，可选值: {', '.join(PARTICIPANT_ROLES.keys())}")
 
     try:
-        result = complete_onboarding(db, user_id, creator_type, participant_role)
+        result = complete_onboarding(
+            db, user_id, creator_type, participant_role,
+            company_name=data.company_name,
+            company_license_no=data.company_license_no,
+            company_address=data.company_address,
+            company_contact=data.company_contact,
+            company_phone=data.company_phone,
+            company_email=data.company_email,
+        )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     return ApiResponse(data=result, message="Onboarding 完成")
