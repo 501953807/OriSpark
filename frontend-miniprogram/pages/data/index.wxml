@@ -1,0 +1,124 @@
+<!--pages/data/index.wxml-->
+<view class="container">
+  <view class="section-title">数据看板</view>
+
+  <!-- 状态筛选 -->
+  <view class="filter-bar">
+    <view class="filter-item {{activeTab === 'overview' ? 'active' : ''}}" bindtap="switchTab" data-tab="overview">平台总览</view>
+    <view class="filter-item {{activeTab === 'ranking' ? 'active' : ''}}" bindtap="switchTab" data-tab="ranking">创作者排行</view>
+    <view class="filter-item {{activeTab === 'trends' ? 'active' : ''}}" bindtap="switchTab" data-tab="trends">品类趋势</view>
+    <view class="filter-item {{activeTab === 'report' ? 'active' : ''}}" bindtap="switchTab" data-tab="report">行业报告</view>
+  </view>
+
+  <!-- 平台总览 -->
+  <view wx:if="{{activeTab === 'overview'}}">
+    <view wx:if="{{loading}}" class="loading-text">加载中...</view>
+    <view wx:else class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-num">{{stats.total_creators}}</text>
+        <text class="stat-label">注册创作者</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.total_works}}</text>
+        <text class="stat-label">作品总数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.total_contracts}}</text>
+        <text class="stat-label">合约总数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.active_contracts}}</text>
+        <text class="stat-label">活跃合约</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num mono">{{formatAmount(stats.monthly_transaction_volume)}}</text>
+        <text class="stat-label">月交易额</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.avg_split_rate}}%</text>
+        <text class="stat-label">分润率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创作者排行 -->
+  <view wx:if="{{activeTab === 'ranking'}}">
+    <view class="rank-filter">
+      <view class="rank-filter-item {{rankSort === 'works' ? 'active' : ''}}" bindtap="setRankSort" data-sort="works">作品数</view>
+      <view class="rank-filter-item {{rankSort === 'transactions' ? 'active' : ''}}" bindtap="setRankSort" data-sort="transactions">成交额</view>
+      <view class="rank-filter-item {{rankSort === 'scr' ? 'active' : ''}}" bindtap="setRankSort" data-sort="scr">SCR信誉</view>
+    </view>
+    <view wx:if="{{loadingRanking}}" class="loading-text">加载中...</view>
+    <view wx:elif="{{ranking.length === 0}}" class="empty-state">暂无数据</view>
+    <view wx:else class="ranking-list">
+      <view wx:for="{{ranking}}" wx:key="user_id" class="ranking-item {{index < 3 ? 'top-ranker' : ''}}">
+        <text class="rank-num">{{index + 1}}</text>
+        <view class="rank-info">
+          <text class="rank-name">{{item.username}}</text>
+          <text class="rank-email">{{item.email}}</text>
+        </view>
+        <text class="rank-stat">{{getRankStat(item)}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 品类趋势 -->
+  <view wx:if="{{activeTab === 'trends'}}">
+    <view class="period-filter">
+      <view class="period-item {{period === 'monthly' ? 'active' : ''}}" bindtap="setPeriod" data-period="monthly">月度</view>
+      <view class="period-item {{period === 'quarterly' ? 'active' : ''}}" bindtap="setPeriod" data-period="quarterly">季度</view>
+    </view>
+    <view wx:if="{{loadingTrends}}" class="loading-text">加载中...</view>
+    <view wx:elif="{{trends.length === 0}}" class="empty-state">暂无数据</view>
+    <view wx:else class="trends-list">
+      <view wx:for="{{trends}}" wx:key="category" class="trend-item">
+        <view class="trend-header">
+          <text class="trend-name">{{item.category}}</text>
+          <text class="trend-count">{{item.work_count}}</text>
+        </view>
+        <view class="trend-bar-bg">
+          <view class="trend-bar-fill" style="width: {{getBarWidth(item.work_count)}}%"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 行业报告 -->
+  <view wx:if="{{activeTab === 'report'}}">
+    <view class="report-input">
+      <input type="text" placeholder="选择月份 (YYYY-MM)" value="{{reportMonth}}" bindchange="onMonthChange" />
+      <button class="btn-report" bindtap="loadReport">生成报告</button>
+    </view>
+    <view wx:if="{{loadingReport}}" class="loading-text">加载中...</view>
+    <view wx:elif="{{reportError}}" class="error-state">{{reportError}}</view>
+    <view wx:else class="report-card">
+      <view class="report-header">
+        <text class="report-title">{{report.report_month}} 创作者经济报告</text>
+        <text class="report-time">{{report.generated_at}}</text>
+      </view>
+      <view class="report-summary">{{report.summary}}</view>
+      <view class="report-stats">
+        <view class="report-stat">
+          <text class="r-num">{{report.total_creators}}</text>
+          <text class="r-desc">新增创作者</text>
+        </view>
+        <view class="report-stat">
+          <text class="r-num">{{report.total_works}}</text>
+          <text class="r-desc">新增作品</text>
+        </view>
+        <view class="report-stat">
+          <text class="r-num">{{report.total_contracts}}</text>
+          <text class="r-desc">新增合约</text>
+        </view>
+        <view class="report-stat">
+          <text class="r-num mono">{{formatAmount(report.transaction_volume)}}</text>
+          <text class="r-desc">交易额</text>
+        </view>
+      </view>
+      <view wx:if="{{report.top_categories && report.top_categories.length}}" class="report-categories">
+        <text class="cat-label">热门品类：</text>
+        <text wx:for="{{report.top_categories}}" wx:key="*this" class="cat-tag">{{item}}</text>
+      </view>
+    </view>
+  </view>
+</view>

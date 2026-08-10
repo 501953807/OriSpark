@@ -1,0 +1,284 @@
+/* pages/data/index.wxss */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 24rpx;
+}
+
+.filter-bar, .rank-filter, .period-filter {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+  overflow-x: auto;
+  padding-bottom: 8rpx;
+}
+
+.filter-item, .rank-filter-item, .period-item {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  background: #fff;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 32rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.filter-item.active, .rank-filter-item.active, .period-item.active {
+  background: #059669;
+  color: #fff;
+  border-color: #059669;
+}
+
+/* 平台总览 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 16rpx;
+  text-align: center;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.05);
+}
+
+.stat-num {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8rpx;
+}
+
+.mono {
+  font-family: monospace;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+/* 创作者排行 */
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  border-radius: 12rpx;
+}
+
+.ranking-item.top-ranker {
+  background: #fefce8;
+}
+
+.rank-num {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #6b7280;
+  width: 40rpx;
+}
+
+.rank-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.rank-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.rank-email {
+  font-size: 20rpx;
+  color: #9ca3af;
+}
+
+.rank-stat {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #059669;
+}
+
+/* 品类趋势 */
+.trends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.trend-item {
+  background: #fff;
+  padding: 20rpx 24rpx;
+  border-radius: 12rpx;
+}
+
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.trend-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.trend-count {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #059669;
+}
+
+.trend-bar-bg {
+  height: 12rpx;
+  background: #f3f4f6;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.trend-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #059669, #10b981);
+  border-radius: 6rpx;
+}
+
+/* 行业报告 */
+.report-input {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.report-input input {
+  flex: 1;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #d1d5db;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.btn-report {
+  padding: 16rpx 32rpx;
+  background: #059669;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.report-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #e5e7eb;
+}
+
+.report-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.report-time {
+  font-size: 20rpx;
+  color: #6b7280;
+}
+
+.report-summary {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #374151;
+  padding: 16rpx;
+  background: #f9fafb;
+  border-radius: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.report-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.report-stat {
+  text-align: center;
+  padding: 20rpx;
+  background: #f9fafb;
+  border-radius: 8rpx;
+}
+
+.r-num {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #059669;
+  margin-bottom: 4rpx;
+}
+
+.r-desc {
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+.report-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  align-items: center;
+}
+
+.cat-label {
+  font-size: 24rpx;
+  color: #374151;
+}
+
+.cat-tag {
+  padding: 6rpx 16rpx;
+  background: #ecfdf5;
+  color: #059669;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+.loading-text,
+.empty-state,
+.error-state {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #9ca3af;
+  font-size: 28rpx;
+}
+
+.error-state {
+  color: #ef4444;
+}
