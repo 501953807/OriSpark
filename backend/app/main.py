@@ -212,6 +212,10 @@ app.include_router(public_router, prefix="/api")
 app.include_router(chat_router, prefix="/api", tags=["Chat"])
 app.include_router(mini_program_router)
 
+# v6.0: 运营合作
+from app.routers.operation_cooperation import router as operation_cooperation_router
+app.include_router(operation_cooperation_router, prefix="/api")
+
 
 @app.get("/api/health")
 async def health_check():

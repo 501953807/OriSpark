@@ -303,3 +303,5 @@ __all__ = [
     "Chapter", "ChapterComment", "ChapterRevision",
     "ExportConfig", "EbookProduct", "AudiobookProduction", "AudiobookChapter",
 ]
+# v6.0: 运营合作
+from app.models.operation_cooperation import OperationCooperation
