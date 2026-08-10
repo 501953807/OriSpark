@@ -186,8 +186,14 @@ async function handleExport() {
 
   exporting.value = true
   try {
-    // TODO: Call videoApi.exportProjectPackage(selectedWorkId.value) when backend is ready
-    ;(window as any)?.$toast?.show('工程包导出功能开发中，请稍后再试', 'info')
+    const res = await videoApi.exportProjectPackage(selectedWorkId.value)
+    const blob = res.data as Blob
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${selectedWorkId.value}.zip`
+    a.click()
+    URL.revokeObjectURL(url)
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : '导出失败'
     ;(window as any)?.$toast?.show(msg, 'error')

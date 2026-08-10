@@ -35,6 +35,10 @@ export const videoApi = {
   getProjectPackage: (workId: string) =>
     client.get<{ data: { timeline?: unknown[]; materials?: unknown[]; effects?: unknown[] } }>(`/works/${workId}/project-package`),
 
+  /** 导出工程包 */
+  exportProjectPackage: (workId: string) =>
+    client.get<Blob>(`/works/${workId}/export-project`, { responseType: 'blob' }),
+
   /** 分发到平台 */
   distributeToPlatform: (workId: string, data: { platform: string; title: string; description?: string }) =>
     client.post<{ data: PlatformDistribution }>('/publish/distribute', { work_id: workId, ...data }),

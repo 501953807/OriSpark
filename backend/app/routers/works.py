@@ -477,3 +477,55 @@ def get_project_package(
     """获取视频项目包数据 (timeline/materials/effects)."""
     svc = WorkManagerService(db)
     return svc.get_project_package(work_id)
+
+
+# ============================================================
+# 27. POST /works/{work_id}/export-project — export_project_package
+# ============================================================
+
+@router.post('/works/{work_id}/export-project')
+async def export_project_package(
+    work_id: str,
+    user_id: str = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
+    """导出视频项目包为 zip 文件."""
+    from fastapi.responses import StreamingResponse
+    import zipfile, json as json_mod, io as io_mod
+    from datetime import datetime, timezone
+    from app.models.work import Work
+
+    svc = WorkManagerService(db)
+    work = svc.db.query(Work).filter(Work.id == work_id).first()
+    if not work:
+        raise HTTPException(status_code=404, detail='作品不存在')
+
+    project_files = work.project_files or {}
+    if isinstance(project_files, str):
+        try:
+            project_files = json_mod.loads(project_files)
+        except json_mod.JSONDecodeError:
+            project_files = {}
+
+    buf = io_mod.BytesIO()
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr('manifest.json', json_mod.dumps({
+            'work_id': work.id,
+            'title': work.title,
+            'exported_at': datetime.now(timezone.utc).isoformat(),
+            'timeline': project_files.get('timeline', []),
+            'materials': project_files.get('materials', []),
+            'effects': project_files.get('effects', []),
+        }, indent=2, ensure_ascii=False))
+        for name, content_item in project_files.items():
+            if name not in ('timeline', 'materials', 'effects'):
+                if isinstance(content_item, (dict, list)):
+                    zf.writestr(f'data/{name}.json', json_mod.dumps(content_item, indent=2, ensure_ascii=False))
+
+    buf.seek(0)
+    filename = (work.title or work_id).replace(' ', '_') + '.zip'
+    return StreamingResponse(
+        buf,
+        media_type='application/zip',
+        headers={'Content-Disposition': f'attachment; filename="{filename}"'},
+    )
