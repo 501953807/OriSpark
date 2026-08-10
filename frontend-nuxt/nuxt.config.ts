@@ -12,9 +12,9 @@ export default {
   routeRules: {
     '/': { prerender: true },
     '/gallery': { prerender: true },
-    '/contracts': { prerender: true },
-    '/market': { prerender: true },
-    '/opportunities': { prerender: true },
+    '/contracts': {},
+    '/market': {},
+    '/opportunities': {},
     '/works/**': { prerender: true },
   },
 

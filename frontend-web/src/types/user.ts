@@ -11,6 +11,7 @@ export interface User {
   phone?: string
   onboarded?: boolean
   creator_type?: string
+  login_platform?: string // v6.0: 'web' | 'nuxt' | 'miniprogram'
   created_at?: string
   last_login_at?: string
   login_count?: number

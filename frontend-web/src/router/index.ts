@@ -56,19 +56,12 @@ const router = createRouter({
         { path: 'credit-improvement', name: 'credit-improvement', component: () => import('@/views/CreditImprovementView.vue') },
         { path: 'risk-center', name: 'risk-center', component: () => import('@/views/RiskWarningCenterView.vue') },
         { path: 'content-pipeline', name: 'content-pipeline', component: () => import('@/views/ContentPipelineView.vue') },
-        { path: 'pod-profit', name: 'pod-profit', component: () => import('@/views/PODProfitView.vue') },
         { path: 'case-studies', name: 'case-studies', component: () => import('@/views/CaseStudyView.vue') },
         { path: 'copyright-guide', name: 'copyright-guide', component: () => import('@/views/CopyrightGuideView.vue') },
         { path: 'notary', redirect: '/app/rights' },
         { path: 'monitor', name: 'monitor', component: () => import('@/views/MonitorView.vue') },
         { path: 'ipr', name: 'ipr', component: () => import('@/views/IprView.vue') },
-        { path: 'supply', name: 'supply', component: () => import('@/views/SupplyView.vue') },
-        { path: 'supply/listings', name: 'listings', component: () => import('@/views/ListingListView.vue') },
-        { path: 'supply/listings/:id', name: 'listing-detail', component: () => import('@/views/ListingDetailView.vue') },
-        { path: 'marketplace', name: 'marketplace', component: () => import('@/views/MarketplaceView.vue') },
-        { path: 'supply/templates', name: 'templates', component: () => import('@/views/TemplateBrowserView.vue') },
         { path: 'publish', name: 'publish', component: () => import('@/views/PublishView.vue') },
-        { path: 'business', name: 'business', component: () => import('@/views/BusinessView.vue') },
         { path: 'settings', name: 'settings', component: () => import('@/views/SettingsView.vue') },
         { path: 'integrations', name: 'integrations', component: () => import('@/views/IntegrationsView.vue') },
         { path: 'projects', name: 'projects', component: () => import('@/views/ProjectsView.vue') },
@@ -105,6 +98,20 @@ const router = createRouter({
 
 // 路由守卫 — 集中 auth store 管理
 router.beforeEach(async (to) => {
+  // v6.0: 非创作者用户重定向到 OriSpark 交易后台
+  const savedUser = localStorage.getItem('oristudio-user')
+  if (savedUser) {
+    try {
+      const user = JSON.parse(savedUser) as User
+      const loginPlatform = user.login_platform || user.creator_type ? 'web' : 'nuxt'
+      if (loginPlatform === 'nuxt' && to.path.startsWith('/app')) {
+        // 非创作者访问创作者平台，重定向到 OriSpark
+        window.location.href = window.location.origin.replace('5174', '3000')
+        return false
+      }
+    } catch { /* ignore parse errors */ }
+  }
+
   if (to.meta.requiresAuth) {
     const auth = useAuthStore()
     if (!auth.isLoggedIn) {
