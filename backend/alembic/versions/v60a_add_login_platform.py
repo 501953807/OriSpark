@@ -8,7 +8,7 @@ from alembic import op
 import sqlalchemy as sa
 
 revision = 'v60a_add_login_platform'
-down_revision = 'wmk_preset_1_add_watermark_preset_table'
+down_revision = 'wmk_preset_1'
 branch_labels = None
 depends_on = None
 

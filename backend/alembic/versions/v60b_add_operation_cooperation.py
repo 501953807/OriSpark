@@ -1,5 +1,8 @@
 """v6.0b: 新增 OperationCooperation 表."""
 
+revision = 'v60b_add_operation_cooperation'
+down_revision = 'v60a_add_login_platform'
+
 from alembic import op
 import sqlalchemy as sa
 
