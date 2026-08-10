@@ -214,7 +214,11 @@ app.include_router(mini_program_router)
 
 # v6.0: 运营合作
 from app.routers.operation_cooperation import router as operation_cooperation_router
+from app.routers.factory_order import router as factory_order_router
+from app.routers.data_analytics import router as data_analytics_router
 app.include_router(operation_cooperation_router, prefix="/api")
+app.include_router(factory_order_router, prefix="/api")
+app.include_router(data_analytics_router, prefix="/api")
 
 
 @app.get("/api/health")
