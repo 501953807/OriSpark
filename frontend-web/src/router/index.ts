@@ -137,6 +137,12 @@ router.beforeEach(async (to) => {
           creator_type: 'illustrator',
         }
         auth.user = fallbackUser
+        // 设置本地模式 token，使 API client 发送 Authorization header
+        // mock 中间件会拦截这些请求并返回 mock 数据
+        const localToken = 'local-developer-token'
+        auth.token = localToken
+        localStorage.setItem('oristudio-token', localToken)
+        client.defaults.headers.common['Authorization'] = `Bearer ${localToken}`
       }
     }
   }

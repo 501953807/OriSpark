@@ -2,12 +2,15 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
+import { mockApiPlugin } from './src/mock/plugin'
 
 const backendPort = parseInt(process.env.BACKEND_PORT || '8001', 10)
 
 export default defineConfig({
   plugins: [
     vue(),
+    // Vite Mock API — 仅开发模式生效
+    mockApiPlugin(),
     // gzip compression for production builds
     compression({
       algorithm: 'gzip',
