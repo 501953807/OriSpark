@@ -1,9 +1,14 @@
 """WebSocket 实时通知管理."""
 
 import asyncio
+import logging
 from datetime import datetime, timezone
 from typing import Dict, Set
 from fastapi import WebSocket
+
+from app.services.websocket_throttle import get_throttle
+
+logger = logging.getLogger(__name__)
 
 
 class ConnectionManager:
@@ -11,7 +16,8 @@ class ConnectionManager:
 
     def __init__(self):
         self._connections: Dict[str, Set[WebSocket]] = {}
-        self._client_ids: Dict[WebSocket, str] = {}  # 记录 websocket → client_id 映射
+        self._client_ids: Dict[WebSocket, str] = {}
+        self._throttle = get_throttle()
 
     async def connect(self, websocket: WebSocket, client_id: str = "default"):
         """接受 WebSocket 连接."""
@@ -45,7 +51,11 @@ class ConnectionManager:
             self._connections[client_id] -= dead
 
     async def broadcast(self, message: dict):
-        """广播消息给所有客户端."""
+        """广播消息给所有客户端，带类型限流（最大 10 次/秒）."""
+        event_key = f"{message.get('type', 'unknown')}"
+        if not self._throttle.allow(event_key):
+            logger.debug("WebSocket broadcast throttled: %s", event_key)
+            return
         for client_id in list(self._connections.keys()):
             await self.send_personal(message, client_id)
 
