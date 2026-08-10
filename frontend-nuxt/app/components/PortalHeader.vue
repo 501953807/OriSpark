@@ -9,6 +9,7 @@
       <NuxtLink to="/market">市场数据</NuxtLink>
       <NuxtLink to="/opportunities">合作机会</NuxtLink>
       <NuxtLink to="/operations">运营合作</NuxtLink>
+      <NuxtLink to="/supply">供应链</NuxtLink>
     </nav>
     <div class="nav-actions">
       <NuxtLink to="https://studio.orispark.local" target="_blank" class="btn-primary">
