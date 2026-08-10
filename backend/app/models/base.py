@@ -90,5 +90,11 @@ from app.models.contract import ContractInstance, SplitRule, SplitExecutionLog, 
 # Contract risk assessment
 from app.models.contract_risk import ContractRiskRule, ContractReview, ContractClause
 
+# v6.0: 运营合作
+from app.models.operation_cooperation import OperationCooperation
+
+# v6.0: 工厂订单
+from app.models.factory_order import FactoryOrder, FactoryQualification, PODConfig
+
 # Alembic 迁移需要
 target_metadata = Base.metadata

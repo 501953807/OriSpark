@@ -302,6 +302,12 @@ __all__ = [
     # 文字 v4
     "Chapter", "ChapterComment", "ChapterRevision",
     "ExportConfig", "EbookProduct", "AudiobookProduction", "AudiobookChapter",
+    # v6.0 运营合作
+    "OperationCooperation",
+    # v6.0 工厂订单
+    "FactoryOrder", "FactoryQualification", "PODConfig",
 ]
 # v6.0: 运营合作
 from app.models.operation_cooperation import OperationCooperation
+# v6.0: 工厂订单
+from app.models.factory_order import FactoryOrder, FactoryQualification, PODConfig
