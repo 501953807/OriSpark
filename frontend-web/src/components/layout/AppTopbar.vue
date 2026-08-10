@@ -130,17 +130,15 @@ onBeforeUnmount(() => {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: oklch(98% 0.004 240 / 0.85);
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 0 24px;
   height: var(--topbar-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
-}
-.dark .topbar {
-  background: oklch(18% 0.01 240 / 0.85);
 }
 .topbar-left {
   display: flex;
@@ -208,7 +206,7 @@ onBeforeUnmount(() => {
   transition: background 0.2s;
 }
 .user-menu-btn:hover {
-  background: oklch(96% 0.004 240);
+  background: var(--surface-2, #263348);
 }
 .user-avatar {
   width: 28px;
@@ -239,10 +237,10 @@ onBeforeUnmount(() => {
   top: calc(100% + 8px);
   right: 0;
   width: 220px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  background: var(--surface, #1e293b);
+  border: 1px solid var(--border, #334155);
+  border-radius: var(--radius, 8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   z-index: 200;
   overflow: hidden;
 }
@@ -304,7 +302,7 @@ onBeforeUnmount(() => {
   text-align: left;
 }
 .dropdown-item:hover {
-  background: oklch(96% 0.004 240);
+  background: var(--surface-2, #263348);
 }
 .dropdown-icon {
   font-size: 1.1rem;
@@ -315,7 +313,7 @@ onBeforeUnmount(() => {
   color: #ef4444;
 }
 .dropdown-logout:hover {
-  background: oklch(65% 0.15 10 / 0.08) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
 }
 .user-menu-overlay {
   position: fixed;

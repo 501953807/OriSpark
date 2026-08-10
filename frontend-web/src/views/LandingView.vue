@@ -1,63 +1,84 @@
 <template>
   <div class="landing-page">
-    <!-- Fixed Nav -->
+    <!-- Fixed Nav — 轻奢风深色 -->
     <nav :class="['nav', { scrolled: isScrolled }]">
       <router-link to="/" class="brand">
         <div class="brand-logo">O</div>
-        OriStudio
+        <span>OriStudio</span>
+        <span class="brand-tag">创作者专属</span>
       </router-link>
       <ul class="nav-links">
-        <li><a href="#features">功能</a></li>
-        <li><a href="#workflow">协作流程</a></li>
+        <li><a href="#features">核心能力</a></li>
         <li><a href="#trust">信任体系</a></li>
-        <li><router-link to="/onboarding">新手指引</router-link></li>
+        <li><a href="#workflow">协作流程</a></li>
+        <li><router-link to="/onboarding">新手引导</router-link></li>
       </ul>
       <div class="nav-btns">
-        <router-link to="/login" class="btn btn-secondary">登录</router-link>
-        <router-link to="/app" class="btn btn-primary">开始使用</router-link>
+        <router-link to="/login" class="btn btn-secondary">创作者登录</router-link>
+        <router-link to="/app" class="btn btn-primary">进入工作台 →</router-link>
       </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- HERO — 深色轻奢风 -->
     <main>
       <div class="hero-wrapper">
-        <div class="hero-bg-deco"></div>
-        <div class="hero-bg-deco2"></div>
+        <div class="hero-grid-overlay"></div>
         <div class="hero">
           <div class="hero-text">
-            <div class="hero-badge"><span class="dot"></span> v5.0 · 多边撮合 + 信任枢纽</div>
-            <h1>创作者的<br><span class="em">合约市场与信任引擎</span></h1>
+            <div class="hero-badge">
+              <span class="dot green"></span>
+              v6.0 · 独立创作者工作台
+            </div>
+            <h1>
+              你的创作<br>
+              <span class="em">权益与合约守护引擎</span>
+            </h1>
             <p class="hero-desc">
-              连接创作者、运营者、税务代理、物流商、保险商等 9 种参与角色，
-              提供合约挂牌、智能撮合、分润执行、L1-L4 四级版权防御与 AIGC 溯源审计，
-              让每一次协作都有据可查、有保可投。
+              为独立创作者提供从存证保护到合约挂牌的全链路工具。
+              L1-L4 四级版权防御、智能撮合、多方分润——
+              让你的每一笔创作交易都有据可查、有保可投。
             </p>
             <div class="hero-actions">
-              <router-link to="/app" class="btn btn-primary" style="font-size:1rem;padding:14px 28px;">进入工作台 →</router-link>
+              <router-link to="/app" class="btn btn-primary" style="font-size:1rem;padding:14px 28px;">
+                进入创作者工作台 →
+              </router-link>
               <router-link to="/onboarding" class="btn btn-secondary">了解原理</router-link>
             </div>
+            <p class="creator-note">
+              <span class="note-icon">🔒</span> 仅面向独立创作者开放 · 非创作者请前往
+              <a href="https://orispark.local" target="_blank">OriSpark 交易后台</a>
+            </p>
           </div>
           <div class="hero-visual">
             <div class="hero-card-3d">
               <div class="hc-header">
-                <div class="hc-avatar">🔗</div>
+                <div class="hc-avatar">🎨</div>
                 <div>
-                  <div class="hc-title">合约市场概览</div>
-                  <div class="hc-sub">多边协作 · 实时撮合 · 智能分润</div>
+                  <div class="hc-title">创作者工作台</div>
+                  <div class="hc-sub">存证 · 挂牌 · 撮合 · 分润</div>
                 </div>
               </div>
               <div class="hc-stats">
-                <div class="hc-stat"><div class="hc-stat-val">9</div><div class="hc-stat-label">参与角色</div></div>
-                <div class="hc-stat"><div class="hc-stat-val">12</div><div class="hc-stat-label">合约状态</div></div>
-                <div class="hc-stat"><div class="hc-stat-val">3‰</div><div class="hc-stat-label">平台费率</div></div>
+                <div class="hc-stat">
+                  <div class="hc-stat-val data-mono">4</div>
+                  <div class="hc-stat-label">防御层级</div>
+                </div>
+                <div class="hc-stat">
+                  <div class="hc-stat-val data-mono">3‰</div>
+                  <div class="hc-stat-label">平台费率</div>
+                </div>
+                <div class="hc-stat">
+                  <div class="hc-stat-val data-mono">12</div>
+                  <div class="hc-stat-label">合约状态</div>
+                </div>
               </div>
               <div class="hc-modules">
+                <div class="hc-mod"><span class="hc-mod-dot green"></span>作品存证</div>
                 <div class="hc-mod"><span class="hc-mod-dot blue"></span>合约挂牌</div>
-                <div class="hc-mod"><span class="hc-mod-dot green"></span>智能撮合</div>
-                <div class="hc-mod"><span class="hc-mod-dot orange"></span>支付托管</div>
-                <div class="hc-mod"><span class="hc-mod-dot purple"></span>分润执行</div>
-                <div class="hc-mod"><span class="hc-mod-dot pink"></span>版权保险</div>
-                <div class="hc-mod"><span class="hc-mod-dot cyan"></span>AIGC 溯源</div>
+                <div class="hc-mod"><span class="hc-mod-dot orange"></span>智能撮合</div>
+                <div class="hc-mod"><span class="hc-mod-dot purple"></span>支付托管</div>
+                <div class="hc-mod"><span class="hc-mod-dot pink"></span>多方分润</div>
+                <div class="hc-mod"><span class="hc-mod-dot cyan"></span>版权保险</div>
               </div>
             </div>
           </div>
@@ -68,27 +89,14 @@
       <section class="section" id="features">
         <div class="section-header">
           <div class="section-tag">核心能力</div>
-          <h2>9 方参与者 · 12 种合约状态 · 4 层版权防御</h2>
+          <h2>创作者全链路权益守护</h2>
           <p class="section-sub">从创作署名到合约分润，从侵权监测到全球申报——全流程数字化、可审计、可追溯。</p>
         </div>
         <div class="features-grid">
-          <!-- Feature 1: 合约市场 -->
-          <div class="feature-card feature-card--wide">
-            <div class="fc-icon" style="background: oklch(56% 0.12 170 / 0.12); color: oklch(56% 0.12 170);">🔗</div>
-            <div class="fc-title">合约市场</div>
-            <div class="fc-desc">合约挂牌、智能撮合、支付托管、分润执行一站式完成。12 状态流转保证每一笔交易的可追溯性，3‰ 平台手续费保证低成本运转。</div>
-            <ul class="fc-features">
-              <li>合约挂牌/搜索/订阅/取消</li>
-              <li>标签/地域/评分智能撮合</li>
-              <li>支付托管 + 多方分润</li>
-              <li>平台 3‰ 手续费自动结算</li>
-            </ul>
-          </div>
-          <!-- Feature 2: 权益保护 -->
           <div class="feature-card">
-            <div class="fc-icon" style="background: oklch(62% 0.16 260 / 0.12); color: oklch(62% 0.16 260);">🛡️</div>
+            <div class="fc-icon" style="color: oklch(56% 0.12 170);">🛡️</div>
             <div class="fc-title">L1-L4 四级版权防御</div>
-            <div class="fc-desc">零成本存证到专属法律顾问，4 层防御矩阵根据作品价值和侵权场景自动推荐最优维权路径。</div>
+            <div class="fc-desc">零成本存证到专属法律顾问，4 层防御矩阵根据作品价值自动推荐最优维权路径。</div>
             <ul class="fc-features">
               <li>L1: ECDSA 本地签名存证</li>
               <li>L2: 平台工具自动监测</li>
@@ -96,66 +104,56 @@
               <li>L4: 司法链/区块链锚定</li>
             </ul>
           </div>
-          <!-- Feature 3: AIGC 溯源 -->
           <div class="feature-card">
-            <div class="fc-icon" style="background: oklch(58% 0.14 245 / 0.12); color: oklch(58% 0.14 245);">🔍</div>
+            <div class="fc-icon" style="color: oklch(58% 0.14 245);">🔍</div>
             <div class="fc-title">AIGC 痕迹审计</div>
-            <div class="fc-desc">四层溯源链：平台日志 → MCP 事件流 → AI 自声明 → 人类贡献度评分。区分人机协作比例，保障原创权益。</div>
+            <div class="fc-desc">四层溯源链：平台日志 → MCP 事件流 → AI 自声明 → 人类贡献度评分。</div>
             <ul class="fc-features">
               <li>人类贡献度评分器（≥0.60 通过）</li>
               <li>C2PA + TSA + 区块链三重锚定</li>
               <li>AI 会话记录交叉验证</li>
-              <li>溯源审计报告 PDF 生成</li>
             </ul>
           </div>
-          <!-- Feature 4: 合约撮合 -->
           <div class="feature-card">
-            <div class="fc-icon" style="background: oklch(62% 0.18 55 / 0.12); color: oklch(62% 0.18 55);">⚡</div>
-            <div class="fc-title">合约撮合引擎</div>
-            <div class="fc-desc">基于创作者标签、地域分布、历史评分的智能匹配，让优质创作快速找到合适的交易方。</div>
+            <div class="fc-icon" style="color: oklch(62% 0.18 55);">⚡</div>
+            <div class="fc-title">合约挂牌与撮合</div>
+            <div class="fc-desc">一键发布合约、智能匹配交易方、支付托管、多方分润自动执行。</div>
             <ul class="fc-features">
-              <li>多维标签匹配算法</li>
-              <li>地域适配推荐</li>
-              <li>SCR 信誉分加权排序</li>
+              <li>合约挂牌/搜索/订阅/取消</li>
+              <li>标签/地域/评分智能撮合</li>
+              <li>支付托管 + 多方分润</li>
+              <li>平台 3‰ 手续费自动结算</li>
             </ul>
           </div>
-          <!-- Feature 5: 分润执行 -->
           <div class="feature-card">
-            <div class="fc-icon" style="background: oklch(58% 0.16 350 / 0.12); color: oklch(58% 0.16 350);">💰</div>
+            <div class="fc-icon" style="color: oklch(58% 0.16 350);">💰</div>
             <div class="fc-title">分润执行引擎</div>
-            <div class="fc-desc">市场化的分润规则配置，支持多参与方按比例自动分账，每一笔分润都留下审计日志。</div>
+            <div class="fc-desc">灵活分润规则配置，支持多参与方按比例自动分账，每一笔分润可审计。</div>
             <ul class="fc-features">
               <li>灵活分润规则配置</li>
               <li>多角色按比例自动分账</li>
               <li>分润执行日志可审计</li>
             </ul>
           </div>
-          <!-- Feature 6: 回流引擎 -->
           <div class="feature-card">
-            <div class="fc-icon" style="background: oklch(60% 0.12 200 / 0.12); color: oklch(60% 0.12 200);">↩️</div>
+            <div class="fc-icon" style="color: oklch(60% 0.12 200);">↩️</div>
             <div class="fc-title">分发回流引擎</div>
-            <div class="fc-desc">短链生成 + 归因事件追踪，追踪作品的分发路径和回流来源，帮助创作者理解流量来源。</div>
+            <div class="fc-desc">短链生成 + 归因事件追踪，帮助创作者理解流量来源和分发效果。</div>
             <ul class="fc-features">
               <li>短链生成 + 品牌域名</li>
               <li>点击/浏览/转化归因</li>
               <li>跨平台分发效果分析</li>
             </ul>
           </div>
-        </div>
-      </section>
-
-      <!-- PARTICIPANT ROLES -->
-      <section class="section section--alt" id="roles">
-        <div class="section-header">
-          <div class="section-tag">9 方参与者</div>
-          <h2>每一种角色都有价值</h2>
-          <p class="section-sub">创作者、运营者、法务、税务代理、物流商、保险商、采购商、支付方、平台——9 种角色各司其职，构成完整的创作生态。</p>
-        </div>
-        <div class="roles-grid">
-          <div class="role-card" v-for="role in PARTICIPANT_ROLES" :key="role.key">
-            <div class="role-icon">{{ role.icon }}</div>
-            <div class="role-name">{{ role.name }}</div>
-            <div class="role-desc">{{ role.desc }}</div>
+          <div class="feature-card">
+            <div class="fc-icon" style="color: oklch(56% 0.12 280);">🤝</div>
+            <div class="fc-title">协同创作</div>
+            <div class="fc-desc">多个创作者共同参与创作，人类贡献度评分器量化每个参与者的价值。</div>
+            <ul class="fc-features">
+              <li>多创作者协作工作区</li>
+              <li>人类贡献度自动评分</li>
+              <li>贡献比例合约化</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -165,7 +163,7 @@
         <div class="section-header">
           <div class="section-tag">信任体系</div>
           <h2>每一笔交易都有据可查</h2>
-          <p class="section-sub">从 L1 本地签名到 L4 司法链锚定，从 C2PA 元数据到区块链存证——多层信任机制保障每一份合约的可靠性。</p>
+          <p class="section-sub">从 L1 本地签名到 L4 司法链锚定，从 C2PA 元数据到区块链存证——多层信任机制。</p>
         </div>
         <div class="defense-tiers">
           <div class="tier tier-zero">
@@ -226,7 +224,7 @@
       <section class="cta-section">
         <div class="cta-card">
           <h3>开启你的创作合约之旅</h3>
-          <p>9 方参与者 · 12 状态流转 · 4 层版权防御 · AIGC 溯源审计</p>
+          <p>L1-L4 四级版权防御 · 智能撮合 · 多方分润 · AIGC 溯源审计</p>
           <router-link to="/app" class="btn btn-cta">🚀 开始使用</router-link>
         </div>
       </section>
@@ -238,7 +236,7 @@
         <div class="brand-logo" style="width:28px;height:28px;font-size:0.8rem;">O</div>
         <div>
           <div style="font-weight:600;">OriStudio</div>
-          <div style="font-size:0.75rem;color:var(--muted);">创作者合约市场与信任枢纽 · v5.0</div>
+          <div style="font-size:0.75rem;color:var(--muted);">创作者专属工作台 · v6.0</div>
         </div>
       </div>
       <span>数据主权归你所有 · MIT 开源许可 · 2026</span>
@@ -257,22 +255,28 @@ function onScroll() {
 
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
-
-const PARTICIPANT_ROLES = [
-  { key: 'creator', icon: '🎨', name: '创作者', desc: '作品的原创者，上传作品、设定合约条款' },
-  { key: 'operator', icon: '📋', name: '运营者', desc: '作品的运营推广，对接市场需求' },
-  { key: 'legal', icon: '⚖️', name: '法务代理', desc: '合同审查、争议解决、法律合规' },
-  { key: 'tax', icon: '🧾', name: '税务代理', desc: '跨国税务合规、Avalara 申报' },
-  { key: 'logistics', icon: '📦', name: '物流商', desc: '实物商品配送、物流追踪' },
-  { key: 'insurer', icon: '🛡️', name: '保险商', desc: '版权保险、理赔处理' },
-  { key: 'buyer', icon: '🛒', name: '采购商', desc: '购买作品授权、订阅合约' },
-  { key: 'payer', icon: '💳', name: '支付方', desc: '支付托管、多币种结算' },
-  { key: 'platform', icon: '🏛️', name: '平台方', desc: '撮合交易、分润执行、监管合规' },
-]
 </script>
 
 <style scoped>
-.landing-page { background: var(--bg, #f8fafc); color: var(--fg, #1f2937); line-height: 1.6; overflow-x: hidden; }
+.landing-page {
+  background: var(--bg, #0f172a);
+  color: var(--fg, #f1f5f9);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* --- HERO OVERLAY GRID --- */
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212,168,83,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,83,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
 
 /* --- NAV --- */
 .nav {
@@ -280,39 +284,37 @@ const PARTICIPANT_ROLES = [
   padding: 0 clamp(16px, 4vw, 80px);
   height: 64px;
   display: flex; align-items: center; justify-content: space-between;
-  background: oklch(98% 0.004 240 / 0.82);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-bottom: 1px solid oklch(90% 0.006 240);
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.8);
   transition: box-shadow 0.3s ease;
 }
-.nav.scrolled { box-shadow: 0 1px 0 oklch(0 0 0 / 0.04), 0 4px 24px oklch(0 0 0 / 0.06); }
+.nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
 
 .brand {
   display: flex; align-items: center; gap: 10px;
   font-family: var(--font-display, system-ui); font-weight: 700; font-size: 1.35rem;
-  letter-spacing: -0.015em; color: var(--fg, #1f2937); text-decoration: none;
+  letter-spacing: -0.015em; color: var(--fg); text-decoration: none;
 }
 .brand-logo {
-  width: 36px; height: 36px; border-radius: var(--radius-sm, 6px);
-  background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2, #3b82f6));
+  width: 36px; height: 36px; border-radius: var(--radius-sm, 4px);
+  background: linear-gradient(135deg, var(--gold, #d4a853), var(--grad2, #b8912e));
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 1.1rem; font-weight: 800;
-  box-shadow: 0 2px 12px oklch(56% 0.12 170 / 0.3);
+  color: #0f172a; font-size: 1.1rem; font-weight: 800;
+  box-shadow: 0 2px 12px rgba(212, 168, 83, 0.3);
 }
-.brand:hover .brand-logo { box-shadow: 0 4px 20px oklch(56% 0.12 170 / 0.45); }
-
-.nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+.brand-tag {
+  font-size: 0.65rem; font-weight: 600; color: var(--gold);
+  background: rgba(212, 168, 83, 0.12); border: 1px solid rgba(212, 168, 83, 0.25);
+  padding: 2px 8px; border-radius: 100px; letter-spacing: 0.05em;
+}
+.nav-links { display: flex; gap: 28px; align-items: center; list-style: none; }
 .nav-links a {
-  text-decoration: none; color: var(--muted, #6b7280); font-size: 0.925rem;
-  font-weight: 500; transition: color 0.2s; position: relative;
+  text-decoration: none; color: var(--muted); font-size: 0.9rem;
+  font-weight: 500; transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--fg, #1f2937); }
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
-  background: var(--accent, #0ea5e9); border-radius: 1px; transition: width 0.25s ease;
-}
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: var(--gold); }
 .nav-btns { display: flex; gap: 8px; }
 
 .btn {
@@ -323,31 +325,21 @@ const PARTICIPANT_ROLES = [
   text-decoration: none; border: none; white-space: nowrap;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2, #3b82f6));
-  color: #fff; box-shadow: 0 2px 14px oklch(56% 0.12 170 / 0.3);
+  background: linear-gradient(135deg, var(--gold, #d4a853), var(--grad2, #b8912e));
+  color: #0f172a; box-shadow: 0 2px 14px rgba(212, 168, 83, 0.25);
 }
-.btn-primary:hover { box-shadow: 0 6px 24px oklch(56% 0.12 170 / 0.45); transform: translateY(-1px); }
+.btn-primary:hover { box-shadow: 0 6px 24px rgba(212, 168, 83, 0.4); transform: translateY(-1px); }
 .btn-secondary {
-  background: var(--surface, #fff); color: var(--fg, #1f2937);
-  border: 1px solid var(--border, #e5e7eb);
+  background: transparent; color: var(--fg);
+  border: 1px solid var(--border, #334155);
 }
-.btn-secondary:hover { background: oklch(96% 0.004 240); border-color: var(--muted, #6b7280); }
+.btn-secondary:hover { background: rgba(255,255,255,0.04); border-color: var(--gold); }
 
 /* --- HERO --- */
 .hero-wrapper {
   padding: 120px clamp(16px, 6vw, 80px) 80px;
-  background: linear-gradient(180deg, oklch(96% 0.006 240) 0%, var(--bg, #f8fafc) 100%);
+  background: linear-gradient(180deg, rgba(15,23,42,1) 0%, var(--bg, #0f172a) 100%);
   position: relative; overflow: hidden;
-}
-.hero-bg-deco {
-  position: absolute; top: -120px; right: -80px; width: 600px; height: 600px;
-  background: radial-gradient(circle, oklch(56% 0.12 170 / 0.08) 0%, transparent 70%);
-  border-radius: 50%; pointer-events: none;
-}
-.hero-bg-deco2 {
-  position: absolute; bottom: -80px; left: -40px; width: 400px; height: 400px;
-  background: radial-gradient(circle, oklch(62% 0.16 260 / 0.06) 0%, transparent 70%);
-  border-radius: 50%; pointer-events: none;
 }
 .hero {
   max-width: 1200px; margin: 0 auto;
@@ -358,43 +350,59 @@ const PARTICIPANT_ROLES = [
 .hero-badge {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: 100px;
-  background: oklch(56% 0.12 170 / 0.1); color: var(--accent, #0ea5e9);
-  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em;
-  width: fit-content;
+  background: rgba(212, 168, 83, 0.1); color: var(--gold, #d4a853);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em;
+  width: fit-content; border: 1px solid rgba(212, 168, 83, 0.2);
 }
-.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent, #0ea5e9); animation: pulse-dot 2s infinite; }
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold, #d4a853); animation: pulse-dot 2s infinite; }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-h1 { font-family: var(--font-display, system-ui); font-size: clamp(2.5rem, 5.5vw, 4rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.025em; }
-h1 .em { background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2, #3b82f6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.hero-desc { font-size: 1.15rem; color: var(--muted, #6b7280); line-height: 1.7; max-width: 480px; }
+h1 {
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700;
+  line-height: 1.12; letter-spacing: -0.025em;
+}
+h1 .em {
+  background: linear-gradient(135deg, var(--gold, #d4a853), #e8c478);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 480px; }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.creator-note {
+  font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 6px;
+}
+.creator-note a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.creator-note a:hover { color: #e8c478; }
+.note-icon { font-size: 0.9rem; }
 
 .hero-visual { display: flex; align-items: center; justify-content: center; perspective: 1000px; }
 .hero-card-3d {
-  width: 100%; max-width: 520px;
-  background: var(--surface, #fff); border-radius: var(--radius-xl, 16px);
-  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.04), 0 8px 32px oklch(0 0 0 / 0.06), 0 24px 80px oklch(0 0 0 / 0.08);
+  width: 100%; max-width: 500px;
+  background: var(--surface, #1e293b); border-radius: var(--radius-xl, 16px);
+  border: 1px solid var(--border, #334155);
+  box-shadow: 0 0 0 1px rgba(51,65,85,0.5), 0 16px 48px rgba(0,0,0,0.5);
   padding: 28px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.hero-card-3d:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px oklch(0 0 0 / 0.05), 0 12px 40px oklch(0 0 0 / 0.08), 0 32px 100px oklch(0 0 0 / 0.12); }
-.hc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border, #e5e7eb); }
-.hc-avatar { width: 44px; height: 44px; border-radius: var(--radius-sm, 6px); background: linear-gradient(135deg, oklch(56% 0.12 170 / 0.2), oklch(62% 0.16 260 / 0.2)); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-.hc-title { font-weight: 600; font-size: 0.95rem; }
-.hc-sub { font-size: 0.78rem; color: var(--muted, #6b7280); }
+.hero-card-3d:hover {
+  transform: translateY(-4px) rotateX(2deg);
+  box-shadow: 0 0 0 1px rgba(212,168,83,0.2), 0 24px 64px rgba(0,0,0,0.6);
+}
+.hc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border, #334155); }
+.hc-avatar { width: 44px; height: 44px; border-radius: var(--radius-sm, 4px); background: linear-gradient(135deg, rgba(212,168,83,0.2), rgba(184,145,46,0.2)); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.hc-title { font-weight: 600; font-size: 0.95rem; color: var(--fg); }
+.hc-sub { font-size: 0.78rem; color: var(--muted); }
 .hc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-.hc-stat { background: oklch(96% 0.006 240); border-radius: var(--radius, 8px); padding: 14px; text-align: center; }
-.dark .hc-stat { background: oklch(24% 0.01 240); }
-.hc-stat-val { font-size: 1.6rem; font-weight: 700; color: var(--primary, #0ea5e9); }
-.hc-stat-label { font-size: 0.7rem; color: var(--muted, #6b7280); margin-top: 2px; }
+.hc-stat { background: var(--bg, #0f172a); border: 1px solid var(--border, #334155); border-radius: var(--radius, 8px); padding: 14px; text-align: center; }
+.hc-stat-val { font-size: 1.5rem; font-weight: 700; color: var(--gold, #d4a853); font-family: var(--font-mono, monospace); }
+.hc-stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
 .hc-modules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.hc-mod { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-radius: var(--radius-sm, 6px); font-size: 0.78rem; font-weight: 500; background: oklch(96% 0.006 240); transition: background 0.2s; }
-.dark .hc-mod { background: oklch(24% 0.01 240); }
-.hc-mod:hover { background: oklch(56% 0.12 170 / 0.08); }
-.hc-mod-dot { width: 8px; height: 8px; border-radius: 3px; }
-.hc-mod-dot.blue { background: oklch(58% 0.14 245); }
+.hc-mod { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-radius: var(--radius-sm, 4px); font-size: 0.78rem; font-weight: 500; background: var(--bg, #0f172a); border: 1px solid var(--border, #334155); transition: background 0.2s, border-color 0.2s; }
+.hc-mod:hover { background: rgba(212,168,83,0.08); border-color: rgba(212,168,83,0.25); }
+.hc-mod-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 .hc-mod-dot.green { background: oklch(56% 0.12 170); }
+.hc-mod-dot.blue { background: oklch(58% 0.14 245); }
 .hc-mod-dot.orange { background: oklch(62% 0.18 55); }
 .hc-mod-dot.purple { background: oklch(56% 0.12 280); }
 .hc-mod-dot.pink { background: oklch(58% 0.16 350); }
@@ -402,68 +410,60 @@ h1 .em { background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2,
 
 /* --- SECTIONS --- */
 .section { max-width: 1200px; margin: 0 auto; padding: 80px clamp(16px, 6vw, 80px); }
-.section--alt { background: oklch(97% 0.004 240); margin: 0; max-width: 100%; padding: 80px clamp(16px, 6vw, 80px); }
 .section-header { text-align: center; margin-bottom: 56px; display: flex; flex-direction: column; gap: 12px; }
-.section-tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent, #0ea5e9); }
-h2 { font-family: var(--font-display, system-ui); font-size: clamp(1.8rem, 3.8vw, 2.8rem); font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; }
-.section-sub { font-size: 1.05rem; color: var(--muted, #6b7280); max-width: 560px; margin: 0 auto; }
+.section-tag {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--gold, #d4a853); background: rgba(212,168,83,0.1);
+  border: 1px solid rgba(212,168,83,0.2); padding: 4px 14px; border-radius: 100px;
+  width: fit-content; margin: 0 auto;
+}
+h2 {
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700;
+  letter-spacing: -0.015em; line-height: 1.2;
+}
+.section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; margin: 0 auto; }
 
 /* --- FEATURE CARDS --- */
-.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; align-items: start; }
-.feature-card--wide { grid-column: span 2; }
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .feature-card {
-  background: var(--surface, #fff); border-radius: var(--radius-lg, 12px);
-  border: 1px solid var(--border, #e5e7eb); padding: 32px 28px;
-  display: flex; flex-direction: column; gap: 14px;
-  transition: all 0.3s ease;
+  background: var(--surface, #1e293b); border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--border, #334155); padding: 32px 28px;
+  display: flex; flex-direction: column; gap: 14px; transition: all 0.3s ease;
 }
-.feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px var(--accent, #0ea5e9) / 0.12; border-color: transparent; }
-.fc-icon { width: 48px; height: 48px; border-radius: var(--radius, 8px); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-.fc-title { font-family: var(--font-display, system-ui); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
-.fc-desc { font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.6; }
+.feature-card:hover {
+  transform: translateY(-2px); border-color: rgba(212,168,83,0.4);
+  box-shadow: 0 0 0 1px rgba(212,168,83,0.15), 0 12px 32px rgba(0,0,0,0.4);
+}
+.fc-icon { font-size: 2rem; }
+.fc-title { font-family: var(--font-display, system-ui); font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+.fc-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
 .fc-features { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.fc-features li { font-size: 0.82rem; color: var(--muted, #6b7280); display: flex; align-items: center; gap: 6px; }
-.fc-features li::before { content: '•'; color: var(--accent, #0ea5e9); font-weight: 700; }
-
-/* --- PARTICIPANT ROLES --- */
-.roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
-.role-card {
-  background: var(--surface, #fff); border-radius: var(--radius-lg, 12px);
-  border: 1px solid var(--border, #e5e7eb); padding: 24px;
-  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
-  transition: all 0.3s ease;
-}
-.role-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px oklch(0 0 0 / 0.08); border-color: var(--accent, #0ea5e9); }
-.role-icon { font-size: 2rem; }
-.role-name { font-weight: 700; font-size: 1rem; }
-.role-desc { font-size: 0.82rem; color: var(--muted, #6b7280); line-height: 1.5; }
+.fc-features li { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.fc-features li::before { content: '›'; color: var(--gold, #d4a853); font-weight: 700; font-size: 1.1em; }
 
 /* --- DEFENSE TIERS --- */
 .defense-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
 .tier {
   border-radius: var(--radius-lg, 12px); padding: 28px 20px; text-align: center;
-  border: 1px solid var(--border, #e5e7eb); background: var(--surface, #fff);
+  border: 1px solid var(--border, #334155); background: var(--surface, #1e293b);
   transition: all 0.3s ease;
 }
-.tier:hover { transform: translateY(-4px); box-shadow: 0 8px 24px oklch(0 0 0 / 0.08); }
-.tier-zero { border-color: oklch(80% 0.01 240); background: oklch(98% 0.004 240); }
-.tier-low { border-color: oklch(56% 0.12 170 / 0.3); background: oklch(98% 0.006 170); }
-.tier-mid { border-color: oklch(62% 0.18 55 / 0.3); background: oklch(98% 0.008 55); }
-.tier-high { border-color: oklch(58% 0.14 245 / 0.3); background: oklch(97% 0.006 245); }
-.tier-label { font-family: var(--font-display, system-ui); font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-.tier-zero .tier-label { color: oklch(50% 0.01 240); }
-.tier-low .tier-label { color: oklch(56% 0.12 170); }
-.tier-mid .tier-label { color: oklch(62% 0.18 55); }
-.tier-high .tier-label { color: oklch(58% 0.14 245); }
+.tier:hover { transform: translateY(-3px); border-color: rgba(212,168,83,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.tier-zero { border-color: rgba(148,163,184,0.2); background: rgba(148,163,184,0.04); }
+.tier-low { border-color: rgba(99,179,113,0.3); background: rgba(99,179,113,0.06); }
+.tier-mid { border-color: rgba(237,137,54,0.3); background: rgba(237,137,54,0.06); }
+.tier-high { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.06); }
+.tier-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;
+}
+.tier-zero .tier-label { color: var(--silver, #c0c8d4); }
+.tier-low .tier-label { color: #63b371; }
+.tier-mid .tier-label { color: #ed8936; }
+.tier-high .tier-label { color: #8b5cf6; }
 .tier-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
-.tier-desc { font-size: 0.8rem; color: var(--muted, #6b7280); line-height: 1.5; }
-
-/* --- PROOF --- */
-.proof-section { background: linear-gradient(180deg, var(--surface, #fff) 0%, oklch(96% 0.006 240) 100%); padding: 80px clamp(16px, 6vw, 80px); }
-.proof-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.proof-stat { text-align: center; }
-.proof-num { font-family: var(--font-display, system-ui); font-size: 2.6rem; font-weight: 700; background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2, #3b82f6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.proof-label { font-size: 0.85rem; color: var(--muted, #6b7280); margin-top: 4px; }
+.tier-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
 /* --- STEPS FLOW --- */
 .steps-flow {
@@ -472,7 +472,7 @@ h2 { font-family: var(--font-display, system-ui); font-size: clamp(1.8rem, 3.8vw
 }
 .steps-flow::before {
   content: ''; position: absolute; top: 32px; left: 60px; right: 60px; height: 2px;
-  background: var(--border, #e5e7eb); z-index: 0;
+  background: var(--border, #334155); z-index: 0;
 }
 .step {
   display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -480,41 +480,51 @@ h2 { font-family: var(--font-display, system-ui); font-size: clamp(1.8rem, 3.8vw
 }
 .step-num {
   width: 64px; height: 64px; border-radius: 50%;
-  background: var(--surface, #fff); border: 2px solid var(--border, #e5e7eb);
+  background: var(--surface, #1e293b); border: 2px solid var(--border, #334155);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display, system-ui); font-size: 1.3rem; font-weight: 700;
-  color: var(--accent, #0ea5e9); transition: all 0.3s ease;
+  font-family: var(--font-mono, monospace); font-size: 1.2rem; font-weight: 700;
+  color: var(--gold, #d4a853); transition: all 0.3s ease;
 }
 .step:hover .step-num {
-  background: var(--accent, #0ea5e9); color: #fff; border-color: var(--accent, #0ea5e9);
-  box-shadow: 0 8px 28px oklch(56% 0.12 170 / 0.3); transform: scale(1.08);
+  background: rgba(212,168,83,0.15); border-color: var(--gold, #d4a853);
+  box-shadow: 0 0 20px rgba(212,168,83,0.2);
 }
 .step-title { font-weight: 700; font-size: 0.95rem; }
-.step-desc { font-size: 0.8rem; color: var(--muted, #6b7280); }
+.step-desc { font-size: 0.8rem; color: var(--muted); max-width: 180px; }
 
 /* --- CTA --- */
 .cta-section { text-align: center; padding: 80px clamp(16px, 6vw, 80px); }
 .cta-card {
   max-width: 700px; margin: 0 auto;
-  background: linear-gradient(135deg, var(--grad1, #0ea5e9), var(--grad2, #3b82f6));
-  border-radius: var(--radius-xl, 16px); padding: 56px 48px; color: #fff;
+  background: linear-gradient(135deg, rgba(212,168,83,0.15), rgba(184,145,46,0.08));
+  border: 1px solid rgba(212,168,83,0.3);
+  border-radius: var(--radius-xl, 16px); padding: 56px 48px;
   position: relative; overflow: hidden;
-  box-shadow: 0 16px 56px oklch(56% 0.12 170 / 0.3);
+  box-shadow: 0 16px 56px rgba(0,0,0,0.3);
 }
-.cta-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: oklch(100% 0 0 / 0.08); border-radius: 50%; }
-.cta-card::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 140px; height: 140px; background: oklch(100% 0 0 / 0.06); border-radius: 50%; }
-.cta-card h3 { font-family: var(--font-display, system-ui); font-size: 2rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 12px; }
-.cta-card p { font-size: 1.05rem; opacity: 0.85; position: relative; z-index: 1; margin-bottom: 28px; }
-.btn-cta { background: #fff; color: var(--accent, #0ea5e9); padding: 12px 28px; font-size: 0.95rem; font-weight: 700; box-shadow: 0 4px 16px oklch(0 0 0 / 0.15); position: relative; z-index: 1; }
-.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(0 0 0 / 0.2); }
+.cta-card::before {
+  content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(212,168,83,0.1), transparent 70%); border-radius: 50%;
+}
+.cta-card h3 {
+  font-family: var(--font-display, system-ui);
+  font-size: 2rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 12px;
+}
+.cta-card p { font-size: 1rem; color: var(--muted); position: relative; z-index: 1; margin-bottom: 28px; }
+.btn-cta {
+  background: linear-gradient(135deg, var(--gold, #d4a853), var(--grad2, #b8912e));
+  color: #0f172a; padding: 12px 28px; font-size: 0.95rem; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(212,168,83,0.3); position: relative; z-index: 1;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,168,83,0.4); }
 
 /* --- FOOTER --- */
 .footer {
   max-width: 1200px; margin: 0 auto;
   padding: 40px clamp(16px, 6vw, 80px);
-  border-top: 1px solid var(--border, #e5e7eb);
+  border-top: 1px solid var(--border, #334155);
   display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--muted, #6b7280);
+  flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--muted);
 }
 .footer-brand { display: flex; align-items: center; gap: 10px; }
 
@@ -523,20 +533,15 @@ h2 { font-family: var(--font-display, system-ui); font-size: clamp(1.8rem, 3.8vw
   .hero { grid-template-columns: 1fr; gap: 48px; text-align: center; }
   .hero-desc { max-width: 100%; }
   .hero-actions { justify-content: center; }
-  .hero-card-3d { transform: none; max-width: 420px; }
+  .hero-card-3d { max-width: 420px; }
   .features-grid { grid-template-columns: 1fr; }
-  .feature-card--wide { grid-column: span 1; }
-  .roles-grid { grid-template-columns: repeat(2, 1fr); }
   .defense-tiers { grid-template-columns: repeat(2, 1fr); }
-  .proof-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-flow { flex-direction: column; align-items: center; gap: 24px; }
   .steps-flow::before { display: none; }
 }
 @media (max-width: 640px) {
   .nav-links { display: none; }
-  .roles-grid { grid-template-columns: 1fr; }
   .defense-tiers { grid-template-columns: 1fr; }
-  .proof-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-wrapper { padding: 100px 16px 56px; }
   .section, .cta-section { padding: 56px 16px; }
   .cta-card { padding: 40px 24px; }
@@ -547,11 +552,9 @@ h2 { font-family: var(--font-display, system-ui); font-size: clamp(1.8rem, 3.8vw
 @media (prefers-reduced-motion: reduce) {
   .hero-card-3d { transition: none; }
   .feature-card { transition: none; }
-  .role-card { transition: none; }
   .tier { transition: none; }
   .step-num { transition: none; }
-  .btn-primary { transition: none; }
-  .btn-cta { transition: none; }
+  .btn-primary, .btn-cta { transition: none; }
   * { animation-duration: 0.01ms !important; }
 }
 </style>
