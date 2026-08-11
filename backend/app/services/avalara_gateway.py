@@ -18,7 +18,7 @@ class TaxCalculationResult:
     exemption_status: str
 
 
-class GatewayABC(ABC):
+class AvalaraTaxGateway(ABC):
     """外部 API 抽象基类."""
 
     @property
@@ -38,7 +38,7 @@ class GatewayABC(ABC):
         ...
 
 
-class MockAvalaraGateway(GatewayABC):
+class MockAvalaraGateway(AvalaraTaxGateway):
     """Mock 实现 — 开发/测试环境使用."""
 
     @property
@@ -65,7 +65,7 @@ class MockAvalaraGateway(GatewayABC):
         )
 
 
-class AvalaraGateway(GatewayABC):
+class RealAvalaraGateway(AvalaraTaxGateway):
     """真实 Avalara API 实现 — 需要 API key."""
 
     def __init__(self, api_key: Optional[str] = None):
@@ -84,7 +84,7 @@ class AvalaraGateway(GatewayABC):
         currency: str = "CNY",
     ) -> TaxCalculationResult:
         if not self._is_configured:
-            mock = MockAvalaraGateway()
+            mock = RealAvalaraGateway()
             return await mock.calculate_tax(
                 seller_location, buyer_location, product_type, amount, currency
             )
@@ -132,19 +132,19 @@ class AvalaraGateway(GatewayABC):
                 )
         except httpx.RequestError as e:
             logger.warning(f"Avalara API request failed, using mock: {e}")
-            mock = MockAvalaraGateway()
+            mock = RealAvalaraGateway()
             return await mock.calculate_tax(
                 seller_location, buyer_location, product_type, amount, currency
             )
         except Exception as e:
             logger.error(f"Avalara API error: {e}")
-            mock = MockAvalaraGateway()
+            mock = RealAvalaraGateway()
             return await mock.calculate_tax(
                 seller_location, buyer_location, product_type, amount, currency
             )
 
 
-def get_avalara_gateway() -> GatewayABC:
+def get_avalara_gateway() -> AvalaraTaxGateway:
     """根据环境变量选择 Avalara 网关实现.
 
     生产环境: 配置 AVALARA_LICENSE_KEY 使用真实 API
@@ -152,4 +152,4 @@ def get_avalara_gateway() -> GatewayABC:
     """
     if os.environ.get("AVALARA_LICENSE_KEY"):
         return AvalaraGateway()
-    return MockAvalaraGateway()
+    return RealAvalaraGateway()

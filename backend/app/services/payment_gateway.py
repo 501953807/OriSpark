@@ -10,8 +10,8 @@ from sqlalchemy.orm import Session
 from app.models.contract import ContractInstance
 
 
-class EscrowProvider(ABC):
-    """支付托管提供方抽象基类."""
+class PaymentGateway(ABC):
+    """支付托管网关抽象基类."""
 
     @abstractmethod
     def create_transaction(self, amount: float, currency: str) -> dict:
@@ -30,7 +30,7 @@ class EscrowProvider(ABC):
         """退款至付款方."""
 
 
-class StripeAdapter(EscrowProvider):
+class StripeGateway(PaymentGateway):
     """Stripe Connect 托管实现."""
 
     def create_transaction(self, amount: float, currency: str) -> dict:
@@ -73,7 +73,7 @@ class StripeAdapter(EscrowProvider):
         }
 
 
-class PayPalAdapter(EscrowProvider):
+class PayPalGateway(PaymentGateway):
     """PayPal Commerce Platform 托管实现."""
 
     def create_transaction(self, amount: float, currency: str) -> dict:
@@ -116,7 +116,7 @@ class PayPalAdapter(EscrowProvider):
         }
 
 
-class WorldFirstAdapter(EscrowProvider):
+class WorldFirstGateway(PaymentGateway):
     """WorldFirst 跨境托管实现."""
 
     def create_transaction(self, amount: float, currency: str) -> dict:
@@ -160,10 +160,10 @@ class WorldFirstAdapter(EscrowProvider):
 
 
 # Provider registry
-_PROVIDER_MAP: dict[str, type[EscrowProvider]] = {
-    "stripe": StripeAdapter,
-    "paypal": PayPalAdapter,
-    "worldfirst": WorldFirstAdapter,
+_PROVIDER_MAP: dict[str, type[PaymentGateway]] = {
+    "stripe": StripeGateway,
+    "paypal": PayPalGateway,
+    "worldfirst": WorldFirstGateway,
 }
 
 
@@ -173,7 +173,7 @@ class PaymentGatewayService:
     SUPPORTED_PROVIDERS = set(_PROVIDER_MAP.keys())
 
     @classmethod
-    def _get_provider(cls, provider: str) -> EscrowProvider:
+    def _get_provider(cls, provider: str) -> PaymentGateway:
         """获取提供方实例."""
         if provider not in cls.SUPPORTED_PROVIDERS:
             raise ValueError(f"不支持的托管方: {provider}")
