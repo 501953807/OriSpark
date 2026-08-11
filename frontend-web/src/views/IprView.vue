@@ -326,9 +326,15 @@ const recommendTags = ref('')
 const recommendCreatorType = ref('')
 const recommendResult = ref<any>(null)
 
+import { useGlobalState } from '@/stores/useGlobalState'
+
 try {
+  const globalState = useGlobalState()
   const saved = localStorage.getItem('oristudio-creator-type')
-  if (saved) recommendCreatorType.value = saved
+  if (saved) {
+    recommendCreatorType.value = saved
+    globalState.setCreatorType(saved)
+  }
 } catch {}
 
 const ipTypes = [

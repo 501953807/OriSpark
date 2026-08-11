@@ -20,6 +20,7 @@
     "naive-ui": "^2.38",
     "photoswipe": "^5.4",
     "pinia": "^2.1",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "plyr": "^3.7",
     "vue": "^3.4",
     "vue-echarts": "^6.6",

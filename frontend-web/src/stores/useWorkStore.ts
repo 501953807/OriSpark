@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Work, WorkListParams } from '@/types/work'
 import { worksApi } from '@/api/works'
-import { useAppStore } from '@/stores/useAppStore'
+import { useGlobalState } from '@/stores/useGlobalState'
 import { useGlobalEvents } from '@/composables/useGlobalEvents'
 
 export const useWorkStore = defineStore('work', () => {
@@ -31,8 +31,8 @@ export const useWorkStore = defineStore('work', () => {
       const res = await worksApi.list(filters.value)
       works.value = res.data.data.items
       total.value = res.data.data.total
-      const appStore = useAppStore()
-      appStore.workCount = total.value
+      const globalState = useGlobalState()
+      globalState.workCount = total.value
     } catch (e) {
       console.error('fetchWorks failed:', e)
     } finally {

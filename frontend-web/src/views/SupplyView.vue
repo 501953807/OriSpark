@@ -1383,7 +1383,7 @@ async function askAdvisor() {
     const r = await supplyApi.monetizationAdvisor({
       work_title: advisorForm.value.work_title,
       work_type: advisorForm.value.work_type,
-      creator_type: creatorType.value || undefined,
+      creator_type: (creatorType.value as string | null) || undefined,
       current_paths: ['pod'],
     })
     advisorResult.value = r.data.data
@@ -1443,7 +1443,9 @@ function updateProfit() {
 }
 
 // ── Creator type (from localStorage / onboarding) ──
-const creatorType = ref('')
+import { useGlobalState } from '@/stores/useGlobalState'
+const globalState = useGlobalState()
+const creatorType = ref<string>(globalState.creatorType ?? '')
 
 onMounted(async () => {
   // 前置校验: 检查是否有作品
@@ -1460,9 +1462,14 @@ onMounted(async () => {
       checking.value = false
     }
   }
-  // Restore creator_type from localStorage
-  const saved = localStorage.getItem('oristudio-creator-type')
-  if (saved) creatorType.value = saved
+  // Restore creator_type from global state
+  if (!creatorType.value) {
+    const saved = localStorage.getItem('oristudio-creator-type')
+    if (saved) {
+      globalState.setCreatorType(saved)
+      creatorType.value = saved
+    }
+  }
   // Also try to load from backend onboarding status
   loadOnboardingStatus()
 
@@ -1488,6 +1495,7 @@ async function loadOnboardingStatus() {
     const { systemApi } = await import('@/api/system')
     const res = await systemApi.onboardingStatus()
     if (res.data.data?.creator_type) {
+      globalState.setCreatorType(res.data.data.creator_type)
       creatorType.value = res.data.data.creator_type
     }
   } catch {
