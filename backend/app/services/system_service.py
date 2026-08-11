@@ -35,7 +35,11 @@ from app.models.system import (
     Disclaimer, DisclaimerAcceptance,
 )
 from app.models.system import User as UserModel
-from app.schemas.common import ApiResponse, SuccessResponse
+from app.services.system_settings_module import SystemSettingsModule
+from app.services.system_dict_module import SystemDictModule
+from app.services.system_notification_module import SystemNotificationModule
+from app.services.system_plugin_module import SystemPluginModule
+from app.services.system_audit_module import SystemAuditModule
 
 
 # ================================================================
@@ -515,6 +519,10 @@ def _estimate_cost(category: str) -> dict:
     }
     return estimates.get(category, {"base_cost_cny": 10, "min_order": 1, "shipping_estimate": "3-5天"})
 
+
+# ================================================================
+# -- Service class --
+# ================================================================
 
 # ================================================================
 # -- Service class --
