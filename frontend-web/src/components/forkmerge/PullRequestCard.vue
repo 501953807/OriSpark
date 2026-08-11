@@ -2,7 +2,7 @@
   <div class="pr-panel">
     <div class="panel-header">
       <span>合并请求</span>
-      <n-button size="small" @click="showCreatePR = true">+ 新建 MR</n-button>
+      <button class="btn btn-sm btn-secondary" @click="showCreatePR = true">+ 新建 MR</button>
     </div>
 
     <div v-if="prs.length === 0" class="empty-state">暂无合并请求</div>
@@ -11,9 +11,9 @@
       <div v-for="pr in prs" :key="pr.id" class="pr-item">
         <div class="pr-title">{{ pr.title }}</div>
         <div class="pr-meta">
-          <n-tag size="small" :type="prStatusType(pr.status)">
+          <span class="badge" :class="prBadgeClass(pr.status)">
             {{ prStatusLabel(pr.status) }}
-          </n-tag>
+          </span>
           <span v-if="pr.source_branch_id" class="pr-branches">
             → {{ pr.target_branch_id ? `分支 ${pr.source_branch_id} → ${pr.target_branch_id}` : '分支' }}
           </span>
@@ -21,39 +21,51 @@
         </div>
         <div v-if="pr.description" class="pr-desc">{{ pr.description.slice(0, 100) }}</div>
         <div class="pr-actions" v-if="pr.status === 'open'">
-          <n-button size="tiny" type="success" @click="$emit('merge', pr.id)">合并</n-button>
-          <n-button size="tiny" type="error" @click="$emit('reject', pr.id)">拒绝</n-button>
+          <button class="btn btn-sm btn-secondary" @click="$emit('merge', pr.id)">合并</button>
+          <button class="btn btn-sm btn-danger" @click="$emit('reject', pr.id)">拒绝</button>
         </div>
       </div>
     </div>
 
     <!-- Create PR modal -->
-    <n-modal v-model:show="showCreatePR" preset="dialog" title="新建合并请求">
-      <n-form :model="prForm" label-width="80">
-        <n-form-item label="标题">
-          <n-input v-model:value="prForm.title" placeholder="MR 标题" />
-        </n-form-item>
-        <n-form-item label="描述">
-          <n-input v-model:value="prForm.description" type="textarea" placeholder="简要说明变更内容" />
-        </n-form-item>
-        <n-form-item label="源分支">
-          <n-select v-model:value="prForm.source_branch_id" :options="branchOptions" />
-        </n-form-item>
-        <n-form-item label="目标分支">
-          <n-select v-model:value="prForm.target_branch_id" :options="branchOptions" />
-        </n-form-item>
-      </n-form>
-      <template #action>
-        <n-button @click="showCreatePR = false">取消</n-button>
-        <n-button type="primary" @click="handleCreate">创建</n-button>
-      </template>
-    </n-modal>
+    <div v-if="showCreatePR" class="modal-overlay" @click.self="showCreatePR = false">
+      <div class="modal-card modal-card-lg">
+        <div class="modal-header"><h3>新建合并请求</h3></div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">标题</label>
+            <input class="form-input" v-model="prForm.title" placeholder="MR 标题" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">描述</label>
+            <textarea class="form-textarea" v-model="prForm.description" placeholder="简要说明变更内容"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">源分支</label>
+            <select class="form-select" v-model="prForm.source_branch_id">
+              <option value="" disabled>请选择</option>
+              <option v-for="b in branches" :key="b.id" :value="b.id">{{ b.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">目标分支</label>
+            <select class="form-select" v-model="prForm.target_branch_id">
+              <option value="" disabled>请选择</option>
+              <option v-for="b in branches" :key="b.id" :value="b.id">{{ b.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" @click="showCreatePR = false">取消</button>
+          <button class="btn btn-primary" @click="handleCreate">创建</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { NButton, NModal, NForm, NFormItem, NInput, NSelect, NTag } from 'naive-ui'
 import { forkMergeApi } from '@/api/forkMerge'
 import type { PullRequest, Branch } from '@/types/forkMerge'
 
@@ -98,11 +110,11 @@ async function handleCreate() {
   } catch { /* silent */ }
 }
 
-function prStatusType(status: string): 'default' | 'success' | 'warning' | 'error' | 'info' {
-  const map: Record<string, 'default' | 'success' | 'warning' | 'error' | 'info'> = {
-    open: 'warning', merged: 'success', closed: 'default', rejected: 'error',
+function prBadgeClass(status: string): string {
+  const map: Record<string, string> = {
+    open: 'badge-warning', merged: 'badge-success', closed: 'badge-default', rejected: 'badge-danger',
   }
-  return map[status] || 'default'
+  return map[status] || 'badge-default'
 }
 
 function prStatusLabel(status: string): string {

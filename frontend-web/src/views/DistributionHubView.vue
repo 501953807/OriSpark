@@ -1,79 +1,80 @@
 <template>
   <div class="distribution-hub-view">
       <!-- 顶部统计 -->
-      <n-grid :cols="4" :x-gap="12" responsive="screen" style="margin-bottom: 16px">
-        <n-gi>
-          <n-statistic label="总链接数" :value="stats.totalLinks" />
-        </n-gi>
-        <n-gi>
-          <n-statistic label="总点击量" :value="stats.totalClicks" />
-        </n-gi>
-        <n-gi>
-          <n-statistic label="转化率" :value="`${(stats.conversionRate * 100).toFixed(1)}%`" />
-        </n-gi>
-        <n-gi>
-          <n-statistic label="活跃平台" :value="stats.activePlatforms" />
-        </n-gi>
-      </n-grid>
+      <div class="stats-grid stats-grid-4" style="margin-bottom: 16px">
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.totalLinks }}</div>
+          <div class="stat-label">总链接数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.totalClicks }}</div>
+          <div class="stat-label">总点击量</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ (stats.conversionRate * 100).toFixed(1) }}%</div>
+          <div class="stat-label">转化率</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ stats.activePlatforms }}</div>
+          <div class="stat-label">活跃平台</div>
+        </div>
+      </div>
 
-      <n-card>
-        <template #header>
-          <div style="display: flex; justify-content: space-between; align-items: center">
-            <span>分发短链管理</span>
-            <n-button type="primary" @click="showCreate = true">创建短链</n-button>
-          </div>
-        </template>
+      <div class="card">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center">
+          <span>分发短链管理</span>
+          <button class="btn btn-primary" @click="showCreate = true">创建短链</button>
+        </div>
 
-        <n-table :rows="links">
-          <template #header-columns>
-            <n-th>平台</n-th>
-            <n-th>短链代码</n-th>
-            <n-th>作品 ID</n-th>
-            <n-th>点击量</n-th>
-            <n-th>状态</n-th>
-            <n-th>操作</n-th>
-          </template>
-          <template #row-columns="{ row }">
-            <n-td>{{ platformLabel(row.platform_code) }}</n-td>
-            <n-td><code>{{ row.short_code }}</code></n-td>
-            <n-td>{{ row.work_id }}</n-td>
-            <n-td>{{ row.click_count }}</n-td>
-            <n-td>
-              <n-tag :type="row.is_active ? 'success' : 'default'" size="small">
-                {{ row.is_active ? '活跃' : '已停用' }}
-              </n-tag>
-            </n-td>
-            <n-td>
-              <n-button text type="primary" size="tiny" @click="viewAnalytics(row.id)">分析</n-button>
-              <n-button text type="error" size="tiny" @click="handleDelete(row.id)">删除</n-button>
-            </n-td>
-          </template>
-        </n-table>
-      </n-card>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>平台</th>
+              <th>短链代码</th>
+              <th>作品 ID</th>
+              <th>点击量</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in links" :key="row.id">
+              <td>{{ platformLabel(row.platform_code) }}</td>
+              <td><code>{{ row.short_code }}</code></td>
+              <td>{{ row.work_id }}</td>
+              <td>{{ row.click_count }}</td>
+              <td>
+                <span class="badge" :class="row.is_active ? 'badge-success' : 'badge-default'">
+                  {{ row.is_active ? '活跃' : '已停用' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-ghost" @click="viewAnalytics(row.id)">分析</button>
+                <button class="btn btn-sm btn-ghost btn-danger" @click="handleDelete(row.id)">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- 创建短链弹窗 -->
-      <n-modal v-model:show="showCreate" preset="dialog" title="创建分发短链">
-        <n-form :model="createForm" label-placement="left" label-width="100">
-          <n-form-item label="作品 ID">
-            <n-input v-model:value="createForm.work_id" placeholder="work-001" />
-          </n-form-item>
-          <n-form-item label="平台">
-            <n-select v-model:value="createForm.platform_code" :options="platformOptions" />
-          </n-form-item>
-          <n-form-item label="原始 URL">
-            <n-input v-model:value="createForm.original_url" type="textarea" />
-          </n-form-item>
-          <n-form-item label="UTM 来源">
-            <n-input v-model:value="createForm.utm_source" />
-          </n-form-item>
-        </n-form>
-        <template #action>
-          <n-space>
-            <n-button @click="showCreate = false">取消</n-button>
-            <n-button type="primary" @click="handleCreate">创建</n-button>
-          </n-space>
-        </template>
-      </n-modal>
+      <div class="modal-overlay" v-if="showCreate">
+        <div class="modal-card">
+          <h3 style="margin: 0 0 16px">创建分发短链</h3>
+          <div class="form-group" v-for="field in createFormFields" :key="field.model">
+            <label class="form-label">{{ field.label }}</label>
+            <select v-if="field.model === 'platform_code'" class="form-select" :value="createForm[field.model as keyof typeof createForm]">
+              <option v-for="opt in field.options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+            </select>
+            <textarea v-else-if="field.type === 'textarea'" class="form-textarea" v-model="createForm[field.model as keyof typeof createForm]" :placeholder="field.placeholder" />
+            <input v-else class="form-input" v-model="createForm[field.model as keyof typeof createForm]" :placeholder="field.placeholder" />
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" @click="showCreate = false">取消</button>
+            <button class="btn btn-primary" @click="handleCreate">创建</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -81,14 +82,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  NGrid, NGi, NStatistic, NCard, NTable, NTh, NTd, NButton, NTag, NModal, NForm, NFormItem, NInput, NSelect, NSpace,
-} from 'naive-ui'
-import { useMessage } from 'naive-ui'
 import api from '@/api/reverseTrace'
 
 const router = useRouter()
-const message = useMessage()
 const showCreate = ref(false)
 
 const stats = reactive({
@@ -116,6 +112,13 @@ const platformOptions = [
   { label: 'Twitter', value: 'twitter' },
 ]
 
+const createFormFields = [
+  { label: '作品 ID', model: 'work_id', placeholder: 'work-001' },
+  { label: '平台', model: 'platform_code', placeholder: '', options: platformOptions },
+  { label: '原始 URL', model: 'original_url', placeholder: '', type: 'textarea' },
+  { label: 'UTM 来源', model: 'utm_source', placeholder: '' },
+]
+
 function platformLabel(code: string): string {
   const opt = platformOptions.find(o => o.value === code)
   return opt?.label || code
@@ -136,21 +139,21 @@ async function fetchLinks() {
 async function handleCreate() {
   try {
     await api.create(createForm)
-    message.success('短链已创建')
+    console.warn('短链已创建')
     showCreate.value = false
     fetchLinks()
   } catch {
-    message.error('创建失败')
+    console.warn('创建失败')
   }
 }
 
 async function handleDelete(id: string) {
   try {
     await api.delete(id)
-    message.success('已删除')
+    console.warn('已删除')
     fetchLinks()
   } catch {
-    message.error('删除失败')
+    console.warn('删除失败')
   }
 }
 

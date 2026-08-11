@@ -1,11 +1,14 @@
 <template>
   <div class="stat-card" :class="{ clickable: !!to }" @click="to && $router.push(to)">
-    <div class="stat-icon" :style="{ background: bgColor }">{{ icon }}</div>
+    <div class="stat-icon-circle" :style="{ background: gradientStyle }">
+      <span class="stat-icon">{{ icon }}</span>
+    </div>
     <div class="stat-info">
       <div class="stat-label">{{ label }}</div>
       <div class="stat-value">{{ value }}</div>
-      <div v-if="trend" class="stat-trend" :class="trend > 0 ? 'up' : 'down'">
-        {{ trend > 0 ? '↑' : '↓' }} {{ Math.abs(trend) }}%
+      <div v-if="trend != null" class="stat-trend" :class="trend > 0 ? 'up' : 'down'">
+        <span class="trend-arrow">{{ trend > 0 ? '↑' : '↓' }}</span>
+        <span>{{ Math.abs(trend) }}%</span>
       </div>
     </div>
   </div>
@@ -32,6 +35,18 @@ const bgColor = computed(() => {
   }
   return map[props.color || 'green']
 })
+
+const gradientStyle = computed(() => {
+  const colors: Record<string, string[]> = {
+    green: ['var(--success)', 'oklch(68% 0.11 170)'],
+    orange: ['var(--warning)', 'oklch(72% 0.16 65)'],
+    purple: ['var(--accent)', 'oklch(68% 0.14 290)'],
+    blue: ['oklch(58% 0.14 245)', 'oklch(68% 0.12 255)'],
+    default: ['var(--grad1)', 'var(--grad2)'],
+  }
+  const c = colors[props.color || 'default']
+  return `linear-gradient(135deg, ${c[0]}, ${c[1]})`
+})
 </script>
 
 <style scoped>
@@ -41,7 +56,7 @@ const bgColor = computed(() => {
   border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   transition: all 0.3s ease;
 }
@@ -49,21 +64,41 @@ const bgColor = computed(() => {
   cursor: pointer;
 }
 .stat-card.clickable:hover {
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.07);
+  box-shadow: 0 8px 32px var(--shadow-lg);
   transform: translateY(-2px);
 }
-.stat-icon {
-  width: 48px; height: 48px;
-  border-radius: var(--radius);
+.stat-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px var(--shadow);
 }
-.stat-label { font-size: 0.78rem; color: var(--muted); }
-.stat-value { font-size: 1.5rem; font-weight: 700; font-family: var(--font-display); }
-.stat-trend { font-size: 0.75rem; font-weight: 600; margin-top: 2px; }
-.stat-trend.up { color: var(--green); }
-.stat-trend.down { color: #e53e3e; }
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--fg);
+  line-height: 1.2;
+}
+.stat-trend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.stat-trend.up { color: var(--success); }
+.stat-trend.down { color: var(--danger); }
+.trend-arrow { font-size: 0.85rem; }
 </style>

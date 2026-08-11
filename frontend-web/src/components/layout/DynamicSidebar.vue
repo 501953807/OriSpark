@@ -208,16 +208,6 @@
         </Transition>
       </Teleport>
     </div>
-
-    <!-- Dev mode role switcher -->
-    <div v-if="!isCollapsed && isDevMode" class="sb-dev-tools">
-      <div class="sb-dev-label">调试: 角色</div>
-      <select class="sb-dev-select" :value="currentDevRole" @change="switchDevRole">
-        <option v-for="r in allRoles" :key="r.key" :value="r.key">
-          {{ r.label }}
-        </option>
-      </select>
-    </div>
   </aside>
 </template>
 
@@ -236,6 +226,9 @@ const props = defineProps<{
   mobileVisible?: boolean
 }>()
 
+// frontend-web 是创作者专属系统，固定使用 creator 角色
+const participantRole = ref<ParticipantRole>('creator')
+
 const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
 const authStore = useAuthStore()
@@ -246,13 +239,6 @@ const pickerOpen = ref(false)
 
 const allTypes = getAllCreators()
 const currentType = computed(() => typeStore.getCurrentType())
-
-// Determine participant role from auth store
-const participantRole = computed<ParticipantRole | null>(() => {
-  const roles = authStore.participantRoles
-  if (roles.length === 0) return null
-  return roles[0] as ParticipantRole
-})
 
 const roleInfo = computed(() => {
   if (!participantRole.value) return null
@@ -281,11 +267,9 @@ const typeInfo = computed(() =>
       : null,
 )
 
-// Check if user has a non-creator participant role
-const hasNonCreatorRole = computed(() => {
-  const role = participantRole.value
-  return role && role !== 'creator'
-})
+// frontend-web 是创作者专属系统，不涉及 8 类业务角色
+// 业务角色（运营方/法务/税务等）由 frontend-nuxt 子系统承担
+const hasNonCreatorRole = computed(() => false)
 
 function togglePicker() {
   pickerOpen.value = !pickerOpen.value
@@ -299,44 +283,6 @@ function selectType(type: CreatorType) {
   typeStore.switchType(type)
   pickerOpen.value = false
 }
-
-// ── Dev Mode Role Switcher ─────────────────────────────────────────────────
-const isDevMode = import.meta.env.DEV
-const DEV_ROLES: { key: ParticipantRole; label: string }[] = [
-  { key: 'creator', label: '创作者' },
-  { key: 'operator', label: '运营方' },
-  { key: 'legal_rep', label: '法务代表' },
-  { key: 'tax_agent', label: '税务代理' },
-  { key: 'logistics', label: '物流商' },
-  { key: 'insurer', label: '保险公司' },
-  { key: 'trader', label: '贸易商' },
-  { key: 'payment_provider', label: '支付机构' },
-  { key: 'platform', label: '平台方' },
-]
-const currentDevRole = ref<ParticipantRole>('operator')
-
-function switchDevRole(e: Event) {
-  const role = (e.target as HTMLSelectElement).value as ParticipantRole
-  currentDevRole.value = role
-  // Simulate role change by updating localStorage (mimics real login)
-  localStorage.setItem('oristudio-participant-role', role)
-  const userData = authStore.user || { id: 'local', username: '创作者', email: 'local@test.com', role: '本地用户' }
-  localStorage.setItem('oristudio-user', JSON.stringify({
-    ...userData,
-    participant_roles: [role],
-    participant_role_names: [getParticipantRoleInfo(role)?.label ?? role],
-    login_platform: 'web',
-  }))
-  // Refresh the auth store
-  authStore.user = {
-    ...userData,
-    participant_roles: [role],
-    participant_role_names: [getParticipantRoleInfo(role)?.label ?? role],
-    login_platform: 'web',
-  }
-}
-
-const allRoles = DEV_ROLES
 
 const iconMap: Record<string, string> = {
   works: '🎨',
@@ -463,55 +409,56 @@ function hasSharedSection(sectionRoute: string): boolean {
   left: 0;
   bottom: 0;
   width: var(--sidebar-w, 240px);
-  background: oklch(96% 0.004 240);
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
+  box-shadow: 2px 0 12px var(--shadow-color);
   display: flex;
   flex-direction: column;
   z-index: 100;
-  transition: width 0.3s ease, transform 0.3s ease;
+  transition: width var(--transition-slow, 0.3s) ease, transform 0.3s ease;
   overflow: hidden;
 }
 .dynamic-sidebar.collapsed {
-  width: 60px;
+  width: var(--sidebar-collapsed, 60px);
 }
 .dynamic-sidebar.collapsed.hover-expand {
   width: var(--sidebar-w, 240px);
 }
-.dark .dynamic-sidebar {
-  background: oklch(22% 0.01 240);
-}
 
 .sb-brand {
-  padding: 16px 14px;
+  padding: var(--space-2) 14px;
   display: flex;
   align-items: center;
   gap: 10px;
   border-bottom: 1px solid var(--border);
   text-decoration: none;
-  color: inherit;
-  min-height: 64px;
+  color: var(--sidebar-fg, var(--fg));
+  min-height: var(--topbar-h, 64px);
   flex-shrink: 0;
 }
 .sb-logo {
   width: 34px;
   height: 34px;
   border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--accent-fg, var(--fg));
   font-weight: 800;
   font-size: 1rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px var(--accent-dim);
 }
 .sb-brand-text {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.95rem;
+  color: var(--sidebar-fg, var(--fg));
 }
 .sb-brand-sub {
   font-size: 0.62rem;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
 }
 
 .sb-type-badge {
@@ -520,7 +467,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   gap: 6px;
   padding: 8px 14px;
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -543,7 +490,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
 }
 .sb-link {
   display: flex;
@@ -554,19 +501,20 @@ function hasSharedSection(sectionRoute: string): boolean {
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
+  border-left: 3px solid transparent;
 }
 .sb-link:hover {
-  background: oklch(56% 0.12 170 / 0.06);
-  color: var(--fg);
+  background: var(--surface-2);
+  color: var(--sidebar-fg, var(--fg));
 }
 .sb-link.active {
-  background: var(--surface);
+  background: var(--sidebar-active);
   color: var(--accent);
-  box-shadow: 0 1px 4px oklch(0 0 0 / 0.04);
+  border-left-color: var(--accent);
   font-weight: 600;
 }
 .collapsed .sb-link {
@@ -591,12 +539,12 @@ function hasSharedSection(sectionRoute: string): boolean {
   background: transparent;
   cursor: pointer;
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
   transition: color 0.2s;
   flex-shrink: 0;
 }
 .sb-collapse-btn:hover {
-  color: var(--fg);
+  color: var(--sidebar-fg, var(--fg));
 }
 
 .sb-footer {
@@ -618,19 +566,21 @@ function hasSharedSection(sectionRoute: string): boolean {
   user-select: none;
 }
 .sb-type-selector:hover {
-  background: oklch(56% 0.12 170 / 0.06);
+  background: var(--surface-2);
 }
 .sb-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--accent-fg, var(--fg));
   font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px var(--accent-dim);
 }
 .sb-user-info {
   flex: 1;
@@ -639,11 +589,11 @@ function hasSharedSection(sectionRoute: string): boolean {
 .sb-user-name {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--sidebar-fg, var(--fg));
 }
 .sb-user-role {
   font-size: 0.65rem;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
 }
 .sb-chevron {
   font-size: 0.6rem;
@@ -666,7 +616,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.12);
+  box-shadow: var(--shadow-lg);
   padding: 12px;
   z-index: 200;
   width: 200px;
@@ -676,7 +626,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
   padding: 4px 8px 8px;
 }
 .picker-item {
@@ -697,10 +647,10 @@ function hasSharedSection(sectionRoute: string): boolean {
   font-family: var(--font-body);
 }
 .picker-item:hover {
-  background: oklch(56% 0.12 170 / 0.06);
+  background: var(--surface-2);
 }
 .picker-item.active {
-  background: var(--surface);
+  background: var(--sidebar-active);
   color: var(--accent);
   font-weight: 600;
 }
@@ -719,34 +669,5 @@ function hasSharedSection(sectionRoute: string): boolean {
 .picker-fade-enter-from,
 .picker-fade-leave-to {
   opacity: 0;
-}
-
-/* Dev mode role switcher */
-.sb-dev-tools {
-  padding: 10px 14px;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.sb-dev-label {
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.sb-dev-select {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--fg);
-  font-size: 0.75rem;
-  cursor: pointer;
-}
-.sb-dev-select:focus {
-  outline: none;
-  border-color: var(--accent);
 }
 </style>

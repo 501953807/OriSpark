@@ -316,7 +316,7 @@ class MonitorService:
             raise
         if new_results:
             try:
-                from app.routers.system import push_notification
+                from app.utils.system_helpers import push_notification
                 push_notification(
                     self.db, user_id="default",
                     type="scan_result",
@@ -385,7 +385,7 @@ class MonitorService:
             raise
         if total_results > 0:
             try:
-                from app.routers.system import push_notification
+                from app.utils.system_helpers import push_notification
                 push_notification(
                     self.db, user_id="default",
                     type="scan_result",

@@ -115,7 +115,7 @@ function reset() {
 .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
 .result-icon { font-size: 3rem; margin-bottom: 8px; }
 .result-details { text-align: left; margin-top: 16px; }
-.detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid oklch(93% 0.003 240); font-size: 0.85rem; }
+.detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
 .dl { font-weight: 600; color: var(--muted); }
 .dv { max-width: 60%; word-break: break-all; text-align: right; }
 .mono { font-family: monospace; font-size: 0.72rem; }

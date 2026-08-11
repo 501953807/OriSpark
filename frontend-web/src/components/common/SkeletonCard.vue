@@ -12,7 +12,7 @@
 .skeleton-card { padding: 0; overflow: hidden; }
 .sk-thumb {
   height: 160px;
-  background: linear-gradient(90deg, oklch(93% 0.003 240) 25%, oklch(96% 0.004 240) 50%, oklch(93% 0.003 240) 75%);
+  background: linear-gradient(90deg, var(--surface-hover) 25%, var(--bg-subtle) 50%, var(--surface-hover) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

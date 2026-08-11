@@ -1712,8 +1712,8 @@ class SystemService:
         if not user:
             raise HTTPException(status_code=404, detail="用户不存在")
 
-        from app.routers.auth import _hash_password
-        user.password_hash = _hash_password(new_password)
+        from app.utils.system_helpers import hash_password
+        user.password_hash = hash_password(new_password)
         user.password_strength_score = strength["score"]
         user.password_updated_at = datetime.now(timezone.utc)
 

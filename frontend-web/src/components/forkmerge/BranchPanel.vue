@@ -2,7 +2,7 @@
   <div class="branch-panel">
     <div class="panel-header">
       <span>分支列表</span>
-      <n-button size="small" @click="showCreateBranch = true">+ 新建分支</n-button>
+      <button class="btn btn-sm btn-secondary" @click="showCreateBranch = true">+ 新建分支</button>
     </div>
 
     <div v-if="branches.length === 0" class="empty-state">暂无分支</div>
@@ -16,19 +16,23 @@
     </div>
 
     <!-- Create branch modal -->
-    <n-modal v-model:show="showCreateBranch" preset="dialog" title="新建分支">
-      <n-input v-model:value="newBranchName" placeholder="分支名称，如 feature/add-logo" />
-      <template #action>
-        <n-button @click="showCreateBranch = false">取消</n-button>
-        <n-button type="primary" :disabled="!newBranchName.trim()" @click="handleCreate">创建</n-button>
-      </template>
-    </n-modal>
+    <div v-if="showCreateBranch" class="modal-overlay" @click.self="showCreateBranch = false">
+      <div class="modal-card">
+        <div class="modal-header"><h3>新建分支</h3></div>
+        <div class="modal-body">
+          <input class="form-input" v-model="newBranchName" placeholder="分支名称，如 feature/add-logo" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" @click="showCreateBranch = false">取消</button>
+          <button class="btn btn-primary" :disabled="!newBranchName.trim()" @click="handleCreate">创建</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { NButton, NModal, NInput } from 'naive-ui'
 import { forkMergeApi } from '@/api/forkMerge'
 import type { Branch } from '@/types/forkMerge'
 

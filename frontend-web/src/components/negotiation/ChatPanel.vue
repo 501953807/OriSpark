@@ -11,16 +11,15 @@
       </div>
     </div>
     <div class="chat-input">
-      <n-input v-model:value="replyText" placeholder="输入回复..." />
-      <n-input-number v-model:value="replyOffer" placeholder="报价 (元)" style="width: 140px;" />
-      <n-button type="primary" @click="handleSend">发送</n-button>
+      <input class="form-input chat-text-input" v-model="replyText" placeholder="输入回复..." />
+      <input class="form-input chat-number-input" type="number" v-model.number="replyOffer" placeholder="报价 (元)" />
+      <button class="btn btn-primary" @click="handleSend">发送</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NInput, NInputNumber, NButton } from 'naive-ui'
 import type { TradeNegotiation } from '@/types/negotiation'
 
 const props = defineProps<{ negotiation: TradeNegotiation }>()
@@ -80,4 +79,6 @@ function handleSend() {
 .msg-time { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
 
 .chat-input { display: flex; gap: 8px; align-items: center; }
+.chat-text-input { flex: 1; }
+.chat-number-input { width: 140px; }
 </style>

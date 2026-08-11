@@ -1,68 +1,67 @@
 <template>
   <div class="negotiation-view">
-    <n-card title="💬 议价协商">
-      <n-split direction="horizontal" :default-size="0.35" :min="0.25" :max="0.5">
-        <template #1>
-          <div class="neg-list-panel">
-            <div class="panel-header">
-              <h3>协商列表</h3>
-              <n-button size="small" @click="showCreate = true">+ 新建</n-button>
-            </div>
-            <n-select v-model:value="statusFilter" :options="statusOptions" placeholder="按状态筛选" style="width: 100%; margin-bottom: 12px;" />
-            <div v-if="loading" class="empty-state">加载中...</div>
-            <div v-else class="neg-items">
-              <div
-                v-for="neg in filteredNegs"
-                :key="neg.id"
-                :class="['neg-item', { selected: neg.id === selectedId }]"
-                @click="selectedId = neg.id"
-              >
-                <div class="neg-title">{{ descPreview(neg) }}</div>
-                <div class="neg-meta">
-                  <n-tag size="small" :type="negStatusType(neg.status)">
-                    {{ negStatusLabel(neg.status) }}
-                  </n-tag>
-                  <span v-if="neg.current_offer_yuan" class="neg-price">¥{{ neg.current_offer_yuan }}</span>
-                  <span class="neg-time">{{ formatDate(neg.created_at) }}</span>
-                </div>
+    <div class="card">
+      <div class="split-layout">
+        <div class="neg-list-panel">
+          <div class="panel-header">
+            <h3>协商列表</h3>
+            <button class="btn btn-sm btn-secondary" @click="showCreate = true">+ 新建</button>
+          </div>
+          <select class="form-select" v-model="statusFilter" style="width: 100%; margin-bottom: 12px">
+            <option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+          </select>
+          <div v-if="loading" class="empty-state">加载中...</div>
+          <div v-else class="neg-items">
+            <div
+              v-for="neg in filteredNegs"
+              :key="neg.id"
+              :class="['neg-item', { selected: neg.id === selectedId }]"
+              @click="selectedId = neg.id"
+            >
+              <div class="neg-title">{{ descPreview(neg) }}</div>
+              <div class="neg-meta">
+                <span class="badge" :class="negBadgeClass(neg.status)">{{ negStatusLabel(neg.status) }}</span>
+                <span v-if="neg.current_offer_yuan" class="neg-price">¥{{ neg.current_offer_yuan }}</span>
+                <span class="neg-time">{{ formatDate(neg.created_at) }}</span>
               </div>
             </div>
           </div>
-        </template>
-        <template #2>
-          <div v-if="selectedNeg" class="neg-detail-panel">
-            <ChatPanel :negotiation="selectedNeg" @reply="handleReply" />
-            <OfferTimeline :negotiation="selectedNeg" />
-          </div>
-          <EmptyState v-else icon="💬" title="选择一条协商" description="从左侧列表中选择或创建新的议价协商。" />
-        </template>
-      </n-split>
-    </n-card>
+        </div>
+        <div class="neg-detail-panel" v-if="selectedNeg">
+          <ChatPanel :negotiation="selectedNeg" @reply="handleReply" />
+          <OfferTimeline :negotiation="selectedNeg" />
+        </div>
+        <EmptyState v-else icon="💬" title="选择一条协商" description="从左侧列表中选择或创建新的议价协商。" />
+      </div>
+    </div>
 
     <!-- Create modal -->
-    <n-modal v-model:show="showCreate" preset="dialog" title="新建议价协商">
-      <n-form :model="createForm" label-width="80">
-        <n-form-item label="买方ID">
-          <n-input v-model:value="createForm.buyer_id" placeholder="买方用户 ID" />
-        </n-form-item>
-        <n-form-item label="卖方ID">
-          <n-input v-model:value="createForm.seller_id" placeholder="卖方用户 ID" />
-        </n-form-item>
-        <n-form-item label="初始报价">
-          <n-input-number v-model:value="createForm.initial_price_yuan" placeholder="金额 (元)" />
-        </n-form-item>
-      </n-form>
-      <template #action>
-        <n-button @click="showCreate = false">取消</n-button>
-        <n-button type="primary" @click="handleCreate">创建</n-button>
-      </template>
-    </n-modal>
+    <div class="modal-overlay" v-if="showCreate">
+      <div class="modal-card">
+        <h3 style="margin: 0 0 16px">新建议价协商</h3>
+        <div class="form-group">
+          <label class="form-label">买方ID</label>
+          <input class="form-input" v-model="createForm.buyer_id" placeholder="买方用户 ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">卖方ID</label>
+          <input class="form-input" v-model="createForm.seller_id" placeholder="卖方用户 ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">初始报价</label>
+          <input class="form-input" type="number" v-model.number="createForm.initial_price_yuan" placeholder="金额 (元)" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" @click="showCreate = false">取消</button>
+          <button class="btn btn-primary" @click="handleCreate">创建</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { NCard, NSplit, NButton, NModal, NForm, NFormItem, NInput, NInputNumber, NSelect, NTag } from 'naive-ui'
 import type { TradeNegotiation } from '@/types/negotiation'
 import { negotiationApi } from '@/api/negotiation'
 import ChatPanel from '@/components/negotiation/ChatPanel.vue'
@@ -122,11 +121,11 @@ function descPreview(n: TradeNegotiation): string {
   return n.description?.slice(0, 40) || `${n.buyer_id.slice(0,6)} ↔ ${n.seller_id.slice(0,6)}`
 }
 
-function negStatusType(s: string): 'default' | 'success' | 'warning' | 'error' | 'info' {
-  const map: Record<string, 'default' | 'success' | 'warning' | 'error' | 'info'> = {
-    pending: 'warning', negotiating: 'warning', agreed: 'success', completed: 'success', cancelled: 'error',
+function negBadgeClass(s: string): string {
+  const map: Record<string, string> = {
+    pending: 'badge-warning', negotiating: 'badge-warning', agreed: 'badge-success', completed: 'badge-success', cancelled: 'badge-danger',
   }
-  return map[s] || 'default'
+  return map[s] || 'badge-default'
 }
 
 function negStatusLabel(s: string): string {
@@ -149,7 +148,9 @@ onMounted(load)
 <style scoped>
 .negotiation-view { display: flex; flex-direction: column; gap: 16px; }
 
-.neg-list-panel { padding: 8px; overflow-y: auto; max-height: calc(100vh - 200px); }
+.split-layout { display: flex; min-height: 400px; }
+.neg-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--border); max-height: calc(100vh - 200px); }
+.neg-detail-panel { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .panel-header h3 { margin: 0; font-size: 0.92rem; font-weight: 600; }
@@ -168,8 +169,6 @@ onMounted(load)
 .neg-meta { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); }
 .neg-price { color: #ea580c; font-weight: 600; }
 .neg-time { margin-left: auto; }
-
-.neg-detail-panel { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
 .empty-state { padding: 32px; text-align: center; color: var(--muted); }
 </style>

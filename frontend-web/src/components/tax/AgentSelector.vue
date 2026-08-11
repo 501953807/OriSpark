@@ -1,46 +1,74 @@
 <template>
-  <n-card title="税务代理管理">
-    <template #header-extra>
-      <n-button type="primary" size="small" @click="showCreate = true">新增代理</n-button>
-    </template>
+  <div class="card">
+    <div class="modal-header">
+      <h3>税务代理管理</h3>
+      <button class="btn btn-sm btn-primary" @click="showCreate = true">新增代理</button>
+    </div>
 
-    <n-data-table :columns="columns" :data="agents" :loading="loading" />
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>许可证</th>
+          <th>服务区域</th>
+          <th>费率</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody v-if="!loading">
+        <tr v-for="row in agents" :key="row.id">
+          <td>{{ row.id }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.license_no }}</td>
+          <td>{{ (row.service_areas as unknown[])?.join(', ') || '' }}</td>
+          <td>{{ ((row.fee_rate as number) * 100).toFixed(1) }}%</td>
+          <td>{{ row.status }}</td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr><td colspan="6" class="text-center">加载中...</td></tr>
+      </tbody>
+    </table>
 
-    <n-modal v-model:show="showCreate" preset="dialog" title="新增税务代理">
-      <n-form :model="newAgent" label-placement="left" label-width="100">
-        <n-form-item label="参与者 ID">
-          <n-input v-model:value="newAgent.participant_id" />
-        </n-form-item>
-        <n-form-item label="名称">
-          <n-input v-model:value="newAgent.name" />
-        </n-form-item>
-        <n-form-item label="许可证号">
-          <n-input v-model:value="newAgent.license_no" />
-        </n-form-item>
-        <n-form-item label="服务区域 (逗号分隔)">
-          <n-input v-model:value="newAgent.service_areas_str" placeholder="CN,US,EU" />
-        </n-form-item>
-        <n-form-item label="费率 (%)">
-          <n-input-number v-model:value="newAgent.fee_rate" :min="0" :max="100" />
-        </n-form-item>
-      </n-form>
-      <template #action>
-        <n-space>
-          <n-button @click="showCreate = false">取消</n-button>
-          <n-button type="primary" @click="handleCreate">创建</n-button>
-        </n-space>
-      </template>
-    </n-modal>
-  </n-card>
+    <div v-if="showCreate" class="modal-overlay" @click.self="showCreate = false">
+      <div class="modal-card modal-card-lg">
+        <div class="modal-header"><h3>新增税务代理</h3></div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">参与者 ID</label>
+            <input class="form-input" v-model="newAgent.participant_id" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">名称</label>
+            <input class="form-input" v-model="newAgent.name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">许可证号</label>
+            <input class="form-input" v-model="newAgent.license_no" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">服务区域 (逗号分隔)</label>
+            <input class="form-input" v-model="newAgent.service_areas_str" placeholder="CN,US,EU" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">费率 (%)</label>
+            <input class="form-input" type="number" v-model.number="newAgent.fee_rate" :min="0" :max="100" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" @click="showCreate = false">取消</button>
+          <button class="btn btn-primary" @click="handleCreate">创建</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { NCard, NButton, NDataTable, NModal, NForm, NFormItem, NInput, NInputNumber, NSpace } from 'naive-ui'
-import { useMessage } from 'naive-ui'
 import { taxApi } from '@/api/tax'
 
-const message = useMessage()
 const loading = ref(false)
 const agents = ref<any[]>([])
 const showCreate = ref(false)
@@ -52,15 +80,6 @@ const newAgent = reactive({
   service_areas_str: '',
   fee_rate: 5,
 })
-
-const columns = [
-  { title: 'ID', key: 'id' },
-  { title: '名称', key: 'name' },
-  { title: '许可证', key: 'license_no' },
-  { title: '服务区域', key: 'service_areas', render(row: Record<string, unknown>) { return (row.service_areas as unknown[])?.join(', ') || '' } },
-  { title: '费率', key: 'fee_rate', render(row: Record<string, unknown>) { return `${((row.fee_rate as number) * 100).toFixed(1)}%` } },
-  { title: '状态', key: 'status' },
-]
 
 async function fetchAgents() {
   loading.value = true
@@ -80,11 +99,11 @@ async function handleCreate() {
       ...newAgent,
       service_areas: newAgent.service_areas_str.split(',').map((s: string) => s.trim()).filter(Boolean),
     })
-    message.success('创建成功')
+    console.warn('创建成功')
     showCreate.value = false
     fetchAgents()
   } catch {
-    message.error('创建失败')
+    console.warn('创建失败')
   }
 }
 

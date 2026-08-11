@@ -11,9 +11,9 @@
       >
         <div class="work-title">{{ work.title || '未命名仓库' }}</div>
         <div class="work-meta">
-          <n-tag size="small" :type="statusTagType(work.status)">
+          <span class="badge" :class="statusTagClass(work.status)">
             {{ statusLabel(work.status) }}
-          </n-tag>
+          </span>
           <span class="meta-count">{{ work.branch_count || 0 }} 分支</span>
           <span class="meta-count">{{ work.pr_count || 0 }} MR</span>
         </div>
@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { NTag } from 'naive-ui'
 import type { ForkMergeWork } from '@/types/forkMerge'
 import EmptyState from '@/components/common/EmptyState.vue'
 
@@ -38,11 +37,11 @@ defineEmits<{
   create: []
 }>()
 
-function statusTagType(status: string): 'default' | 'success' | 'warning' | 'error' | 'info' {
-  const map: Record<string, 'default' | 'success' | 'warning' | 'error' | 'info'> = {
-    active: 'success', closed: 'default', archived: 'info',
+function statusTagClass(status: string): string {
+  const map: Record<string, string> = {
+    active: 'badge-success', closed: 'badge-default', archived: 'badge-default',
   }
-  return map[status] || 'default'
+  return map[status] || 'badge-default'
 }
 
 function statusLabel(status: string): string {

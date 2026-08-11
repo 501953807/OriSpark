@@ -210,7 +210,7 @@ onUnmounted(() => {
   transition: background 0.15s;
   border-bottom: 1px solid oklch(0 0 0 / 0.04);
 }
-.notif-item:hover { background: oklch(96% 0.004 240); }
+.notif-item:hover { background: var(--surface-hover); }
 .notif-item.unread { background: oklch(56% 0.12 170 / 0.03); }
 
 .notif-dot {

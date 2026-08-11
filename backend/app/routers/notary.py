@@ -97,7 +97,7 @@ NOTARY_PLATFORMS = {
 def get_notary_platforms(db: Session = Depends(get_db)):
     """获取可用的存证平台列表 (P1.7.13: dictStore-backed, 硬编码为 fallback)."""
     try:
-        from app.routers.system import get_dict_values_rich
+        from app.utils.system_helpers import get_dict_values_rich
         dict_entries = get_dict_values_rich("notary_platforms", db)
         if dict_entries:
             platforms = []
@@ -196,7 +196,7 @@ def confirm_notary_record(
     # P1.7.14: Push notification after notary record confirmed
     try:
         work = svc.get_work(record.work_id)
-        from app.routers.system import push_notification
+        from app.utils.system_helpers import push_notification
         push_notification(
             db, user_id="default",
             type="cert_ready",

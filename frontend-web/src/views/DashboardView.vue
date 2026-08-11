@@ -371,18 +371,18 @@ onMounted(async () => {
   align-items: center;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid oklch(93% 0.003 240);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.15s;
 }
 .work-row:last-child { border-bottom: none; }
-.work-row:hover { background: oklch(97% 0.002 240); margin: 0 -8px; padding: 10px 8px; border-radius: var(--radius-sm); }
+.work-row:hover { background: var(--bg-subtle); margin: 0 -8px; padding: 10px 8px; border-radius: var(--radius-sm); }
 .work-thumb {
   width: 40px; height: 40px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
-  background: oklch(95% 0.003 240);
+  background: var(--surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -411,9 +411,6 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg, oklch(98% 0.002 240));
-}
-.dark .page-loading-overlay {
-  background: var(--bg, oklch(13% 0.01 240));
+  background: var(--bg);
 }
 </style>

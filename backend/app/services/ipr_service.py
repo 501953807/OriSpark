@@ -113,7 +113,7 @@ class FeeCalculatorPayload(BaseModel):
 def _get_ip_types(db: Session) -> list[str]:
     """Get IP types from dictStore (P1.7.13), fallback to hardcoded."""
     try:
-        from app.routers.system import get_dict_values
+        from app.utils.system_helpers import get_dict_values
         dict_types = get_dict_values("ip_types", db)
         if dict_types:
             return dict_types
@@ -2393,7 +2393,7 @@ class IprService:
         new_status = update_data.get("status")
         if new_status and new_status != old_status:
             try:
-                from app.routers.system import push_notification
+                from app.utils.system_helpers import push_notification
                 status_labels = {
                     "draft": "草稿", "filed": "已提交", "under_review": "审查中",
                     "registered": "已注册", "rejected": "已驳回", "expired": "已过期",

@@ -2,28 +2,32 @@
   <div class="collab-panel">
     <div class="panel-header">
       <span>协作者</span>
-      <n-button size="small" @click="showAdd = true">+ 添加</n-button>
+      <button class="btn btn-sm btn-secondary" @click="showAdd = true">+ 添加</button>
     </div>
     <div v-if="collabs.length === 0" class="empty-state">暂无协作者</div>
     <div v-else class="collab-list">
       <div v-for="c in collabs" :key="c.id" class="collab-item">
         <span class="collab-user">用户 {{ c.user_id.slice(0, 8) }}</span>
-        <n-tag size="small">{{ roleLabel(c.role) }}</n-tag>
+        <span class="badge badge-default">{{ roleLabel(c.role) }}</span>
       </div>
     </div>
-    <n-modal v-model:show="showAdd" preset="dialog" title="添加协作者">
-      <n-input v-model:value="newUserId" placeholder="用户 ID" />
-      <template #action>
-        <n-button @click="showAdd = false">取消</n-button>
-        <n-button type="primary" @click="handleAdd">添加</n-button>
-      </template>
-    </n-modal>
+    <div v-if="showAdd" class="modal-overlay" @click.self="showAdd = false">
+      <div class="modal-card">
+        <div class="modal-header"><h3>添加协作者</h3></div>
+        <div class="modal-body">
+          <input class="form-input" v-model="newUserId" placeholder="用户 ID" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" @click="showAdd = false">取消</button>
+          <button class="btn btn-primary" @click="handleAdd">添加</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { NButton, NModal, NInput, NTag } from 'naive-ui'
 import { forkMergeApi } from '@/api/forkMerge'
 import type { Collaborator } from '@/types/forkMerge'
 

@@ -126,7 +126,7 @@ function oauthLogin(provider: string) {
   padding: 40px;
   max-width: 440px;
   width: 100%;
-  box-shadow: 0 16px 64px oklch(0 0 0 / 0.08);
+  box-shadow: 0 16px 64px var(--shadow-lg);
 }
 .login-brand { text-align: center; margin-bottom: 24px; }
 .brand-logo {
@@ -134,7 +134,7 @@ function oauthLogin(provider: string) {
   border-radius: var(--radius);
   background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: inline-flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 800; font-size: 1.6rem;
+  color: var(--accent-fg);
   margin-bottom: 12px;
 }
 .login-brand h1 { font-family: var(--font-display); font-size: 1.4rem; margin: 0 0 4px; }
@@ -149,7 +149,7 @@ function oauthLogin(provider: string) {
   cursor: pointer; border: 1px solid var(--border); background: var(--surface);
   color: var(--fg); transition: all 0.2s;
 }
-.oauth-btn:hover { background: oklch(96% 0.004 240); }
+.oauth-btn:hover { background: var(--surface-hover); }
 .oauth-btn.google:hover { border-color: #4285f4; background: oklch(56% 0.12 260 / 0.05); }
 .oauth-btn.wechat:hover { border-color: #07c160; background: oklch(56% 0.12 160 / 0.05); }
 .oauth-btn.douyin:hover { border-color: #fe2c55; background: oklch(56% 0.18 10 / 0.05); }
@@ -160,7 +160,7 @@ function oauthLogin(provider: string) {
 
 .login-tabs {
   display: flex; gap: 4px; margin-bottom: 20px;
-  background: oklch(96% 0.004 240); border-radius: var(--radius); padding: 4px;
+  background: var(--surface-hover); border-radius: var(--radius); padding: 4px;
 }
 .login-tabs button {
   flex: 1; padding: 8px; border: none; border-radius: var(--radius-sm);
@@ -170,7 +170,7 @@ function oauthLogin(provider: string) {
 }
 .login-tabs button.active {
   background: var(--surface); color: var(--fg);
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.06);
+  box-shadow: 0 1px 3px var(--shadow-sm);
 }
 .login-form { display: flex; flex-direction: column; gap: 14px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -180,10 +180,10 @@ function oauthLogin(provider: string) {
   font-size: 0.9rem; font-family: var(--font-body); color: var(--fg);
   background: var(--surface); outline: none;
 }
-.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
 .login-error {
-  padding: 10px 14px; background: oklch(58% 0.18 30 / 0.08); border-radius: var(--radius-sm);
-  color: #e53e3e; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;
+  padding: 10px 14px; background: oklch(58% 0.18 25 / 0.08); border-radius: var(--radius-sm);
+  color: var(--danger); font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;
 }
 .login-divider {
   display: flex; align-items: center; gap: 12px;

@@ -6,76 +6,81 @@
       <button @click="errorMsg = ''">关闭</button>
     </div>
 
-    <n-card title="🔀 Fork-Merge 协同创作">
-      <n-split direction="horizontal" :default-size="0.3" :min="0.2" :max="0.5">
-        <template #1>
-          <div class="work-list-panel">
-            <div class="panel-header">
-              <h3>我的仓库</h3>
-              <n-button size="small" @click="showCreateModal = true">+ 新建</n-button>
-            </div>
-            <WorkList
-              :works="works"
-              :loading="loading"
-              :selected-id="selectedWork?.id"
-              @select="handleWorkSelect"
-              @create="showCreateModal = true"
-            />
+    <div class="card">
+      <div class="split-layout">
+        <div class="work-list-panel">
+          <div class="panel-header">
+            <h3>我的仓库</h3>
+            <button class="btn btn-sm btn-secondary" @click="showCreateModal = true">+ 新建</button>
           </div>
-        </template>
-        <template #2>
-          <div v-if="selectedWork" class="work-detail-panel">
-            <div class="detail-header">
-              <h2>{{ selectedWork.title }}</h2>
-              <n-tag :type="statusTagType(selectedWork.status)">{{ statusLabel(selectedWork.status) }}</n-tag>
-            </div>
-            <n-tabs type="segment">
-              <n-tab-pane name="branches" tab="分支">
-                <BranchPanel :work-id="selectedWork.id" />
-              </n-tab-pane>
-              <n-tab-pane name="prs" tab="合并请求">
-                <PullRequestCard :work-id="selectedWork.id" />
-              </n-tab-pane>
-              <n-tab-pane name="collaborators" tab="协作者">
-                <CollaboratorList :work-id="selectedWork.id" />
-              </n-tab-pane>
-            </n-tabs>
-          </div>
-          <EmptyState
-            v-else
-            icon="🔀"
-            title="选择或创建一个仓库"
-            description="Fork-Merge 支持 Git-style 的协同创作工作流。"
+          <WorkList
+            :works="works"
+            :loading="loading"
+            :selected-id="selectedWork?.id"
+            @select="handleWorkSelect"
+            @create="showCreateModal = true"
           />
-        </template>
-      </n-split>
-    </n-card>
+        </div>
+        <div v-if="selectedWork" class="work-detail-panel">
+          <div class="detail-header">
+            <h2>{{ selectedWork.title }}</h2>
+            <span class="badge" :class="statusBadgeClass(selectedWork.status)">{{ statusLabel(selectedWork.status) }}</span>
+          </div>
+          <div class="tabs">
+            <div class="tab-row">
+              <button class="tab" :class="{ active: detailTab === 'branches' }" @click="detailTab = 'branches'">分支</button>
+              <button class="tab" :class="{ active: detailTab === 'prs' }" @click="detailTab = 'prs'">合并请求</button>
+              <button class="tab" :class="{ active: detailTab === 'collaborators' }" @click="detailTab = 'collaborators'">协作者</button>
+            </div>
+            <div class="tab-panel" v-if="detailTab === 'branches'">
+              <BranchPanel :work-id="selectedWork.id" />
+            </div>
+            <div class="tab-panel" v-if="detailTab === 'prs'">
+              <PullRequestCard :work-id="selectedWork.id" />
+            </div>
+            <div class="tab-panel" v-if="detailTab === 'collaborators'">
+              <CollaboratorList :work-id="selectedWork.id" />
+            </div>
+          </div>
+        </div>
+        <EmptyState
+          v-else
+          icon="🔀"
+          title="选择或创建一个仓库"
+          description="Fork-Merge 支持 Git-style 的协同创作工作流。"
+        />
+      </div>
+    </div>
 
     <!-- Create work modal -->
-    <n-modal v-model:show="showCreateModal" preset="dialog" title="新建协同仓库">
-      <n-form ref="formRef" :model="createForm" label-placement="left" label-width="80">
-        <n-form-item label="原始作品ID" path="original_work_id">
-          <n-input v-model:value="createForm.original_work_id" placeholder="输入原始作品 ID" />
-        </n-form-item>
-        <n-form-item label="标题" path="title">
-          <n-input v-model:value="createForm.title" placeholder="仓库标题" />
-        </n-form-item>
-        <n-form-item label="可见性" path="visibility">
-          <n-select v-model:value="createForm.visibility" :options="visibilityOptions" />
-        </n-form-item>
-      </n-form>
-      <template #action>
-        <n-button @click="showCreateModal = false">取消</n-button>
-        <n-button type="primary" :loading="creating" @click="handleCreate">创建</n-button>
-      </template>
-    </n-modal>
+    <div class="modal-overlay" v-if="showCreateModal">
+      <div class="modal-card">
+        <h3 style="margin: 0 0 16px">新建协同仓库</h3>
+        <div class="form-group">
+          <label class="form-label">原始作品ID</label>
+          <input class="form-input" v-model="createForm.original_work_id" placeholder="输入原始作品 ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">标题</label>
+          <input class="form-input" v-model="createForm.title" placeholder="仓库标题" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">可见性</label>
+          <select class="form-select" v-model="createForm.visibility">
+            <option v-for="opt in visibilityOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" @click="showCreateModal = false">取消</button>
+          <button class="btn btn-primary" :disabled="creating" @click="handleCreate">{{ creating ? '创建中...' : '创建' }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { NButton, NSplit, NTabs, NTabPane, NTag, NModal, NForm, NFormItem, NInput, NSelect, useMessage } from 'naive-ui'
-import type { FormInst } from 'naive-ui'
 import type { ForkMergeWork } from '@/types/forkMerge'
 import { forkMergeApi } from '@/api/forkMerge'
 import WorkList from '@/components/forkmerge/WorkList.vue'
@@ -84,8 +89,6 @@ import PullRequestCard from '@/components/forkmerge/PullRequestCard.vue'
 import CollaboratorList from '@/components/forkmerge/CollaboratorList.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 
-const message = useMessage()
-
 // ── State ──────────────────────────────────────────────────────
 const works = ref<ForkMergeWork[]>([])
 const loading = ref(false)
@@ -93,7 +96,7 @@ const selectedWork = ref<ForkMergeWork | null>(null)
 const errorMsg = ref('')
 const showCreateModal = ref(false)
 const creating = ref(false)
-const formRef = ref<FormInst | null>(null)
+const detailTab = ref('branches')
 
 const createForm = reactive({
   original_work_id: '',
@@ -107,13 +110,13 @@ const visibilityOptions = [
 ]
 
 // ── Helpers ────────────────────────────────────────────────────
-function statusTagType(status: string): 'default' | 'success' | 'warning' | 'error' | 'info' {
-  const map: Record<string, 'default' | 'success' | 'warning' | 'error' | 'info'> = {
-    active: 'success',
-    closed: 'default',
-    archived: 'info',
+function statusBadgeClass(status: string): string {
+  const map: Record<string, string> = {
+    active: 'badge-success',
+    closed: 'badge-default',
+    archived: 'badge-info',
   }
-  return map[status] || 'default'
+  return map[status] || 'badge-default'
 }
 
 function statusLabel(status: string): string {
@@ -144,7 +147,7 @@ function handleWorkSelect(work: ForkMergeWork) {
 
 async function handleCreate() {
   if (!createForm.original_work_id.trim()) {
-    message.error('请输入原始作品 ID')
+    alert('请输入原始作品 ID')
     return
   }
   creating.value = true
@@ -154,9 +157,9 @@ async function handleCreate() {
     selectedWork.value = result.data.data
     showCreateModal.value = false
     Object.assign(createForm, { original_work_id: '', title: '', visibility: 'private' })
-    message.success('仓库创建成功')
+    alert('仓库创建成功')
   } catch (e: unknown) {
-    message.error(e instanceof Error ? e.message : '创建失败')
+    alert(e instanceof Error ? e.message : '创建失败')
   } finally {
     creating.value = false
   }
@@ -201,11 +204,9 @@ loadWorks()
   opacity: 0.8;
 }
 
-.work-list-panel {
-  padding: 8px;
-  overflow-y: auto;
-  max-height: calc(100vh - 200px);
-}
+.split-layout { display: flex; min-height: 400px; }
+.work-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--border); max-height: calc(100vh - 200px); }
+.work-detail-panel { flex: 1; padding: 16px; }
 
 .panel-header {
   display: flex;
@@ -220,10 +221,6 @@ loadWorks()
   font-weight: 600;
 }
 
-.work-detail-panel {
-  padding: 16px;
-}
-
 .detail-header {
   display: flex;
   align-items: center;
@@ -236,4 +233,16 @@ loadWorks()
   font-size: 1.1rem;
   font-weight: 600;
 }
+
+/* Tabs */
+.tabs { display: flex; flex-direction: column; }
+.tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.tab {
+  padding: 8px 16px; border: none; background: none; cursor: pointer;
+  font-size: 0.88rem; color: var(--muted); border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--fg); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { padding: 0; }
 </style>

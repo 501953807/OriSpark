@@ -1,6 +1,7 @@
 <template>
   <div class="scr-dash">
-    <n-card title="SCR 分布式信誉系统">
+    <div class="card">
+      <h2 style="margin: 0 0 16px; font-size: 1rem; font-weight: 600;">SCR 分布式信誉系统</h2>
       <!-- Score gauge -->
       <div class="score-section">
         <ScoreGauge :score="score?.overall_score ?? 50" />
@@ -38,8 +39,12 @@
       </div>
 
       <!-- Tabs: history + leaderboard -->
-      <n-tabs type="segment">
-        <n-tab-pane name="history" tab="历史记录">
+      <div class="tabs">
+        <div class="tab-row">
+          <button class="tab" :class="{ active: activeTab === 'history' }" @click="activeTab = 'history'">历史记录</button>
+          <button class="tab" :class="{ active: activeTab === 'leaderboard' }" @click="activeTab = 'leaderboard'">排行榜</button>
+        </div>
+        <div class="tab-panel" v-if="activeTab === 'history'">
           <div v-if="history.length === 0" class="empty-state">暂无记录</div>
           <div v-else class="history-list">
             <div v-for="h in history" :key="h.id" class="history-item">
@@ -50,26 +55,25 @@
               <span class="time">{{ formatDate(h.created_at) }}</span>
             </div>
           </div>
-        </n-tab-pane>
-        <n-tab-pane name="leaderboard" tab="排行榜">
+        </div>
+        <div class="tab-panel" v-if="activeTab === 'leaderboard'">
           <div v-if="leaderboard.length === 0" class="empty-state">加载中...</div>
           <div v-else class="lb-table">
             <div v-for="(entry, idx) in leaderboard" :key="entry.user_id" class="lb-row">
               <span class="lb-rank">#{{ idx + 1 }}</span>
               <span class="lb-user">{{ entry.user_id.slice(0, 8) }}</span>
               <span class="lb-score">{{ entry.overall_score }}</span>
-              <n-tag size="small">{{ entry.rating_level }}</n-tag>
+              <span class="badge">{{ entry.rating_level }}</span>
             </div>
           </div>
-        </n-tab-pane>
-      </n-tabs>
-    </n-card>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { NTabs, NTabPane, NTag } from 'naive-ui'
 import type { SCRScore, SCRAuditLog, LeaderboardEntry } from '@/types/scr'
 import { scrApi } from '@/api/scr'
 import ScoreGauge from '@/components/scr/ScoreGauge.vue'
@@ -78,6 +82,7 @@ import RatingBadge from '@/components/scr/RatingBadge.vue'
 const score = ref<SCRScore | null>(null)
 const history = ref<SCRAuditLog[]>([])
 const leaderboard = ref<LeaderboardEntry[]>([])
+const activeTab = ref('history')
 
 async function load() {
   try {
@@ -170,4 +175,23 @@ onMounted(load)
 .lb-score { font-weight: 700; font-family: monospace; }
 
 .empty-state { padding: 24px; text-align: center; color: var(--muted); }
+
+/* Tabs */
+.tabs { display: flex; flex-direction: column; gap: 0; }
+.tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+.tab {
+  padding: 8px 16px; border: none; background: none; cursor: pointer;
+  font-size: 0.88rem; color: var(--muted); border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--fg); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { padding: 12px 0; }
+
+/* Badge */
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: var(--radius-sm);
+  font-size: 0.75rem; background: var(--surface); color: var(--muted);
+  border: 1px solid var(--border);
+}
 </style>

@@ -1,0 +1,100 @@
+/* ============================================
+   OriStudio Theme Presets
+   三套主题预设，通过 data-theme 属性切换
+   ============================================ */
+
+/* ── 主题 1：冷白（默认商务） ── */
+[data-theme="cold-white"] {
+  --bg:            oklch(96% 0.004 260);
+  --bg-subtle:     oklch(94% 0.004 260);
+  --surface:       oklch(100% 0 0);
+  --surface-2:     oklch(97% 0.003 260);
+  --surface-hover: oklch(93% 0.005 260);
+  --fg:            oklch(22% 0.02 260);
+  --fg-subtle:     oklch(42% 0.015 260);
+  --muted:         oklch(56% 0.015 260);
+  --muted-dim:     oklch(72% 0.01 260);
+  --border:        oklch(88% 0.006 260);
+  --border-strong: oklch(80% 0.008 260);
+  --accent:        oklch(54% 0.16 280);
+  --accent-dim:    oklch(54% 0.16 280 / 0.08);
+  --accent-fg:     oklch(98% 0 0);
+  --accent-hover:  oklch(50% 0.15 280);
+  --sidebar-bg:    oklch(99% 0.002 260);
+  --sidebar-fg:    oklch(22% 0.02 260);
+  --sidebar-fg-dim:oklch(56% 0.01 260);
+  --sidebar-active:oklch(93% 0.008 280);
+  --success:       oklch(58% 0.13 165);
+  --warning:       oklch(72% 0.16 75);
+  --danger:        oklch(58% 0.18 25);
+  --info:          oklch(60% 0.12 230);
+  --shadow-color:  oklch(0 0 0 / 0.06);
+  --shadow-lg:     0 8px 32px oklch(0 0 0 / 0.1);
+  --grad1:         oklch(56% 0.15 280);
+  --grad2:         oklch(62% 0.14 290);
+  --grad3:         oklch(68% 0.12 300);
+}
+
+/* ── 主题 2：暖灰 ── */
+[data-theme="warm-gray"] {
+  --bg:            oklch(95% 0.008 85);
+  --bg-subtle:     oklch(93% 0.007 85);
+  --surface:       oklch(99% 0.003 85);
+  --surface-2:     oklch(96% 0.006 85);
+  --surface-hover: oklch(91% 0.008 85);
+  --fg:            oklch(22% 0.018 60);
+  --fg-subtle:     oklch(42% 0.014 60);
+  --muted:         oklch(55% 0.012 60);
+  --muted-dim:     oklch(72% 0.008 60);
+  --border:        oklch(86% 0.008 85);
+  --border-strong: oklch(78% 0.01 85);
+  --accent:        oklch(54% 0.14 40);
+  --accent-dim:    oklch(54% 0.14 40 / 0.08);
+  --accent-fg:     oklch(98% 0.005 85);
+  --accent-hover:  oklch(50% 0.13 40);
+  --sidebar-bg:    oklch(98% 0.004 60);
+  --sidebar-fg:    oklch(22% 0.018 60);
+  --sidebar-fg-dim:oklch(55% 0.01 60);
+  --sidebar-active:oklch(92% 0.008 40);
+  --success:       oklch(55% 0.12 145);
+  --warning:       oklch(70% 0.15 55);
+  --danger:        oklch(55% 0.17 20);
+  --info:          oklch(55% 0.12 220);
+  --shadow-color:  oklch(0 0 0 / 0.07);
+  --shadow-lg:     0 8px 32px oklch(0 0 0 / 0.12);
+  --grad1:         oklch(58% 0.13 35);
+  --grad2:         oklch(64% 0.12 45);
+  --grad3:         oklch(70% 0.10 55);
+}
+
+/* ── 主题 3：深蓝（深色模式） ── */
+[data-theme="deep-blue"] {
+  --bg:            oklch(14% 0.015 260);
+  --bg-subtle:     oklch(17% 0.013 260);
+  --surface:       oklch(20% 0.012 260);
+  --surface-2:     oklch(24% 0.01 260);
+  --surface-hover: oklch(28% 0.01 260);
+  --fg:            oklch(92% 0.008 260);
+  --fg-subtle:     oklch(75% 0.01 260);
+  --muted:         oklch(58% 0.012 260);
+  --muted-dim:     oklch(42% 0.008 260);
+  --border:        oklch(30% 0.01 260);
+  --border-strong: oklch(38% 0.01 260);
+  --accent:        oklch(65% 0.13 280);
+  --accent-dim:    oklch(65% 0.13 280 / 0.12);
+  --accent-fg:     oklch(14% 0.015 260);
+  --accent-hover:  oklch(70% 0.12 280);
+  --sidebar-bg:    oklch(12% 0.012 280);
+  --sidebar-fg:    oklch(80% 0.008 260);
+  --sidebar-fg-dim:oklch(55% 0.008 260);
+  --sidebar-active:oklch(20% 0.012 280);
+  --success:       oklch(65% 0.12 165);
+  --warning:       oklch(75% 0.14 75);
+  --danger:        oklch(65% 0.16 25);
+  --info:          oklch(68% 0.12 230);
+  --shadow-color:  oklch(0 0 0 / 0.3);
+  --shadow-lg:     0 8px 32px oklch(0 0 0 / 0.4);
+  --grad1:         oklch(62% 0.14 280);
+  --grad2:         oklch(68% 0.13 290);
+  --grad3:         oklch(74% 0.11 300);
+}

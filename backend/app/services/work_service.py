@@ -37,7 +37,7 @@ MAX_FILE_SIZE = 500 * 1024 * 1024  # 500MB
 def _get_allowed_extensions(db) -> set:
     """Get allowed file extensions (dictStore-backed, P1.7.13)."""
     try:
-        from app.routers.system import get_dict_values
+        from app.utils.system_helpers import get_dict_values
         dict_exts = get_dict_values("file_extensions", db)
         if dict_exts:
             return set(dict_exts)

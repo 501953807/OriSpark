@@ -1,40 +1,70 @@
 <template>
-  <n-card title="税务报告">
-    <template #header-extra>
-      <n-button type="primary" size="small" @click="showGenerate = true">生成报告</n-button>
-    </template>
+  <div class="card">
+    <div class="modal-header">
+      <h3>税务报告</h3>
+      <button class="btn btn-sm btn-primary" @click="showGenerate = true">生成报告</button>
+    </div>
 
-    <n-data-table :columns="columns" :data="reports" :loading="loading" />
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>周期</th>
+          <th>总收入</th>
+          <th>预扣税</th>
+          <th>应纳税</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody v-if="!loading">
+        <tr v-for="row in reports" :key="row.id">
+          <td>{{ row.id }}</td>
+          <td>{{ row.report_period }}</td>
+          <td>${{ (row.total_income as number).toFixed(2) }}</td>
+          <td>${{ (row.total_tax_withheld as number).toFixed(2) }}</td>
+          <td>${{ (row.total_tax_owed as number).toFixed(2) }}</td>
+          <td>{{ row.status }}</td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr><td colspan="6" class="text-center">加载中...</td></tr>
+      </tbody>
+    </table>
 
-    <n-modal v-model:show="showGenerate" preset="dialog" title="生成税务报告">
-      <n-form :model="reportForm" label-placement="left" label-width="80">
-        <n-form-item label="参与者 ID">
-          <n-input v-model:value="reportForm.participant_id" />
-        </n-form-item>
-        <n-form-item label="周期">
-          <n-input v-model:value="reportForm.period" placeholder="2024-08" />
-        </n-form-item>
-        <n-form-item label="货币">
-          <n-select v-model:value="reportForm.currency" :options="currencyOptions" />
-        </n-form-item>
-      </n-form>
-      <template #action>
-        <n-space>
-          <n-button @click="showGenerate = false">取消</n-button>
-          <n-button type="primary" @click="handleGenerate">生成</n-button>
-        </n-space>
-      </template>
-    </n-modal>
-  </n-card>
+    <div v-if="showGenerate" class="modal-overlay" @click.self="showGenerate = false">
+      <div class="modal-card">
+        <div class="modal-header"><h3>生成税务报告</h3></div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">参与者 ID</label>
+            <input class="form-input" v-model="reportForm.participant_id" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">周期</label>
+            <input class="form-input" v-model="reportForm.period" placeholder="2024-08" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">货币</label>
+            <select class="form-select" v-model="reportForm.currency">
+              <option value="CNY">人民币 (CNY)</option>
+              <option value="USD">美元 (USD)</option>
+              <option value="EUR">欧元 (EUR)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" @click="showGenerate = false">取消</button>
+          <button class="btn btn-primary" @click="handleGenerate">生成</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { NCard, NButton, NDataTable, NModal, NForm, NFormItem, NInput, NSelect, NSpace } from 'naive-ui'
-import { useMessage } from 'naive-ui'
 import { taxApi } from '@/api/tax'
 
-const message = useMessage()
 const loading = ref(false)
 const reports = ref<any[]>([])
 const showGenerate = ref(false)
@@ -44,21 +74,6 @@ const reportForm = reactive({
   period: '',
   currency: 'CNY',
 })
-
-const currencyOptions = [
-  { label: '人民币 (CNY)', value: 'CNY' },
-  { label: '美元 (USD)', value: 'USD' },
-  { label: '欧元 (EUR)', value: 'EUR' },
-]
-
-const columns = [
-  { title: 'ID', key: 'id' },
-  { title: '周期', key: 'report_period' },
-  { title: '总收入', key: 'total_income', render(row: Record<string, unknown>) { return `$${(row.total_income as number).toFixed(2)}` } },
-  { title: '预扣税', key: 'total_tax_withheld', render(row: Record<string, unknown>) { return `$${(row.total_tax_withheld as number).toFixed(2)}` } },
-  { title: '应纳税', key: 'total_tax_owed', render(row: Record<string, unknown>) { return `$${(row.total_tax_owed as number).toFixed(2)}` } },
-  { title: '状态', key: 'status' },
-]
 
 async function fetchReports() {
   if (!reportForm.participant_id) return
@@ -76,11 +91,11 @@ async function fetchReports() {
 async function handleGenerate() {
   try {
     await taxApi.taxAgentApi.createReport(reportForm)
-    message.success('报告已生成')
+    console.warn('报告已生成')
     showGenerate.value = false
     fetchReports()
   } catch {
-    message.error('生成失败')
+    console.warn('生成失败')
   }
 }
 </script>

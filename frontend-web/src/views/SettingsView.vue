@@ -620,7 +620,7 @@ import client from '@/api/client'
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
-const isDark = computed(() => appStore.isDark)
+const isDark = computed(() => appStore.currentTheme === 'deep-blue')
 const storageInfo = computed(() => settingsStore.storageInfo)
 const { locale, setLocale } = useI18n()
 const currentLang = ref<Locale>(locale.value)
@@ -1278,7 +1278,7 @@ async function loadDictGroupItems() {
 
 // Theme
 function toggleTheme() {
-  appStore.toggleTheme()
+  appStore.cycleTheme()
 }
 
 // P3.3.5: Language switcher
@@ -1377,7 +1377,7 @@ onMounted(() => {
 .linked-info { display: flex; align-items: center; gap: 12px; }
 .linked-icon {
   width: 36px; height: 36px; border-radius: 50%;
-  background: oklch(96% 0.004 240); display: flex;
+  background: var(--surface-hover); display: flex;
   align-items: center; justify-content: center;
   font-weight: 700; font-size: 0.9rem;
 }

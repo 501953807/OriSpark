@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen">
+  <div class="app-root">
     <!-- P3.3.1: Skip to content link -->
     <a href="#main-content" class="skip-link">跳转到主内容</a>
 
@@ -20,16 +20,14 @@
 
     <div
       :id="'main-content'"
-      :class="['main-content', 'flex-1', isCollapsed ? 'ml-[60px]' : 'ml-[var(--sidebar-w)]']"
+      :class="['main-content', isCollapsed ? 'sidebar-collapsed' : '']"
     >
       <AppTopbar :is-collapsed="isCollapsed" @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
             <component :is="Component" />
-          </transition>
-        </router-view>
+          </router-view>
       </main>
     </div>
 

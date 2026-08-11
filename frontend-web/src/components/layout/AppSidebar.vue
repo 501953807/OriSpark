@@ -123,8 +123,9 @@ const { t } = useI18n()
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--sidebar-w);
-  background: oklch(96% 0.004 240);
+  background: var(--sidebar-bg, oklch(99% 0.002 260));
   border-right: 1px solid var(--border);
+  box-shadow: 2px 0 12px oklch(0 0 0 / 0.04);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -136,9 +137,6 @@ const { t } = useI18n()
 }
 .sidebar.collapsed.hover-expand {
   width: var(--sidebar-w);
-}
-.dark .sidebar {
-  background: oklch(22% 0.01 240);
 }
 .sb-brand {
   padding: 16px 14px;
@@ -155,30 +153,33 @@ const { t } = useI18n()
   border-radius: var(--radius-sm);
   background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 800; font-size: 1rem;
+  color: var(--accent-fg, #fff); font-weight: 800; font-size: 1rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px oklch(56% 0.15 280 / 0.3);
 }
-.sb-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
-.sb-brand-sub { font-size: 0.62rem; color: var(--muted); }
+.sb-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: var(--sidebar-fg, var(--fg)); }
+.sb-brand-sub { font-size: 0.62rem; color: var(--sidebar-fg-dim, var(--muted)); }
 .sb-nav { flex: 1; padding: 8px 0; overflow-y: auto; overflow-x: hidden; }
 .sb-section-title {
   padding: 8px 14px 4px;
   font-size: 0.62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--muted);
+  color: var(--sidebar-fg-dim, var(--muted));
 }
 .sb-link {
   display: flex; align-items: center; gap: 8px;
   padding: 9px 14px; margin: 1px 6px;
   border-radius: var(--radius-sm); font-size: 0.85rem;
-  font-weight: 500; color: var(--muted);
+  font-weight: 500; color: var(--sidebar-fg-dim, var(--muted));
   text-decoration: none; transition: all 0.2s ease;
   white-space: nowrap;
+  border-left: 3px solid transparent;
 }
-.sb-link:hover { background: oklch(56% 0.12 170 / 0.06); color: var(--fg); }
+.sb-link:hover { background: var(--surface-2, oklch(97% 0.003 260)); color: var(--sidebar-fg, var(--fg)); }
 .sb-link.active {
-  background: var(--surface); color: var(--accent);
-  box-shadow: 0 1px 4px oklch(0 0 0 / 0.04);
+  background: var(--sidebar-active, oklch(93% 0.008 280));
+  color: var(--accent);
+  border-left-color: var(--accent);
   font-weight: 600;
 }
 .collapsed .sb-link { padding: 12px; justify-content: center; }
@@ -187,19 +188,19 @@ const { t } = useI18n()
 .sb-badge {
   margin-left: auto; padding: 1px 8px; border-radius: 100px;
   font-size: 0.65rem; font-weight: 700;
-  background: oklch(62% 0.18 55 / 0.15); color: var(--orange);
+  background: oklch(72% 0.16 75 / 0.15); color: var(--warning);
 }
 .sb-badge.new {
-  background: oklch(56% 0.12 170 / 0.15); color: var(--accent);
+  background: oklch(58% 0.13 165 / 0.15); color: var(--success);
   animation: pulse-badge 2s infinite;
 }
 .sb-collapse-btn {
   padding: 10px; border: none; border-top: 1px solid var(--border);
   background: transparent; cursor: pointer;
-  font-size: 0.75rem; color: var(--muted);
+  font-size: 0.75rem; color: var(--sidebar-fg-dim, var(--muted));
   transition: color 0.2s;
 }
-.sb-collapse-btn:hover { color: var(--fg); }
+.sb-collapse-btn:hover { color: var(--sidebar-fg, var(--fg)); }
 .sb-footer {
   padding: 10px 14px; border-top: 1px solid var(--border);
   display: flex; align-items: center; gap: 10px;
@@ -208,9 +209,10 @@ const { t } = useI18n()
   width: 32px; height: 32px; border-radius: 50%;
   background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 600; font-size: 0.8rem;
+  color: var(--accent-fg, #fff); font-weight: 600; font-size: 0.8rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px oklch(56% 0.15 280 / 0.2);
 }
-.sb-user-name { font-size: 0.82rem; font-weight: 600; }
-.sb-user-role { font-size: 0.68rem; color: var(--muted); }
+.sb-user-name { font-size: 0.82rem; font-weight: 600; color: var(--sidebar-fg, var(--fg)); }
+.sb-user-role { font-size: 0.68rem; color: var(--sidebar-fg-dim, var(--muted)); }
 </style>

@@ -174,10 +174,10 @@ function formatSize(bytes: number): string {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: oklch(96% 0.004 240);
+  background: var(--bg-subtle);
 }
 .dark .drop-zone {
-  background: oklch(22% 0.01 240);
+  background: var(--sidebar-bg, oklch(99% 0.002 260));
 }
 .drop-zone:hover, .drop-zone.drag-over {
   border-color: var(--accent);

@@ -385,9 +385,9 @@ onMounted(async () => {
 /* 公司资质表单 */
 .company-form {
   display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;
-  padding: 20px; background: oklch(96% 0.004 240); border-radius: 12px;
+  padding: 20px; background: var(--surface-hover); border-radius: 12px;
 }
-.dark .company-form { background: oklch(22% 0.01 240); }
+.dark .company-form { background: var(--sidebar-bg, oklch(12% 0.012 280)); }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-group label {
@@ -413,7 +413,7 @@ onMounted(async () => {
 .btn-primary:hover { opacity: 0.9; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }
-.btn-secondary:hover { background: oklch(96% 0.004 240); }
+.btn-secondary:hover { background: var(--surface-hover); }
 .btn-link { background: none; color: var(--accent); padding: 10px 0; }
 .btn-link:hover { text-decoration: underline; }
 .btn-lg { padding: 14px 28px; font-size: 1rem; }

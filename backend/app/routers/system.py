@@ -20,8 +20,12 @@ from app.services.system_service import (
     SystemSettingsUpdate, DictionaryItemCreate, DictionaryItemUpdate,
     WechatTemplateMessage, PluginRegister, PluginUpdate,
     DesignVariantInput, DisclaimerAcceptanceInput,
-    get_dict_values, get_dict_values_rich, push_notification,
     record_api_call, _check_password_strength,
+)
+from app.utils.system_helpers import (
+    get_dict_values,
+    get_dict_values_rich,
+    push_notification,
 )
 
 router = APIRouter()

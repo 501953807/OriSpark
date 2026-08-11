@@ -1,50 +1,60 @@
 <template>
   <div class="attribution-view">
-    <n-card v-if="summary">
-        <n-descriptions label-placement="left" :column="2" bordered>
-          <n-descriptions-item label="总点击量">{{ summary.total_clicks }}</n-descriptions-item>
-          <n-descriptions-item label="独立访客">{{ summary.unique_visitors }}</n-descriptions-item>
-          <n-descriptions-item label="转化率">
-            {{ (summary.conversion_rate * 100).toFixed(2) }}%
-          </n-descriptions-item>
-          <n-descriptions-item label="总转化额">
-            ${{ summary.total_conversion_value.toFixed(2) }}
-          </n-descriptions-item>
-        </n-descriptions>
+    <div class="card" v-if="summary">
+        <div class="descriptions">
+          <div class="desc-row">
+            <span class="desc-label">总点击量</span>
+            <span class="desc-value">{{ summary.total_clicks }}</span>
+          </div>
+          <div class="desc-row">
+            <span class="desc-label">独立访客</span>
+            <span class="desc-value">{{ summary.unique_visitors }}</span>
+          </div>
+          <div class="desc-row">
+            <span class="desc-label">转化率</span>
+            <span class="desc-value">{{ (summary.conversion_rate * 100).toFixed(2) }}%</span>
+          </div>
+          <div class="desc-row">
+            <span class="desc-label">总转化额</span>
+            <span class="desc-value">${{ summary.total_conversion_value.toFixed(2) }}</span>
+          </div>
+        </div>
 
         <!-- 事件分布 -->
         <h3 style="margin: 16px 0 8px">事件分布</h3>
-        <n-space wrap>
-          <n-tag v-for="(count, type) in summary.event_breakdown" :key="String(type)" size="large">
+        <div class="tag-wrap">
+          <span v-for="(count, type) in summary.event_breakdown" :key="String(type)" class="badge badge-large">
             {{ eventTypeLabel(String(type)) }}: {{ count }}
-          </n-tag>
-        </n-space>
+          </span>
+        </div>
 
         <!-- 国家 TOP10 -->
         <h3 style="margin: 16px 0 8px">来源国家 TOP10</h3>
-        <n-table>
-          <template #header-columns>
-            <n-th>排名</n-th>
-            <n-th>国家</n-th>
-            <n-th>次数</n-th>
-          </template>
-          <template #row-columns="{ row, index }">
-            <n-td>{{ index + 1 }}</n-td>
-            <n-td>{{ row.country }}</n-td>
-            <n-td>{{ row.count }}</n-td>
-          </template>
-        </n-table>
-      </n-card>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>国家</th>
+              <th>次数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, index) in summary.country_breakdown" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ row.country }}</td>
+              <td>{{ row.count }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <n-result v-else status="info" title="请选择一个链接查看分析" description="从分发 Hub 跳转到此页面并传入 linkId 参数" />
-    </div>
+    <div class="status-msg status-msg-info" v-else>请选择一个链接查看分析<br><small>从分发 Hub 跳转到此页面并传入 linkId 参数</small></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { NCard, NDescriptions, NDescriptionsItem, NSpace, NTag, NTable, NTh, NTd, NResult } from 'naive-ui'
 import api from '@/api/reverseTrace'
 
 const route = useRoute()
