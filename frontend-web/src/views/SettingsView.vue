@@ -614,6 +614,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useSettingsStore } from '@/stores/useSettingsStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { useI18n, type Locale } from '@/composables/useI18n'
 import { systemApi } from '@/api/system'
 import client from '@/api/client'

@@ -66,6 +66,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { useGlobalState } from '@/stores/useGlobalState'
 
 const router = useRouter()
 const auth = useAuthStore()

@@ -81,6 +81,8 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLayoutContext } from '@/composables/useLayoutContext'
+import { useAppStore } from '@/stores/useAppStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import NotificationPanel from '@/components/common/NotificationPanel.vue'
 
 defineProps<{ isCollapsed?: boolean }>()
@@ -101,6 +103,8 @@ const {
   notaryCount,
   alertCount,
 } = useLayoutContext()
+const appStore = useAppStore()
+const authStore = useAuthStore()
 const userMenuOpen = ref(false)
 const userMenuRef = ref<HTMLElement | null>(null)
 const themePickerOpen = ref(false)

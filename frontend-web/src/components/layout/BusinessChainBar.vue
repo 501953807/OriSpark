@@ -17,9 +17,11 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLayoutContext } from '@/composables/useLayoutContext'
+import { useAppStore } from '@/stores/useAppStore'
 
 const route = useRoute()
 const { workCount } = useLayoutContext()
+const appStore = useAppStore()
 
 const steps = computed(() => {
   const currentName = (route.name as string) || ''

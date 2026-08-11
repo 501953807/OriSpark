@@ -90,6 +90,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRiskWarningStore } from '@/stores/useRiskWarningStore'
+import type { RiskWarning } from '@/types/risk_warning'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { riskWarningApi } from '@/api/risk_warning'
 
@@ -120,12 +121,12 @@ async function runBatchCheck() {
 }
 
 const warnings = computed(() => store.warnings)
-const uncheckedCount = computed(() => store.warnings.filter(w => !w.dismissed).length)
-const highCount = computed(() => store.warnings.filter(w => w.severity === 'high').length)
+const uncheckedCount = computed(() => store.warnings.filter((w: RiskWarning) => !w.dismissed).length)
+const highCount = computed(() => store.warnings.filter((w: RiskWarning) => w.severity === 'high').length)
 
 const filteredWarnings = computed(() => {
   if (!severityFilter.value) return store.warnings
-  return store.warnings.filter(w => w.severity === severityFilter.value)
+  return store.warnings.filter((w: RiskWarning) => w.severity === severityFilter.value)
 })
 
 function severityLabel(sev: string): string {
@@ -146,7 +147,7 @@ async function runCheck() {
     })
     if (results) {
       // Prepend new warnings to the store list
-      store.warnings.value = [...(results as any[]), ...store.warnings.value]
+      store.warnings = [...(results as any[]), ...store.warnings]
     }
   } finally {
     checking.value = false

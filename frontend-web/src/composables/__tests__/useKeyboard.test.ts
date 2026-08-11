@@ -54,16 +54,16 @@ describe('useKeyboard', () => {
     let receivedEvent: KeyboardEvent | null = null
     const handlers = {
       x: (e: KeyboardEvent) => { receivedEvent = e },
-    }
+    } as Record<string, (e: KeyboardEvent) => void>
     const { bind } = useKeyboard(handlers)
     bind()
 
     const event = new KeyboardEvent('keydown', { key: 'x', ctrlKey: true })
     window.dispatchEvent(event)
     expect(receivedEvent).toBe(event)
-    expect(receivedEvent?.ctrlKey).toBe(true)
+    expect(receivedEvent!.ctrlKey).toBe(true)
 
-    window.removeEventListener('keydown', handlers.x as any)
+    window.removeEventListener('keydown', handlers.x)
   })
 
   it('handles multiple handlers', () => {

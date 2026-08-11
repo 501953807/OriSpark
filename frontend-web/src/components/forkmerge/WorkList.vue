@@ -1,7 +1,7 @@
 <template>
   <div class="work-list">
     <div v-if="loading" class="empty-state">加载中...</div>
-    <EmptyState v-else-if="!works.length" icon="📦" title="暂无仓库" description="点击"+新建"创建第一个协同仓库。" />
+    <EmptyState v-else-if="!works.length" icon="📦" title="暂无仓库" description='点击"新建"创建第一个协同仓库。' />
     <div v-else class="work-items">
       <div
         v-for="work in works"

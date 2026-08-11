@@ -90,7 +90,7 @@
     </nav>
 
     <!-- 折叠按钮 -->
-    <button class="sb-collapse-btn" @click="appStore.toggleSidebar()" :title="isCollapsed ? '展开菜单' : '折叠菜单'">
+    <button class="sb-collapse-btn" @click="toggleSidebar()" :title="isCollapsed ? '展开菜单' : '折叠菜单'">
       {{ isCollapsed ? '▶' : '◀' }}
     </button>
 
@@ -106,14 +106,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useLayoutContext } from '@/composables/useLayoutContext'
+import { useAppStore } from '@/stores/useAppStore'
 import { useI18n } from '@/composables/useI18n'
 
 defineProps<{ mobileVisible?: boolean }>()
 
-const { sidebarCollapsed: isCollapsed } = useLayoutContext()
-const isCollapsed = computed(() => appStore.sidebarCollapsed)
+const { sidebarCollapsed: isCollapsed, toggleSidebar } = useLayoutContext()
+const appStore = useAppStore()
 const isHovering = ref(false)
 const { t } = useI18n()
 </script>
