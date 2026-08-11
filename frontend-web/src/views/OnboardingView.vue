@@ -13,6 +13,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard.vue'
 import { systemApi } from '@/api/system'
+import { useGlobalState } from '@/stores/useGlobalState'
 
 const router = useRouter()
 const alreadyOnboarded = ref(false)
@@ -20,15 +21,16 @@ const initialCreatorType = ref('')
 
 onMounted(async () => {
   try {
+    const globalState = useGlobalState()
     const res = await systemApi.onboardingStatus()
     if (res.data.data?.onboarding_completed) {
+      globalState.markOnboarded()
       alreadyOnboarded.value = true
       router.push('/app')
       return
     }
-    const saved = localStorage.getItem('oristudio-creator-type')
-    if (saved) {
-      initialCreatorType.value = saved
+    if (globalState.creatorType) {
+      initialCreatorType.value = globalState.creatorType
     }
   } catch {
     // Silently continue
@@ -42,10 +44,12 @@ async function onFinish(payload: { creatorType: string; participantRole: string;
       participant_role: payload.participantRole,
     })
   } catch {
-    // Silently fail — localStorage already has the data
+    // Silently fail
   }
-  localStorage.setItem('oristudio-onboarded', 'true')
-  localStorage.setItem('oristudio-participant-role', payload.participantRole)
+  const globalState = useGlobalState()
+  globalState.setCreatorType(payload.creatorType)
+  globalState.setParticipantRole(payload.participantRole)
+  globalState.markOnboarded()
   router.push('/app')
 }
 </script>

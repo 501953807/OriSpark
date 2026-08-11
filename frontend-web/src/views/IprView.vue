@@ -330,10 +330,8 @@ import { useGlobalState } from '@/stores/useGlobalState'
 
 try {
   const globalState = useGlobalState()
-  const saved = localStorage.getItem('oristudio-creator-type')
-  if (saved) {
-    recommendCreatorType.value = saved
-    globalState.setCreatorType(saved)
+  if (globalState.creatorType) {
+    recommendCreatorType.value = globalState.creatorType
   }
 } catch {}
 

@@ -1462,11 +1462,11 @@ onMounted(async () => {
       checking.value = false
     }
   }
-  // Restore creator_type from global state
+  // creatorType already initialized from globalState
+  // No localStorage bypass needed — globalState handles persistence
   if (!creatorType.value) {
-    const saved = localStorage.getItem('oristudio-creator-type')
+    const saved = globalState.creatorType
     if (saved) {
-      globalState.setCreatorType(saved)
       creatorType.value = saved
     }
   }

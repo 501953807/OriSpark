@@ -1045,7 +1045,8 @@ async function doDeleteAccount() {
     await systemApi.deleteAccount(deleteAccountConfirm.value)
     ;(window as any).$toast?.show('账号已注销', 'success')
     showDeleteAccountModal.value = false
-    localStorage.removeItem('oristudio-token')
+    const authStore = useAuthStore()
+    authStore.logout()
     window.location.href = '/'
   } catch (e: any) {
     ;(window as any).$toast?.show(e.response?.data?.detail || '操作失败', 'error')

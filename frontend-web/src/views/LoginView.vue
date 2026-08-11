@@ -84,8 +84,8 @@ async function handleSubmit() {
       : await auth.register({ username: form.value.username, email: form.value.email, password: form.value.password })
 
     if (success) {
-      const onboarded = localStorage.getItem('oristudio-onboarded')
-      if (!onboarded) {
+      const globalState = useGlobalState()
+      if (!globalState.isOnboarded) {
         router.push('/onboarding')
       } else {
         router.push('/app')
