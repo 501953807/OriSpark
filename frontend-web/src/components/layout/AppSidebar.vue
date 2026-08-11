@@ -107,12 +107,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useAppStore } from '@/stores/useAppStore'
+import { useLayoutContext } from '@/composables/useLayoutContext'
 import { useI18n } from '@/composables/useI18n'
 
 defineProps<{ mobileVisible?: boolean }>()
 
-const appStore = useAppStore()
+const { sidebarCollapsed: isCollapsed } = useLayoutContext()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const isHovering = ref(false)
 const { t } = useI18n()

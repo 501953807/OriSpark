@@ -80,16 +80,27 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAppStore } from '@/stores/useAppStore'
-import { useAuthStore } from '@/stores/useAuthStore'
+import { useLayoutContext } from '@/composables/useLayoutContext'
 import NotificationPanel from '@/components/common/NotificationPanel.vue'
 
 defineProps<{ isCollapsed?: boolean }>()
 defineEmits(['toggleMobile'])
 
 const route = useRoute()
-const appStore = useAppStore()
-const authStore = useAuthStore()
+const {
+  sidebarCollapsed: isCollapsedProp,
+  toggleSidebar,
+  user,
+  displayName,
+  isLoggedIn,
+  logout,
+  currentTheme,
+  setTheme,
+  themePresets,
+  workCount,
+  notaryCount,
+  alertCount,
+} = useLayoutContext()
 const userMenuOpen = ref(false)
 const userMenuRef = ref<HTMLElement | null>(null)
 const themePickerOpen = ref(false)
@@ -116,7 +127,7 @@ const pageTitles: Record<string, string> = {
 const pageTitle = computed(() => pageTitles[(route.name as string)] || 'OriStudio')
 
 async function handleLogout() {
-  await authStore.logout()
+  await logout()
   userMenuOpen.value = false
   window.location.href = '/login'
 }
