@@ -41,7 +41,7 @@ from app.schemas.supply import (
 )
 
 from app.utils.crypto import encrypt, decrypt
-from app.services.seed_data import (
+from scripts.seeds.seed_data import (
     PRODUCT_CATEGORIES, MATERIAL_CATEGORIES, MONETIZATION_PATHS, PLATFORMS,
     get_categories_by_material, get_category_by_id, get_monetization_path,
 )

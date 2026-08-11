@@ -37,7 +37,7 @@ async def lifespan(app: FastAPI):
     from app.database import SessionLocal
     db = SessionLocal()
     try:
-        from app.services.dict_seed import seed_dictionaries
+        from scripts.seeds.dict_seed import seed_dictionaries
         seed_dictionaries(db)
 
         # Seed default watermark presets

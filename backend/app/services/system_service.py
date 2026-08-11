@@ -2166,7 +2166,7 @@ class SystemService:
 
     def get_design_categories(self) -> ApiResponse:
         """获取支持的产品设计品类列表."""
-        from app.services.dict_seed import DESIGN_CATEGORIES
+        from scripts.seeds.dict_seed import DESIGN_CATEGORIES
         return ApiResponse(data={
             "categories": [
                 {"key": k, "name_zh": v["name_zh"], "name_en": v["name_en"],

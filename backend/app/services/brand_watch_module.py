@@ -27,8 +27,10 @@ class BrandWatchModule:
         """创建品牌监测."""
         brand = BrandWatch(
             brand_name=data.brand_name,
-            is_active=data.is_active if data.is_active else True,
-            platforms=data.platforms or ["taobao", "jd", "pinduoduo"],
+            brand_logo_path=data.brand_logo_path,
+            keywords=data.keywords,
+            platforms=data.platforms,
+            notes=data.notes,
         )
         self.db.add(brand)
         try:

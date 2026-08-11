@@ -50,7 +50,7 @@ _original_create_all = _orig_target_metadata.create_all
 # Patch to no-op for lifespan (tables already created by test_db_engine fixture)
 _orig_target_metadata.create_all = lambda *args, **kwargs: None
 
-from app.services import dict_seed as _ds
+from scripts.seeds import dict_seed as _ds
 _original_seed = _ds.seed_dictionaries
 def _safe_seed(db):
     try:
