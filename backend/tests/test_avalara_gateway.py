@@ -8,19 +8,19 @@ import pytest
 from app.services.avalara_gateway import (
     TaxCalculationResult,
     AvalaraTaxGateway,
-    MockRealAvalaraGateway,
+    MockAvalaraGateway,
     RealAvalaraGateway,
     get_avalara_gateway,
 )
 
 
-class TestMockRealAvalaraGateway:
+class TestMockAvalaraGateway:
     """Mock Gateway 测试."""
 
     @pytest.mark.asyncio
     async def test_calculate_tax_digital(self):
         """数字产品税率为 0."""
-        g = MockRealAvalaraGateway()
+        g = MockAvalaraGateway()
         result = await g.calculate_tax(
             {"country": "US", "state": "CA"},
             {"country": "US", "state": "NY"},
@@ -35,7 +35,7 @@ class TestMockRealAvalaraGateway:
     @pytest.mark.asyncio
     async def test_calculate_tax_physical(self):
         """实体产品税率为 7%."""
-        g = MockRealAvalaraGateway()
+        g = MockAvalaraGateway()
         result = await g.calculate_tax(
             {"country": "US"},
             {"country": "CN"},
@@ -49,7 +49,7 @@ class TestMockRealAvalaraGateway:
     @pytest.mark.asyncio
     async def test_calculate_tax_license(self):
         """授权产品税率为 10%."""
-        g = MockRealAvalaraGateway()
+        g = MockAvalaraGateway()
         result = await g.calculate_tax(
             {"country": "US"},
             {"country": "JP"},
@@ -62,7 +62,7 @@ class TestMockRealAvalaraGateway:
     @pytest.mark.asyncio
     async def test_calculate_tax_unknown_type(self):
         """未知产品类型税率为 0."""
-        g = MockRealAvalaraGateway()
+        g = MockAvalaraGateway()
         result = await g.calculate_tax(
             {"country": "US"},
             {"country": "DE"},
@@ -75,11 +75,11 @@ class TestMockRealAvalaraGateway:
     @pytest.mark.asyncio
     async def test_is_configured(self):
         """Mock Gateway 始终配置."""
-        g = MockRealAvalaraGateway()
+        g = MockAvalaraGateway()
         assert g._is_configured is True
 
 
-class TestRealAvalaraGateway:
+class TestAvalaraGateway:
     """真实 Avalara Gateway 测试."""
 
     @pytest.mark.asyncio
@@ -104,7 +104,7 @@ class TestRealAvalaraGateway:
         assert g.api_key == "test-key"
 
 
-class TestGetRealAvalaraGateway:
+class TestGetAvalaraGateway:
     """工厂函数测试."""
 
     @pytest.mark.asyncio
@@ -112,7 +112,7 @@ class TestGetRealAvalaraGateway:
         """未配置环境变量时返回 Mock."""
         monkeypatch.delenv("AVALARA_LICENSE_KEY", raising=False)
         g = get_avalara_gateway()
-        assert isinstance(g, MockRealAvalaraGateway)
+        assert isinstance(g, MockAvalaraGateway)
 
     @pytest.mark.asyncio
     async def test_returns_real_when_key_set(self, monkeypatch):
