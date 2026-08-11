@@ -151,5 +151,5 @@ def get_avalara_gateway() -> AvalaraTaxGateway:
     开发/测试: 未配置时使用 Mock 实现
     """
     if os.environ.get("AVALARA_LICENSE_KEY"):
-        return AvalaraGateway()
+        return RealAvalaraGateway()
     return RealAvalaraGateway()
