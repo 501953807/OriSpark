@@ -5,10 +5,16 @@ from unittest.mock import patch, MagicMock
 
 from app.services.payment_gateway import (
     PaymentGatewayService,
-    StripeAdapter,
-    PayPalAdapter,
-    WorldFirstAdapter,
-    EscrowProvider,
+    StripeGateway,
+    PayPalGateway,
+    WorldFirstGateway,
+    PaymentGateway,
+)
+    PaymentGatewayService,
+    StripeGateway,
+    PayPalGateway,
+    WorldFirstGateway,
+    PaymentGateway,
 )
 
 
@@ -20,26 +26,26 @@ class TestProviderRegistry:
 
     def test_get_provider_stripe(self):
         provider = PaymentGatewayService._get_provider("stripe")
-        assert isinstance(provider, StripeAdapter)
+        assert isinstance(provider, StripeGateway)
 
     def test_get_provider_paypal(self):
         provider = PaymentGatewayService._get_provider("paypal")
-        assert isinstance(provider, PayPalAdapter)
+        assert isinstance(provider, PayPalGateway)
 
     def test_get_provider_worldfirst(self):
         provider = PaymentGatewayService._get_provider("worldfirst")
-        assert isinstance(provider, WorldFirstAdapter)
+        assert isinstance(provider, WorldFirstGateway)
 
     def test_get_provider_unknown_raises(self):
         with pytest.raises(ValueError, match="不支持的托管方"):
             PaymentGatewayService._get_provider("unknown")
 
 
-class TestStripeAdapter:
+class TestStripeGateway:
     """Stripe 托管实现测试."""
 
     def test_create_transaction(self):
-        adapter = StripeAdapter()
+        adapter = StripeGateway()
         result = adapter.create_transaction(1000.0, "CNY")
         assert result["provider"] == "stripe"
         assert result["transaction_id"].startswith("stripe_")
@@ -48,50 +54,50 @@ class TestStripeAdapter:
         assert result["status"] == "created"
 
     def test_verify_transaction(self):
-        adapter = StripeAdapter()
+        adapter = StripeGateway()
         result = adapter.verify_transaction("stripe_abc123")
         assert result["confirmed"] is True
         assert result["transaction_id"] == "stripe_abc123"
 
     def test_release_funds(self):
-        adapter = StripeAdapter()
+        adapter = StripeGateway()
         result = adapter.release_funds("stripe_abc123", 1000.0, "CNY")
         assert result["status"] == "released"
         assert result["provider"] == "stripe"
 
     def test_refund_funds(self):
-        adapter = StripeAdapter()
+        adapter = StripeGateway()
         result = adapter.refund_funds("stripe_abc123", 500.0, "CNY", "用户取消")
         assert result["status"] == "refunded"
         assert result["reason"] == "用户取消"
 
 
-class TestPayPalAdapter:
+class TestPayPalGateway:
     """PayPal 托管实现测试."""
 
     def test_create_transaction(self):
-        adapter = PayPalAdapter()
+        adapter = PayPalGateway()
         result = adapter.create_transaction(200.0, "USD")
         assert result["provider"] == "paypal"
         assert result["transaction_id"].startswith("pp_")
 
     def test_release_funds(self):
-        adapter = PayPalAdapter()
+        adapter = PayPalGateway()
         result = adapter.release_funds("pp_xyz", 200.0, "USD")
         assert result["status"] == "released"
 
 
-class TestWorldFirstAdapter:
+class TestWorldFirstGateway:
     """WorldFirst 托管实现测试."""
 
     def test_create_transaction(self):
-        adapter = WorldFirstAdapter()
+        adapter = WorldFirstGateway()
         result = adapter.create_transaction(5000.0, "HKD")
         assert result["provider"] == "worldfirst"
         assert result["transaction_id"].startswith("wf_")
 
     def test_refund_funds(self):
-        adapter = WorldFirstAdapter()
+        adapter = WorldFirstGateway()
         result = adapter.refund_funds("wf_abc", 5000.0, "HKD", "争议退款")
         assert result["status"] == "refunded"
         assert result["provider"] == "worldfirst"
