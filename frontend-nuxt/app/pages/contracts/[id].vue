@@ -211,7 +211,9 @@
               </div>
               <div class="wizard-nav">
                 <button class="btn-back" @click="wizardStep = 2">← 上一步</button>
-                <button class="btn-next btn-pay" @click="handlePay">支付并托管</button>
+                <button class="btn-next btn-pay" :disabled="subscribing" @click="handlePay">
+                  {{ subscribing ? '认购中...' : '支付并托管' }}
+                </button>
               </div>
             </div>
 
@@ -233,7 +235,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Contract } from '~/types/public'
-import { fetchPublicContracts } from '~/composables/usePublicApi'
+import { fetchPublicContracts, subscribeContract } from '~/composables/usePublicApi'
 import { useAuthStore } from '~/stores/auth'
 
 const auth = useAuthStore()
@@ -244,6 +246,7 @@ const error = ref<string | null>(null)
 const wizardStep = ref(1)
 const qty = ref(1)
 const paymentMethod = ref('stripe')
+const subscribing = ref(false)
 
 const routeParams = route.params as { id?: string }
 
@@ -303,12 +306,22 @@ function isStepDone(status: string, step: string): boolean {
   return currentIdx > stepIdx
 }
 
-function handlePay() {
+async function handlePay() {
   if (!auth.isLoggedIn) {
     navigateTo('/auth/login')
     return
   }
-  wizardStep.value = 4
+  if (!contract.value) return
+  subscribing.value = true
+  try {
+    const result = await subscribeContract(contract.value.id)
+    console.log('Subscribed:', result)
+    wizardStep.value = 4
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : '认购失败，请稍后重试'
+  } finally {
+    subscribing.value = false
+  }
 }
 
 onMounted(loadContract)

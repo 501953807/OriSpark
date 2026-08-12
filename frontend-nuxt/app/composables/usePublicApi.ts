@@ -37,3 +37,13 @@ export function fetchOpportunities(): Promise<Opportunity[]> {
 export function fetchGalleryCategories(): Promise<string[]> {
   return $fetch(`${getApiBase()}/public/gallery/categories`)
 }
+
+export function subscribeContract(contractId: string): Promise<{ id: string; status: string }> {
+  const token = localStorage.getItem('orispark-token')
+  if (!token) throw new Error('未登录')
+  const user = JSON.parse(localStorage.getItem('orispark-user') ?? '{}')
+  return $fetch(`${getApiBase()}/contracts/${contractId}/subscribe?subscriber_id=${user.id || ''}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+}

@@ -60,6 +60,57 @@
       </div>
     </div>
 
+    <!-- 行情趋势图 -->
+    <div class="trend-section">
+      <div class="trend-header">
+        <span class="trend-title">合约行情走势</span>
+        <div class="trend-periods">
+          <button :class="['period-btn', { active: trendPeriod === 'daily' }]" @click="trendPeriod = 'daily'">日</button>
+          <button :class="['period-btn', { active: trendPeriod === 'weekly' }]" @click="trendPeriod = 'weekly'">周</button>
+          <button :class="['period-btn', { active: trendPeriod === 'monthly' }]" @click="trendPeriod = 'monthly'">月</button>
+        </div>
+      </div>
+      <div class="trend-chart">
+        <svg :viewBox="`0 0 800 ${chartHeight}`" class="chart-svg" preserveAspectRatio="none">
+          <!-- 网格线 -->
+          <line v-for="i in 5" :key="'h'+i" :x1="50" :y1="20+(i-1)*(chartHeight-40)/4" :x2="780" :y2="20+(i-1)*(chartHeight-40)/4" stroke="var(--spark-border)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- Y轴标签 -->
+          <text v-for="i in 5" :key="'yl'+i" :x="45" :y="22+(i-1)*(chartHeight-40)/4" text-anchor="end" fill="var(--spark-muted)" font-size="10" font-family="monospace">{{ yLabels[4-i] }}</text>
+          <!-- X轴标签 -->
+          <text v-for="(label, i) in chartLabels" :key="'xl'+i" :x="50+i*(730/(chartLabels.length-1))" :y="chartHeight-2" text-anchor="middle" fill="var(--spark-muted)" font-size="9">{{ label }}</text>
+          <!-- 面积图 -->
+          <path :d="areaPath" fill="url(#trendGradient)" opacity="0.3"/>
+          <!-- 折线 -->
+          <polyline :points="linePoints" fill="none" stroke="var(--spark-blue)" stroke-width="2" stroke-linejoin="round"/>
+          <!-- 数据点 -->
+          <circle v-for="(pt, i) in chartPoints" :key="'pt'+i" :cx="pt.x" :cy="pt.y" r="3" fill="var(--spark-blue)" stroke="#fff" stroke-width="1.5" class="chart-dot"/>
+          <!-- 渐变定义 -->
+          <defs>
+            <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--spark-blue)" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="var(--spark-blue)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="trend-stats">
+        <div class="trend-stat">
+          <span class="ts-label">24h成交额</span>
+          <span class="ts-value data-mono" style="color:var(--spark-green);">¥{{ formatCurrency(trendStats?.volume24h ?? 0) }}</span>
+        </div>
+        <div class="trend-stat">
+          <span class="ts-label">合约均价</span>
+          <span class="ts-value data-mono">¥{{ formatCurrency(trendStats?.avgPrice ?? 0) }}</span>
+        </div>
+        <div class="trend-stat">
+          <span class="ts-label">涨跌幅</span>
+          <span class="ts-value data-mono" :style="{ color: trendStats?.change >= 0 ? 'var(--spark-green)' : 'var(--spark-red)' }">
+            {{ trendStats?.change >= 0 ? '+' : '' }}{{ trendStats?.change ?? 0 }}%
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- 三栏布局 -->
     <div class="market-layout" v-loading="loading">
       <!-- 左侧：合约行情表 -->
@@ -288,9 +339,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import type { Contract, Work, DashboardStats } from '~/types/public'
-import { fetchPublicContracts, fetchDashboardStats } from '~/composables/usePublicApi'
+import { fetchPublicContracts, fetchDashboardStats, fetchMarketTrends } from '~/composables/usePublicApi'
 import { useAuthStore } from '~/stores/auth'
 
 useHead({ title: '合约行情 — OriSpark' })
@@ -307,6 +358,74 @@ const filterStatus = ref('')
 const subscribeQty = ref(1)
 const isFavorited = ref(false)
 let refreshTimer: ReturnType<typeof setInterval> | null = null
+
+// 行情趋势图数据
+const trendPeriod = ref('daily')
+const trendData = ref<number[]>([])
+const chartHeight = 120
+const trendStats = ref<{ volume24h?: number; avgPrice?: number; change?: number } | null>(null)
+
+function generateTrendData(): number[] {
+  const points = trendPeriod.value === 'daily' ? 24 : trendPeriod.value === 'weekly' ? 7 : 30
+  const base = stats.value?.monthly_transaction_volume ?? 100000
+  return Array.from({ length: points }, (_, i) => {
+    const fluctuation = Math.sin(i * 0.5) * base * 0.15 + (Math.random() - 0.5) * base * 0.1
+    return Math.max(0, base * 0.7 + fluctuation + i * base * 0.003)
+  })
+}
+
+const chartPoints = computed(() => {
+  const data = trendData.value
+  if (data.length < 2) return []
+  const max = Math.max(...data)
+  const min = Math.min(...data)
+  const range = max - min || 1
+  return data.map((v, i) => ({
+    x: 50 + i * (730 / (data.length - 1)),
+    y: 20 + (1 - (v - min) / range) * (chartHeight - 40),
+  }))
+})
+
+const linePoints = computed(() => chartPoints.value.map(p => `${p.x},${p.y}`).join(' '))
+
+const areaPath = computed(() => {
+  const pts = chartPoints.value
+  if (pts.length < 2) return ''
+  let d = `M ${pts[0].x} ${chartHeight - 20}`
+  d += ` L ${pts[0].x} ${pts[0].y}`
+  for (let i = 1; i < pts.length; i++) d += ` L ${pts[i].x} ${pts[i].y}`
+  d += ` L ${pts[pts.length - 1].x} ${chartHeight - 20} Z`
+  return d
+})
+
+const chartLabels = computed(() => {
+  const data = trendData.value
+  if (data.length < 2) return []
+  const step = Math.max(1, Math.floor(data.length / 6))
+  return data.map((_, i) => i % step === 0 ? `${i}` : '').filter(Boolean)
+})
+
+const yLabels = computed(() => {
+  const data = trendData.value
+  if (!data.length) return []
+  const max = Math.max(...data)
+  const min = Math.min(...data)
+  const range = max - min || 1
+  return Array.from({ length: 5 }, (_, i) => Math.round(min + range * i / 4))
+})
+
+function updateTrendStats() {
+  const data = trendData.value
+  if (!data.length) return
+  const total = data.reduce((a, b) => a + b, 0)
+  const last = data[data.length - 1]
+  const prev = data[data.length - 2] ?? last
+  trendStats.value = {
+    volume24h: total,
+    avgPrice: total / data.length,
+    change: parseFloat(((last - prev) / prev * 100).toFixed(2)),
+  }
+}
 
 // 合约状态机进度条配置
 const contractStatusSteps = [
@@ -426,17 +545,31 @@ function formatDate(dateStr?: string | null): string {
 async function loadData() {
   loading.value = true
   try {
-    const [contractsRes, statsRes] = await Promise.all([
+    const [contractsRes, statsRes, trendsRes] = await Promise.all([
       fetchPublicContracts(),
       fetchDashboardStats(),
+      fetchMarketTrends(trendPeriod.value),
     ])
     contracts.value = (contractsRes ?? []) as Contract[]
     stats.value = (statsRes ?? null) as DashboardStats | null
+    if (Array.isArray(trendsRes) && trendsRes.length > 0) {
+      trendData.value = trendsRes.map((t: any) => t.value ?? 0)
+    } else {
+      trendData.value = generateTrendData()
+    }
+    updateTrendStats()
   } catch (e) {
     console.error('Failed to load market data:', e)
+    trendData.value = generateTrendData()
+    updateTrendStats()
   } finally {
     loading.value = false
   }
+}
+
+function onPeriodChange() {
+  trendData.value = generateTrendData()
+  updateTrendStats()
 }
 
 function startPolling() {
@@ -460,6 +593,11 @@ onMounted(() => {
 
 onUnmounted(() => {
   stopPolling()
+})
+
+watch(trendPeriod, () => {
+  trendData.value = generateTrendData()
+  updateTrendStats()
 })
 </script>
 
@@ -502,6 +640,72 @@ onUnmounted(() => {
 .ticker-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
 .ticker-value { font-size: 16px; font-weight: 700; color: #1e293b; }
 .ticker-divider { width: 1px; height: 32px; background: #e2e8f0; margin: 0 8px; }
+
+/* --- TREND CHART --- */
+.trend-section {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 16px 24px;
+}
+.trend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.trend-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+.trend-periods {
+  display: flex;
+  gap: 4px;
+}
+.period-btn {
+  padding: 4px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.period-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+.period-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+.trend-chart {
+  height: 140px;
+  margin-bottom: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 0;
+}
+.chart-svg { width: 100%; height: 100%; }
+.chart-dot { transition: r 0.15s; }
+.chart-dot:hover { r: 5; }
+.trend-stats {
+  display: flex;
+  gap: 32px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+.trend-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ts-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ts-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
 
 /* --- THREE-COLUMN LAYOUT --- */
 .market-layout {

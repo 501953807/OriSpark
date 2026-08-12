@@ -51,6 +51,24 @@
   }
 }
 
+/* ====================
+   OriSpark Brand Tokens (金融商务风)
+   ==================== */
+:root {
+  /* 行情色彩 */
+  --spark-blue: #3b82f6;
+  --spark-green: #10b981;
+  --spark-red: #ef4444;
+  --spark-gold: #D4AF37;
+  --spark-silver: #C0C0C0;
+  --spark-dark: #0f172a;
+  --spark-surface: #1e293b;
+  --spark-border: #334155;
+  --spark-text: #f1f5f9;
+  --spark-muted: #94a3b8;
+  --spark-bg: #f8fafc;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   :root {
