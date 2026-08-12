@@ -47,7 +47,7 @@ import { ref, computed } from 'vue'
 import client from '@/api/client'
 
 const props = defineProps<{ workId: string; disabled?: boolean }>()
-const emit = defineEmits<{ apply: [data: { title: string; description: string; specs: string[]; tags: string[]; price_range: string }] }>()
+const emit = defineEmits<{ apply: [data: { title: string; description: string; specs: string[]; tags: string[]; price_range: string }], close: [] }>()
 
 const loading = ref(false)
 const result = ref<{ title: string; description: string; specs: string[]; tags: string[]; price_range: string } | null>(null)

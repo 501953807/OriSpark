@@ -102,11 +102,11 @@
       <div class="modal-card" style="max-width:380px">
         <div class="modal-header">
           <h3>删除版本</h3>
-          <button class="modal-close-btn" @click="confirmDelete = null">×</button>
+          <button class="modal-close-btn" @click="confirmDelete = false">×</button>
         </div>
         <p>确定要删除 <strong>v{{ deletingVersion?.version_num }}</strong> 吗？此操作不可撤销。</p>
         <div class="modal-footer">
-          <button class="btn btn-secondary" @click="confirmDelete = null">取消</button>
+          <button class="btn btn-secondary" @click="confirmDelete = false">取消</button>
           <button class="btn btn-danger" @click="confirmDeleteVersion" :disabled="deleting">
             {{ deleting ? '删除中…' : '确认删除' }}
           </button>

@@ -74,6 +74,9 @@ class Work(Base):
     ai_assisted = Column(Boolean, default=False)
     ai_tools_used = Column(JSON, nullable=True)
     creator_type = Column(String(30), default="illustrator")
+    # v6.0: 公开可运营状态
+    work_operation_public = Column(Boolean, default=False, nullable=False)
+    operation_agreement_id = Column(String(32), nullable=True)
     # P2-2: EXIF advanced search fields (stored in custom_metadata JSON, queried via JSON path)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     imported_at = Column(DateTime, default=datetime.now(timezone.utc))

@@ -19,7 +19,7 @@ from typing import Optional
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Header, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -64,7 +64,7 @@ class RegisterOperatorRequest(BaseModel):
     username: str
     email: str
     password: str
-    participant_roles: list[str]
+    participant_roles: list[str] = Field(default_factory=list)
 
 
 class OAuthCallbackRequest(BaseModel):

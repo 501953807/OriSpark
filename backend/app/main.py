@@ -220,9 +220,12 @@ app.include_router(mini_program_router)
 from app.routers.operation_cooperation import router as operation_cooperation_router
 from app.routers.factory_order import router as factory_order_router
 from app.routers.data_analytics import router as data_analytics_router
+from app.routers.operation_works import router as operation_works_creator_router, operator_router as operation_works_operator_router
 app.include_router(operation_cooperation_router, prefix="/api")
 app.include_router(factory_order_router, prefix="/api")
 app.include_router(data_analytics_router, prefix="/api")
+app.include_router(operation_works_creator_router, prefix="/api")
+app.include_router(operation_works_operator_router, prefix="/api")
 
 
 @app.get("/api/health")

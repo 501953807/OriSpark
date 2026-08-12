@@ -78,6 +78,9 @@ class WorkResponse(BaseModel):
     completion_date: Optional[str] = None
     current_stage: Optional[str] = None
     copyright_year: Optional[int] = None
+    # v6.0: 公开可运营状态
+    work_operation_public: bool = False
+    operation_agreement_id: Optional[str] = None
 
 
 class WorkListResponse(BaseModel):
