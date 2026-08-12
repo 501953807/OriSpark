@@ -26,13 +26,13 @@ describe('useAppStore', () => {
     expect(store.workCount).toBe(0)
     expect(store.notaryCount).toBe(0)
     expect(store.alertCount).toBe(0)
-    expect(store.currentTheme).toBe('cold-white')
-    expect(store.themePresets).toEqual(['cold-white', 'warm-gray', 'deep-blue'])
+    expect(store.currentTheme).toBe('midnight-gold')
+    expect(store.themePresets).toEqual(['midnight-gold', 'cold-white', 'warm-gray', 'deep-blue'])
   })
 
   it('sets theme and updates DOM attribute', () => {
     const store = useAppStore()
-    expect(store.currentTheme).toBe('cold-white')
+    expect(store.currentTheme).toBe('midnight-gold')
 
     store.setTheme('deep-blue')
     expect(store.currentTheme).toBe('deep-blue')
@@ -41,13 +41,15 @@ describe('useAppStore', () => {
 
   it('cycles through theme presets', () => {
     const store = useAppStore()
-    store.setTheme('cold-white')
+    store.setTheme('midnight-gold')
+    store.cycleTheme()
+    expect(store.currentTheme).toBe('cold-white')
     store.cycleTheme()
     expect(store.currentTheme).toBe('warm-gray')
     store.cycleTheme()
     expect(store.currentTheme).toBe('deep-blue')
     store.cycleTheme()
-    expect(store.currentTheme).toBe('cold-white')
+    expect(store.currentTheme).toBe('midnight-gold')
   })
 
   it('persists theme to localStorage', () => {

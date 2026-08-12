@@ -15,8 +15,8 @@
           @click="themePickerOpen = !themePickerOpen"
         >
           <span class="theme-dot active-dot" :style="{ background: themeColor(appStore.currentTheme) }"></span>
-          <span class="theme-dot" :style="{ background: themeColor('warm-gray') }"></span>
-          <span class="theme-dot" :style="{ background: themeColor('deep-blue') }"></span>
+          <span class="theme-dot" :style="{ background: themeColor('cold-white') }"></span>
+          <span class="theme-dot" :style="{ background: themeColor('midnight-gold') }"></span>
         </button>
         <Transition name="theme-dropdown">
           <div v-if="themePickerOpen" class="theme-panel" @click.stop>
@@ -112,10 +112,14 @@ const themePickerOpen = ref(false)
 function themeColor(t: string): string {
   if (t === 'cold-white') return 'oklch(54% 0.16 280)'
   if (t === 'warm-gray') return 'oklch(54% 0.14 40)'
+  if (t === 'midnight-gold') return '#D4AF37'
   return 'oklch(65% 0.13 280)'
 }
 function themeLabel(t: string): string {
-  return t === 'cold-white' ? '冷白商务' : t === 'warm-gray' ? '暖灰温和' : '深蓝夜间'
+  if (t === 'cold-white') return '冷白商务'
+  if (t === 'warm-gray') return '暖灰温和'
+  if (t === 'midnight-gold') return '午夜金'
+  return '深蓝夜间'
 }
 
 const pageTitles: Record<string, string> = {

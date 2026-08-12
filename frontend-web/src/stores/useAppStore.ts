@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useGlobalEvents } from '@/composables/useGlobalEvents'
 
-type ThemePreset = 'cold-white' | 'warm-gray' | 'deep-blue'
+type ThemePreset = 'cold-white' | 'warm-gray' | 'deep-blue' | 'midnight-gold'
 
 export const useAppStore = defineStore('app', () => {
   const sidebarCollapsed = ref(false)
@@ -17,8 +17,8 @@ export const useAppStore = defineStore('app', () => {
   on('alert:new', () => { alertCount.value++ })
 
   // ── Theme preset system (3 presets via data-theme attribute) ──
-  const themePresets: ThemePreset[] = ['cold-white', 'warm-gray', 'deep-blue']
-  const currentTheme = ref<ThemePreset>('cold-white')
+  const themePresets: ThemePreset[] = ['midnight-gold', 'cold-white', 'warm-gray', 'deep-blue']
+  const currentTheme = ref<ThemePreset>('midnight-gold')
 
   function setTheme(theme: ThemePreset) {
     currentTheme.value = theme

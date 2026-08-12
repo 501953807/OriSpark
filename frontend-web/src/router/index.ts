@@ -30,6 +30,79 @@ const router = createRouter({
       name: 'verify',
       component: () => import('@/views/VerifyView.vue'),
     },
+    // 运营者专属路由 — 重定向到 OriSpark 交易后台
+    {
+      path: '/app/operator',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/`,
+    },
+    {
+      path: '/app/contract-risk',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/contract-risk`,
+    },
+    {
+      path: '/app/insurance',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/insurance`,
+    },
+    {
+      path: '/app/multimarket',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/multimarket`,
+    },
+    {
+      path: '/app/enforcement-roi',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/enforcement-roi`,
+    },
+    {
+      path: '/app/enforcement',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/enforcement`,
+    },
+    {
+      path: '/app/private-traffic',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/private-traffic`,
+    },
+    {
+      path: '/app/growth-stages',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/growth-stages`,
+    },
+    {
+      path: '/app/ai-growth',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/ai-growth`,
+    },
+    {
+      path: '/app/credit-improvement',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/credit-improvement`,
+    },
+    {
+      path: '/app/risk-center',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/risk-center`,
+    },
+    {
+      path: '/app/content-pipeline',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/content-pipeline`,
+    },
+    {
+      path: '/app/case-studies',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/case-studies`,
+    },
+    {
+      path: '/app/fork-merge',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/fork-merge`,
+    },
+    {
+      path: '/app/negotiation',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/negotiation`,
+    },
+    {
+      path: '/app/scr',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/scr`,
+    },
+    {
+      path: '/app/tax',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/tax`,
+    },
+    {
+      path: '/app/distribution',
+      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/distribution`,
+    },
     // 应用主体 (需要登录)
     {
       path: '/app',
@@ -109,7 +182,7 @@ router.beforeEach(async (to) => {
       const loginPlatform = user.login_platform || user.creator_type ? 'web' : 'nuxt'
       if (loginPlatform === 'nuxt' && to.path.startsWith('/app')) {
         // 非创作者访问创作者平台，重定向到 OriSpark
-        window.location.href = window.location.origin.replace('5174', '3000')
+        window.location.href = `${window.location.origin.replace('5174', '3000')}/nuxt/`
         return false
       }
     } catch { /* ignore parse errors */ }

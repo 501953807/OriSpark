@@ -29,6 +29,16 @@ vi.mock('@/stores/useCreatorTypeStore', () => ({
   })),
 }))
 
+vi.mock('@/stores/useAuthStore', () => ({
+  useAuthStore: vi.fn(() => ({
+    participantRoles: [],
+    displayName: 'User',
+    user: null,
+    isLoggedIn: false,
+    logout: vi.fn(),
+  })),
+}))
+
 vi.mock('@/types/creator', () => ({
   getAllCreators: vi.fn(() => [
     { type: 'illustrator', label: '插画师', color: '#667eea' },
@@ -41,6 +51,17 @@ describe('DynamicSidebar', () => {
   let router: any
 
   beforeEach(() => {
+    // Mock localStorage
+    Object.defineProperty(global, 'localStorage', {
+      value: {
+        getItem: vi.fn(() => null),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+      },
+      writable: true,
+    })
+
     setActivePinia(createPinia())
     mockToggleSidebar.mockReset()
     mockGetTypeInfo.mockReset()

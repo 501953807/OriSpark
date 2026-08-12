@@ -25,18 +25,17 @@
         <div class="hero-grid-overlay"></div>
         <div class="hero">
           <div class="hero-text">
-            <div class="hero-badge">
-              <span class="dot green"></span>
-              v6.0 · 独立创作者工作台
+          <div class="hero-badge gold-accent">
+              <span class="dot gold"></span>
+              v6.0 · 创作者专属入口
             </div>
             <h1>
               你的创作<br>
               <span class="em">权益与合约守护引擎</span>
             </h1>
             <p class="hero-desc">
-              为独立创作者提供从存证保护到合约挂牌的全链路工具。
-              L1-L4 四级版权防御、智能撮合、多方分润——
-              让你的每一笔创作交易都有据可查、有保可投。
+              OriStudio 专为独立创作者打造。从版权存证到合约挂牌，
+              从智能撮合到多方分润——你的每一笔创作交易，都有据可查、有保可投。
             </p>
             <div class="hero-actions">
               <router-link to="/app" class="btn btn-primary" style="font-size:1rem;padding:14px 28px;">
@@ -45,7 +44,7 @@
               <router-link to="/onboarding" class="btn btn-secondary">了解原理</router-link>
             </div>
             <p class="creator-note">
-              <span class="note-icon">🔒</span> 仅面向独立创作者开放 · 非创作者请前往
+              <span class="note-icon">🔒</span> 仅面向独立创作者开放 · 运营者、法务、税务等角色请前往
               <a href="https://orispark.local" target="_blank">OriSpark 交易后台</a>
             </p>
           </div>
@@ -355,6 +354,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   width: fit-content; border: 1px solid oklch(54% 0.16 280 / 0.2);
 }
 .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse-dot 2s infinite; }
+.hero-badge.gold-accent { background: oklch(212 0.15 65 / 0.12); color: #D4AF37; border-color: oklch(212 0.15 65 / 0.3); }
+.hero-badge.gold-accent .dot { background: #D4AF37; }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
 h1 {

@@ -16,11 +16,6 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 
-// Initialize motion store for FPS tracking and reduced-motion detection
-import { useMotionStore } from '@/stores/useMotionStore'
-const motionStore = useMotionStore()
-void motionStore.effectiveLevel
-
 pinia.state.value.app?.initTheme?.()
 pinia.state.value.app?.initSidebar?.()
 

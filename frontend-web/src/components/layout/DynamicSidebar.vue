@@ -212,7 +212,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -226,12 +226,27 @@ const props = defineProps<{
   mobileVisible?: boolean
 }>()
 
-// frontend-web 是创作者专属系统，固定使用 creator 角色
-const participantRole = ref<ParticipantRole>('creator')
-
 const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
 const authStore = useAuthStore()
+
+// Derive participant role from auth store; prefer non-creator roles
+const derivedRole = computed<ParticipantRole>(() => {
+  const roles = authStore.participantRoles
+  if (!roles || roles.length === 0) return 'creator'
+  const nonCreator = roles.find((r: string) => r !== 'creator')
+  return (nonCreator || 'creator') as ParticipantRole
+})
+
+const participantRole = ref<ParticipantRole>(derivedRole.value)
+
+// Watch auth changes and update sidebar role
+watch(() => authStore.participantRoles, (newRoles) => {
+  if (newRoles && newRoles.length > 0) {
+    const nonCreator = newRoles.find((r: string) => r !== 'creator')
+    participantRole.value = (nonCreator || 'creator') as ParticipantRole
+  }
+}, { immediate: false })
 
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const isHovering = ref(false)
@@ -267,9 +282,13 @@ const typeInfo = computed(() =>
       : null,
 )
 
-// frontend-web 是创作者专属系统，不涉及 8 类业务角色
-// 业务角色（运营方/法务/税务等）由 frontend-nuxt 子系统承担
-const hasNonCreatorRole = computed(() => false)
+// Dynamic: show non-creator navigation when user has business roles
+// Creator role always uses the creator-type navigation below
+const hasNonCreatorRole = computed(() => {
+  const roles = authStore.participantRoles
+  if (!roles || roles.length === 0) return false
+  return roles.some((r: string) => r !== 'creator' && PARTICIPANT_ROLES[r as ParticipantRole])
+})
 
 function togglePicker() {
   pickerOpen.value = !pickerOpen.value

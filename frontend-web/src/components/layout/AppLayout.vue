@@ -176,9 +176,6 @@
       </div>
     </div>
 
-    <!-- FPS Monitor -->
-    <FPSMonitor />
-
     <!-- P3: Floating help center -->
     <button
       class="help-center-btn"
@@ -236,15 +233,12 @@ import { computed, ref, onMounted } from 'vue'
 import DynamicSidebar from './DynamicSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
-import FPSMonitor from '@/components/FPSMonitor.vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
-import { useMotionStore } from '@/stores/useMotionStore'
 import { worksApi } from '@/api/works'
 
 const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
-const motionStore = useMotionStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const mobileMenuOpen = ref(false)
 const showHelp = ref(false)
@@ -258,17 +252,9 @@ const uploading = ref(false)
 const batchFiles = ref<any[]>([])
 const batchUploading = ref(false)
 
-const transitionName = computed(() => {
-  if (motionStore.effectiveLevel >= 1 && !motionStore.prefersReducedMotion) {
-    return 'page-fade'
-  }
-  return ''
-})
+const transitionName = computed(() => 'page-fade')
 
-onMounted(() => {
-  // Ensure motion store is active and watching FPS
-  void motionStore.effectiveLevel
-})
+onMounted(() => {})
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return bytes + ' B'
