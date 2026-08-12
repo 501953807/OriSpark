@@ -8,7 +8,7 @@ Phase 1: 视频指纹监测、音频指纹、文本查重
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -489,3 +489,51 @@ def list_text_matches(
     """获取文本相似度检测历史记录."""
     svc = MonitorService(db)
     return svc.list_text_matches(work_id, min_similarity)
+
+
+# ============================================================
+# 定时调度管理
+# ============================================================
+
+_TASK_DESCRIPTIONS: dict[str, str] = {
+    "scheduled-scan-daily": "定时侵权扫描",
+    "cleanup-audit-logs": "审计日志清理归档",
+    "auto-backup": "自动数据库备份",
+    "check-reminders": "到期提醒检查",
+    "contract-expiration-check": "合约到期检查",
+    "weekly-report": "周报生成",
+    "monthly-report": "月报生成",
+}
+
+
+def _get_task_description(task: str) -> str:
+    return _TASK_DESCRIPTIONS.get(task, task)
+
+
+@router.get("/monitor/schedule", response_model=ApiResponse)
+def get_monitor_schedule(db: Session = Depends(get_db)):
+    """获取定时调度配置."""
+    from app.tasks.celery_app import celery_app
+    schedule = celery_app.conf.beat_schedule
+    entries = []
+    for task_name, cfg in schedule.items():
+        entries.append({
+            "task": task_name,
+            "schedule_seconds": cfg.get("schedule"),
+            "description": _get_task_description(task_name),
+        })
+    return ApiResponse(data={"schedules": entries, "total": len(entries)})
+
+
+@router.post(
+    "/monitor/schedule/toggle",
+    response_model=ApiResponse,
+    dependencies=[Depends(require_auth)],
+)
+def toggle_schedule(task: str = Query(..., description="任务名"), enabled: bool = True):
+    """切换定时任务开关."""
+    from app.tasks.celery_app import celery_app
+    if task not in celery_app.conf.beat_schedule:
+        raise HTTPException(status_code=404, detail=f"任务 {task} 不存在")
+    celery_app.conf.beat_schedule[task]["enabled"] = enabled
+    return ApiResponse(message=f"任务 {task} 已{'启用' if enabled else '禁用'}")

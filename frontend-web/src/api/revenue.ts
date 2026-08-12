@@ -11,4 +11,7 @@ export const revenueApi = {
   addRecord(data: Partial<RevenueRecord>) {
     return client.post('/revenue/records', data)
   },
+  exportRecords(params: { start_date?: string; end_date?: string; format?: 'csv' | 'json' } = {}) {
+    return client.get('/revenue/records/export', { params })
+  },
 }

@@ -122,6 +122,8 @@ app.include_router(matchmaking.router, prefix="/api", tags=["matchmaking"])
 app.include_router(fork_merge.router, prefix="/api/fork-merge", tags=["ForkMerge"])
 app.include_router(contract_matching.router, prefix="/api", tags=["ContractMatching"])
 app.include_router(ws_router, tags=["WebSocket"])
+from app.routers.ws_notifications import router as ws_notif_router
+app.include_router(ws_notif_router)
 
 # Phase 0: 新路由
 from app.routers.risk_warning import router as risk_warning_router
@@ -136,6 +138,7 @@ app.include_router(ai_generate_router, prefix="/api")
 from app.routers.risk import router as risk_router
 from app.routers.credit import router as credit_router
 from app.routers.revenue import router as revenue_router
+from app.routers.describe import router as describe_router
 from app.routers.contract_risk import router as contract_risk_router
 from app.routers.navigation import router as navigation_router
 from app.routers.insurance import router as insurance_router
@@ -156,6 +159,7 @@ from app.routers.reverse_trace import router as reverse_trace_router
 app.include_router(risk_router, prefix="/api")
 app.include_router(credit_router, prefix="/api")
 app.include_router(revenue_router, prefix="/api")
+app.include_router(describe_router, prefix="/api")
 app.include_router(contract_risk_router, prefix="/api")
 app.include_router(navigation_router, prefix="/api")
 app.include_router(insurance_router, prefix="/api")

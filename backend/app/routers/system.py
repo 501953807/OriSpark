@@ -601,3 +601,15 @@ def get_onboarding_status(
 
     svc = SystemService(db)
     return svc.get_onboarding_status(user_id)
+
+
+# ---- 审计日志清理 ----
+
+@router.post("/system/audit-log/clean", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def clean_audit_logs(
+    retention_days: int = Query(default=90, ge=1, le=3650, description="保留天数"),
+):
+    """手动触发审计日志清理归档."""
+    from app.tasks.backup_tasks import cleanup_audit_logs
+    result = cleanup_audit_logs(retention_days)
+    return ApiResponse(data=result, message="审计日志清理完成")

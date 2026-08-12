@@ -26,6 +26,8 @@ from sqlalchemy.exc import SQLAlchemyError
 router = APIRouter()
 
 from app.services.ipr_service import IprService, CreateIPRegistrationPayload, UpdateIPRegistrationPayload, RecommendClassesPayload, PrefillApplicationPayload, ValidateApplicationPayload, GenerateApplicationPayload, ExportApplicationPayload, FeeCalculatorPayload
+from app.services.ip_recommendation_service import IPRecommendationService
+from app.schemas.ipr import RecommendCategoriesPayload, AdvanceStatusPayload
 # ─── 端点实现 ───────────────────────────────────────────────────
 
 @router.get("/ipr/registrations", response_model=ApiResponse[list])
@@ -268,5 +270,39 @@ def fee_calculator(
     """费用计算器."""
     svc = IprService(db)
     return svc.fee_calculator(data)
+
+
+@router.post("/ipr/recommend-categories", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def recommend_categories(
+    data: RecommendCategoriesPayload,
+    db: Session = Depends(get_db),
+):
+    """根据作品描述推荐尼斯分类."""
+    svc = IPRecommendationService(db)
+    return ApiResponse(data=svc.recommend_classes(data.description, data.ip_type))
+
+
+@router.get("/ipr/registration/{id}/material-list", response_model=ApiResponse)
+def get_material_list(
+    id: str,
+    db: Session = Depends(get_db),
+):
+    """获取当前状态的材料清单."""
+    record = db.query(IPRegistration).filter(IPRegistration.id == id).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="记录不存在")
+    from app.services.ipr_service import _get_material_list_for_status
+    return ApiResponse(data=_get_material_list_for_status(record.status, record.ip_type))
+
+
+@router.post("/ipr/registration/{id}/advance", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def advance_registration_status(
+    id: str,
+    data: AdvanceStatusPayload,
+    db: Session = Depends(get_db),
+):
+    """推进IP登记状态."""
+    from app.services.ipr_service import _VALID_TRANSITIONS, _advance_registration_status
+    return _advance_registration_status(db, id, data.status, data.note)
 
 

@@ -31,6 +31,7 @@ from app.schemas.notary import (
     NotaryVerifyResponse, EvidenceChainItem,
 )
 from app.services.notary_manager_service import NotaryManagerService
+from app.services.notary_comparison_service import NotaryComparisonService
 from app.services.certificate_service import generate_certificate_pdf
 from app.services.hasher import compute_sha256
 from app.services.local_notary import sign_work, save_signature, generate_ecdsa_keypair
@@ -95,7 +96,7 @@ NOTARY_PLATFORMS = {
 
 @router.get("/notary/platforms", response_model=ApiResponse[list[NotaryPlatformInfo]])
 def get_notary_platforms(db: Session = Depends(get_db)):
-    """获取可用的存证平台列表 (P1.7.13: dictStore-backed, 硬编码为 fallback)."""
+    """获取可用的存证平台列表 (P1.7.13)."""
     try:
         from app.utils.system_helpers import get_dict_values_rich
         dict_entries = get_dict_values_rich("notary_platforms", db)
@@ -115,7 +116,8 @@ def get_notary_platforms(db: Session = Depends(get_db)):
                 return ApiResponse(data=platforms)
     except Exception as e:
         logging.getLogger(__name__).exception("Error in get_notary_platforms: %s", str(e))
-    return ApiResponse(data=list(NOTARY_PLATFORMS.values()))
+    svc = NotaryComparisonService()
+    return ApiResponse(data=svc.get_platforms())
 
 
 # ==============================================================================
@@ -629,41 +631,17 @@ def compare_notary_platforms(
     priority: str = Query("cost"),
 ):
     """存证平台费用比较 + AI 推荐 (P1.2.6)."""
-    platforms = []
-    best_key = None
-    best_score = -1
-
-    for key, info in NOTARY_PLATFORMS.items():
-        profile = _PLATFORM_PROFILES.get(key, {"pros": [], "cons": []})
-        total_fee = info.fee_per_record * work_count
-
-        score, reasons = _score_platform(
-            key, info, work_type, budget, legal_level, work_count, priority
-        )
-
-        platforms.append(PlatformFeeItem(
-            key=key,
-            name=info.name,
-            fee_per_record=info.fee_per_record,
-            legal_level=info.legal_level,
-            estimated_total=round(total_fee, 2),
-            pros=profile["pros"],
-            cons=profile["cons"],
-        ))
-
-        if score > best_score:
-            best_score = score
-            best_key = key
-
-    platforms.sort(key=lambda p: p.estimated_total)
-
-    _, best_reasons = _score_platform(
-        best_key, NOTARY_PLATFORMS[best_key], work_type, budget,
-        legal_level, work_count, priority
+    svc = NotaryComparisonService()
+    platforms, best_key, reasons = svc.compare(
+        work_count=work_count,
+        work_type=work_type,
+        budget=budget,
+        legal_level=legal_level,
+        priority=priority,
     )
-
+    best_platform_info = svc.get_platform(best_key)
     return ApiResponse(
-        message=f"推荐平台: {NOTARY_PLATFORMS[best_key].name}",
+        message=f"推荐平台: {best_platform_info.name}" if best_platform_info else "推荐平台: 无",
         data=NotaryCompareResponse(
             work_count=work_count,
             work_type=work_type,
@@ -671,7 +649,7 @@ def compare_notary_platforms(
             legal_level=legal_level,
             platforms=platforms,
             recommended=best_key,
-            reasons=best_reasons,
+            reasons=reasons,
         ),
     )
 

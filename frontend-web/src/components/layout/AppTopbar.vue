@@ -35,7 +35,7 @@
       </div>
 
       <!-- Notification -->
-      <NotificationPanel />
+      <NotificationBell />
 
       <!-- Integrations -->
       <router-link to="/app/integrations" class="topbar-action" aria-label="第三方对接">🔌</router-link>
@@ -83,7 +83,7 @@ import { useRoute } from 'vue-router'
 import { useLayoutContext } from '@/composables/useLayoutContext'
 import { useAppStore } from '@/stores/useAppStore'
 import { useAuthStore } from '@/stores/useAuthStore'
-import NotificationPanel from '@/components/common/NotificationPanel.vue'
+import NotificationBell from '@/components/NotificationBell.vue'
 
 defineProps<{ isCollapsed?: boolean }>()
 defineEmits(['toggleMobile'])

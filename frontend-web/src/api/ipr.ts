@@ -84,4 +84,15 @@ export const iprApi = {
   // P2.4: 商标近似检索
   similaritySearch: (params: { query: string; class_no?: string }) =>
     client.get('/ipr/similarity-search', { params }),
+
+  // 类别推荐（新）
+  recommendCategories: (data: { description: string; ip_type: string }) =>
+    client.post('/ipr/recommend-categories', data),
+
+  // 进度追踪
+  getMaterialList: (id: string) =>
+    client.get(`/ipr/registration/${id}/material-list`),
+
+  advanceStatus: (id: string, data: { status: string; note?: string }) =>
+    client.post(`/ipr/registration/${id}/advance`, data),
 }

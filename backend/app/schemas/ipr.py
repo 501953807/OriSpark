@@ -3,7 +3,7 @@
 from typing import Optional, Any
 from datetime import datetime, date
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ── IP 登记 CRUD ──────────────────────────────────────────
@@ -206,3 +206,16 @@ class FeeCalculatorRequest(BaseModel):
     design_count: int = 1
     wipo_designations: list[str] = []
     is_color: bool = False
+
+
+# ── 类别推荐 & 进度追踪 ────────────────────────────────────
+
+class RecommendCategoriesPayload(BaseModel):
+    description: str = ""
+    ip_type: str = "trademark"
+
+
+class AdvanceStatusPayload(BaseModel):
+    status: str = Field(..., pattern="^(submitted|under_review|approved|registered|rejected|cancelled)$")
+    note: Optional[str] = None
+

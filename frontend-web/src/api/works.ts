@@ -39,6 +39,12 @@ export const worksApi = {
   createVersion: (workId: string, notes?: string) =>
     client.post(`/works/${workId}/versions`, null, { params: { notes } }),
 
+  deleteVersion: (workId: string, versionId: string) =>
+    client.delete(`/works/${workId}/versions/${versionId}`),
+
+  getVersionHistory: (workId: string) =>
+    client.get(`/works/${workId}/version-history`),
+
   rollback: (workId: string, versionId: string) =>
     client.post(`/works/${workId}/rollback/${versionId}`),
 
@@ -77,6 +83,16 @@ export const worksApi = {
 
   assignProject: (workId: string, projectId: string) =>
     client.post(`/works/${workId}/assign-project/${projectId}`),
+
+  // Project works management
+  listProjectWorks: (projectId: string) =>
+    client.get(`/projects/${projectId}/works`),
+
+  addWorkToProject: (projectId: string, workId: string) =>
+    client.post(`/projects/${projectId}/works`, { work_id: workId }),
+
+  removeWorkFromProject: (projectId: string, workId: string) =>
+    client.delete(`/projects/${projectId}/works/${workId}`),
 
   // Tags suggest
   suggestTags: (query: string) =>

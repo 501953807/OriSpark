@@ -855,3 +855,22 @@ class TestGetOnboardingStatus:
     def test_get_onboarding_status(self, client):
         resp = client.get(f"{_BASE}/onboarding-status")
         assert resp.status_code in (200, 401, 404, 500)
+
+
+# ============================================================================
+# Audit Log Cleanup
+# ============================================================================
+
+class TestCleanAuditLogs:
+    """POST /system/audit-log/clean — manual trigger audit log cleanup with gzip archive."""
+
+    def test_clean_audit_logs_requires_auth(self, client_no_auth):
+        resp = client_no_auth.post(f"{_BASE}/audit-log/clean")
+        assert resp.status_code in (401, 404, 500)
+
+    def test_clean_audit_logs_success(self, client):
+        resp = client.post(f"{_BASE}/audit-log/clean", params={"retention_days": 90})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data.get("message") == "审计日志清理完成"
+        assert data.get("data", {}).get("status") == "completed"

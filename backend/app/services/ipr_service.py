@@ -3595,3 +3595,216 @@ class IprService:
 
 
 
+
+
+# ─── 进度追踪状态机 & 材料清单 ─────────────────────────────────────
+
+_VALID_TRANSITIONS: dict[str, list[str]] = {
+    "draft": ["submitted"],
+    "submitted": ["under_review", "rejected"],
+    "under_review": ["approved", "rejected"],
+    "approved": ["registered"],
+    "registered": [],
+    "rejected": [],
+    "cancelled": [],
+}
+
+_MATERIAL_LISTS: dict[str, dict[str, list[dict]]] = {
+    "copyright": {
+        "draft": {
+            "required": [
+                {"name": "作品名称", "required": True, "description": "作品完整标题"},
+                {"name": "作者身份证明", "required": True, "description": "身份证/营业执照扫描件"},
+                {"name": "作品原件或清晰复印件", "required": True, "description": "JPG/PNG 格式，分辨率不低于 300dpi"},
+            ],
+            "optional": [
+                {"name": "作品创作说明", "required": False, "description": "创作背景、构思来源等"},
+                {"name": "委托创作合同", "required": False, "description": "如有委托关系需提供"},
+            ],
+        },
+        "submitted": {
+            "required": [
+                {"name": "作品名称", "required": True, "description": "作品完整标题"},
+                {"name": "作者身份证明", "required": True, "description": "身份证/营业执照扫描件"},
+                {"name": "作品原件或清晰复印件", "required": True, "description": "JPG/PNG 格式，分辨率不低于 300dpi"},
+                {"name": "申请表（已填写）", "required": True, "description": "在线填写并签名"},
+            ],
+            "optional": [
+                {"name": "作品创作说明", "required": False, "description": "创作背景、构思来源等"},
+                {"name": "首次发表证明", "required": False, "description": "如已公开发表需提供"},
+            ],
+        },
+        "under_review": {
+            "required": [
+                {"name": "作品名称", "required": True, "description": "作品完整标题"},
+                {"name": "作者身份证明", "required": True, "description": "身份证/营业执照扫描件"},
+                {"name": "作品原件或清晰复印件", "required": True, "description": "JPG/PNG 格式，分辨率不低于 300dpi"},
+                {"name": "补正材料（如有）", "required": False, "description": "根据审查意见补充的材料"},
+            ],
+            "optional": [],
+        },
+        "approved": {
+            "required": [
+                {"name": "作品名称", "required": True, "description": "作品完整标题"},
+                {"name": "作者身份证明", "required": True, "description": "身份证/营业执照扫描件"},
+                {"name": "作品原件或清晰复印件", "required": True, "description": "JPG/PNG 格式，分辨率不低于 300dpi"},
+                {"name": "补正材料（如有）", "required": False, "description": "根据审查意见补充的材料"},
+            ],
+            "optional": [],
+        },
+        "registered": {
+            "required": [
+                {"name": "著作权登记证书", "required": True, "description": "官方颁发的登记证书"},
+            ],
+            "optional": [],
+        },
+    },
+    "trademark": {
+        "draft": {
+            "required": [
+                {"name": "商标图样", "required": True, "description": "清晰的商标图样（JPG格式）"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+                {"name": "拟注册类别及商品/服务项目", "required": True, "description": "尼斯分类选择"},
+            ],
+            "optional": [
+                {"name": "商标说明", "required": False, "description": "商标设计理念、颜色说明等"},
+                {"name": "优先权证明", "required": False, "description": "如有优先权需提供"},
+            ],
+        },
+        "submitted": {
+            "required": [
+                {"name": "商标图样", "required": True, "description": "清晰的商标图样（JPG格式）"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+                {"name": "拟注册类别及商品/服务项目", "required": True, "description": "尼斯分类选择"},
+                {"name": "商标注册申请表（已填写）", "required": True, "description": "在线填写并提交"},
+            ],
+            "optional": [
+                {"name": "商标说明", "required": False, "description": "商标设计理念、颜色说明等"},
+                {"name": "优先权证明", "required": False, "description": "如有优先权需提供"},
+            ],
+        },
+        "under_review": {
+            "required": [
+                {"name": "商标图样", "required": True, "description": "清晰的商标图样（JPG格式）"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+                {"name": "拟注册类别及商品/服务项目", "required": True, "description": "尼斯分类选择"},
+                {"name": "补正材料（如有）", "required": False, "description": "根据审查意见补充的材料"},
+            ],
+            "optional": [],
+        },
+        "approved": {
+            "required": [
+                {"name": "商标图样", "required": True, "description": "清晰的商标图样（JPG格式）"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+                {"name": "拟注册类别及商品/服务项目", "required": True, "description": "尼斯分类选择"},
+            ],
+            "optional": [],
+        },
+        "registered": {
+            "required": [
+                {"name": "商标注册证", "required": True, "description": "官方颁发的商标注册证"},
+            ],
+            "optional": [],
+        },
+    },
+    "design_patent": {
+        "draft": {
+            "required": [
+                {"name": "外观设计图片或照片", "required": True, "description": "六面视图（主视、后视、左视、右视、俯视、仰视）"},
+                {"name": "产品简要说明", "required": True, "description": "产品名称、用途、设计要点等"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+            ],
+            "optional": [
+                {"name": "色彩保护声明", "required": False, "description": "如需保护色彩需提供"},
+                {"name": "GUI设计说明", "required": False, "description": "图形用户界面设计需提供交互说明"},
+            ],
+        },
+        "submitted": {
+            "required": [
+                {"name": "外观设计图片或照片", "required": True, "description": "六面视图（主视、后视、左视、右视、俯视、仰视）"},
+                {"name": "产品简要说明", "required": True, "description": "产品名称、用途、设计要点等"},
+                {"name": "申请人身份证明", "required": True, "description": "个人身份证/企业营业执照"},
+                {"name": "外观设计专利申请请求书（已填写）", "required": True, "description": "在线填写并提交"},
+            ],
+            "optional": [
+                {"name": "色彩保护声明", "required": False, "description": "如需保护色彩需提供"},
+                {"name": "GUI设计说明", "required": False, "description": "图形用户界面设计需提供交互说明"},
+            ],
+        },
+        "under_review": {
+            "required": [
+                {"name": "外观设计图片或照片", "required": True, "description": "六面视图（主视、后视、左视、右视、俯视、仰视）"},
+                {"name": "产品简要说明", "required": True, "description": "产品名称、用途、设计要点等"},
+                {"name": "补正材料（如有）", "required": False, "description": "根据审查意见补充的材料"},
+            ],
+            "optional": [],
+        },
+        "approved": {
+            "required": [
+                {"name": "外观设计图片或照片", "required": True, "description": "六面视图（主视、后视、左视、右视、俯视、仰视）"},
+                {"name": "产品简要说明", "required": True, "description": "产品名称、用途、设计要点等"},
+            ],
+            "optional": [],
+        },
+        "registered": {
+            "required": [
+                {"name": "外观设计专利证书", "required": True, "description": "官方颁发的专利证书"},
+            ],
+            "optional": [],
+        },
+    },
+}
+
+
+def _get_material_list_for_status(status: str, ip_type: str) -> dict:
+    """根据当前状态和IP类型返回材料清单."""
+    ip_type_key = ip_type or "copyright"
+    materials = _MATERIAL_LISTS.get(ip_type_key, _MATERIAL_LISTS["copyright"])
+    item = materials.get(status, materials.get("draft", {}))
+    return {
+        "status": status,
+        "ip_type": ip_type_key,
+        "required": item.get("required", []),
+        "optional": item.get("optional", []),
+    }
+
+
+def _advance_registration_status(
+    db: Session,
+    record_id: str,
+    new_status: str,
+    note: Optional[str] = None,
+) -> ApiResponse:
+    """推进IP登记状态，包含状态转换校验和材料清单生成."""
+    record = db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="记录不存在")
+
+    current_status = record.status
+    allowed = _VALID_TRANSITIONS.get(current_status, [])
+    if new_status not in allowed:
+        raise HTTPException(
+            status_code=400,
+            detail=f"不允许从「{current_status}」跳转到「{new_status}」，允许状态: {allowed}",
+        )
+
+    old_status = record.status
+    record.status = new_status
+    if note:
+        record.notes = note
+    try:
+        db.commit()
+    except SQLAlchemyError:
+        db.rollback()
+        raise
+
+    material_list = _get_material_list_for_status(new_status, record.ip_type)
+    return ApiResponse(
+        message=f"状态已从「{old_status}」推进至「{new_status}」",
+        data={
+            "record_id": record.id,
+            "old_status": old_status,
+            "new_status": new_status,
+            "material_list": material_list,
+        },
+    )

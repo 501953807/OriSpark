@@ -295,7 +295,6 @@ def push_notification(
     if websocket_push:
         try:
             if notifier:
-                # 使用注入的适配器
                 asyncio.create_task(notifier.notify(
                     user_id=user_id,
                     type=type,
@@ -305,7 +304,6 @@ def push_notification(
                     related_id=related_id,
                 ))
             else:
-                # 回退到全局 manager
                 from app.services.websocket_manager import manager
                 asyncio.create_task(manager.broadcast({
                     "type": "notification",
@@ -319,6 +317,23 @@ def push_notification(
                 }))
         except Exception as e:
             logging.getLogger(__name__).exception("Error pushing notification: %s", str(e))
+
+        try:
+            from app.routers.ws_notifications import notify_realtime
+            asyncio.create_task(notify_realtime(user_id, {
+                "type": "notification",
+                "data": {
+                    "id": notif.id,
+                    "type": notif.type,
+                    "title": notif.title,
+                    "content": notif.content,
+                    "related_module": related_module,
+                    "related_id": related_id,
+                    "created_at": notif.created_at.isoformat() if notif.created_at else None,
+                },
+            }))
+        except Exception:
+            pass
 
     return notif
 
