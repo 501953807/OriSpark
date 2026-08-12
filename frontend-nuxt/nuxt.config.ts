@@ -18,7 +18,7 @@ export default {
     '/works/**': { prerender: true },
   },
 
-  css: ['~/assets/styles/global.css'],
+  css: ['~/assets/styles/global.css', '~/assets/styles/hope-ui-tokens.css', '~/assets/styles/hope-ui.css'],
 
   app: {
     head: {
@@ -38,7 +38,7 @@ export default {
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Satoshi:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap',
         },
       ],
     },

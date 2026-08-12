@@ -1,0 +1,139 @@
+/* Hope UI Design Tokens — 追加至 global.css 的 :root 块中 */
+:root {
+  /* Hope UI Primary */
+  --hope-primary-50: #EEF2FF;
+  --hope-primary-100: #E0E7FF;
+  --hope-primary-200: #C7D2FE;
+  --hope-primary-300: #A5B4FC;
+  --hope-primary-400: #818CF8;
+  --hope-primary-500: #3A57E8;
+  --hope-primary-600: #3047C9;
+  --hope-primary-700: #283CA8;
+  --hope-primary-800: #1F2F87;
+  --hope-primary-900: #1A266B;
+  --hope-primary-950: #0F1640;
+
+  /* Hope UI Secondary */
+  --hope-secondary-50: #F0F9FF;
+  --hope-secondary-100: #E0F2FE;
+  --hope-secondary-200: #BAE6FD;
+  --hope-secondary-300: #7DD3FC;
+  --hope-secondary-400: #38BDF8;
+  --hope-secondary-500: #0EA5E9;
+  --hope-secondary-600: #0284C7;
+  --hope-secondary-700: #0369A1;
+  --hope-secondary-800: #075985;
+  --hope-secondary-900: #0C4A6E;
+
+  /* Hope UI Success */
+  --hope-success-50: #ECFDF5;
+  --hope-success-100: #D1FAE5;
+  --hope-success-200: #A7F3D0;
+  --hope-success-300: #6EE7B7;
+  --hope-success-400: #34D399;
+  --hope-success-500: #10B981;
+  --hope-success-600: #059669;
+  --hope-success-700: #047857;
+  --hope-success-800: #065F46;
+  --hope-success-900: #064E3B;
+
+  /* Hope UI Warning */
+  --hope-warning-50: #FFFBEB;
+  --hope-warning-100: #FEF3C7;
+  --hope-warning-200: #FDE68A;
+  --hope-warning-300: #FCD34D;
+  --hope-warning-400: #FBBF24;
+  --hope-warning-500: #F59E0B;
+  --hope-warning-600: #D97706;
+  --hope-warning-700: #B45309;
+  --hope-warning-800: #92400E;
+  --hope-warning-900: #78350F;
+
+  /* Hope UI Danger */
+  --hope-danger-50: #FEF2F2;
+  --hope-danger-100: #FEE2E2;
+  --hope-danger-200: #FECACA;
+  --hope-danger-300: #FCA5A5;
+  --hope-danger-400: #F87171;
+  --hope-danger-500: #EF4444;
+  --hope-danger-600: #DC2626;
+  --hope-danger-700: #B91C1C;
+  --hope-danger-800: #991B1B;
+  --hope-danger-900: #7F1D1D;
+
+  /* Hope UI Neutral / Gray */
+  --hope-neutral-50: #F9FAFB;
+  --hope-neutral-100: #F8F9FA;
+  --hope-neutral-200: #E9ECEF;
+  --hope-neutral-300: #DEE2E6;
+  --hope-neutral-400: #CED4DA;
+  --hope-neutral-500: #ADB5BD;
+  --hope-neutral-600: #6C757D;
+  --hope-neutral-700: #495057;
+  --hope-neutral-800: #343A40;
+  --hope-neutral-900: #212529;
+  --hope-neutral-950: #0F1640;
+
+  /* Hope UI Background */
+  --hope-bg-default: #FFFFFF;
+  --hope-bg-surface: #F5F6FA;
+  --hope-bg-elevated: #FFFFFF;
+  --hope-bg-muted: #F3F4F6;
+  --hope-bg-boxed: #E9ECEF;
+
+  /* Hope UI Text */
+  --hope-text-primary: #232D42;
+  --hope-text-secondary: #6C757D;
+  --hope-text-muted: #8A92A6;
+  --hope-text-inverse: #FFFFFF;
+  --hope-text-heading: #232D42;
+
+  /* Hope UI Border */
+  --hope-border-default: #E9ECEF;
+  --hope-border-strong: #CED4DA;
+  --hope-border-focus: #3A57E8;
+  --hope-border-light: #F8F9FA;
+
+  /* Hope UI Sidebar */
+  --hope-sidebar-bg: #FFFFFF;
+  --hope-sidebar-text: #6C757D;
+  --hope-sidebar-text-active: #3A57E8;
+  --hope-sidebar-text-muted: #8A92A6;
+  --hope-sidebar-border: #E9ECEF;
+  --hope-sidebar-hover-bg: #F8F9FA;
+  --hope-sidebar-active-bg: #F8F9FA;
+  --hope-sidebar-icon: #8A92A6;
+
+  /* Hope UI Shadows */
+  --hope-shadow-sm: 0 1px 2px rgba(35,45,66,0.05);
+  --hope-shadow-md: 0 4px 6px -1px rgba(35,45,66,0.08), 0 2px 4px -2px rgba(35,45,66,0.05);
+  --hope-shadow-lg: 0 10px 15px -3px rgba(35,45,66,0.08), 0 4px 6px -4px rgba(35,45,66,0.05);
+  --hope-shadow-xl: 0 20px 25px -5px rgba(35,45,66,0.1), 0 8px 10px -6px rgba(35,45,66,0.05);
+  --hope-shadow-sidebar: rgba(17,38,146,0.05) 0px 8px 16px 0px;
+  --hope-shadow-focus: rgba(58,87,232,0.38) 0px 10px 20px -10px;
+  --hope-shadow-card: rgba(0,0,0,0.1) 0px 10px 15px -3px, rgba(0,0,0,0.05) 0px 4px 6px -2px;
+
+  /* Hope UI Radii */
+  --hope-radius-sm: 4px;
+  --hope-radius-md: 8px;
+  --hope-radius-lg: 12px;
+  --hope-radius-xl: 16px;
+  --hope-radius-2xl: 20px;
+  --hope-radius-3xl: 24px;
+
+  /* Hope UI Spacing */
+  --hope-space-unit: 4px;
+
+  /* Hope UI Transitions */
+  --hope-transition-duration: 150ms;
+  --hope-transition-slow: 250ms;
+  --hope-transition-fast: 100ms;
+  --hope-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Hope UI Layout */
+  --hope-sidebar-width: 259px;
+  --hope-sidebar-collapsed-width: 60px;
+  --hope-navbar-height: 66px;
+  --hope-max-width: 1440px;
+  --hope-content-padding: 1.5rem;
+}

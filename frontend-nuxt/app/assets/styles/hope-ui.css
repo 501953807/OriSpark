@@ -1,0 +1,916 @@
+/* ============================================
+   Hope UI 公共组件样式 — 命名空间 .hope-
+   来源：https://templates.iqonic.design/hope-ui/
+   适用于 frontend-nuxt，不改动任何业务逻辑
+   ============================================ */
+
+/* ---------- Buttons ---------- */
+.hope-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--hope-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.hope-btn:disabled,
+.hope-btn.hope-btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary */
+.hope-btn-primary {
+  background-color: var(--hope-primary-500);
+  color: var(--hope-text-inverse);
+  box-shadow: var(--hope-shadow-sm);
+}
+.hope-btn-primary:hover {
+  background-color: var(--hope-primary-600);
+  transform: translateY(-1px);
+  box-shadow: var(--hope-shadow-md);
+}
+.hope-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--hope-shadow-sm);
+}
+.hope-btn-primary:focus-visible {
+  outline: 2px solid var(--hope-primary-500);
+  outline-offset: 2px;
+}
+
+/* Secondary */
+.hope-btn-secondary {
+  background-color: transparent;
+  color: var(--hope-primary-500);
+  border-color: var(--hope-primary-500);
+}
+.hope-btn-secondary:hover {
+  background-color: color-mix(in srgb, var(--hope-primary-500) 8%, transparent);
+}
+.hope-btn-secondary:focus-visible {
+  outline: 2px solid var(--hope-primary-500);
+  outline-offset: 2px;
+}
+
+/* Success */
+.hope-btn-success {
+  background-color: #1AE053;
+  color: #fff;
+}
+.hope-btn-success:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: var(--hope-shadow-md);
+}
+
+/* Warning */
+.hope-btn-warning {
+  background-color: #F59E0B;
+  color: #fff;
+}
+.hope-btn-warning:hover {
+  background-color: #D97706;
+  transform: translateY(-1px);
+  box-shadow: var(--hope-shadow-md);
+}
+
+/* Danger */
+.hope-btn-danger {
+  background-color: #EF4444;
+  color: #fff;
+}
+.hope-btn-danger:hover {
+  background-color: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: var(--hope-shadow-md);
+}
+
+/* Ghost */
+.hope-btn-ghost {
+  background-color: transparent;
+  color: var(--hope-text-primary);
+}
+.hope-btn-ghost:hover {
+  background-color: var(--hope-neutral-100);
+}
+
+/* Soft */
+.hope-btn-soft {
+  background-color: var(--hope-primary-50);
+  color: var(--hope-primary-600);
+}
+.hope-btn-soft:hover {
+  background-color: var(--hope-primary-100);
+}
+
+/* Outline */
+.hope-btn-outline {
+  background-color: transparent;
+  border-color: var(--hope-border-default);
+  color: var(--hope-text-primary);
+}
+.hope-btn-outline:hover {
+  border-color: var(--hope-primary-500);
+  color: var(--hope-primary-500);
+  background-color: var(--hope-primary-50);
+}
+
+/* Icon button */
+.hope-btn-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: var(--hope-radius-md);
+}
+
+/* Sizes */
+.hope-btn-xs  { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+.hope-btn-sm  { padding: 0.25rem 0.75rem; font-size: 0.75rem; }
+.hope-btn-lg  { padding: 0.75rem 1.5rem; font-size: 1rem; }
+.hope-btn-full { width: 100%; }
+
+/* ---------- Badge ---------- */
+.hope-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+.hope-badge-primary   { background: var(--hope-primary-500); color: #fff; }
+.hope-badge-success   { background: #1AE053; color: #fff; }
+.hope-badge-warning   { background: #F59E0B; color: #fff; }
+.hope-badge-danger    { background: #EF4444; color: #fff; }
+.hope-badge-soft-primary { background: var(--hope-primary-50); color: #283CA8; }
+.hope-badge-soft-success { background: var(--hope-success-50); color: #047857; }
+.hope-badge-soft-warning { background: var(--hope-warning-50); color: #B45309; }
+.hope-badge-soft-danger  { background: var(--hope-danger-50);  color: #B91C1C; }
+.hope-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  padding: 0;
+  display: inline-block;
+}
+.hope-badge-dot-primary   { background: var(--hope-primary-500); }
+.hope-badge-dot-success   { background: #1AE053; }
+.hope-badge-dot-danger    { background: #EF4444; }
+
+/* ---------- Avatar ---------- */
+.hope-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #fff;
+  background: var(--hope-primary-500);
+}
+.hope-avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+.hope-avatar-sm { width: 32px; height: 32px; font-size: 12px; }
+.hope-avatar-md { width: 40px; height: 40px; font-size: 14px; }
+.hope-avatar-lg { width: 48px; height: 48px; font-size: 16px; }
+.hope-avatar-xl { width: 64px; height: 64px; font-size: 20px; }
+.hope-avatar-group {
+  display: flex;
+}
+.hope-avatar-group .hope-avatar {
+  margin-left: -8px;
+  border: 2px solid #fff;
+}
+.hope-avatar-group .hope-avatar:first-child { margin-left: 0; }
+
+/* Avatar status indicator */
+.hope-avatar-status { position: relative; }
+.hope-avatar-status::after {
+  content: "";
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.hope-avatar-status.hope-avatar-online::after  { background: #1AE053; }
+.hope-avatar-status.hope-avatar-offline::after { background: #9CA3AF; }
+.hope-avatar-status.hope-avatar-busy::after    { background: #EF4444; }
+
+/* ---------- Input ---------- */
+.hope-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #1F2937;
+  background-color: #fff;
+  border: 1px solid var(--hope-border-default);
+  border-radius: var(--hope-radius-md);
+  transition: border-color var(--hope-transition-duration), box-shadow var(--hope-transition-duration);
+  outline: none;
+}
+.hope-input:hover { border-color: var(--hope-neutral-400); }
+.hope-input:focus {
+  border-color: var(--hope-primary-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hope-primary-500) 30%, transparent);
+}
+.hope-input::placeholder { color: var(--hope-neutral-400); }
+.hope-input-error { border-color: #EF4444; }
+.hope-input-error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.2); }
+.hope-input:disabled {
+  background-color: var(--hope-bg-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.hope-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.hope-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+.hope-input-hint {
+  font-size: 0.75rem;
+  color: #6B7280;
+}
+
+/* ---------- Card ---------- */
+.hope-card {
+  background-color: var(--hope-bg-default);
+  border: 1px solid var(--hope-bg-surface);
+  border-radius: var(--hope-radius-lg);
+  box-shadow: var(--hope-shadow-md);
+  overflow: hidden;
+  transition: box-shadow var(--hope-transition-duration) var(--hope-transition-easing),
+              transform var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-card:hover {
+  box-shadow: var(--hope-shadow-xl);
+  transform: translateY(-2px);
+}
+.hope-card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--hope-bg-surface);
+  font-weight: 600;
+  font-size: 1rem;
+}
+.hope-card-body { padding: 1.25rem; }
+.hope-card-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--hope-bg-surface);
+  background-color: var(--hope-bg-surface);
+}
+
+/* ---------- Alert ---------- */
+.hope-alert {
+  padding: 12px 16px;
+  border-radius: var(--hope-radius-md);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+}
+.hope-alert-primary   { background: var(--hope-primary-50); color: #283CA8; border-color: var(--hope-primary-200); }
+.hope-alert-success   { background: var(--hope-success-50); color: #047857; border-color: var(--hope-success-200); }
+.hope-alert-warning   { background: var(--hope-warning-50); color: #B45309; border-color: var(--hope-warning-200); }
+.hope-alert-danger    { background: var(--hope-danger-50);  color: #B91C1C; border-color: var(--hope-danger-200); }
+.hope-alert-info      { background: var(--hope-secondary-50); color: #0369A1; border-color: var(--hope-secondary-200); }
+.hope-alert-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  font-size: 18px;
+  margin-left: auto;
+}
+.hope-alert-close:hover { opacity: 1; }
+
+/* ---------- Modal ---------- */
+.hope-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--hope-transition-slow), visibility var(--hope-transition-slow);
+}
+.hope-modal-overlay.hope-modal-open {
+  opacity: 1;
+  visibility: visible;
+}
+.hope-modal {
+  background-color: #fff;
+  border-radius: var(--hope-radius-lg);
+  box-shadow: var(--hope-shadow-lg);
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95) translateY(10px);
+  transition: transform var(--hope-transition-slow) var(--hope-transition-easing);
+}
+.hope-modal-overlay.hope-modal-open .hope-modal {
+  transform: scale(1) translateY(0);
+}
+.hope-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--hope-bg-surface);
+}
+.hope-modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+.hope-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: #6B7280;
+  border-radius: var(--hope-radius-sm);
+  line-height: 1;
+}
+.hope-modal-close:hover {
+  background-color: var(--hope-bg-surface);
+  color: #111827;
+}
+.hope-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.hope-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--hope-bg-surface);
+}
+
+/* ---------- Dropdown ---------- */
+.hope-dropdown { position: relative; display: inline-block; }
+.hope-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  padding: 4px 0;
+  background: #fff;
+  border: 1px solid var(--hope-border-default);
+  border-radius: var(--hope-radius-md);
+  box-shadow: var(--hope-shadow-md);
+  z-index: 1000;
+  display: none;
+}
+.hope-dropdown.hope-dropdown-open .hope-dropdown-menu { display: block; }
+.hope-dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--hope-text-secondary);
+  text-decoration: none;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-dropdown-item:hover {
+  background: var(--hope-neutral-100);
+  color: var(--hope-primary-500);
+}
+.hope-dropdown-divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--hope-border-default);
+}
+
+/* ---------- Icon ---------- */
+.hope-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.hope-icon-xs { width: 14px; height: 14px; }
+.hope-icon-sm { width: 16px; height: 16px; }
+.hope-icon-md { width: 20px; height: 20px; }
+.hope-icon-lg { width: 24px; height: 24px; }
+.hope-icon-xl { width: 32px; height: 32px; }
+
+.hope-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--hope-radius-md);
+  color: var(--hope-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-icon-btn:hover {
+  background: var(--hope-neutral-100);
+  color: var(--hope-primary-500);
+}
+.hope-icon-primary { color: var(--hope-primary-500); }
+.hope-icon-success { color: #1AE053; }
+.hope-icon-warning { color: #F59E0B; }
+.hope-icon-danger  { color: #EF4444; }
+
+/* ---------- Progress ---------- */
+.hope-progress {
+  height: 8px;
+  background: #E5E7EB;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.hope-progress-bar {
+  height: 100%;
+  background: var(--hope-primary-500);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+.hope-progress-bar-success { background: #1AE053; }
+.hope-progress-bar-warning { background: #F59E0B; }
+.hope-progress-bar-danger  { background: #EF4444; }
+.hope-progress-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(var(--hope-primary-500) var(--progress, 0%), #E5E7EB 0);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.hope-progress-circle::before {
+  content: "";
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+}
+
+/* ---------- Tabs ---------- */
+.hope-tabs { display: flex; border-bottom: 1px solid var(--hope-border-default); gap: 0; }
+.hope-tab-item {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--hope-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-tab-item:hover { color: var(--hope-primary-500); }
+.hope-tab-item.hope-tab-active { color: var(--hope-primary-500); border-bottom-color: var(--hope-primary-500); }
+
+.hope-tabs-pills {
+  display: inline-flex;
+  background: var(--hope-neutral-100);
+  border-radius: 9999px;
+  padding: 4px;
+  gap: 4px;
+}
+.hope-tabs-pills .hope-tab-item {
+  padding: 6px 16px;
+  border-radius: 9999px;
+  border-bottom: none;
+}
+.hope-tabs-pills .hope-tab-item.hope-tab-active {
+  background: #fff;
+  color: var(--hope-primary-500);
+  box-shadow: var(--hope-shadow-sm);
+}
+
+/* ---------- Table ---------- */
+.hope-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.hope-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--hope-text-muted);
+  background: var(--hope-bg-muted);
+  border-bottom: 1px solid var(--hope-border-default);
+  white-space: nowrap;
+}
+.hope-table tbody tr {
+  transition: background var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-table tbody tr:hover { background: var(--hope-neutral-100); }
+.hope-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hope-border-default);
+  color: var(--hope-text-primary);
+  vertical-align: middle;
+}
+.hope-table tbody tr:last-child td { border-bottom: none; }
+.hope-table-plain tbody td,
+.hope-table-plain thead th { border: none; }
+.hope-table tbody tr.hope-table-selected { background: var(--hope-primary-50); }
+
+/* ---------- Timeline ---------- */
+.hope-timeline {
+  position: relative;
+  padding: 0;
+  list-style: none;
+}
+.hope-timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--hope-border-default);
+}
+.hope-timeline-item {
+  position: relative;
+  padding-left: 48px;
+  padding-bottom: 24px;
+}
+.hope-timeline-dot {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--hope-primary-500);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--hope-primary-200);
+}
+.hope-timeline-dot-success { background: #1AE053; box-shadow: 0 0 0 2px #A7F3D0; }
+.hope-timeline-dot-warning { background: #F59E0B; box-shadow: 0 0 0 2px #FDE68A; }
+.hope-timeline-dot-danger  { background: #EF4444; box-shadow: 0 0 0 2px #FECACA; }
+.hope-timeline-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hope-text-primary);
+  margin-bottom: 4px;
+}
+.hope-timeline-text { font-size: 13px; color: var(--hope-text-muted); }
+.hope-timeline-time { font-size: 12px; color: var(--hope-text-muted); margin-top: 4px; }
+
+/* ---------- Breadcrumb ---------- */
+.hope-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 14px;
+}
+.hope-breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hope-breadcrumb-item a {
+  color: var(--hope-text-muted);
+  text-decoration: none;
+  transition: color 150ms;
+}
+.hope-breadcrumb-item a:hover { color: var(--hope-primary-500); }
+.hope-breadcrumb-item.hope-breadcrumb-active { color: var(--hope-text-primary); font-weight: 500; }
+.hope-breadcrumb-separator { color: var(--hope-text-muted); }
+
+/* ---------- Pagination ---------- */
+.hope-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hope-pagination-item a,
+.hope-pagination-item span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 14px;
+  border-radius: var(--hope-radius-md);
+  color: var(--hope-text-secondary);
+  text-decoration: none;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+}
+.hope-pagination-item a:hover { background: var(--hope-neutral-100); color: var(--hope-primary-500); }
+.hope-pagination-item.hope-pagination-active span { background: var(--hope-primary-500); color: #fff; }
+.hope-pagination-item.hope-pagination-disabled a { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Stat Card ---------- */
+.hope-stat-card {
+  background: #fff;
+  border-radius: var(--hope-radius-lg);
+  padding: 1.5rem;
+  border: 1px solid var(--hope-border-default);
+  transition: all var(--hope-transition-slow) var(--hope-transition-easing);
+}
+.hope-stat-card:hover {
+  box-shadow: var(--hope-shadow-lg);
+  transform: translateY(-2px);
+}
+.hope-stat-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--hope-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.hope-stat-card-icon-primary { background: var(--hope-primary-50); color: var(--hope-primary-500); }
+.hope-stat-card-icon-success { background: var(--hope-success-50); color: #1AE053; }
+.hope-stat-card-icon-warning { background: var(--hope-warning-50); color: #F59E0B; }
+.hope-stat-card-icon-danger  { background: var(--hope-danger-50);  color: #EF4444; }
+.hope-stat-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--hope-text-primary);
+  margin-bottom: 4px;
+}
+.hope-stat-card-label { font-size: 13px; color: var(--hope-text-muted); }
+.hope-stat-card-trend { font-size: 12px; font-weight: 500; margin-top: 8px; }
+.hope-stat-card-trend-up   { color: #1AE053; }
+.hope-stat-card-trend-down { color: #EF4444; }
+
+/* ---------- Navbar (top navigation bar) ---------- */
+.hope-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: var(--hope-navbar-height);
+  background-color: #fff;
+  border-bottom: 1px solid var(--hope-border-default);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.hope-navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--hope-primary-500);
+  text-decoration: none;
+}
+.hope-navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hope-navbar-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--hope-text-muted);
+  text-decoration: none;
+  border-radius: var(--hope-radius-md);
+  transition: color var(--hope-transition-duration), background-color var(--hope-transition-duration);
+}
+.hope-navbar-link:hover {
+  color: var(--hope-text-primary);
+  background-color: var(--hope-neutral-100);
+}
+.hope-navbar-link.hope-navbar-active {
+  color: var(--hope-primary-500);
+  background-color: color-mix(in srgb, var(--hope-primary-500) 10%, transparent);
+}
+.hope-navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+@media (max-width: 768px) {
+  .hope-navbar-toggle { display: flex; }
+  .hope-navbar-nav  { display: none; }
+}
+
+/* ---------- Sidebar ---------- */
+.hope-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--hope-sidebar-width);
+  background: #fff;
+  border-right: 1px solid var(--hope-border-default);
+  box-shadow: var(--hope-shadow-sidebar);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  transition: width var(--hope-transition-slow) var(--hope-transition-easing);
+  overflow: hidden;
+}
+.hope-sidebar.hope-sidebar-collapsed {
+  width: var(--hope-sidebar-collapsed-width);
+}
+.hope-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  min-height: var(--hope-navbar-height);
+  border-bottom: 1px solid var(--hope-border-default);
+}
+.hope-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.hope-sidebar-logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--hope-primary-500);
+  transition: opacity var(--hope-transition-slow);
+}
+.hope-sidebar-collapsed .hope-sidebar-logo-text { opacity: 0; width: 0; }
+.hope-sidebar-toggle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--hope-primary-500);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  flex-shrink: 0;
+  transition: transform var(--hope-transition-slow);
+}
+.hope-sidebar-collapsed .hope-sidebar-toggle { transform: rotate(180deg); }
+.hope-sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+.hope-sidebar-nav { list-style: none; margin: 0; padding: 0; }
+.hope-sidebar-nav-item { margin: 2px 0.5rem; }
+.hope-sidebar-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--hope-radius-md);
+  color: var(--hope-sidebar-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--hope-transition-duration) var(--hope-transition-easing);
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.hope-sidebar-nav-link:hover {
+  background: var(--hope-sidebar-hover-bg);
+  color: var(--hope-text-primary);
+}
+.hope-sidebar-nav-link.hope-sidebar-nav-active {
+  background: var(--hope-sidebar-active-bg);
+  color: var(--hope-sidebar-text-active);
+}
+.hope-sidebar-nav-link .hope-icon { flex-shrink: 0; }
+.hope-sidebar-nav-link-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity var(--hope-transition-slow);
+}
+.hope-sidebar-collapsed .hope-sidebar-nav-link-text { opacity: 0; width: 0; overflow: hidden; }
+.hope-sidebar-nav-link-arrow {
+  margin-left: auto;
+  transition: transform var(--hope-transition-duration);
+  flex-shrink: 0;
+}
+.hope-sidebar-collapsed .hope-sidebar-nav-link-arrow { display: none; }
+.hope-sidebar-nav-sub {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0 0 2rem;
+  overflow: hidden;
+  transition: max-height var(--hope-transition-slow);
+}
+.hope-sidebar-nav-sub .hope-sidebar-nav-link { font-size: 0.8125rem; padding: 0.5rem 0.75rem; }
+.hope-sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--hope-border-default);
+  flex-shrink: 0;
+}
+.hope-sidebar-collapsed .hope-sidebar-footer { padding: 0.5rem; }
+@media (max-width: 1023px) {
+  .hope-sidebar { transform: translateX(-100%); }
+  .hope-sidebar.hope-sidebar-mobile-open { transform: translateX(0); }
+}
+
+/* ---------- Page wrapper for boxed layout ---------- */
+.hope-page-wrapper {
+  min-height: 100vh;
+  background: var(--hope-bg-surface);
+}
+.hope-content-area {
+  margin-left: var(--hope-sidebar-width);
+  padding: var(--hope-content-padding);
+  transition: margin-left var(--hope-transition-slow) var(--hope-transition-easing);
+  max-width: var(--hope-max-width);
+}
+.hope-sidebar-collapsed ~ .hope-content-area,
+.hope-page-wrapper.hope-with-collapsed-sidebar .hope-content-area {
+  margin-left: var(--hope-sidebar-collapsed-width);
+}
+.hope-page-inner {
+  max-width: var(--hope-max-width);
+  margin: 0 auto;
+}
+@media (max-width: 1023px) {
+  .hope-content-area { margin-left: 0; }
+}
+
+/* ---------- Helper: text colors ---------- */
+.hope-text-primary   { color: var(--hope-text-primary); }
+.hope-text-secondary { color: var(--hope-text-secondary); }
+.hope-text-muted     { color: var(--hope-text-muted); }
+.hope-text-inverse   { color: var(--hope-text-inverse); }
+.hope-text-heading   { color: var(--hope-text-heading); }
+.hope-text-primary   { color: var(--hope-primary-500); }
+.hope-text-success   { color: #1AE053; }
+.hope-text-warning   { color: #F59E0B; }
+.hope-text-danger    { color: #EF4444; }
+
+/* ---------- Helper: bg colors ---------- */
+.hope-bg-primary   { background: var(--hope-primary-500); }
+.hope-bg-success   { background: #1AE053; }
+.hope-bg-warning   { background: #F59E0B; }
+.hope-bg-danger    { background: #EF4444; }
+.hope-bg-surface   { background: var(--hope-bg-surface); }
+.hope-bg-muted     { background: var(--hope-bg-muted); }
+
+/* ---------- Helper: border ---------- */
+.hope-border       { border: 1px solid var(--hope-border-default); }
+.hope-border-top   { border-top: 1px solid var(--hope-border-default); }
+.hope-border-bottom { border-bottom: 1px solid var(--hope-border-default); }
+.hope-rounded-md   { border-radius: var(--hope-radius-md); }
+.hope-rounded-lg   { border-radius: var(--hope-radius-lg); }
+.hope-rounded-xl   { border-radius: var(--hope-radius-xl); }
+
+/* ---------- Scrollbar ---------- */
+.hope-scroll-theme {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hope-neutral-300) transparent;
+}
+.hope-scroll-theme::-webkit-scrollbar { width: 6px; }
+.hope-scroll-theme::-webkit-scrollbar-track { background: transparent; }
+.hope-scroll-theme::-webkit-scrollbar-thumb { background: var(--hope-neutral-300); border-radius: 3px; }
