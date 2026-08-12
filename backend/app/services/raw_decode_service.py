@@ -69,6 +69,7 @@ class RAWDecodeResult:
     bit_depth: int = 14
     color_space: str = "sRGB"
     preview_url: Optional[str] = None
+    file_path: Optional[str] = None
     metadata: dict = None  # type: ignore
     error: Optional[str] = None
 
@@ -218,6 +219,41 @@ class RAWDecodeService:
         except Exception as exc:
             logger.debug("Thumbnail generation failed: %s", exc)
             raise
+
+    def batch_parse(self, file_paths: list[str]) -> list[RAWDecodeResult]:
+        """批量解析多个 RAW 文件."""
+        results = []
+        for fp in file_paths:
+            try:
+                with open(fp, "rb") as f:
+                    data = f.read()
+                result = self.decode(data)
+                result.file_path = fp  # type: ignore
+                results.append(result)
+            except Exception as exc:
+                results.append(RAWDecodeResult(success=False, error=str(exc), file_path=fp))  # type: ignore
+        return results
+
+    def export_csv(self, results: list[RAWDecodeResult], output_path: str) -> str:
+        """导出解析结果为 CSV 文件."""
+        import csv
+        with open(output_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["file_path", "success", "camera_make", "camera_model",
+                             "width", "height", "bit_depth", "color_space", "error"])
+            for r in results:
+                writer.writerow([
+                    getattr(r, "file_path", ""),
+                    r.success,
+                    r.camera_make or "",
+                    r.camera_model or "",
+                    r.width,
+                    r.height,
+                    r.bit_depth,
+                    r.color_space,
+                    r.error or "",
+                ])
+        return output_path
 
 
 # ============================================================================

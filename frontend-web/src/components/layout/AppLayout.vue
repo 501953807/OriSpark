@@ -25,9 +25,14 @@
       <AppTopbar :is-collapsed="isCollapsed" @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
-        <router-view v-slot="{ Component }">
-            <component :is="Component" />
-          </router-view>
+        <router-view v-slot="{ Component, route }">
+          <Transition
+            :name="transitionName"
+            mode="out-in"
+          >
+            <component :is="Component" :key="route.path" />
+          </Transition>
+        </router-view>
       </main>
     </div>
 
@@ -171,6 +176,9 @@
       </div>
     </div>
 
+    <!-- FPS Monitor -->
+    <FPSMonitor />
+
     <!-- P3: Floating help center -->
     <button
       class="help-center-btn"
@@ -224,16 +232,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import DynamicSidebar from './DynamicSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
+import FPSMonitor from '@/components/FPSMonitor.vue'
 import { useAppStore } from '@/stores/useAppStore'
 import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
+import { useMotionStore } from '@/stores/useMotionStore'
 import { worksApi } from '@/api/works'
 
 const appStore = useAppStore()
 const typeStore = useCreatorTypeStore()
+const motionStore = useMotionStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const mobileMenuOpen = ref(false)
 const showHelp = ref(false)
@@ -246,6 +257,18 @@ const uploadingFiles = ref<any[]>([])
 const uploading = ref(false)
 const batchFiles = ref<any[]>([])
 const batchUploading = ref(false)
+
+const transitionName = computed(() => {
+  if (motionStore.effectiveLevel >= 1 && !motionStore.prefersReducedMotion) {
+    return 'page-fade'
+  }
+  return ''
+})
+
+onMounted(() => {
+  // Ensure motion store is active and watching FPS
+  void motionStore.effectiveLevel
+})
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return bytes + ' B'
@@ -359,9 +382,16 @@ function retryUpload(index: number) {
   transition: margin-left 0.3s ease;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s ease;
 }
 .fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.page-fade-enter-active, .page-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.page-fade-enter-from, .page-fade-leave-to {
   opacity: 0;
 }
 

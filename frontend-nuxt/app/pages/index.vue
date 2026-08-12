@@ -1,12 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
 const auth = useAuthStore()
 const stats = ref({ totalWorks: 0, totalContracts: 0, activeCreators: 0, avgSplit: 0 })
+const targetStats = ref({ totalWorks: 0, totalContracts: 0, activeCreators: 0, avgSplit: 0 })
+const displayStats = ref({ totalWorks: 0, totalContracts: 0, activeCreators: 0, avgSplit: 0 })
 const featuredWorks = ref<any[]>([])
 const featuredContracts = ref<any[]>([])
 const heroError = ref<string | null>(null)
+let rollingTimer: ReturnType<typeof setTimeout> | null = null
+
+function animateNumber(current: number, target: number, duration: number = 800): number {
+  if (target === 0) return 0
+  const start = performance.now()
+  const step = (now: number) => {
+    const elapsed = now - start
+    const progress = Math.min(elapsed / duration, 1)
+    // easeOutExpo
+    const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
+    displayStats.value = {
+      totalWorks: Math.round(eased * targetStats.value.totalWorks),
+      totalContracts: Math.round(eased * targetStats.value.totalContracts),
+      activeCreators: Math.round(eased * targetStats.value.activeCreators),
+      avgSplit: Math.round(eased * targetStats.value.avgSplit),
+    }
+    if (progress < 1) {
+      rollingTimer = requestAnimationFrame(step)
+    }
+  }
+  rollingTimer = requestAnimationFrame(step)
+  return 0
+}
+
+function stopRolling() {
+  if (rollingTimer) { cancelAnimationFrame(rollingTimer); rollingTimer = null }
+}
 
 onMounted(async () => {
   try {
@@ -16,14 +45,16 @@ onMounted(async () => {
       $fetch(`${apiBase}/public/works?featured=true&limit=6`),
       $fetch(`${apiBase}/public/contracts?recent=true&limit=5`),
     ])
-    
+
     if (statsRes.status === 'fulfilled') {
-      stats.value = {
+      const raw = {
         totalWorks: statsRes.value?.total_works || 0,
         totalContracts: statsRes.value?.total_contracts || 0,
         activeCreators: statsRes.value?.active_creators || 0,
         avgSplit: statsRes.value?.avg_split_rate || 0,
       }
+      targetStats.value = raw
+      animateNumber(0, raw.totalWorks)
     }
     if (worksRes.status === 'fulfilled' && Array.isArray(worksRes.value)) {
       featuredWorks.value = worksRes.value.slice(0, 6)
@@ -41,6 +72,10 @@ onMounted(() => {
   if (auth.isLoggedIn) {
     navigateTo('/market')
   }
+})
+
+onUnmounted(() => {
+  stopRolling()
 })
 </script>
 
@@ -66,19 +101,19 @@ onMounted(() => {
       <div class="hero-visual">
         <div class="hero-stats">
           <div class="stat-card">
-            <div class="stat-value">{{ stats.totalWorks }}</div>
+            <div class="stat-value">{{ displayStats.totalWorks }}</div>
             <div class="stat-label">作品总数</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">{{ stats.totalContracts }}</div>
+            <div class="stat-value">{{ displayStats.totalContracts }}</div>
             <div class="stat-label">活跃合约</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">{{ stats.activeCreators }}</div>
+            <div class="stat-value">{{ displayStats.activeCreators }}</div>
             <div class="stat-label">创作者</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">{{ stats.avgSplit }}%</div>
+            <div class="stat-value">{{ displayStats.avgSplit }}%</div>
             <div class="stat-label">平均分润</div>
           </div>
         </div>

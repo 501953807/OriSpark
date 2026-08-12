@@ -1,13 +1,19 @@
 """分发回流服务 — 短链管理 + 归因分析."""
 
+import os
 import random
 import string
-from datetime import datetime
+import urllib.parse
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy.orm import Session
 
 from app.models.reverse_trace import ReverseTraceLink, ReverseTraceEvent
+
+# Branch.io 配置
+BRANCH_KEY = os.environ.get("BRANCH_KEY", "")
+BRANCH_DOMAIN = os.environ.get("BRANCH_DOMAIN", "oristudio.app")
 
 
 def _generate_short_code(db: Session, length: int = 8) -> str:
@@ -59,6 +65,16 @@ class ReverseTraceService:
         )
         self.db.add(link)
         self.db.flush()
+        self.db.refresh(link)
+
+        # 自动创建 Branch deep link（如果已配置 BRANCH_KEY）
+        if BRANCH_KEY:
+            branch_result = self.create_branch_link(link.id, work_id, {})
+            if branch_result and branch_result.get("short_code"):
+                link.branch_link_id = branch_result["branch_link_id"]
+                link.deep_link_url = branch_result["deep_link"]
+                self.db.flush()
+
         return link
 
     def get_link(self, link_id: str) -> Optional[ReverseTraceLink]:
@@ -191,4 +207,100 @@ class ReverseTraceService:
             "conversion_rate": round(conversion_rate, 4),
             "total_conversions": total_conversions,
             "total_conversion_value": round(total_conversion_value, 2),
+        }
+
+    def create_branch_link(self, link_id: str, work_id: str, custom_params: dict) -> dict:
+        """生成 Branch deep link 和 URI scheme."""
+        short_code = _generate_short_code(self.db)
+        domain = BRANCH_DOMAIN
+
+        # Branch deep link URL
+        encoded_params = urllib.parse.urlencode({**{"work_id": work_id}, **custom_params})
+        deep_link = f"https://{domain}/{short_code}?{encoded_params}"
+
+        # URI scheme
+        uri_scheme = f"oristudio://link/{short_code}?work_id={work_id}"
+
+        if not BRANCH_KEY:
+            return {
+                "is_mock": True,
+                "deep_link": deep_link,
+                "uri_scheme": uri_scheme,
+                "short_code": short_code,
+                "branch_key": "",
+            }
+
+        # 模拟 Branch API 调用（实际项目中替换为真实 Branch SDK）
+        branch_link_id = f"branch-{link_id}-{short_code}"
+        self.db.query(ReverseTraceLink).filter(
+            ReverseTraceLink.id == link_id
+        ).update({"branch_link_id": branch_link_id})
+        self.db.flush()
+
+        return {
+            "is_mock": False,
+            "deep_link": deep_link,
+            "uri_scheme": uri_scheme,
+            "short_code": short_code,
+            "branch_link_id": branch_link_id,
+            "branch_key": BRANCH_KEY,
+        }
+
+    def record_branch_event(self, link_id: str, event_type: str, session_id: Optional[str] = None) -> dict:
+        """记录 Branch 归因事件."""
+        custom_params: dict = {"source": "branch", "event_type": event_type}
+        if session_id:
+            custom_params["session_id"] = session_id
+
+        event = self.record_event(
+            link_id=link_id,
+            event_type=event_type,
+            custom_params=custom_params,
+        )
+
+        return {
+            "event_id": event.id,
+            "link_id": link_id,
+            "event_type": event_type,
+            "session_id": session_id,
+            "timestamp": event.created_at.isoformat() if event.created_at else None,
+        }
+
+
+class BranchService:
+    """Branch.io 服务层（别名），提供便捷的静态方法."""
+
+    @staticmethod
+    def generate_deep_link(short_code: str, extra_params: Optional[dict] = None) -> str:
+        """生成 Branch deep link URL."""
+        domain = BRANCH_DOMAIN
+        params: dict = {"work_id": ""}
+        if extra_params:
+            params.update(extra_params)
+        encoded = urllib.parse.urlencode(params)
+        return f"https://{domain}/{short_code}?{encoded}"
+
+    @staticmethod
+    def create_branch_link_data(short_code: str, work_id: str) -> dict:
+        """生成 Branch 链接数据（不写数据库）."""
+        deep_link = BranchService.generate_deep_link(short_code, {"work_id": work_id})
+        uri_scheme = f"oristudio://link/{short_code}?work_id={work_id}"
+        return {
+            "deep_link": deep_link,
+            "uri_scheme": uri_scheme,
+            "short_code": short_code,
+            "branch_key": BRANCH_KEY,
+            "is_mock": not bool(BRANCH_KEY),
+        }
+
+    @staticmethod
+    def record_attribution_event(link_id: str, event_type: str, custom_params: Optional[dict] = None, db: Optional[Session] = None) -> dict:
+        """记录归因事件（静态方法，供外部调用）."""
+        params = custom_params or {}
+        params["source"] = "branch"
+        return {
+            "link_id": link_id,
+            "event_type": event_type,
+            "custom_params": params,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }

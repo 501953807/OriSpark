@@ -8,7 +8,7 @@
 from datetime import datetime, timezone
 from math import radians, sin, cos, sqrt, atan2
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from pydantic import Field
 from sqlalchemy.orm import Session
 
@@ -484,3 +484,62 @@ def delete_fine_art_print(fap_id: str, db: Session = Depends(get_db)):
     svc = PhotographerManagerService(db)
     svc.delete_fine_art_print(fap_id)
     return ApiResponse(message="艺术微喷配置已删除")
+
+
+# ============================================================================
+# RAW Batch Parse (v2)
+# ============================================================================
+
+@router.post("/photographer/raw/parse", response_model=ApiResponse[list[dict]], dependencies=[Depends(require_auth)])
+async def batch_parse_raw(files: list[UploadFile] = File(...), db: Session = Depends(get_db)):
+    """批量解析 RAW 文件."""
+    from app.services.raw_decode_service import create_raw_decode_service
+    import tempfile, os
+
+    svc = create_raw_decode_service()
+    results = []
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        paths = []
+        for f in files:
+            ext = os.path.splitext(f.filename or "")[1].lower().lstrip(".")
+            if not svc.is_supported(ext):
+                results.append({"success": False, "error": f"不支持的格式: {ext}", "filename": f.filename})
+                continue
+            fp = os.path.join(tmpdir, f.filename or "raw")
+            content = await f.read()
+            with open(fp, "wb") as out:
+                out.write(content)
+            paths.append(fp)
+
+        batch_results = svc.batch_parse(paths)
+        for br in batch_results:
+            results.append({
+                "success": br.success,
+                "filename": getattr(br, "file_path", ""),
+                "camera_make": br.camera_make,
+                "camera_model": br.camera_model,
+                "width": br.width,
+                "height": br.height,
+                "bit_depth": br.bit_depth,
+                "error": br.error,
+            })
+
+    return ApiResponse(data=results, message=f"解析完成: {len([r for r in results if r['success']])}/{len(results)} 成功")
+
+
+@router.get("/photographer/raw/export-csv", response_model=ApiResponse[dict], dependencies=[Depends(require_auth)])
+def export_raw_csv(results_json: str = Query(..., description="JSON 格式的解析结果列表")):
+    """导出 RAW 解析结果为 CSV."""
+    import json, csv, io
+
+    results_data = json.loads(results_json)
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["file_path", "success", "camera_make", "camera_model", "width", "height", "bit_depth", "error"])
+    for r in results_data:
+        writer.writerow([r.get("file_path", ""), r.get("success", False), r.get("camera_make", ""),
+                         r.get("camera_model", ""), r.get("width", 0), r.get("height", 0),
+                         r.get("bit_depth", 0), r.get("error", "")])
+
+    return ApiResponse(data={"csv_content": output.getvalue(), "record_count": len(results_data)}, message="CSV 导出成功")

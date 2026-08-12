@@ -110,6 +110,46 @@
           <span class="status-badge" :class="'status-' + selectedContract.status">{{ statusLabel(selectedContract.status) }}</span>
         </div>
 
+        <!-- 合约状态进度条 -->
+        <div class="contract-progress">
+          <div class="progress-label">合约状态推进</div>
+          <div class="progress-track">
+            <div
+              v-for="(step, idx) in contractStatusSteps"
+              :key="step.key"
+              class="progress-step"
+              :class="{ 'step-done': getContractProgressIndex(selectedContract.status) >= idx, 'step-current': getContractProgressIndex(selectedContract.status) === idx }"
+            >
+              <div class="step-dot">{{ idx + 1 }}</div>
+              <div class="step-label">{{ step.label }}</div>
+            </div>
+          </div>
+          <div
+            class="progress-connected"
+            :style="{ width: `${(getContractProgressIndex(selectedContract.status) / (contractStatusSteps.length - 1)) * 100}%` }"
+          ></div>
+        </div>
+
+        <!-- 分润占比条 -->
+        <div class="profit-bar-section">
+          <div class="profit-bar-label">分润结构</div>
+          <div class="profit-bar-track">
+            <div class="profit-bar-seg creator"
+              :style="{ width: `${parseFloat(selectedContract.split_ratio || '70').split('/')[0].trim()}%` }">
+              <span class="seg-label">创作者</span>
+            </div>
+            <div class="profit-bar-seg platform">
+              <span class="seg-label">平台</span>
+            </div>
+          </div>
+          <div class="profit-bar-legend">
+            <span class="legend-dot creator"></span>
+            <span class="legend-text">创作者 {{ parseFloat(selectedContract.split_ratio || '70').split('/')[0].trim() }}%</span>
+            <span class="legend-dot platform"></span>
+            <span class="legend-text">平台 {{ parseFloat(selectedContract.split_ratio || '70').split('/')[1]?.trim() || '3%' }}</span>
+          </div>
+        </div>
+
         <!-- 作品预览 -->
         <div class="detail-preview">
           <div class="preview-img" v-if="selectedContract.thumbnail">
@@ -248,7 +288,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { Contract, Work, DashboardStats } from '~/types/public'
 import { fetchPublicContracts, fetchDashboardStats } from '~/composables/usePublicApi'
 import { useAuthStore } from '~/stores/auth'
@@ -266,6 +306,24 @@ const filterAmount = ref('')
 const filterStatus = ref('')
 const subscribeQty = ref(1)
 const isFavorited = ref(false)
+let refreshTimer: ReturnType<typeof setInterval> | null = null
+
+// 合约状态机进度条配置
+const contractStatusSteps = [
+  { key: 'draft', label: '草稿', color: '#94a3b8' },
+  { key: 'listed', label: '挂牌', color: '#f59e0b' },
+  { key: 'active', label: '活跃', color: '#3b82f6' },
+  { key: 'subscribed', label: '认购', color: '#6366f1' },
+  { key: 'escrowed', label: '托管', color: '#8b5cf6' },
+  { key: 'insured', label: '投保', color: '#ec4899' },
+  { key: 'executing', label: '执行', color: '#10b981' },
+  { key: 'completed', label: '完成', color: '#059669' },
+] as const
+
+function getContractProgressIndex(status: string): number {
+  const idx = contractStatusSteps.findIndex(s => s.key === status)
+  return idx >= 0 ? idx : 0
+}
 
 const selectedContract = computed(() => {
   if (!selectedId.value) return null
@@ -381,7 +439,28 @@ async function loadData() {
   }
 }
 
-onMounted(loadData)
+function startPolling() {
+  refreshTimer = setInterval(async () => {
+    try {
+      const [c, s] = await Promise.all([fetchPublicContracts(), fetchDashboardStats()])
+      contracts.value = (c ?? []) as Contract[]
+      stats.value = (s ?? null) as DashboardStats | null
+    } catch { /* ignore polling errors */ }
+  }, 30000)
+}
+
+function stopPolling() {
+  if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null }
+}
+
+onMounted(() => {
+  loadData()
+  startPolling()
+})
+
+onUnmounted(() => {
+  stopPolling()
+})
 </script>
 
 <style scoped>
@@ -574,6 +653,79 @@ onMounted(loadData)
   .col-status { display: none; }
 }
 
-/* --- UTILS --- */
+/* --- CONTRACT PROGRESS BAR --- */
+.contract-progress {
+  margin: 0 16px 12px; padding: 14px 16px;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+}
+.progress-label {
+  font-size: 11px; font-weight: 700; color: #475569;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+}
+.progress-track {
+  display: flex; align-items: flex-start; gap: 0; position: relative;
+}
+.progress-step {
+  display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; z-index: 1;
+}
+.step-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #e2e8f0; color: #94a3b8; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.step-label {
+  font-size: 10px; color: #94a3b8; margin-top: 4px; white-space: nowrap;
+  transition: color 0.2s;
+}
+.step-done .step-dot {
+  background: #10b981; color: #fff; box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+}
+.step-done .step-label { color: #065f46; }
+.step-current .step-dot {
+  background: #3b82f6; color: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+  animation: progress-pulse 1.5s ease-in-out infinite;
+}
+.step-current .step-label { color: #1e40af; font-weight: 600; }
+@keyframes progress-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(59,130,246,0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(59,130,246,0.12); }
+}
+.progress-connected {
+  position: absolute; top: 11px; left: 6.25%; right: 6.25%; height: 2px;
+  background: #e2e8f0; z-index: 0; pointer-events: none;
+}
+
+/* --- PROFIT BAR --- */
+.profit-bar-section {
+  margin: 0 16px 12px; padding: 14px 16px;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+}
+.profit-bar-label {
+  font-size: 11px; font-weight: 700; color: #475569;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+}
+.profit-bar-track {
+  display: flex; height: 24px; border-radius: 6px; overflow: hidden; margin-bottom: 8px;
+}
+.profit-bar-seg {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; transition: width 0.4s ease;
+}
+.profit-bar-seg.creator {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+.profit-bar-seg.platform {
+  background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 100%);
+  flex: 1;
+}
+.profit-bar-seg .seg-label { text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.profit-bar-legend {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-dot.creator { background: #3b82f6; }
+.legend-dot.platform { background: #94a3b8; }
+.legend-text { font-size: 12px; color: #475569; }
 .data-mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-variant-numeric: tabular-nums; }
 </style>
