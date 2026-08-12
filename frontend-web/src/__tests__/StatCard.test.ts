@@ -47,17 +47,16 @@ describe('StatCard', () => {
     const wrapper = mount(StatCard, {
       props: { icon: '🎯', label: 'Default', value: 99 },
     })
-    const icon = wrapper.find('.stat-icon')
-    // Browser may normalize OKLCH percentages to decimals
-    expect(icon.attributes('style')).toMatch(/oklch\(0\.56 0\.12 170/)
+    const circle = wrapper.find('.stat-icon-circle')
+    expect(circle.attributes('style')).toMatch(/oklch\(0\.68 0\.11 170/)
   })
 
   it('applies custom color background', () => {
     const wrapper = mount(StatCard, {
       props: { icon: '🔥', label: 'Orange', value: 7, color: 'orange' },
     })
-    const icon = wrapper.find('.stat-icon')
-    expect(icon.attributes('style')).toMatch(/oklch\(0\.62 0\.18 55/)
+    const circle = wrapper.find('.stat-icon-circle')
+    expect(circle.attributes('style')).toMatch(/oklch\(0\.72 0\.16 65/)
   })
 })
 

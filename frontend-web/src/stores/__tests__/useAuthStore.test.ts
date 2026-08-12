@@ -31,7 +31,7 @@ describe('useAuthStore', () => {
 
   it('returns correct displayName when user is null', () => {
     const store = useAuthStore()
-    expect(store.displayName).toBe('创作者')
+    expect(store.displayName).toBe('用户')
   })
 
   it('clearError resets error message', () => {
