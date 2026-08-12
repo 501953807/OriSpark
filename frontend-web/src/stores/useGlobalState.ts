@@ -63,6 +63,6 @@ export const useGlobalState = defineStore('global', () => {
   persist: {
     key: 'oristudio-global',
     storage: localStorage,
-    pick: ['creatorType', 'participantRole', 'isOnboarded'],
+    paths: ['creatorType', 'participantRole', 'isOnboarded'],
   },
 })
