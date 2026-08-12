@@ -353,14 +353,14 @@ onMounted(() => {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: #1f2937;
+  color: var(--spark-text);
 }
 
 .tabs {
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--spark-border);
   padding-bottom: 0;
 }
 
@@ -373,13 +373,13 @@ onMounted(() => {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--spark-muted);
   transition: all 0.2s;
 }
 
 .tab-btn.active {
-  color: #059669;
-  border-bottom-color: #059669;
+  color: var(--spark-gold);
+  border-bottom-color: var(--spark-gold);
 }
 
 .filter-bar {
@@ -391,16 +391,17 @@ onMounted(() => {
 
 .filter-select {
   padding: 10px 16px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--spark-border);
   border-radius: 8px;
   font-size: 14px;
-  background: #fff;
+  background: var(--spark-surface);
+  color: var(--spark-text);
 }
 
 .btn-primary {
   padding: 10px 20px;
-  background: #059669;
-  color: #fff;
+  background: var(--spark-gold);
+  color: #0f172a;
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -410,7 +411,7 @@ onMounted(() => {
 }
 
 .btn-primary:hover {
-  background: #047857;
+  background: #c4a030;
 }
 
 /* 工厂网格 */
@@ -421,15 +422,16 @@ onMounted(() => {
 }
 
 .factory-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--spark-surface);
+  border: 1px solid var(--spark-border);
   border-radius: 12px;
   padding: 20px;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .factory-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.3);
 }
 
 .factory-header {
@@ -442,7 +444,7 @@ onMounted(() => {
 .factory-name {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--spark-text);
 }
 
 .factory-info {
@@ -454,7 +456,7 @@ onMounted(() => {
 
 .info-row {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--spark-muted);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -473,9 +475,9 @@ onMounted(() => {
 .tag {
   font-size: 12px;
   padding: 2px 8px;
-  background: #f3f4f6;
+  background: var(--spark-bg);
   border-radius: 4px;
-  color: #374151;
+  color: var(--spark-muted);
 }
 
 /* 订单列表 */
@@ -486,8 +488,8 @@ onMounted(() => {
 }
 
 .order-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--spark-surface);
+  border: 1px solid var(--spark-border);
   border-radius: 12px;
   padding: 16px 20px;
 }
@@ -508,13 +510,13 @@ onMounted(() => {
 .mono {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--spark-muted);
 }
 
 .product-name {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--spark-text);
 }
 
 .order-body {
@@ -527,17 +529,17 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--spark-muted);
 }
 
 .order-date {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--spark-muted);
 }
 
 .order-shipping {
   font-size: 13px;
-  color: #0ea5e9;
+  color: var(--spark-blue);
 }
 
 .order-quality {
@@ -548,9 +550,9 @@ onMounted(() => {
 
 .order-notes {
   font-size: 14px;
-  color: #374151;
+  color: var(--spark-text);
   padding: 8px 12px;
-  background: #f9fafb;
+  background: var(--spark-bg);
   border-radius: 6px;
 }
 
@@ -560,7 +562,7 @@ onMounted(() => {
 }
 
 .days-remaining.urgent {
-  color: #ef4444;
+  color: var(--spark-red);
 }
 
 .order-actions {
@@ -568,7 +570,7 @@ onMounted(() => {
   gap: 8px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--spark-border);
 }
 
 .btn-confirm, .btn-start, .btn-ship, .btn-inspect-pass, .btn-inspect-fail {
@@ -581,16 +583,16 @@ onMounted(() => {
 }
 
 .btn-confirm {
-  background: #059669;
+  background: var(--spark-green);
   color: #fff;
 }
 
 .btn-confirm:hover {
-  background: #047857;
+  background: #0ea072;
 }
 
 .btn-start {
-  background: #3b82f6;
+  background: var(--spark-blue);
   color: #fff;
 }
 
@@ -608,7 +610,7 @@ onMounted(() => {
 }
 
 .btn-inspect-pass {
-  background: #10b981;
+  background: var(--spark-green);
   color: #fff;
 }
 
@@ -617,13 +619,13 @@ onMounted(() => {
 }
 
 .btn-inspect-fail {
-  background: #fff;
-  color: #ef4444;
-  border: 1px solid #ef4444;
+  background: transparent;
+  color: var(--spark-red);
+  border: 1px solid var(--spark-red);
 }
 
 .btn-inspect-fail:hover {
-  background: #fef2f2;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 /* POD 列表 */
@@ -634,8 +636,8 @@ onMounted(() => {
 }
 
 .pod-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--spark-surface);
+  border: 1px solid var(--spark-border);
   border-radius: 12px;
   padding: 16px 20px;
   display: flex;
@@ -646,7 +648,7 @@ onMounted(() => {
 .pod-platform {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--spark-gold);
   text-transform: uppercase;
 }
 
@@ -654,7 +656,7 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--spark-muted);
 }
 
 /* 通用状态 */
@@ -663,11 +665,11 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: #6b7280;
+  color: var(--spark-muted);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--spark-red);
 }
 
 .status-badge {
@@ -675,6 +677,6 @@ onMounted(() => {
   font-weight: 600;
   padding: 2px 10px;
   border-radius: 100px;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 </style>
