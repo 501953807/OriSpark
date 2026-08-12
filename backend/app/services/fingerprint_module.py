@@ -91,7 +91,13 @@ class FingerprintModule:
             if dist < best_distance:
                 best_distance = dist
         similarity = max(0, 100 - best_distance * 5)
-        return ApiResponse(data=FingerprintCompareResponse(similarity=similarity))
+        return ApiResponse(data=FingerprintCompareResponse(
+            work_id_a=data.work_id_a,
+            work_id_b=data.work_id_b,
+            hash_type=data.hash_type,
+            similarity=similarity,
+            hamming_distance=best_distance,
+        ))
 
     # ---- 视频指纹扫描 ----
 

@@ -177,11 +177,15 @@ class MonitorService:
         result = self._dmca.get_template(work_id)
         if result is None:
             return None
-        # Wrap result to include work_id
-        if isinstance(result, dict):
-            result["work_id"] = work_id
-            return result
-        return {"work_id": work_id, "template": result}
+        # Extract data from ApiResponse if needed
+        if hasattr(result, 'data'):
+            data = result.data
+        else:
+            data = result
+        if isinstance(data, dict):
+            data["work_id"] = work_id
+            return data
+        return {"work_id": work_id, "template": data}
 
     def generate_evidence_package(self, result_id: str, data):
         return self._dmca.generate_evidence_package(result_id, data) if self._dmca else None
@@ -226,10 +230,17 @@ class MonitorService:
 
     def register_domain_watch(self, data: DomainWatchCreate):
         """注册域名监测."""
+        # Check for duplicate
+        existing = self.db.query(DomainWatch).filter(
+            DomainWatch.domain == data.domain
+        ).first()
+        if existing:
+            from fastapi import HTTPException
+            raise HTTPException(status_code=400, detail=f"域名已存在: {data.domain}")
+        
         domain = DomainWatch(
             domain=data.domain,
             is_active=True,
-            
         )
         self.db.add(domain)
         try:

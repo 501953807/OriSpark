@@ -107,6 +107,7 @@ class BrandWatchModule:
                 similarity=mr["similarity"],
                 platform=mr["platform"],
                 status="pending_review",
+                notes="[MOCK DATA] This is a simulated result for testing",
             ))
         self.db.add_all(new_scans)
         try:
@@ -116,7 +117,11 @@ class BrandWatchModule:
             raise
         return ApiResponse(
             message=f"Brand scan completed: found {len(new_scans)} new results",
-            data={"new_scans": len(new_scans)},
+            data={
+                "results_count": len(new_scans),
+                "is_mock_data": True,
+                "new_scans": len(new_scans),
+            },
         )
 
     def get_scan_results(self, brand_id: str, status: Optional[str] = None) -> ApiResponse:

@@ -22,7 +22,17 @@ class DmcaModule:
 
     def get_template(self, work_id: str) -> ApiResponse:
         """获取 DMCA 模板."""
-        return ApiResponse(data={"template": "DMCA takedown notice template"})
+        from app.models.work import Work
+        work = self.db.query(Work).filter(Work.id == work_id).first()
+        if not work:
+            return None
+        work_title = work.title if work else "My Original Work"
+        return ApiResponse(data={
+            "work_id": work_id,
+            "template_type": "dmca_takedown",
+            "filled_template": f"DMCA TAKEDOWN NOTICE - Work: {work_title}",
+            "usage_guide": "Fill in the template with your work details"
+        })
 
     def generate_evidence_package(self, result_id: str, data: EvidencePackageCreate) -> ApiResponse:
         """生成维权证据包."""
