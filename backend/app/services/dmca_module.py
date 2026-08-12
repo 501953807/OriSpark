@@ -25,7 +25,8 @@ class DmcaModule:
         from app.models.work import Work
         work = self.db.query(Work).filter(Work.id == work_id).first()
         if not work:
-            return None
+            from fastapi import HTTPException
+            raise HTTPException(status_code=404, detail="作品不存在")
         work_title = work.title if work else "My Original Work"
         return ApiResponse(data={
             "work_id": work_id,

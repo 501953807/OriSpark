@@ -26,16 +26,19 @@ class WhitelistModule:
     def list_suggestions(self) -> ApiResponse:
         """获取待处理白名单建议."""
         suggestions = get_pending_suggestions(self.db)
-        return ApiResponse(data=[
-            {
-                "id": s.id,
-                "matched_url": s.matched_url,
-                "pattern_type": s.pattern_type,
-                "confidence": s.confidence,
-                "created_at": s.created_at.isoformat() if s.created_at else None,
-            }
-            for s in suggestions
-        ])
+        return ApiResponse(data={
+            "suggestions": [
+                {
+                    "id": s.id,
+                    "matched_url": s.matched_url,
+                    "pattern_type": s.pattern_type,
+                    "confidence": s.confidence,
+                    "created_at": s.created_at.isoformat() if s.created_at else None,
+                }
+                for s in suggestions
+            ],
+            "how_it_works": "白名单建议基于历史监测结果自动生成",
+        })
 
     def handle_action(self, data: WhitelistActionRequest) -> ApiResponse:
         """处理白名单动作."""

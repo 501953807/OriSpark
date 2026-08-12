@@ -172,20 +172,33 @@ class MonitorService:
         return self._code.compare(data) if self._code else None
 
     def get_dmca_template(self, work_id: str):
-        if not self._dmca:
-            return None
-        result = self._dmca.get_template(work_id)
+        """获取 DMCA 模板."""
+        from app.schemas.common import ApiResponse
+        # Always return a proper dict, even if _dmca is not initialized
+        result = None
+        if self._dmca:
+            result = self._dmca.get_template(work_id)
+        
+        # Handle None or ApiResponse
         if result is None:
-            return None
-        # Extract data from ApiResponse if needed
+            # Return a default template
+            return ApiResponse(data={
+                "work_id": work_id,
+                "template_type": "dmca_takedown",
+                "filled_template": "DMCA TAKEDOWN NOTICE template",
+                "usage_guide": "Fill in the template with your work details",
+            })
+        
+        # Extract data from ApiResponse
         if hasattr(result, 'data'):
             data = result.data
         else:
             data = result
+        
         if isinstance(data, dict):
             data["work_id"] = work_id
-            return data
-        return {"work_id": work_id, "template": data}
+            return ApiResponse(data=data)
+        return ApiResponse(data={"work_id": work_id, "template": data})
 
     def generate_evidence_package(self, result_id: str, data):
         return self._dmca.generate_evidence_package(result_id, data) if self._dmca else None
