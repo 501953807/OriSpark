@@ -10,9 +10,9 @@ import numpy as np
 from app.models.watermark_preset import WatermarkPreset, PositionEnum
 
 # 嵌入强度（alpha），保证 PSNR > 40 dB
-_WATERMARK_ALPHA = 15
+_WATERMARK_ALPHA = 5
 
-# 水印容量：creator_id (8bit) + timestamp (16bit) + contract_id (8bit) = 32 bit
+# 水印容量：creator_id (8bit) + timestamp (16bit) + contract_id (8bit) = 32 bit = 4字节
 _WATERMARK_BIT_COUNT = 32
 
 # 嵌入位置：DCT 块中频系数行/列索引（8x8 块内）
@@ -88,24 +88,25 @@ def _bytes_to_bits(n: int, num_bits: int = _WATERMARK_BIT_COUNT) -> list[int]:
 def _encode_watermark(
     creator_id: str, timestamp: int, contract_id: str
 ) -> bytes:
-    """将 creator_id (首字节) + timestamp (4字节 big-endian) + contract_id (首字节)
-    编码为 6 字节的 bytes 对象。
+    """将 creator_id (首字节) + timestamp (2字节 big-endian) + contract_id (首字节)
+    编码为 4 字节的 bytes 对象。
 
     creator_id 取 str 第一个字符的 ASCII，contract_id 同理。
+    timestamp 使用 16 位，截断为 0-65535 范围。
     """
     c_id_byte = struct.pack("B", ord(creator_id[0]) if creator_id else 0)
-    ts_bytes = struct.pack(">I", timestamp & 0xFFFFFFFF)
+    ts_bytes = struct.pack(">H", timestamp & 0xFFFF)
     cont_id_byte = struct.pack("B", ord(contract_id[0]) if contract_id else 0)
     return c_id_byte + ts_bytes + cont_id_byte
 
 
 def _decode_watermark(data: bytes) -> dict:
-    """从字节数据解码水印字段（6 字节：creator_id(1) + timestamp(4) + contract_id(1)）."""
-    if len(data) < 6:
+    """从 4 字节数据解码水印字段."""
+    if len(data) < 4:
         return {"creator_id": "", "timestamp": 0, "contract_id": ""}
     creator_byte = data[0]
-    timestamp = struct.unpack(">I", data[1:5])[0]
-    contract_byte = data[5]
+    timestamp = struct.unpack(">H", data[1:3])[0]
+    contract_byte = data[3]
     return {
         "creator_id": chr(creator_byte) if creator_byte else "",
         "timestamp": timestamp,
@@ -128,25 +129,7 @@ def apply_frequency_watermark(
     contract_id: str,
     output_path: Optional[str] = None,
 ) -> dict:
-    """在图像频域嵌入隐形水印。
-
-    算法步骤：
-    1. 将图像转为灰度并补齐为 8 的倍数尺寸
-    2. 按 8×8 分块做 DCT
-    3. 将 32 个水印比特**均匀分散**嵌入到所有块的中频系数（每块最多 1 比特）
-    4. 逆 DCT 还原图像
-    5. 保存结果并返回 PSNR 等元数据
-
-    参数：
-        image_path: 源图像路径
-        creator_id: 创作者 ID（首字符用于编码）
-        timestamp:  时间戳（整数，占 16bit+ 字节）
-        contract_id: 合约 ID（首字符用于编码）
-        output_path: 输出路径（默认覆盖原文件同名加 _wm 后缀）
-
-    返回：
-        {"success": true, "psnr": 45.2, "output_path": "..."}
-    """
+    """在图像频域嵌入隐形水印（固定位置策略）."""
     # 加载图像并转为灰度
     img = Image.open(image_path).convert("L")
     w, h = img.size
@@ -167,34 +150,40 @@ def apply_frequency_watermark(
     block_size = 8
     embed_count = 0
 
+    # 收集所有块的位置
+    all_blocks = []
     for by in range(0, pixels.shape[0], block_size):
         for bx in range(0, pixels.shape[1], block_size):
-            if embed_count >= _WATERMARK_BIT_COUNT:
-                break
+            all_blocks.append((by, bx))
 
-            block = pixels[by:by + block_size, bx:bx + block_size].copy()
-            dct_block = _dct2d(block)
+    # 使用固定位置嵌入：每隔 N 个块嵌入一个比特
+    # 确保块选择可重现
+    step = max(1, len(all_blocks) // _WATERMARK_BIT_COUNT)
+    selected_indices = list(range(0, len(all_blocks), step))[:_WATERMARK_BIT_COUNT]
 
-            # 每个块嵌入 1 个比特，位置在中频 2x2 区域内循环
-            row = _EMBED_ROW_START + (embed_count % 2)
-            col = _EMBED_COL_START + ((embed_count // 2) % 2)
+    # 嵌入水印
+    for i, block_idx in enumerate(selected_indices):
+        by, bx = all_blocks[block_idx]
+        block = pixels[by:by + block_size, bx:bx + block_size].copy()
+        dct_block = _dct2d(block)
 
-            bit = bits[embed_count]
-            coeff = dct_block[row, col]
-            # 符号嵌入：根据比特值设置系数的符号
-            # 确保提取时能通过符号正确判断
-            if bit == 1:
-                # 确保系数为正
-                dct_block[row, col] = abs(coeff) + _WATERMARK_ALPHA
-            else:
-                # 确保系数为负
-                dct_block[row, col] = -(abs(coeff) + _WATERMARK_ALPHA)
-            embed_count += 1
+        # 使用固定位置嵌入 1 比特
+        row = _EMBED_ROW_START + (i % 2)
+        col = _EMBED_COL_START + ((i // 2) % 2)
 
-            # 逆 DCT
-            block_recon = _idct2d(dct_block)
-            block_recon = np.clip(block_recon, 0, 255)
-            pixels[by:by + block_size, bx:bx + block_size] = block_recon
+        bit = bits[i]
+        coeff = dct_block[row, col]
+        # 符号嵌入（固定强度）
+        if bit == 1:
+            dct_block[row, col] = abs(coeff) + _WATERMARK_ALPHA
+        else:
+            dct_block[row, col] = -(abs(coeff) + _WATERMARK_ALPHA)
+        embed_count += 1
+
+        # 逆 DCT
+        block_recon = _idct2d(dct_block)
+        block_recon = np.clip(block_recon, 0, 255)
+        pixels[by:by + block_size, bx:bx + block_size] = block_recon
 
     # 还原原始尺寸（若曾补齐）
     if new_w != w or new_h != h:
@@ -220,15 +209,7 @@ def apply_frequency_watermark(
 
 
 def extract_watermark(image_path: str) -> dict:
-    """从图像中频域提取隐形水印。
-
-    参数：
-        image_path: 带水印图像路径（灰度或自动转灰度）
-
-    返回：
-        {"creator_id": "...", "timestamp": 1234567890,
-         "contract_id": "...", "confidence": 0.95}
-    """
+    """从图像中频域提取隐形水印."""
     img = Image.open(image_path).convert("L")
     w, h = img.size
     new_w = ((w + 7) // 8) * 8
@@ -238,26 +219,32 @@ def extract_watermark(image_path: str) -> dict:
 
     pixels = np.array(img, dtype=np.float64)
     block_size = 8
-    bits: list[int] = []
 
+    # 收集所有块的位置
+    all_blocks = []
     for by in range(0, pixels.shape[0], block_size):
         for bx in range(0, pixels.shape[1], block_size):
-            if len(bits) >= _WATERMARK_BIT_COUNT:
-                break
+            all_blocks.append((by, bx))
 
-            block = pixels[by:by + block_size, bx:bx + block_size].copy()
-            dct_block = _dct2d(block)
+    # 使用固定位置提取：与嵌入时相同的步长
+    step = max(1, len(all_blocks) // _WATERMARK_BIT_COUNT)
+    selected_indices = list(range(0, len(all_blocks), step))[:_WATERMARK_BIT_COUNT]
 
-            # 使用相同的确定性位置提取 1 比特
-            row = _EMBED_ROW_START + (len(bits) % 2)
-            col = _EMBED_COL_START + ((len(bits) // 2) % 2)
+    # 从选中的块提取位
+    bits: list[int] = []
+    for i, block_idx in enumerate(selected_indices):
+        by, bx = all_blocks[block_idx]
+        block = pixels[by:by + block_size, bx:bx + block_size].copy()
+        dct_block = _dct2d(block)
 
-            if row >= _EMBED_ROW_END or col >= _EMBED_COL_END:
-                continue
+        row = _EMBED_ROW_START + (i % 2)
+        col = _EMBED_COL_START + ((i // 2) % 2)
 
-            coeff = dct_block[row, col]
-            # 符号提取：根据系数符号判断比特
-            bits.append(1 if coeff > 0 else 0)
+        if row >= _EMBED_ROW_END or col >= _EMBED_COL_END:
+            continue
+
+        coeff = dct_block[row, col]
+        bits.append(1 if coeff > 0 else 0)
 
     if len(bits) < _WATERMARK_BIT_COUNT:
         return {
@@ -276,19 +263,17 @@ def extract_watermark(image_path: str) -> dict:
     # 置信度：基于中频系数的绝对值均值与 alpha 的比值估算
     coeff_sum = 0.0
     count = 0
-    for by in range(0, pixels.shape[0], block_size):
-        for bx in range(0, pixels.shape[1], block_size):
-            if count >= _WATERMARK_BIT_COUNT:
-                break
-            block = pixels[by:by + block_size, bx:bx + block_size].copy()
-            dct_block = _dct2d(block)
-            row = _EMBED_ROW_START + (count % 2)
-            col = _EMBED_COL_START + ((count // 2) % 2)
-            if row >= _EMBED_ROW_END or col >= _EMBED_COL_END:
-                count += 1
-                continue
-            coeff_sum += abs(dct_block[row, col])
+    for i, block_idx in enumerate(selected_indices):
+        by, bx = all_blocks[block_idx]
+        block = pixels[by:by + block_size, bx:bx + block_size].copy()
+        dct_block = _dct2d(block)
+        row = _EMBED_ROW_START + (i % 2)
+        col = _EMBED_COL_START + ((i // 2) % 2)
+        if row >= _EMBED_ROW_END or col >= _EMBED_COL_END:
             count += 1
+            continue
+        coeff_sum += abs(dct_block[row, col])
+        count += 1
     avg_coeff = coeff_sum / max(count, 1)
     confidence = min(1.0, avg_coeff / (_WATERMARK_ALPHA * 2))
 
