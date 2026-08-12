@@ -96,14 +96,14 @@ class BrandWatchModule:
         for mr in mock_results:
             existing = self.db.query(BrandScanResult).filter(
                 BrandScanResult.brand_id == brand_id,
-                BrandScanResult.matched_url == mr["url"],
+                BrandScanResult.item_url == mr["item_url"],
             ).first()
             if existing:
                 continue
             new_scans.append(BrandScanResult(
                 brand_id=brand_id,
-                matched_url=mr["url"],
-                matched_title=mr["title"],
+                item_url=mr["item_url"],
+                item_title=mr["item_title"],
                 similarity=mr["similarity"],
                 platform=mr["platform"],
                 status="pending_review",

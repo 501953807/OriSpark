@@ -84,7 +84,7 @@ class RealAvalaraGateway(AvalaraTaxGateway):
         currency: str = "CNY",
     ) -> TaxCalculationResult:
         if not self._is_configured:
-            mock = RealAvalaraGateway()
+            mock = MockAvalaraGateway()
             return await mock.calculate_tax(
                 seller_location, buyer_location, product_type, amount, currency
             )
@@ -152,4 +152,4 @@ def get_avalara_gateway() -> AvalaraTaxGateway:
     """
     if os.environ.get("AVALARA_LICENSE_KEY"):
         return RealAvalaraGateway()
-    return RealAvalaraGateway()
+    return MockAvalaraGateway()

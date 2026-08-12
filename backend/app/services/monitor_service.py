@@ -172,7 +172,16 @@ class MonitorService:
         return self._code.compare(data) if self._code else None
 
     def get_dmca_template(self, work_id: str):
-        return self._dmca.get_template(work_id) if self._dmca else None
+        if not self._dmca:
+            return None
+        result = self._dmca.get_template(work_id)
+        if result is None:
+            return None
+        # Wrap result to include work_id
+        if isinstance(result, dict):
+            result["work_id"] = work_id
+            return result
+        return {"work_id": work_id, "template": result}
 
     def generate_evidence_package(self, result_id: str, data):
         return self._dmca.generate_evidence_package(result_id, data) if self._dmca else None
@@ -220,7 +229,7 @@ class MonitorService:
         domain = DomainWatch(
             domain=data.domain,
             is_active=True,
-            platforms=data.platforms or ["google", "baidu"],
+            
         )
         self.db.add(domain)
         try:

@@ -8,6 +8,7 @@
 @import './layout.css';
 @import './transitions.css';
 @import './a11y.css';
+@import './motion.css';
 
 /* ── 通用工具类 ── */
 .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--space-2); }

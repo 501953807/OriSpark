@@ -43,23 +43,23 @@ class FingerprintModule:
         work = self.db.query(Work).filter(Work.id == data.work_id).first()
         if not work:
             raise HTTPException(status_code=404, detail="作品不存在")
-        if not work.file_path or not work.file_path.exists():
+        if not work.file_path or not __import__("pathlib").Path(work.file_path).exists():
             raise HTTPException(status_code=400, detail="作品文件不存在")
-        fingerprints = compute_all_fingerprints(work.file_path)
+        fingerprints = compute_all_fingerprints(str(work.file_path))
         for fp_type, fp_hash in fingerprints.items():
             existing = self.db.query(VideoFrameFingerprint).filter(
-                VideoFrameFingerprint.video_work_id == work.id,
+                VideoFrameFingerprint.work_id == work.id,
                 VideoFrameFingerprint.hash_type == fp_type,
             ).first()
             if existing:
-                existing.perceptual_hash = fp_hash
+                existing.frame_hash = fp_hash
             else:
                 self.db.add(VideoFrameFingerprint(
-                    video_work_id=work.id,
+                    work_id=work.id,
                     hash_type=fp_type,
-                    perceptual_hash=fp_hash,
+                    frame_hash=fp_hash,
                     frame_number=0,
-                    timestamp=0.0,
+                    timestamp_ms=0.0,
                 ))
         try:
             self.db.commit()
@@ -78,16 +78,16 @@ class FingerprintModule:
         if not work_a or not work_b:
             raise HTTPException(status_code=404, detail="作品不存在")
         fps_a = self.db.query(VideoFrameFingerprint).filter(
-            VideoFrameFingerprint.video_work_id == data.work_id_a
+            VideoFrameFingerprint.work_id == data.work_id_a
         ).all()
         fps_b = self.db.query(VideoFrameFingerprint).filter(
-            VideoFrameFingerprint.video_work_id == data.work_id_b
+            VideoFrameFingerprint.work_id == data.work_id_b
         ).all()
         if not fps_a or not fps_b:
             return ApiResponse(data=FingerprintCompareResponse(similarity=0.0))
         best_distance = float("inf")
         for fp_a, fp_b in zip(fps_a, fps_b):
-            dist = hamming_distance(fp_a.perceptual_hash, fp_b.perceptual_hash)
+            dist = hamming_distance(fp_a.frame_hash, fp_b.frame_hash)
             if dist < best_distance:
                 best_distance = dist
         similarity = max(0, 100 - best_distance * 5)
@@ -104,11 +104,11 @@ class FingerprintModule:
         work = self.db.query(Work).filter(Work.id == task.work_id).first()
         if not work:
             raise HTTPException(status_code=404, detail="关联作品不存在")
-        video_work_ids = self.db.query(VideoFrameFingerprint.video_work_id).distinct().all()
+        video_work_ids = self.db.query(VideoFrameFingerprint.work_id).distinct().all()
         video_work_ids = [r[0] for r in video_work_ids]
         source_fps = (
             self.db.query(VideoFrameFingerprint)
-            .filter(VideoFrameFingerprint.video_work_id == work.id)
+            .filter(VideoFrameFingerprint.work_id == work.id)
             .order_by(VideoFrameFingerprint.frame_number)
             .all()
         )
@@ -119,7 +119,7 @@ class FingerprintModule:
                 continue
             candidate_fps = (
                 self.db.query(VideoFrameFingerprint)
-                .filter(VideoFrameFingerprint.video_work_id == candidate_id)
+                .filter(VideoFrameFingerprint.work_id == candidate_id)
                 .order_by(VideoFrameFingerprint.frame_number)
                 .all()
             )
@@ -127,12 +127,12 @@ class FingerprintModule:
             source_by_type: dict = {}
             for fp in source_fps:
                 source_by_type.setdefault(fp.hash_type, []).append(
-                    (fp.frame_number, fp.perceptual_hash, fp.timestamp or 0.0)
+                    (fp.frame_number, fp.frame_hash, fp.timestamp_ms or 0.0)
                 )
             candidate_by_type: dict = {}
             for fp in candidate_fps:
                 candidate_by_type.setdefault(fp.hash_type, []).append(
-                    (fp.frame_number, fp.perceptual_hash, fp.timestamp or 0.0)
+                    (fp.frame_number, fp.frame_hash, fp.timestamp_ms or 0.0)
                 )
             best_distance = float("inf")
             matched_frames = 0
@@ -159,15 +159,15 @@ class FingerprintModule:
                 candidate_work = self.db.query(Work).filter(Work.id == candidate_id).first()
                 if candidate_work:
                     similarity = compute_similarity(
-                        source_fps[0].perceptual_hash if source_fps else "",
-                        candidate_fps[0].perceptual_hash if candidate_fps else "",
+                        source_fps[0].frame_hash if source_fps else "",
+                        candidate_fps[0].frame_hash if candidate_fps else "",
                     ) if source_fps and candidate_fps else 0.0
                     video_match = VideoFingerprintMatch(
                         video_work_id=candidate_id,
                         video_title=candidate_work.title,
                         frame_number=candidate_fps[0].frame_number if candidate_fps else 0,
                         timestamp=candidate_fps[0].timestamp if candidate_fps else None,
-                        perceptual_hash=candidate_fps[0].perceptual_hash if candidate_fps else "",
+                        frame_hash=candidate_fps[0].frame_hash if candidate_fps else "",
                         hamming_distance=int(best_distance),
                         similarity=similarity,
                         matched_frames=matched_frames,

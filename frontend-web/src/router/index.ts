@@ -78,7 +78,6 @@ const router = createRouter({
         { path: 'photographer', name: 'photographer', component: () => import('@/views/PhotographerView.vue') },
         { path: 'video', name: 'video', component: () => import('@/views/VideoCreatorView.vue') },
         { path: 'craftsman', name: 'craftsman', component: () => import('@/views/CraftsmanView.vue') },
-        { path: 'etsy', name: 'etsy', component: () => import('@/views/EtsyView.vue') },
         { path: 'musician', name: 'musician', component: () => import('@/views/MusicianView.vue') },
         { path: 'writer', name: 'writer', component: () => import('@/views/WriterView.vue') },
         { path: 'fork-merge', name: 'fork-merge', component: () => import('@/views/ForkMergeView.vue') },

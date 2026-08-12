@@ -1,5 +1,6 @@
 """分发回流引擎 API 路由."""
 
+import re
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Header
@@ -19,6 +20,10 @@ from app.services.reverse_trace_service import ReverseTraceService
 from app.deps import require_auth
 
 router = APIRouter()
+
+# UA 正则
+_IOS_RE = re.compile(r'\b(iPhone|iPad|iPod)\b')
+_ANDROID_RE = re.compile(r'\b(Android)\b')
 
 
 @router.post("/trace/links", response_model=ApiResponse)
@@ -82,8 +87,8 @@ def delete_link(link_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/trace/redirect/{short_code}", response_model=ApiResponse)
-def redirect_link(short_code: str, db: Session = Depends(get_db)):
-    """短链跳转 — 记录 click 事件并重定向."""
+def redirect_link(short_code: str, user_agent: Optional[str] = Header(None), db: Session = Depends(get_db)):
+    """短链跳转 — 记录 click 事件并根据 UA 返回设备适配的重定向."""
     service = ReverseTraceService(db)
     link = service.get_link_by_code(short_code)
     if not link:
@@ -91,11 +96,17 @@ def redirect_link(short_code: str, db: Session = Depends(get_db)):
     if not link.is_active:
         raise HTTPException(status_code=410, detail="链接已过期")
 
-    # Record click event
-    service.record_event(link.id, "click")
+    # Record click event with UA info
+    service.record_event(link.id, "click", user_agent=user_agent)
     db.commit()
 
-    return ApiResponse(data={"redirect_to": link.redirect_url})
+    # UA-based deep link routing
+    device_target = _resolve_device_target(user_agent, link)
+
+    return ApiResponse(data={
+        "redirect_to": device_target,
+        "device_type": _detect_device_type(user_agent),
+    })
 
 
 @router.post("/trace/events", response_model=ApiResponse)
@@ -159,3 +170,28 @@ def get_android_config(packageName: str):
             "site": "https://router.oristudio.com"
         }
     }]
+
+
+def _detect_device_type(user_agent: Optional[str]) -> str:
+    """根据 UA 检测设备类型."""
+    if not user_agent:
+        return "desktop"
+    if _IOS_RE.search(user_agent):
+        return "ios"
+    if _ANDROID_RE.search(user_agent):
+        return "android"
+    return "desktop"
+
+
+def _resolve_device_target(user_agent: Optional[str], link) -> str:
+    """根据设备类型返回对应的 deep link 目标."""
+    device = _detect_device_type(user_agent)
+    base = "https://oristudio.app"
+    target_path = f"/trace/redirect/{link.short_code}"
+
+    if device == "ios":
+        return f"{base}/link{target_path}"
+    elif device == "android":
+        return f"oristudio://link{target_path}"
+    else:
+        return f"{base}{target_path}"

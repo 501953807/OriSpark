@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import client, { setToast } from '@/api/client'
+import type { InternalAxiosRequestConfig, AxiosResponse, AxiosHeaders } from 'axios'
 
 // Mock toast
 const mockToast = { show: vi.fn() }
@@ -29,8 +30,10 @@ describe('API Client', () => {
   })
 
   it('has request and response interceptors', () => {
-    expect(client.interceptors.request.handlers.length).toBeGreaterThan(0)
-    expect(client.interceptors.response.handlers.length).toBeGreaterThan(0)
+    const requestHandlers = client.interceptors.request.handlers ?? []
+    const responseHandlers = client.interceptors.response.handlers ?? []
+    expect(requestHandlers.length).toBeGreaterThan(0)
+    expect(responseHandlers.length).toBeGreaterThan(0)
   })
 })
 
@@ -41,11 +44,16 @@ describe('Request Interceptor', () => {
       writable: true,
     })
 
-    const config = { url: '/test', method: 'get', headers: {} }
-    const handler = client.interceptors.request.handlers[0].fulfilled
-    const result = handler(config)
+    const requestHandlers = client.interceptors.request.handlers ?? []
+    const handler = requestHandlers[0]?.fulfilled
+    expect(handler).toBeDefined()
+    const result = handler!({
+      url: '/test',
+      method: 'get',
+      headers: new Headers() as unknown as AxiosHeaders,
+    } as InternalAxiosRequestConfig)
 
-    expect(result.headers.Authorization).toBe('Bearer test-token-123')
+    expect((result as InternalAxiosRequestConfig).headers.Authorization).toBe('Bearer test-token-123')
   })
 
   it('does not add Authorization header when no token', () => {
@@ -54,11 +62,15 @@ describe('Request Interceptor', () => {
       writable: true,
     })
 
-    const config = { url: '/test', method: 'get', headers: {} }
-    const handler = client.interceptors.request.handlers[0].fulfilled
-    const result = handler(config)
+    const requestHandlers = client.interceptors.request.handlers ?? []
+    const handler = requestHandlers[0]?.fulfilled
+    const result = handler!({
+      url: '/test',
+      method: 'get',
+      headers: new Headers() as unknown as AxiosHeaders,
+    } as InternalAxiosRequestConfig)
 
-    expect(result.headers.Authorization).toBeUndefined()
+    expect((result as InternalAxiosRequestConfig).headers.Authorization).toBeUndefined()
   })
 
   it('sets Content-Type for normal data', () => {
@@ -67,15 +79,16 @@ describe('Request Interceptor', () => {
       writable: true,
     })
 
-    const config = {
-      url: '/test', method: 'post',
+    const requestHandlers = client.interceptors.request.handlers ?? []
+    const handler = requestHandlers[0]?.fulfilled
+    const result = handler!({
+      url: '/test',
+      method: 'post',
       data: { name: 'test' },
-      headers: {},
-    }
-    const handler = client.interceptors.request.handlers[0].fulfilled
-    const result = handler(config)
+      headers: new Headers() as unknown as AxiosHeaders,
+    } as InternalAxiosRequestConfig)
 
-    expect(result.headers['Content-Type']).toBe('application/json')
+    expect((result as InternalAxiosRequestConfig).headers['Content-Type']).toBe('application/json')
   })
 
   it('skips Content-Type for FormData', () => {
@@ -85,26 +98,27 @@ describe('Request Interceptor', () => {
     })
 
     const fd = new FormData()
-    const config = {
-      url: '/upload', method: 'post',
+    const requestHandlers = client.interceptors.request.handlers ?? []
+    const handler = requestHandlers[0]?.fulfilled
+    const result = handler!({
+      url: '/upload',
+      method: 'post',
       data: fd,
-      headers: {},
-    }
-    const handler = client.interceptors.request.handlers[0].fulfilled
-    const result = handler(config)
+      headers: new Headers() as unknown as AxiosHeaders,
+    } as InternalAxiosRequestConfig)
 
-    expect(result.headers['Content-Type']).toBeUndefined()
+    expect((result as InternalAxiosRequestConfig).headers['Content-Type']).toBeUndefined()
   })
 })
 
 describe('Response Interceptor', () => {
   function callRejected(error: unknown) {
-    const handler = client.interceptors.response.handlers[0].rejected
-    // Handler returns Promise.reject, swallow the rejection
+    const responseHandlers = client.interceptors.response.handlers ?? []
+    const handler = responseHandlers[0]?.rejected
     try {
-      const result = handler(error)
-      if (result && typeof result.catch === 'function') {
-        return result.catch(() => {})
+      const result = handler!(error)
+      if (result && typeof (result as Promise<unknown>).catch === 'function') {
+        return (result as Promise<unknown>).catch(() => {})
       }
     } catch {
       // Handler threw synchronously
@@ -113,10 +127,17 @@ describe('Response Interceptor', () => {
   }
 
   it('passes successful responses through unchanged', async () => {
-    const handler = client.interceptors.response.handlers[0].fulfilled
-    const response = { data: { success: true }, status: 200 }
+    const responseHandlers = client.interceptors.response.handlers ?? []
+    const handler = responseHandlers[0]?.fulfilled
+    const response: AxiosResponse = {
+      data: { success: true },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {} as any,
+    }
 
-    const result = handler(response)
+    const result = handler!(response)
     expect(result).toBe(response)
   })
 
@@ -191,7 +212,6 @@ describe('Response Interceptor', () => {
     const error = { code: 'ECONNABORTED', response: undefined }
     await callRejected(error)
 
-    // ECONNABORTED has no response, so it falls into the "no response" path
     expect(mockToast.show).toHaveBeenCalledWith(
       '无法连接到服务器，请检查后端是否已启动',
       'error',
