@@ -43,7 +43,7 @@ def post_record(body: RevenueRecordCreate, actor_id: str = Depends(get_current_u
             created_at=record.created_at,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="收益操作失败，请稍后重试")
 
 
 @router.get("/summary/{user_id}", response_model=RevenueSummaryResponse)

@@ -162,4 +162,4 @@ def cancel_subscription_endpoint(payload: CancelSubscriptionPayload, db: Session
             raise HTTPException(status_code=404, detail="无活跃订阅")
         return ApiResponse(message="订阅已取消")
     except Exception as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="订阅操作失败，请稍后重试")

@@ -126,7 +126,7 @@ async def create_workspace(
         db.refresh(work)
         return ApiResponse(success=True, data=_work_to_dict(work))
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="协同仓库操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/workspaces/{work_id}", response_model=ApiResponse)
@@ -163,7 +163,7 @@ async def close_workspace(work_id: str, db: Session = Depends(get_db)):
         work = ForkMergeService.close_work(db, work_id)
         return ApiResponse(success=True, data=_work_to_dict(work))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 # --- Branches ---
@@ -186,7 +186,7 @@ async def create_branch(
         db.refresh(branch)
         return ApiResponse(success=True, data=_branch_to_dict(branch))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/workspaces/{work_id}/branches", response_model=ApiResponse)
@@ -223,7 +223,7 @@ async def create_commit(
         db.refresh(commit)
         return ApiResponse(success=True, data=_commit_to_dict(commit))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/workspaces/{work_id}/commits", response_model=ApiResponse)
@@ -267,7 +267,7 @@ async def create_pull_request(
         db.refresh(pr)
         return ApiResponse(success=True, data=_pr_to_dict(pr))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/workspaces/{work_id}/pull-requests", response_model=ApiResponse)
@@ -308,7 +308,7 @@ async def merge_pull_request(
         db.refresh(pr)
         return ApiResponse(success=True, data=_pr_to_dict(pr))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.post("/fork-merge/pull-requests/{pr_id}/reject", response_model=ApiResponse)
@@ -320,7 +320,7 @@ async def reject_pull_request(pr_id: str, db: Session = Depends(get_db)):
         db.refresh(pr)
         return ApiResponse(success=True, data=_pr_to_dict(pr))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 # --- Collaborators ---
@@ -344,7 +344,7 @@ async def add_collaborator(
         db.refresh(collab)
         return ApiResponse(success=True, data=_collaborator_to_dict(collab))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.delete("/fork-merge/workspaces/{work_id}/collaborators/{user_id}", response_model=ApiResponse)
@@ -360,7 +360,7 @@ async def remove_collaborator(
         db.refresh(collab)
         return ApiResponse(success=True, data=_collaborator_to_dict(collab))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/workspaces/{work_id}/collaborators", response_model=ApiResponse)
@@ -395,7 +395,7 @@ async def lock_split(
         db.refresh(split_lock)
         return ApiResponse(success=True, data=_split_lock_to_dict(split_lock))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")
 
 
 @router.get("/fork-merge/pull-requests/{pr_id}/split-locks", response_model=ApiResponse)
@@ -417,4 +417,4 @@ async def release_split_lock(split_lock_id: str, db: Session = Depends(get_db)):
         db.refresh(split_lock)
         return ApiResponse(success=True, data=_split_lock_to_dict(split_lock))
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="操作失败，请稍后重试")

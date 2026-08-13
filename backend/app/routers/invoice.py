@@ -72,7 +72,7 @@ def pay(payload: MarkPaidPayload, db: Session = Depends(get_db)):
         result = mark_invoice_paid(payload.invoice_id, db)
         return ApiResponse(data=result, message="发票已标记为已支付")
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="发票操作失败，请稍后重试")
 
 
 @router.get("/auto-renewal/{subscriber_id}", response_model=ApiResponse[dict | None], dependencies=[Depends(require_auth)])

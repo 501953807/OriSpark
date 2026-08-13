@@ -74,13 +74,29 @@ def review_contract(
     )
 
     if not rules:
+        review = ContractReview(
+            user_id=user_id,
+            review_type=review_type,
+            target_type=target_type,
+            target_id=target_id,
+            contract_text=contract_text,
+            total_score=0.0,
+            risk_level="safe",
+            clauses_found=0,
+            risk_count=0,
+        )
+        db.add(review)
+        db.commit()
+        db.refresh(review)
         return {
+            "id": review.id,
             "total_score": 0.0,
             "risk_level": "safe",
             "clauses_found": 0,
             "risk_count": 0,
             "clauses": [],
             "suggestions": [],
+            "created_at": review.created_at,
         }
 
     max_possible = sum(_severity_multiplier(r.risk_level) * r.weight for r in rules)

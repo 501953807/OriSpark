@@ -114,7 +114,7 @@ def post_confirm_settlement(settlement_id: str, user_id: str = Depends(require_a
         settlement = confirm_settlement(db, settlement_id, user_id)
         return {"id": settlement.id, "status": settlement.status}
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="分润操作失败，请稍后重试")
 
 
 @router.get("/sales/statistics")

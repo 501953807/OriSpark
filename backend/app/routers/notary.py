@@ -1020,7 +1020,7 @@ def run_triple_authentication_endpoint(
             data=result,
         )
     except NotImplementedError as e:
-        raise HTTPException(status_code=501, detail=str(e))
+        raise HTTPException(status_code=501, detail="存证操作失败，请稍后重试")
     except Exception as e:
         logging.getLogger(__name__).exception("Triple authentication failed: %s", str(e))
         raise HTTPException(status_code=500, detail=f"三重认证失败: {str(e)}")

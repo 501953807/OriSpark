@@ -59,7 +59,7 @@ class TestChangePassword:
         # Return 401 if user not found, 400 if password wrong
         assert res.status_code in (400, 401)
         if res.status_code == 400:
-            assert "当前密码不正确" in res.json()["detail"] or "用户不存在" in res.json()["detail"]
+            assert "密码" in res.json()["detail"] or "失败" in res.json()["detail"]
 
     def test_success_updates_password(self, client, db_session):
         """Correct current password should update successfully."""

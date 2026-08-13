@@ -44,7 +44,7 @@ async def create_config(
             },
         )
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.get("/mcp-client/configs", response_model=ApiResponse)
@@ -112,7 +112,7 @@ async def update_config(
             data={"id": config.id, "name": config.name},
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.post("/mcp-client/configs/{config_id}/connect", response_model=ApiResponse)
@@ -129,7 +129,7 @@ async def connect_tool(config_id: str, db: Session = Depends(get_db)):
             },
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.post("/mcp-client/connections/{connection_id}/disconnect", response_model=ApiResponse)
@@ -151,7 +151,7 @@ async def disconnect_tool(connection_id: str, db: Session = Depends(get_db)):
             data={"status": result.status},
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.post("/mcp-client/configs/{config_id}/call-tool", response_model=ApiResponse)
@@ -171,7 +171,7 @@ async def call_tool(
     except KeyError:
         raise HTTPException(status_code=400, detail="缺少 tool_name 参数")
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.post("/mcp-client/configs/{config_id}/events", response_model=ApiResponse)
@@ -202,7 +202,7 @@ async def receive_event(
     except KeyError:
         raise HTTPException(status_code=400, detail="缺少 event_type 参数")
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.get("/mcp-client/events", response_model=ApiResponse)
@@ -268,7 +268,7 @@ async def link_event_to_session(
     except KeyError:
         raise HTTPException(status_code=400, detail="缺少 work_id 参数")
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="MCP 操作失败，请稍后重试")
 
 
 @router.get("/mcp-client/connections", response_model=ApiResponse)

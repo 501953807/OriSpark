@@ -31,6 +31,11 @@ dev = [
     "ruff>=0.1",
 ]
 
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::RuntimeWarning:coroutine .* was never awaited",
+]
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"

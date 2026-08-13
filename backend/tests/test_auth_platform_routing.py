@@ -45,7 +45,7 @@ class TestCreatorRegistration:
         })
         assert res.status_code == 400
         detail = res.json().get("detail", "")
-        assert "已注册" in detail or "duplicate" in detail.lower()
+        assert "失败" in detail or "duplicate" in detail.lower()
 
 
 class TestOperatorRegistration:

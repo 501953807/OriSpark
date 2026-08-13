@@ -102,7 +102,7 @@ def register_endpoint(data: RegisterRequest, db: Session = Depends(get_db)):
     try:
         user_dict, token = register_user(db, data.username, data.email, data.password)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="注册失败，请稍后重试")
     return ApiResponse(data={"token": token, "user": user_dict})
 
 
@@ -112,7 +112,7 @@ def register_creator_endpoint(data: RegisterCreatorRequest, db: Session = Depend
     try:
         user_dict, token = register_creator(db, data.username, data.email, data.password)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="注册失败，请稍后重试")
     return ApiResponse(data={"token": token, "user": user_dict})
 
 
@@ -123,7 +123,7 @@ def register_operator_endpoint(data: RegisterOperatorRequest, db: Session = Depe
         user_dict, token = register_operator(db, data.username, data.email, data.password,
                                              data.participant_roles)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="注册失败，请稍后重试")
     return ApiResponse(data={"token": token, "user": user_dict})
 
 
@@ -133,7 +133,7 @@ def login_endpoint(data: LoginRequest, db: Session = Depends(get_db)):
     try:
         user_dict, token = login_user(db, data.email, data.password)
     except ValueError as e:
-        raise HTTPException(status_code=401, detail=str(e))
+        raise HTTPException(status_code=401, detail="登录失败，账号或密码错误")
     return ApiResponse(data={"token": token, "user": user_dict})
 
 
@@ -184,7 +184,7 @@ def update_user_profile_endpoint(
     try:
         user_dict = update_user_profile(db, user_id, updates)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="资料更新失败，请稍后重试")
     return ApiResponse(data=user_dict, message="资料已更新")
 
 
@@ -282,8 +282,7 @@ def unbind_provider_endpoint(
     try:
         unbind_provider(db, user_id, provider)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    return ApiResponse(message=f"已解绑 {provider} 账号")
+        raise HTTPException(status_code=400, detail="解绑操作失败，请稍后重试")
 
 
 # ================================================================
@@ -331,7 +330,7 @@ def change_password_endpoint(
     try:
         change_user_password(db, user_id, data.current_password, data.new_password)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="密码修改失败，请稍后重试")
     return ApiResponse(message="密码已修改")
 
 
@@ -368,7 +367,7 @@ def complete_onboarding_endpoint(
             company_email=data.company_email,
         )
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="Onboarding 操作失败，请稍后重试")
     return ApiResponse(data=result, message="Onboarding 完成")
 
 
@@ -393,7 +392,7 @@ def local_login_endpoint(db: Session = Depends(get_db)):
     try:
         user_dict, token = get_or_create_local_user(db)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="本地登录失败，请稍后重试")
     return ApiResponse(data={"token": token, "user": user_dict})
 
 

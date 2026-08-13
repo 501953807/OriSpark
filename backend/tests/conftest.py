@@ -4,6 +4,15 @@ import pytest
 import tempfile
 from pathlib import Path
 import sys
+import warnings
+
+# Suppress fire-and-forget coroutine warnings from push_notification's
+# asyncio.create_task() calls in async test environments.
+warnings.filterwarnings(
+    "ignore",
+    message="coroutine .* was never awaited",
+    category=RuntimeWarning,
+)
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

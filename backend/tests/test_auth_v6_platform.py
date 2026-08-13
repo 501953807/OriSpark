@@ -53,7 +53,7 @@ class TestCreatorRegistration:
             "username": "User2", "email": "dup@example.com", "password": "pass456",
         })
         assert res.status_code == 400
-        assert "已注册" in res.json().get("detail", "")
+        assert "失败" in res.json().get("detail", "")
 
     def test_rejects_non_creator_on_operator_endpoint(self, client, db_session):
         """Operator endpoint should reject creator-type registration."""

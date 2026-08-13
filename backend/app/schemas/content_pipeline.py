@@ -19,8 +19,8 @@ class PlatformAccountResponse(BaseModel):
     account_id: Optional[str] = None
     follower_count: int
     is_active: bool
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
 
 
 class ScheduleCreate(BaseModel):
@@ -38,11 +38,11 @@ class PublishScheduleResponse(BaseModel):
     title: str
     description: Optional[str] = None
     platforms: list[dict]
-    scheduled_at: str
+    scheduled_at: datetime
     is_recurring: bool
     recurring_pattern: Optional[str] = None
     status: str
-    published_at: Optional[str] = None
+    published_at: Optional[datetime] = None
     error_message: Optional[str] = None
 
 

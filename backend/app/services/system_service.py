@@ -332,8 +332,8 @@ def push_notification(
                     "created_at": notif.created_at.isoformat() if notif.created_at else None,
                 },
             }))
-        except Exception:
-            pass
+        except Exception as e:
+            logging.getLogger(__name__).exception("Error notifying real-time: %s", str(e))
 
     return notif
 

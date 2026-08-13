@@ -10,7 +10,7 @@ class InnocenceProofCreate(BaseModel):
     work_id: str = Field(..., min_length=1, max_length=32, description="作品ID")
     evidence_document_url: Optional[str] = Field(None, max_length=2000, description="证据文档存储URL")
     summary_text: Optional[str] = Field(None, description="证明摘要内容")
-    status: Optional[str] = Field("pending", enum=("pending", "completed", "reviewed"), description="证明状态：待处理/已完成/已审核，默认为 pending")
+    status: Optional[str] = Field("pending", json_schema_extra={"enum": ["pending", "completed", "reviewed"]}, description="证明状态：待处理/已完成/已审核，默认为 pending")
 
 
 class InnocenceProofResponse(BaseModel):

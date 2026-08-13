@@ -301,7 +301,6 @@ class TestPostReview:
         assert "suggestions" in data
         assert "created_at" in data
 
-    @pytest.mark.skip(reason="Pre-existing bug: review_contract early-returns without 'id' when no rules match, causing router KeyError 500")
     def test_returns_empty_when_no_rules_match(self, client: TestClient):
         """No rules in DB → returns safe with zero score."""
         payload = {

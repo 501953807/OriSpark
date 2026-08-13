@@ -461,20 +461,19 @@ class TestStockUpload:
     """POST /photographer/stock/upload"""
 
     def test_upload_returns_error_missing_channel(self, client):
-        # Router bug: upload_to_channel is async but not awaited -> TypeError 500
-        # The unhandled exception propagates through TestClient internals
-        with pytest.raises(Exception):
-            client.post(
-                "/api/photographer/stock/upload",
-                json={
-                    "channel_id": "nonexistent",
-                    "work_id": "test_work",
-                    "file_path": "/tmp/test.jpg",
-                    "keywords": ["test"],
-                    "categories": ["landscape"],
-                },
-                headers=_auth_headers(),
-            )
+        # Route now properly catches ValueError and returns HTTP 400
+        resp = client.post(
+            "/api/photographer/stock/upload",
+            json={
+                "channel_id": "nonexistent",
+                "work_id": "test_work",
+                "file_path": "/tmp/test.jpg",
+                "keywords": ["test"],
+                "categories": ["landscape"],
+            },
+            headers=_auth_headers(),
+        )
+        assert resp.status_code == 400
 
 
 class TestStockUploadsList:

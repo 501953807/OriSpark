@@ -29,6 +29,6 @@ async def describe_work(
         result = await svc.describe_work(db, work_id, data.options or {})
         return ApiResponse(data=result, message="描述生成成功")
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="描述操作失败，请稍后重试")
     except Exception as e:
         return ApiResponse(data=None, message=f"描述生成失败: {e}")

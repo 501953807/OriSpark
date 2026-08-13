@@ -26,7 +26,7 @@ def post_create_provider(
         )
         return {"id": provider.id, "status": "created"}
     except Exception as e:
-        raise HTTPException(500, detail=str(e))
+        raise HTTPException(500, detail="操作失败，请稍后重试")
 
 
 @router.get("/providers")
@@ -61,7 +61,7 @@ def patch_update_provider(
         provider = LogisticsService.update_provider(db, provider_id, **body)
         return {"id": provider.id, "status": "updated"}
     except ValueError as e:
-        raise HTTPException(400, detail=str(e))
+        raise HTTPException(400, detail="物流操作失败，请稍后重试")
 
 
 @router.post("/shipments")
@@ -86,7 +86,7 @@ def post_create_shipment(
         )
         return {"id": shipment.id, "status": "created"}
     except ValueError as e:
-        raise HTTPException(400, detail=str(e))
+        raise HTTPException(400, detail="物流操作失败，请稍后重试")
 
 
 @router.get("/shipments")
@@ -129,7 +129,7 @@ def put_update_shipment_status(
         )
         return {"id": shipment.id, "status": shipment.status}
     except ValueError as e:
-        raise HTTPException(400, detail=str(e))
+        raise HTTPException(400, detail="物流操作失败，请稍后重试")
 
 
 @router.get("/shipments/{shipment_id}/tracking")
@@ -150,4 +150,4 @@ def post_confirm_delivery(
         shipment = LogisticsService.confirm_delivery(db, shipment_id, confirmed_by)
         return {"id": shipment.id, "status": shipment.status}
     except Exception as e:
-        raise HTTPException(500, detail=str(e))
+        raise HTTPException(500, detail="操作失败，请稍后重试")

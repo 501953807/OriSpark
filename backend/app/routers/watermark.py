@@ -87,7 +87,7 @@ def create_watermark_preset(
             message="水印预设创建成功"
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="水印操作失败，请稍后重试")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"创建失败: {str(e)}")
 
@@ -122,7 +122,7 @@ def update_watermark_preset(
             message="水印预设更新成功"
         )
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="水印操作失败，请稍后重试")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"更新失败: {str(e)}")
 
@@ -188,6 +188,6 @@ def apply_watermark_to_work(
             message="水印应用成功"
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="水印操作失败，请稍后重试")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"水印应用失败: {str(e)}")

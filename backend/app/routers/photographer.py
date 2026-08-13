@@ -223,24 +223,26 @@ def get_photographer_stats(
     response_model=ApiResponse[StockUploadResult],
     dependencies=[Depends(require_auth)],
 )
-def stock_upload(
+async def stock_upload(
     payload: StockUploadRequest,
     db: Session = Depends(get_db),
 ):
     """将作品上传到指定的图库销售渠道."""
-    import asyncio
-    svc = StockService(db)
-    result = asyncio.run(svc.upload_to_channel(
-        channel_id=payload.channel_id,
-        work_id=payload.work_id,
-        file_path=payload.file_path,
-        keywords=payload.keywords,
-        categories=payload.categories,
-    ))
-    return ApiResponse(
-        data=StockUploadResult(**result),
-        message="上传已提交",
-    )
+    try:
+        svc = StockService(db)
+        result = await svc.upload_to_channel(
+            channel_id=payload.channel_id,
+            work_id=payload.work_id,
+            file_path=payload.file_path,
+            keywords=payload.keywords,
+            categories=payload.categories,
+        )
+        return ApiResponse(
+            data=StockUploadResult(**result),
+            message="上传已提交",
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail="图库上传失败，请稍后重试")
 
 
 # ============================================================================
@@ -305,18 +307,20 @@ def stock_sales(
     response_model=ApiResponse[StockSalesResponse],
     dependencies=[Depends(require_auth)],
 )
-def sync_sales(
+async def sync_sales(
     channel_id: str = Query(..., min_length=1),
     start_date: str = Query("2020-01-01", description="YYYY-MM-DD"),
     end_date: str = Query(None, description="YYYY-MM-DD, default today"),
     db: Session = Depends(get_db),
 ):
     """从图库平台拉取销售数据并存入本地 stock_sales 表."""
-    svc = StockService(db)
-    sd = datetime.fromisoformat(start_date)
-    ed = datetime.fromisoformat(end_date) if end_date else datetime.now(timezone.utc)
-    import asyncio
-    asyncio.run(svc.sync_sales(channel_id, sd, ed))
+    try:
+        svc = StockService(db)
+        sd = datetime.fromisoformat(start_date)
+        ed = datetime.fromisoformat(end_date) if end_date else datetime.now(timezone.utc)
+        await svc.sync_sales(channel_id, sd, ed)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail="图库上传失败，请稍后重试")
 
     # Refresh summary from DB
     svc_mgr = PhotographerManagerService(db)
@@ -337,7 +341,7 @@ def sync_sales(
     response_model=ApiResponse[StockValidateResult],
     dependencies=[Depends(require_auth)],
 )
-def validate_stock_file(
+async def validate_stock_file(
     work_id: str = Query(..., min_length=1, description="Work variant to validate"),
     channel_name: str = Query(..., min_length=1,
                                description="shutterstock|adobe|getty|500px|tuchong"),
@@ -350,11 +354,13 @@ def validate_stock_file(
     v, file_path = svc.get_variant_with_file_path(work_id)
     if not file_path:
         raise HTTPException(status_code=400, detail="No file path found for work variant")
-    import asyncio
-    result = asyncio.run(stock_svc.validate_file(v.id, channel_name, file_path))
-    return ApiResponse(
-        data=StockValidateResult(**result),
-    )
+    try:
+        result = await stock_svc.validate_file(v.id, channel_name, file_path)
+        return ApiResponse(
+            data=StockValidateResult(**result),
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail="图库上传失败，请稍后重试")
 
 
 # ============================================================================

@@ -67,7 +67,7 @@ def post_auto_match(request_id: str, db: Session = Depends(get_db)):
         results = auto_match(db, request_id)
         return {"results": results, "total": len(results)}
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="匹配操作失败，请稍后重试")
 
 
 @router.get("/match-score")
@@ -77,4 +77,4 @@ def get_match_score_endpoint(listing_id: str, request_id: str, db: Session = Dep
         result = get_match_score(db, listing_id, request_id)
         return result
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail="匹配操作失败，请稍后重试")
