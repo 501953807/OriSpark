@@ -111,7 +111,21 @@
   /* ── Layout Dimensions ── */
   --m-sidebar-width: 256px;
   --m-sidebar-collapsed: 80px;
+  --m-sidebar-bg: #FFFFFF;
+  --m-sidebar-fg: #2E263D;
+  --m-sidebar-fg-dim: #8A8D93;
+  --m-sidebar-active-bg: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  --m-sidebar-active-fg: #FFFFFF;
+  --m-sidebar-hover-bg: #F4F5FA;
+  --m-sidebar-border: rgba(46, 38, 61, 0.12);
+  --m-sidebar-shadow: 0 0.25rem 0.5rem rgba(46,38,61,0.18);
   --m-topbar-height: 64px;
+  --m-topbar-bg: #FFFFFF;
+  --m-topbar-border: rgba(46, 38, 61, 0.12);
+  --m-topbar-shadow: 0 1px 0 rgba(46, 38, 61, 0.08);
+  --m-bg-subtle-materio: #F4F5FA;
+  --m-search-bg: #F4F5FA;
+  --m-search-border: rgba(46, 38, 61, 0.12);
   --m-topbar-height-expanded: 72px;
 
   /* ── Z-index ── */
