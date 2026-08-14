@@ -33,5 +33,5 @@ function reload() {
 }
 .error-icon { font-size: 4rem; }
 .error-page h2 { margin: 0; }
-.error-page p { color: var(--muted); max-width: 400px; }
+.error-page p { color: var(--m-grey-500); max-width: 400px; }
 </style>

@@ -32,7 +32,7 @@
     <!-- Platform Config Section -->
     <div class="platform-config-section card">
       <h3 style="margin:0 0 16px;font-size:1rem">🖨️ 外部平台配置</h3>
-      <p style="color:var(--muted);font-size:0.85rem;margin:0 0 16px">配置 POD 平台 API Key 以启用自动上架和预览功能</p>
+      <p style="color:var(--m-grey-500);font-size:0.85rem;margin:0 0 16px">配置 POD 平台 API Key 以启用自动上架和预览功能</p>
       <div class="platform-config-grid">
         <div v-for="pc in platformConfigs" :key="pc.key" class="platform-config-card">
           <div class="pc-header">
@@ -187,16 +187,16 @@ function connectItem(item: any) {
 .cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .cat-tab {
   padding: 8px 18px; border-radius: 100px; font-size: 0.84rem; font-weight: 600;
-  cursor: pointer; border: 1px solid var(--border); background: var(--surface);
-  transition: all 0.2s; font-family: var(--font-body); color: var(--muted);
+  cursor: pointer; border: 1px solid var(--m-border); background: var(--m-surface);
+  transition: all 0.2s; font-family: var(--font-body); color: var(--m-grey-500);
 }
-.cat-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-.cat-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+.cat-tab.active { background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255); }
+.cat-tab:hover:not(.active) { border-color: rgb(140, 87, 255); color: rgb(140, 87, 255); }
 .integrations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
 .integration-card { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
 .ic-top { display: flex; align-items: flex-start; gap: 14px; }
 .ic-logo {
-  width: 52px; height: 52px; border-radius: var(--radius);
+  width: 52px; height: 52px; border-radius: var(--m-radius-sm);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem; flex-shrink: 0;
 }
@@ -206,13 +206,13 @@ function connectItem(item: any) {
 .ic-logo.ai { background: oklch(58% 0.14 245 / 0.12); }
 .ic-info { flex: 1; min-width: 0; }
 .ic-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
-.ic-cat { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.ic-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.ic-cat { font-size: 0.72rem; color: var(--m-grey-500); text-transform: uppercase; letter-spacing: 0.04em; }
+.ic-desc { font-size: 0.85rem; color: var(--m-grey-500); line-height: 1.6; }
 .ic-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.75rem; }
 .ic-tag { padding: 3px 10px; border-radius: 100px; font-weight: 600; }
-.ic-tag.active { background: oklch(56% 0.12 170 / 0.1); color: var(--accent); }
-.ic-tag.inactive { background: oklch(0 0 0 / 0.04); color: var(--muted); }
-.ic-tag.free { background: oklch(56% 0.12 170 / 0.08); color: var(--green); }
+.ic-tag.active { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: rgb(140, 87, 255); }
+.ic-tag.inactive { background: rgba(0,0,0,0.04); color: var(--m-grey-500); }
+.ic-tag.free { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: var(--green); }
 .ic-tag.paid { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
 .ic-actions { display: flex; gap: 10px; margin-top: auto; }
 .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
@@ -220,15 +220,15 @@ function connectItem(item: any) {
 /* Platform Config */
 .platform-config-section { padding: 24px; }
 .platform-config-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.platform-config-card { padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.platform-config-card { padding: 16px; border: 1px solid var(--m-border); border-radius: var(--radius-md); background: var(--m-surface); }
 .pc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .pc-icon { font-size: 1.5rem; }
 .pc-name { font-weight: 700; font-size: 0.9rem; }
 .pc-status { font-size: 0.72rem; font-weight: 600; }
-.pc-status.connected { color: var(--accent); }
-.pc-status.disconnected { color: var(--muted); }
-.pc-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; }
+.pc-status.connected { color: rgb(140, 87, 255); }
+.pc-status.disconnected { color: var(--m-grey-500); }
+.pc-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-bottom: 10px; }
 .pc-input-row { margin-bottom: 10px; }
-.pc-key-input { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; background: var(--bg); }
+.pc-key-input { width: 100%; padding: 6px 10px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.82rem; background: var(--m-bg-subtle); }
 .pc-actions { display: flex; gap: 6px; }
 </style>

@@ -149,7 +149,7 @@ onMounted(load)
 .negotiation-view { display: flex; flex-direction: column; gap: 16px; }
 
 .split-layout { display: flex; min-height: 400px; }
-.neg-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--border); max-height: calc(100vh - 200px); }
+.neg-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--m-border); max-height: calc(100vh - 200px); }
 .neg-detail-panel { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
 .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -158,17 +158,17 @@ onMounted(load)
 .neg-items { display: flex; flex-direction: column; gap: 6px; }
 
 .neg-item {
-  padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px; background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   cursor: pointer; transition: background 0.15s, border-color 0.15s;
 }
-.neg-item:hover { background: var(--surface); }
-.neg-item.selected { border-color: var(--accent); background: var(--surface); }
+.neg-item:hover { background: var(--m-surface); }
+.neg-item.selected { border-color: rgb(140, 87, 255); background: var(--m-surface); }
 
-.neg-title { font-size: 0.88rem; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+.neg-title { font-size: 0.88rem; font-weight: 600; color: var(--m-on-surface); margin-bottom: 4px; }
 
-.neg-meta { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); }
+.neg-meta { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--m-grey-500); }
 .neg-price { color: #ea580c; font-weight: 600; }
 .neg-time { margin-left: auto; }
 
-.empty-state { padding: 32px; text-align: center; color: var(--muted); }
+.empty-state { padding: 32px; text-align: center; color: var(--m-grey-500); }
 </style>

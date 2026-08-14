@@ -89,7 +89,7 @@ function reset() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   padding: 20px;
 }
 .verify-card {
@@ -100,26 +100,26 @@ function reset() {
 }
 .brand-logo {
   width: 56px; height: 56px;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: inline-flex; align-items: center; justify-content: center;
   color: #fff; font-weight: 800; font-size: 1.6rem;
   margin-bottom: 12px;
 }
 .verify-brand h1 { font-size: 1.3rem; margin: 0 0 4px; }
-.verify-brand p { color: var(--muted); font-size: 0.85rem; margin: 0; }
+.verify-brand p { color: var(--m-grey-500); font-size: 0.85rem; margin: 0; }
 .verify-form { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
-.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
-.form-input { padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; font-family: var(--font-body); color: var(--fg); background: var(--surface); outline: none; }
-.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
+.form-input { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; font-family: var(--font-body); color: var(--m-on-surface); background: var(--m-surface); outline: none; }
+.form-input:focus { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
 .result-icon { font-size: 3rem; margin-bottom: 8px; }
 .result-details { text-align: left; margin-top: 16px; }
-.detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-.dl { font-weight: 600; color: var(--muted); }
+.detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--m-border); font-size: 0.85rem; }
+.dl { font-weight: 600; color: var(--m-grey-500); }
 .dv { max-width: 60%; word-break: break-all; text-align: right; }
 .mono { font-family: monospace; font-size: 0.72rem; }
 .result-fail h2 { color: #e53e3e; }
-.verify-footer { margin-top: 24px; font-size: 0.75rem; color: var(--muted); }
+.verify-footer { margin-top: 24px; font-size: 0.75rem; color: var(--m-grey-500); }
 .verify-footer p { margin: 4px 0; }
 </style>

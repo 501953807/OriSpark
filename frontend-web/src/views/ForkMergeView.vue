@@ -181,7 +181,7 @@ loadWorks()
   align-items: center;
   justify-content: center;
   padding: 48px;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .error-banner {
@@ -191,7 +191,7 @@ loadWorks()
   padding: 12px 16px;
   background: oklch(65% 0.18 20);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
 }
 
@@ -205,7 +205,7 @@ loadWorks()
 }
 
 .split-layout { display: flex; min-height: 400px; }
-.work-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--border); max-height: calc(100vh - 200px); }
+.work-list-panel { flex: 0 0 30%; padding: 8px; overflow-y: auto; border-right: 1px solid var(--m-border); max-height: calc(100vh - 200px); }
 .work-detail-panel { flex: 1; padding: 16px; }
 
 .panel-header {
@@ -236,13 +236,13 @@ loadWorks()
 
 /* Tabs */
 .tabs { display: flex; flex-direction: column; }
-.tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--m-border); margin-bottom: 12px; }
 .tab {
   padding: 8px 16px; border: none; background: none; cursor: pointer;
-  font-size: 0.88rem; color: var(--muted); border-bottom: 2px solid transparent;
+  font-size: 0.88rem; color: var(--m-grey-500); border-bottom: 2px solid transparent;
   transition: color 0.15s, border-color 0.15s;
 }
-.tab:hover { color: var(--fg); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:hover { color: var(--m-on-surface); }
+.tab.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); }
 .tab-panel { padding: 0; }
 </style>

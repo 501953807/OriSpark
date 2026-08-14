@@ -179,12 +179,12 @@ store.loadDimensions()
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 20px;
   margin-bottom: 16px;
 }
@@ -212,7 +212,7 @@ h3 { margin-top: 0; font-size: 1rem; }
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 10px 24px;
@@ -231,7 +231,7 @@ h3 { margin-top: 0; font-size: 1rem; }
   text-align: center;
   padding: 16px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   color: white;
 }
 .overall-label { display: block; font-size: 0.85rem; opacity: 0.9; }
@@ -239,8 +239,8 @@ h3 { margin-top: 0; font-size: 1rem; }
 
 .premium-card, .ai-risk-card, .stage-card {
   padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   text-align: center;
 }
 .premium-value {

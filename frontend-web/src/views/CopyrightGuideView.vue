@@ -121,43 +121,43 @@ onMounted(() => {
 <style scoped>
 .copyright-guide-view { max-width: 900px; margin: 0 auto; }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
-.stat-value { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
-.stat-label { font-size: 0.8rem; color: var(--muted); }
+.stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; text-align: center; }
+.stat-value { font-size: 1.4rem; font-weight: 800; color: rgb(140, 87, 255); }
+.stat-label { font-size: 0.8rem; color: var(--m-grey-500); }
 
-.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; }
 
 .guide-grid { display: grid; gap: 12px; }
-.guide-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; transition: background 0.2s; }
+.guide-card { border: 1px solid var(--m-border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; transition: background 0.2s; }
 .guide-card:hover { background: #f9fafb; }
 .guide-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .guide-header strong { font-size: 0.95rem; }
-.guide-time { font-size: 0.8rem; color: var(--muted); }
-.guide-fee { font-size: 0.8rem; color: var(--accent); margin: 0 0 8px; }
-.guide-steps { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.guide-time { font-size: 0.8rem; color: var(--m-grey-500); }
+.guide-fee { font-size: 0.8rem; color: rgb(140, 87, 255); margin: 0 0 8px; }
+.guide-steps { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--m-border); }
 .guide-steps ol { padding-left: 20px; font-size: 0.85rem; }
 .guide-steps li { margin-bottom: 4px; }
 
-.btn-add { background: none; border: 1px dashed var(--border); padding: 6px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; color: var(--accent); }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
 
 .new-reg-form { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-.form-input, .form-select { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; flex: 1; }
-.btn-confirm { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
+.form-input, .form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; flex: 1; }
+.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
 
 .reg-list { margin-top: 12px; display: grid; gap: 8px; }
-.reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); }
 .reg-info { display: flex; gap: 8px; align-items: center; font-size: 0.85rem; }
-.reg-type { font-size: 0.75rem; color: var(--muted); }
+.reg-type { font-size: 0.75rem; color: var(--m-grey-500); }
 .reg-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
 .status-draft .reg-status { background: #f3f4f6; color: #6b7280; }
 .status-submitted .reg-status { background: #dbeafe; color: #2563eb; }
 .status-approved .reg-status { background: #dcfce7; color: #16a34a; }
 .status-rejected .reg-status { background: #fef2f2; color: #dc2626; }
-.reg-fee { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+.reg-fee { font-size: 0.85rem; font-weight: 700; color: rgb(140, 87, 255); }
 
-.empty-state { text-align: center; color: var(--muted); padding: 16px; font-size: 0.85rem; }
+.empty-state { text-align: center; color: var(--m-grey-500); padding: 16px; font-size: 0.85rem; }
 </style>

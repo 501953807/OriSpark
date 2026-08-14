@@ -111,27 +111,27 @@ async function doComplete(taskKey: string) {
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .tab {
   padding: 8px 16px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
 }
 .tab.active {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 
 .progress-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px 20px;
   margin-bottom: 20px;
 }
@@ -160,7 +160,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .current-task-card {
   background: #fffbeb;
   border: 2px solid #f59e0b;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 20px;
   margin-bottom: 20px;
 }
@@ -172,19 +172,19 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   margin-bottom: 4px;
 }
 .current-task-card h3 { margin: 0 0 4px; font-size: 1.1rem; }
-.current-task-card p { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+.current-task-card p { color: var(--m-grey-500); font-size: 0.85rem; margin: 0 0 12px; }
 
 .completed-section, .remaining-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px 20px;
   margin-bottom: 16px;
 }
 .completed-section h3, .remaining-section h3 {
   margin-top: 0;
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .task-item {
@@ -192,7 +192,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   align-items: center;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 .task-item:last-child { border-bottom: none; }
 .task-check {
@@ -211,14 +211,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--border);
+  background: var(--m-border);
   flex-shrink: 0;
 }
 .task-title { flex: 1; font-size: 0.9rem; }
-.done .task-title { color: var(--muted); text-decoration: line-through; }
+.done .task-title { color: var(--m-grey-500); text-decoration: line-through; }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 8px 20px;
@@ -228,14 +228,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .btn-small {
   background: transparent;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  color: rgb(140, 87, 255);
+  border: 1px solid rgb(140, 87, 255);
   padding: 4px 12px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.8rem;
 }
-.btn-small:hover { background: var(--accent); color: white; }
+.btn-small:hover { background: rgb(140, 87, 255); color: white; }
 
 .all-done {
   text-align: center;

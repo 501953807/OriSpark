@@ -145,7 +145,7 @@ API 访问"></textarea>
           <h3 style="color:#ef4444">确认删除</h3>
           <button class="modal-close-btn" @click="deleteTierTarget = null">&times;</button>
         </div>
-        <p style="color:var(--muted);font-size:0.9rem">确定要删除等级「{{ deleteTierTarget?.name }}」吗？</p>
+        <p style="color:var(--m-grey-500);font-size:0.9rem">确定要删除等级「{{ deleteTierTarget?.name }}」吗？</p>
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="deleteTierTarget = null">取消</button>
           <button class="btn btn-danger" @click="doDeleteTier" :disabled="deleting">确认删除</button>
@@ -356,60 +356,60 @@ onMounted(() => {
 .view-page { display: flex; flex-direction: column; gap: 16px; }
 
 /* Tabs */
-.tabs-header { display: flex; gap: 4px; border-bottom: 2px solid var(--border); }
+.tabs-header { display: flex; gap: 4px; border-bottom: 2px solid var(--m-border); }
 .tab-btn {
   padding: 10px 24px; background: none; border: none; border-bottom: 2px solid transparent;
-  font-size: 0.95rem; font-weight: 600; color: var(--muted); cursor: pointer;
+  font-size: 0.95rem; font-weight: 600; color: var(--m-grey-500); cursor: pointer;
   transition: all 0.2s; margin-bottom: -2px;
 }
-.tab-btn:hover { color: var(--fg); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover { color: var(--m-on-surface); }
+.tab-btn.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); }
 
 .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
 /* Tier cards */
 .tier-cards { display: flex; flex-direction: column; gap: 12px; }
 .tier-card {
-  border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px;
   transition: all 0.2s;
 }
 .tier-card:hover { box-shadow: 0 4px 16px oklch(0 0 0 / 0.05); }
 .tier-card.inactive { opacity: 0.5; }
 .tier-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .tier-name { font-weight: 700; font-size: 1.1rem; }
-.tier-desc { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
-.tier-price { font-weight: 700; font-size: 1.1rem; color: var(--accent); white-space: nowrap; }
+.tier-desc { font-size: 0.84rem; color: var(--m-grey-500); margin-top: 2px; }
+.tier-price { font-weight: 700; font-size: 1.1rem; color: rgb(140, 87, 255); white-space: nowrap; }
 .tier-meta { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 .tier-features { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .feature-tag {
   font-size: 0.75rem; padding: 3px 10px; border-radius: 12px;
-  background: oklch(56% 0.12 170 / 0.08); color: var(--accent); font-weight: 500;
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: rgb(140, 87, 255); font-weight: 500;
 }
-.tier-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.tier-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--m-border); }
 
 /* Badge */
 .badge { font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; font-weight: 600; }
 .badge-active { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
-.badge-inactive { background: var(--border); color: var(--muted); }
-.count-badge { font-size: 0.8rem; color: var(--muted); }
+.badge-inactive { background: var(--m-border); color: var(--m-grey-500); }
+.count-badge { font-size: 0.8rem; color: var(--m-grey-500); }
 
 /* Table */
 .table-wrapper { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 .data-table th {
-  text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border);
-  font-weight: 600; color: var(--muted); font-size: 0.8rem;
+  text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--m-border);
+  font-weight: 600; color: var(--m-grey-500); font-size: 0.8rem;
 }
-.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--m-border); }
 .mono-cell { font-family: monospace; font-size: 0.82rem; }
 
 /* Forms */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input, .form-textarea, .form-select {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
-  background: var(--surface); outline: none; max-width: 400px;
+  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  background: var(--m-surface); outline: none; max-width: 400px;
 }
 .form-textarea { resize: vertical; width: 100%; max-width: 100%; }
 .form-select { width: 100%; max-width: 100%; }
@@ -419,21 +419,21 @@ onMounted(() => {
 
 /* Modal */
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
+.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
-.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--muted); }
+.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
 .btn-danger { background:#e53e3e; color:#fff; }
 .btn-danger:hover { background:#c53030; }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-xs { padding: 3px 10px; font-size: 0.78rem; }
-.btn-ghost { background:transparent; color:var(--muted); }
-.btn-ghost:hover { background:oklch(0 0 0 / 0.04); color:var(--fg); }
+.btn-ghost { background:transparent; color:var(--m-grey-500); }
+.btn-ghost:hover { background:rgba(0,0,0,0.04); color:var(--m-on-surface); }
 .btn-danger-sm { color: #ef4444; }
 
-.empty-hint { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.9rem; }
+.empty-hint { text-align: center; padding: 48px 24px; color: var(--m-grey-500); font-size: 0.9rem; }
 
 @media (max-width: 768px) {
   .form-input, .form-textarea, .form-select { max-width: 100%; width: 100%; }

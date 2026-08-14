@@ -133,18 +133,18 @@ onMounted(loadCategories)
 .template-browser { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
 .template-browser h2 { margin: 0 0 4px; font-size: 1.3rem; }
-.subtitle { color: var(--muted); font-size: .82rem; margin-bottom: 20px; }
+.subtitle { color: var(--m-grey-500); font-size: .82rem; margin-bottom: 20px; }
 
 /* Material tabs */
 .material-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
 
 .mat-tab {
-  padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+  padding: 6px 14px; border: 1px solid var(--m-border); border-radius: 100px;
   background: none; cursor: pointer; font-size: .78rem;
 }
 
 .mat-tab.active {
-  background: var(--accent); color: #fff; border-color: var(--accent);
+  background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255);
 }
 
 /* Grid */
@@ -155,19 +155,19 @@ onMounted(loadCategories)
 }
 
 .category-card {
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  padding: 14px; background: var(--surface);
+  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  padding: 14px; background: var(--m-surface);
   transition: border-color 0.2s;
 }
 
-.category-card:hover { border-color: var(--accent); }
+.category-card:hover { border-color: rgb(140, 87, 255); }
 
 .card-header { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
 
 .cat-icon { font-size: 1.5rem; }
 
 .cat-name-zh { font-weight: 700; font-size: .9rem; }
-.cat-name-en { font-size: .7rem; color: var(--muted); }
+.cat-name-en { font-size: .7rem; color: var(--m-grey-500); }
 
 /* Specs */
 .card-specs { margin-bottom: 10px; }
@@ -177,17 +177,17 @@ onMounted(loadCategories)
   font-size: .72rem; padding: 2px 0;
 }
 
-.spec-label { color: var(--muted); }
+.spec-label { color: var(--m-grey-500); }
 
 /* Pricing */
 .card-pricing {
   padding-top: 8px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
   margin-bottom: 8px;
 }
 
-.price-range { font-weight: 700; font-size: .82rem; color: var(--accent); }
-.suggested-price { font-size: .68rem; color: var(--muted); }
+.price-range { font-weight: 700; font-size: .82rem; color: rgb(140, 87, 255); }
+.suggested-price { font-size: .68rem; color: var(--m-grey-500); }
 
 /* Platforms */
 .card-platforms { display: flex; gap: 4px; flex-wrap: wrap; }

@@ -30,12 +30,12 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   padding: 20px;
 }
 .redirect-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-xl);
   padding: 48px 40px;
   max-width: 480px;
@@ -45,7 +45,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
 }
 .redirect-icon {
   width: 64px; height: 64px;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   background: linear-gradient(135deg, var(--grad1), var(--grad2));
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--accent-fg);
@@ -56,16 +56,16 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   font-family: var(--font-display);
   font-size: 1.4rem;
   margin: 0 0 12px;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 .redirect-desc {
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.92rem;
   line-height: 1.6;
   margin: 0 0 32px;
 }
 .redirect-desc strong {
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-weight: 600;
 }
 .redirect-actions {
@@ -78,7 +78,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   width: 100%;
   padding: 14px 20px;
   font-size: 1rem;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   border: none;
   cursor: pointer;
   font-weight: 600;
@@ -90,8 +90,8 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
 .redirect-btn:hover { opacity: 0.85; }
 .redirect-back {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   text-decoration: none;
 }
-.redirect-back:hover { color: var(--fg); }
+.redirect-back:hover { color: var(--m-on-surface); }
 </style>

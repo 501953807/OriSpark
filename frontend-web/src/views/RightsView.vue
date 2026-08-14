@@ -1,7 +1,7 @@
 <template>
   <div class="rights-view">
     <!-- Loading state -->
-    <div v-if="checking" class="rights-loading" style="text-align:center;padding:60px;color:var(--muted)">加载中...</div>
+    <div v-if="checking" class="rights-loading" style="text-align:center;padding:60px;color:var(--m-grey-500)">加载中...</div>
 
     <!-- 前置校验: 无作品时拦截 -->
     <EmptyState
@@ -69,8 +69,8 @@ watch(() => appStore.workCount, (val) => {
 })
 </script>
 <style scoped>
-.tabs-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 20px; padding-bottom: 0; }
-.tab-btn { padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 0.95rem; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-.tab-btn:hover { color: var(--fg); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tabs-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--m-border); margin-bottom: 20px; padding-bottom: 0; }
+.tab-btn { padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 0.95rem; color: var(--m-grey-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.tab-btn:hover { color: var(--m-on-surface); }
+.tab-btn.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); font-weight: 600; }
 </style>

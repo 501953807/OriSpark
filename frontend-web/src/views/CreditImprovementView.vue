@@ -113,14 +113,14 @@ onMounted(loadSuggestions)
   margin: 0 auto;
 }
 .subtitle {
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.85rem;
   margin-bottom: 24px;
 }
 .overview-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 24px;
   margin-bottom: 24px;
 }
@@ -134,7 +134,7 @@ onMounted(loadSuggestions)
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 4px solid var(--border);
+  border: 4px solid var(--m-border);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,11 +143,11 @@ onMounted(loadSuggestions)
 .score-value {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
 }
 .score-label {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .tier-badge {
   padding: 8px 20px;
@@ -170,11 +170,11 @@ onMounted(loadSuggestions)
 .stat-val {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 .stat-lbl {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-top: 4px;
 }
 .suggestions-section {
@@ -188,11 +188,11 @@ onMounted(loadSuggestions)
   display: flex;
   gap: 16px;
   padding: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   margin-bottom: 12px;
-  border-left: 4px solid var(--border);
+  border-left: 4px solid var(--m-border);
 }
 .suggestion-card.priority-high {
   border-left-color: #dc2626;
@@ -229,11 +229,11 @@ onMounted(loadSuggestions)
 .suggestion-content p {
   margin: 0 0 8px 0;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .action-tip {
   font-size: 0.85rem;
-  color: var(--fg);
+  color: var(--m-on-surface);
   padding: 8px 12px;
   background: oklch(98% 0.002 240);
   border-radius: var(--radius-sm);
@@ -241,10 +241,10 @@ onMounted(loadSuggestions)
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 10px 24px;

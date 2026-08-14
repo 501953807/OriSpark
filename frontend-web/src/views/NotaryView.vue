@@ -181,7 +181,7 @@ onMounted(async () => {
 .platform-card { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
 .platform-header { display: flex; align-items: center; gap: 12px; }
 .platform-icon {
-  width: 44px; height: 44px; border-radius: var(--radius);
+  width: 44px; height: 44px; border-radius: var(--m-radius-sm);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; flex-shrink: 0;
 }
@@ -189,10 +189,10 @@ onMounted(async () => {
 .icon-judicial { background: oklch(58% 0.16 280 / 0.12); }
 .icon-commercial { background: oklch(58% 0.14 245 / 0.12); }
 .platform-name { font-weight: 700; font-size: 0.95rem; }
-.platform-level { font-size: 0.68rem; color: var(--muted); }
-.platform-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+.platform-level { font-size: 0.68rem; color: var(--m-grey-500); }
+.platform-desc { font-size: 0.82rem; color: var(--m-grey-500); line-height: 1.5; }
 .platform-meta { display: flex; align-items: center; justify-content: space-between; }
-.platform-fee { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+.platform-fee { font-weight: 700; color: rgb(140, 87, 255); font-size: 0.9rem; }
 .records-table { overflow-x: auto; padding: 0; }
 .table-header, .table-row {
   display: grid;
@@ -202,7 +202,7 @@ onMounted(async () => {
   padding: 12px 16px;
   font-size: 0.82rem;
 }
-.table-header { font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--border); }
+.table-header { font-weight: 700; color: var(--m-grey-500); border-bottom: 1px solid var(--m-border); }
 .table-row { border-bottom: 1px solid oklch(93% 0.003 240); }
 .table-row:last-child { border-bottom: none; }
 .table-row:hover { background: oklch(97% 0.002 240); }

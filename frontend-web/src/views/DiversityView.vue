@@ -160,16 +160,16 @@ async function addRecord() {
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
-.stat-val { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+.stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; text-align: center; }
+.stat-val { font-size: 1.5rem; font-weight: 700; color: rgb(140, 87, 255); }
 .stat-val.score-high { color: #22c55e; }
 .stat-val.score-mid { color: #f59e0b; }
 .stat-val.score-low { color: #dc2626; }
-.stat-lbl { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+.stat-lbl { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 
-.chart-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+.chart-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .chart-section h3 { margin-top: 0; font-size: 1rem; }
 
 .distribution-bars { display: flex; flex-direction: column; gap: 12px; }
@@ -179,26 +179,26 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .bar-pct { margin-left: auto; font-weight: 600; }
 .bar-track { height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
-.bar-amount { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.bar-amount { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 2px; }
 
 .trend-chart { display: flex; flex-direction: column; gap: 8px; }
 .trend-item { display: flex; align-items: center; gap: 12px; }
-.trend-month { width: 60px; font-size: 0.8rem; color: var(--muted); text-align: right; flex-shrink: 0; }
+.trend-month { width: 60px; font-size: 0.8rem; color: var(--m-grey-500); text-align: right; flex-shrink: 0; }
 .trend-bar-track { flex: 1; height: 20px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
-.trend-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s ease; }
+.trend-bar-fill { height: 100%; background: rgb(140, 87, 255); border-radius: 4px; transition: width 0.3s ease; }
 .trend-amount { width: 80px; font-size: 0.82rem; font-weight: 600; flex-shrink: 0; }
 
-.warning-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+.warning-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .warning-section h3 { margin-top: 0; font-size: 1rem; }
 .warning-item { padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
 .warning-item.warn { background: #fffbeb; color: #92400e; border-left: 3px solid #f59e0b; }
 .warning-item.ok { background: #f0fdf4; color: #166534; border-left: 3px solid #22c55e; }
 
-.add-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+.add-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .add-section h3 { margin-top: 0; font-size: 1rem; }
 .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.input, .select { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem; }
-.btn-primary { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; }
+.input, .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.9rem; }
+.btn-primary { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 20px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-.empty { padding: 48px; text-align: center; color: var(--muted); }
+.empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 </style>

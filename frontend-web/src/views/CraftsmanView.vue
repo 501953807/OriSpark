@@ -505,7 +505,7 @@ onMounted(async () => {
   backdrop-filter: blur(2px);
   z-index: 100;
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 500;
 }
 .spinner {
@@ -520,7 +520,7 @@ onMounted(async () => {
   padding: 12px 16px;
   background: oklch(65% 0.18 20);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
 }
 .error-banner button {
@@ -535,9 +535,9 @@ onMounted(async () => {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
 }
 .stat-item {
@@ -545,20 +545,20 @@ onMounted(async () => {
   align-items: baseline;
   gap: 6px;
   padding: 8px 14px;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
   flex: 1;
   min-width: 160px;
 }
 .stat-label {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   white-space: nowrap;
 }
 .stat-value {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-family: var(--font-display);
 }
 .stat-active .stat-value { color: #16a34a; }
@@ -568,30 +568,30 @@ onMounted(async () => {
 .tab-bar {
   display: flex;
   gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 6px;
 }
 .tab-btn {
   flex: 1;
   padding: 10px 16px;
   border: none;
-  border-radius: calc(var(--radius) - 6px);
+  border-radius: calc(var(--m-radius-sm) - 6px);
   background: transparent;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--m-grey-500);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   font-family: inherit;
 }
 .tab-btn:hover {
-  color: var(--fg);
-  background: var(--bg);
+  color: var(--m-on-surface);
+  background: var(--m-bg-subtle);
 }
 .tab-btn.active {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
 }
 .tab-panel {
@@ -607,19 +607,19 @@ onMounted(async () => {
 .section-title {
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   margin: 0;
 }
 .form-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 20px;
 }
 .form-title {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   margin: 0 0 16px 0;
 }
 .form-grid {
@@ -630,11 +630,11 @@ onMounted(async () => {
 }
 .form-input {
   padding: 8px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--m-bg-subtle);
+  color: var(--m-on-surface);
   font-family: inherit;
 }
 .form-textarea {
@@ -650,26 +650,26 @@ onMounted(async () => {
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg);
+  border: 1px solid var(--m-border);
+  background: var(--m-surface);
+  color: var(--m-on-surface);
   font-family: inherit;
   transition: background 0.2s;
 }
-.btn:hover { background: var(--bg); }
+.btn:hover { background: var(--m-bg-subtle); }
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 .btn-primary:hover {
   opacity: 0.9;
-  background: var(--accent);
+  background: rgb(140, 87, 255);
 }
 .btn-outline {
   background: transparent;
-  border-color: var(--muted);
+  border-color: var(--m-grey-500);
 }
 .badge {
   display: inline-block;
@@ -686,7 +686,7 @@ onMounted(async () => {
 .badge-quoted { background: #fef3c7; color: #92400e; }
 .badge-awarded { background: #dcfce7; color: #166534; }
 .badge-closed { background: #f1f5f9; color: #475569; }
-.badge-order { background: var(--bg); color: var(--muted); }
+.badge-order { background: var(--m-bg-subtle); color: var(--m-grey-500); }
 .product-card-top,
 .rfq-header {
   display: flex;
@@ -698,7 +698,7 @@ onMounted(async () => {
   flex: 1;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -709,9 +709,9 @@ onMounted(async () => {
   gap: 12px;
 }
 .product-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 14px;
   transition: box-shadow 0.2s;
 }
@@ -724,12 +724,12 @@ onMounted(async () => {
   gap: 8px;
   margin-top: 4px;
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .product-actions {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
 }
 .meta-item {
   white-space: nowrap;
@@ -744,9 +744,9 @@ onMounted(async () => {
   align-items: center;
   gap: 16px;
   padding: 14px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
 }
 .factory-info {
   flex: 1;
@@ -757,11 +757,11 @@ onMounted(async () => {
 .factory-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 .factory-location {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .factory-rating {
   font-size: 0.9rem;
@@ -778,9 +778,9 @@ onMounted(async () => {
   font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 8px;
-  background: var(--bg);
-  color: var(--muted);
-  border: 1px solid var(--border);
+  background: var(--m-bg-subtle);
+  color: var(--m-grey-500);
+  border: 1px solid var(--m-border);
 }
 .tag-muted {
   opacity: 0.5;
@@ -792,13 +792,13 @@ onMounted(async () => {
 }
 .rfq-card {
   padding: 14px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
 }
 .rfq-desc {
   font-size: 0.84rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-top: 4px;
 }
 .order-list {
@@ -808,9 +808,9 @@ onMounted(async () => {
 }
 .order-card {
   padding: 16px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
 }
 .order-header {
   display: flex;
@@ -821,7 +821,7 @@ onMounted(async () => {
 .order-id {
   font-size: 0.84rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .order-steps {
   display: flex;
@@ -839,13 +839,13 @@ onMounted(async () => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 2px solid var(--border);
-  background: var(--bg);
+  border: 2px solid var(--m-border);
+  background: var(--m-bg-subtle);
   transition: background 0.2s, border-color 0.2s;
 }
 .step-dot.done::before {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: rgb(140, 87, 255);
+  border-color: rgb(140, 87, 255);
 }
 .step-group {
   display: flex;
@@ -855,18 +855,18 @@ onMounted(async () => {
 }
 .step-label {
   font-size: 0.7rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   white-space: nowrap;
 }
 .step-line {
   width: 40px;
   height: 2px;
-  background: var(--border);
+  background: var(--m-border);
   margin: 0 4px;
   transition: background 0.2s;
 }
 .step-line.done {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
 }
 .empty-state {
   display: flex;
@@ -874,7 +874,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   padding: 48px;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.9rem;
   text-align: center;
   gap: 12px;

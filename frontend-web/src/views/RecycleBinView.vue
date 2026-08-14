@@ -3,7 +3,7 @@
     <!-- 规则说明 -->
     <div class="rv-rules card" style="padding:16px 20px;font-size:.85rem">
       <h3 style="margin:0 0 8px;font-size:.95rem">📋 回收站规则</h3>
-      <ul style="margin:0;padding-left:20px;color:var(--muted);line-height:1.8">
+      <ul style="margin:0;padding-left:20px;color:var(--m-grey-500);line-height:1.8">
         <li>删除的作品会移入回收站，保留 <strong>30 天</strong></li>
         <li>30 天后系统将自动永久删除</li>
         <li>恢复后的作品回到原项目分组，不会丢失任何数据</li>
@@ -221,7 +221,7 @@ onUnmounted(() => {
 .rv-header { display: flex; justify-content: space-between; align-items: center; }
 .rv-header h2 { margin: 0; font-size: 1.2rem; }
 .rv-actions { display: flex; align-items: center; gap: 12px; }
-.rv-count { font-size: 0.85rem; color: var(--muted); }
+.rv-count { font-size: 0.85rem; color: var(--m-grey-500); }
 
 .works-grid {
   display: grid;
@@ -229,10 +229,10 @@ onUnmounted(() => {
   gap: 16px;
 }
 .work-grid-card { overflow: hidden; padding: 0; }
-.work-grid-card.selected { outline: 2px solid var(--accent); }
+.work-grid-card.selected { outline: 2px solid rgb(140, 87, 255); }
 .card-thumb {
   height: 180px; position: relative; overflow: hidden;
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
 }
 .rv-checkbox {
   position: absolute; top: 8px; left: 8px; z-index: 2;
@@ -246,17 +246,17 @@ onUnmounted(() => {
 .card-type-badge {
   position: absolute; top: 8px; left: 8px;
   padding: 2px 8px; border-radius: 100px;
-  background: oklch(0 0 0 / 0.6); color: #fff;
+  background: rgba(0,0,0,0.6); color: #fff;
   font-size: 0.65rem; font-weight: 700;
 }
 .card-info { padding: 14px 16px; }
 .card-title { font-size: 0.85rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.card-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.card-date { font-size: 0.72rem; color: var(--m-grey-500); margin-top: 2px; }
 .card-actions {
   padding: 8px 16px;
   display: flex;
   gap: 6px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
 }
 .btn-sm { padding: 4px 10px; font-size: 0.75rem; }
 .btn-danger { background: #e53e3e; color: #fff; }
@@ -278,20 +278,20 @@ onUnmounted(() => {
   padding: 12px 16px; border-radius: var(--radius-sm);
   transition: background 0.15s;
 }
-.work-list-row:hover { background: oklch(96% 0.003 240); }
+.work-list-row:hover { background: var(--m-bg-subtle); }
 .list-thumb {
   width: 44px; height: 44px; border-radius: var(--radius-sm);
   overflow: hidden; flex-shrink: 0;
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem;
 }
 .list-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .list-info { flex: 1; min-width: 0; }
 .list-title { font-size: 0.88rem; font-weight: 600; }
-.list-meta { font-size: 0.72rem; color: var(--muted); }
+.list-meta { font-size: 0.72rem; color: var(--m-grey-500); }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 8px; }
-.pagination button { padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); cursor: pointer; font-size: 0.85rem; }
+.pagination button { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.85rem; }
 .pagination button:disabled { opacity: 0.4; cursor: default; }
 </style>

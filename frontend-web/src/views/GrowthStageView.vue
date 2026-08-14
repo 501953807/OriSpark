@@ -75,11 +75,11 @@ store.loadDashboard()
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .stage-card {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 24px;
   color: white;
   margin-bottom: 16px;
@@ -127,7 +127,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .next-stage strong { font-size: 0.9rem; }
 .remaining { display: flex; gap: 16px; font-size: 0.8rem; margin-top: 8px; opacity: 0.85; flex-wrap: wrap; }
 
-.tasks-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.tasks-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 .tasks-section h3 { margin: 0 0 12px; font-size: 1rem; }
 
 .task-item {
@@ -135,7 +135,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   align-items: center;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 .task-item:last-child { border-bottom: none; }
 .task-priority {
@@ -154,6 +154,6 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .task-priority.p3 { background: #dbeafe; color: #2563eb; }
 .task-content { flex: 1; }
 .task-content strong { font-size: 0.9rem; display: block; }
-.task-content p { font-size: 0.8rem; color: var(--muted); margin: 2px 0 0; }
-.task-category { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
+.task-content p { font-size: 0.8rem; color: var(--m-grey-500); margin: 2px 0 0; }
+.task-category { font-size: 0.75rem; color: var(--m-grey-500); flex-shrink: 0; }
 </style>

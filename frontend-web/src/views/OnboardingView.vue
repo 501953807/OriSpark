@@ -57,6 +57,6 @@ async function onFinish(payload: { creatorType: string; participantRole: string;
 <style scoped>
 .onboarding-page {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  background: var(--bg); padding: 40px 20px;
+  background: var(--m-bg-subtle); padding: 40px 20px;
 }
 </style>

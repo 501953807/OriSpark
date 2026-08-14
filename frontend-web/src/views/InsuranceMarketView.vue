@@ -186,27 +186,27 @@ store.loadProducts()
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .tab {
   padding: 8px 16px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
 }
-.tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.tab.active { background: rgb(140, 87, 255); color: white; border-color: rgb(140, 87, 255); }
 
-.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
 .filter-bar { display: flex; gap: 12px; margin-bottom: 16px; }
 .filter-bar select {
   padding: 6px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
-  background: var(--bg);
+  background: var(--m-bg-subtle);
 }
 
 .product-grid {
@@ -215,8 +215,8 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   gap: 16px;
 }
 .product-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
   position: relative;
 }
@@ -234,12 +234,12 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tier-advanced { background: #fef3c7; color: #92400e; }
 .tier-pro { background: #fce7f3; color: #9d174d; }
 .product-card h3 { margin: 0 0 8px; font-size: 1rem; }
-.desc { color: var(--muted); font-size: 0.8rem; margin: 0 0 12px; }
+.desc { color: var(--m-grey-500); font-size: 0.8rem; margin: 0 0 12px; }
 .price-range { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
-.max-coverage { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+.max-coverage { font-size: 0.8rem; color: var(--m-grey-500); margin-bottom: 12px; }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -249,8 +249,8 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .btn-small {
   background: transparent;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  color: rgb(140, 87, 255);
+  border: 1px solid rgb(140, 87, 255);
   padding: 4px 12px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -266,21 +266,21 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 
 .result-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
 .result-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
   text-align: center;
 }
-.result-card.best { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.result-card.best { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 2px rgb(140, 87, 255); }
 .result-tier { font-weight: 700; margin-bottom: 8px; }
 .result-premium { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-.result-products { font-size: 0.75rem; color: var(--muted); text-align: left; }
+.result-products { font-size: 0.75rem; color: var(--m-grey-500); text-align: left; }
 .mini-product { padding: 2px 0; }
 
 .policy-list { display: grid; gap: 12px; }
 .policy-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
   position: relative;
 }
@@ -295,7 +295,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .status-active { background: #dcfce7; color: #166534; }
 .status-pending { background: #fef3c7; color: #92400e; }
-.policy-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+.policy-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--m-grey-500); margin-top: 8px; }
 
-.empty-state { text-align: center; padding: 48px; color: var(--muted); }
+.empty-state { text-align: center; padding: 48px; color: var(--m-grey-500); }
 </style>

@@ -151,20 +151,20 @@ store.loadPhases()
   margin: 0 auto;
 }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .tab {
   padding: 8px 16px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
 }
-.tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.tab.active { background: rgb(140, 87, 255); color: white; border-color: rgb(140, 87, 255); }
 
-.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
 .market-table { overflow-x: auto; }
 .market-table table {
@@ -174,10 +174,10 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .market-table th, .market-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
   text-align: left;
 }
-.market-table th { font-weight: 600; color: var(--muted); }
+.market-table th { font-weight: 600; color: var(--m-grey-500); }
 .market-table tr.current { background: #f0f9ff; }
 
 .arbitrage-form { max-width: 400px; margin-bottom: 20px; }
@@ -186,12 +186,12 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .form-group input, .form-group select {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 10px 24px;
@@ -201,7 +201,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 
 .arbitrage-result {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
   padding-top: 20px;
 }
 .result-summary {
@@ -213,11 +213,11 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .current-revenue, .projected-revenue { text-align: center; }
 .current-revenue span:first-child, .projected-revenue span:first-child {
-  display: block; font-size: 0.8rem; color: var(--muted);
+  display: block; font-size: 0.8rem; color: var(--m-grey-500);
 }
 .value { font-size: 1.5rem; font-weight: 800; }
 .value.green { color: #22c55e; }
-.arrow { font-size: 2rem; color: var(--muted); }
+.arrow { font-size: 2rem; color: var(--m-grey-500); }
 
 .increase-badge {
   text-align: center;
@@ -232,7 +232,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   display: flex;
   justify-content: space-between;
   padding: 8px 12px;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
 }
@@ -241,13 +241,13 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   padding: 12px;
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
 }
 
 .phase-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
   margin-bottom: 12px;
 }
@@ -260,8 +260,8 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .phase-header h3 { margin: 0; font-size: 1rem; }
 .phase-duration {
   font-size: 0.8rem;
-  color: var(--muted);
-  background: var(--bg);
+  color: var(--m-grey-500);
+  background: var(--m-bg-subtle);
   padding: 2px 8px;
   border-radius: 4px;
 }

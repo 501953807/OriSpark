@@ -358,7 +358,7 @@ onMounted(loadHistory)
 }
 .subtitle {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin: 0;
 }
 
@@ -367,7 +367,7 @@ onMounted(loadHistory)
   padding: 6px;
   display: flex;
   gap: 4px;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
 }
 .tab-btn {
   flex: 1;
@@ -378,18 +378,18 @@ onMounted(loadHistory)
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  color: var(--muted);
+  color: var(--m-grey-500);
   transition: all 0.15s;
   font-family: var(--font-body);
 }
 .tab-btn.active {
-  background: var(--surface);
-  color: var(--fg);
+  background: var(--m-surface);
+  color: var(--m-on-surface);
   box-shadow: 0 1px 3px oklch(0 0 0 / 0.08);
   font-weight: 600;
 }
 .tab-btn:hover:not(.active) {
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 
 /* Content grid */
@@ -428,10 +428,10 @@ onMounted(loadHistory)
   flex: 1;
   min-height: 320px;
   padding: 14px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--m-bg-subtle);
+  color: var(--m-on-surface);
   font-size: 0.88rem;
   font-family: var(--font-body);
   line-height: 1.6;
@@ -440,11 +440,11 @@ onMounted(loadHistory)
 }
 .contract-textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  border-color: rgb(140, 87, 255);
+  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
 }
 .contract-textarea::placeholder {
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .input-footer {
   display: flex;
@@ -453,7 +453,7 @@ onMounted(loadHistory)
 }
 .char-count {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 /* Analysis panel */
@@ -484,7 +484,7 @@ onMounted(loadHistory)
   border-radius: 50%;
   background: conic-gradient(
     var(--gauge-color) calc(var(--gauge-progress) * 1%),
-    var(--border) 0
+    var(--m-border) 0
   );
   display: flex;
   align-items: center;
@@ -495,7 +495,7 @@ onMounted(loadHistory)
   position: absolute;
   inset: 8px;
   border-radius: 50%;
-  background: var(--surface);
+  background: var(--m-surface);
 }
 .gauge-center {
   position: relative;
@@ -512,7 +512,7 @@ onMounted(loadHistory)
 }
 .gauge-label {
   font-size: 0.7rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-top: 4px;
 }
 .risk-badge {
@@ -522,7 +522,7 @@ onMounted(loadHistory)
   border-radius: 100px;
 }
 .risk-safe {
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
   color: var(--green);
 }
 .risk-low {
@@ -557,14 +557,14 @@ onMounted(loadHistory)
 }
 .stat-label {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 /* Empty analysis */
 .empty-analysis {
   padding: 48px 24px;
   text-align: center;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.88rem;
 }
 .empty-icon {
@@ -579,7 +579,7 @@ onMounted(loadHistory)
   font-weight: 700;
   margin: 0 0 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 
 /* Clause items */
@@ -590,11 +590,11 @@ onMounted(loadHistory)
 }
 .clause-item {
   padding: 16px;
-  border-left: 4px solid var(--border);
+  border-left: 4px solid var(--m-border);
   transition: border-color 0.2s;
 }
 .clause-item:hover {
-  border-color: var(--muted);
+  border-color: var(--m-grey-500);
 }
 .level-safe { border-left-color: #22c55e; }
 .level-low { border-left-color: #84cc16; }
@@ -611,22 +611,22 @@ onMounted(loadHistory)
 .clause-index {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .clause-text {
   font-size: 0.85rem;
   line-height: 1.5;
   margin: 0 0 8px;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 .clause-detail {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-bottom: 4px;
 }
 .clause-suggestion {
   font-size: 0.8rem;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   margin-bottom: 8px;
 }
 .flag-badge {
@@ -655,10 +655,10 @@ onMounted(loadHistory)
 .edit-textarea {
   flex: 1;
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--m-bg-subtle);
+  color: var(--m-on-surface);
   font-size: 0.8rem;
   font-family: var(--font-body);
   resize: vertical;
@@ -666,7 +666,7 @@ onMounted(loadHistory)
 }
 .edit-textarea:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 
 /* Suggestions card */
@@ -683,7 +683,7 @@ onMounted(loadHistory)
 .suggestion-item {
   font-size: 0.82rem;
   line-height: 1.5;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 
 /* History section */
@@ -712,17 +712,17 @@ onMounted(loadHistory)
 .history-table th {
   text-align: left;
   padding: 8px 12px;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 600;
   font-size: 0.75rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .history-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  color: var(--fg);
+  border-bottom: 1px solid var(--m-border);
+  color: var(--m-on-surface);
 }
 .history-table tr:last-child td {
   border-bottom: none;
@@ -736,7 +736,7 @@ onMounted(loadHistory)
 .loading-hint,
 .empty-hint {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   text-align: center;
   padding: 16px;
 }

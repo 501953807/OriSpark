@@ -67,13 +67,13 @@ store.loadBurnoutRisk()
 <style scoped>
 .risk-warning-view { max-width: 800px; margin: 0 auto; }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
-.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 16px; font-size: 1rem; }
 
 /* Burnout card */
-.burnout-card { padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); }
+.burnout-card { padding: 16px; border-radius: var(--m-radius-sm); border: 1px solid var(--m-border); }
 .burnout-card.low { background: #f0fdf4; border-color: #bbf7d0; }
 .burnout-card.medium { background: #fffbeb; border-color: #fde68a; }
 .burnout-card.high { background: #fef2f2; border-color: #fecaca; }
@@ -85,7 +85,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .burnout-card.high .burnout-score { color: #ef4444; }
 .burnout-factors { margin: 0 0 12px; padding-left: 20px; }
 .burnout-factors li { margin-bottom: 4px; font-size: 0.85rem; }
-.burnout-rec { font-size: 0.85rem; color: var(--muted); margin: 0; }
+.burnout-rec { font-size: 0.85rem; color: var(--m-grey-500); margin: 0; }
 
 /* Tax list */
 .tax-list { display: grid; gap: 8px; }
@@ -94,15 +94,15 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   justify-content: space-between;
   align-items: center;
   padding: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
 }
 .tax-item.done { opacity: 0.5; }
 .tax-info { display: flex; flex-direction: column; }
 .tax-info strong { font-size: 0.9rem; }
-.tax-due { font-size: 0.8rem; color: var(--muted); }
+.tax-due { font-size: 0.8rem; color: var(--m-grey-500); }
 .btn-complete {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: white;
   border: none;
   padding: 6px 16px;
@@ -111,5 +111,5 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-size: 0.8rem;
 }
 .status-done { color: #22c55e; font-size: 0.8rem; font-weight: 600; }
-.empty-state { text-align: center; color: var(--muted); padding: 20px; font-size: 0.85rem; }
+.empty-state { text-align: center; color: var(--m-grey-500); padding: 20px; font-size: 0.85rem; }
 </style>

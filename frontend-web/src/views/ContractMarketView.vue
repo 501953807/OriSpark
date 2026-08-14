@@ -371,7 +371,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .tab.active { background: rgb(140, 87, 255); color: white; border-color: rgb(140, 87, 255); }
 
-.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--radius); padding: 20px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
 .filter-bar { display: flex; gap: 12px; margin-bottom: 16px; }
 .filter-bar select {

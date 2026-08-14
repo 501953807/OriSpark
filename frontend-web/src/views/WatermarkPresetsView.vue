@@ -139,7 +139,7 @@
           <h3 style="color:#ef4444">确认删除</h3>
           <button class="modal-close-btn" @click="deleteTarget = null">&times;</button>
         </div>
-        <p style="color:var(--muted);font-size:0.9rem">确定要删除预设「{{ deleteTarget?.name }}」吗？此操作不可撤销。</p>
+        <p style="color:var(--m-grey-500);font-size:0.9rem">确定要删除预设「{{ deleteTarget?.name }}」吗？此操作不可撤销。</p>
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="deleteTarget = null">取消</button>
           <button class="btn btn-danger" @click="doDelete" :disabled="deleting">
@@ -351,37 +351,37 @@ onMounted(loadPresets)
 .table-wrapper { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 .data-table th {
-  text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border);
-  font-weight: 600; color: var(--muted); font-size: 0.8rem;
+  text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--m-border);
+  font-weight: 600; color: var(--m-grey-500); font-size: 0.8rem;
 }
-.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--m-border); vertical-align: middle; }
 .data-table tbody tr:hover { background: oklch(0 0 0 / 0.015); }
 .preset-name { font-weight: 600; }
-.preset-desc { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.preset-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 2px; }
 .type-badge {
   font-size: 0.75rem; padding: 2px 10px; border-radius: 12px; font-weight: 600;
 }
-.type-text { background: oklch(56% 0.12 170 / 0.1); color: #16a34a; }
+.type-text { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: #16a34a; }
 .type-image { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
 .type-tiled { background: oklch(62% 0.16 280 / 0.1); color: var(--purple); }
 .default-badge {
   font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: 600;
 }
 .default-badge:not(.not-default) { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
-.not-default { background: var(--border); color: var(--muted); }
-.time-col { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
+.not-default { background: var(--m-border); color: var(--m-grey-500); }
+.time-col { color: var(--m-grey-500); font-size: 0.82rem; white-space: nowrap; }
 .actions-col { display: flex; gap: 4px; white-space: nowrap; }
 .btn-xs { padding: 3px 10px; font-size: 0.78rem; }
 .btn-danger-sm { color: #ef4444; }
-.empty-hint { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.9rem; }
+.empty-hint { text-align: center; padding: 48px 24px; color: var(--m-grey-500); font-size: 0.9rem; }
 
 /* Form elements (scoped copies from SettingsView) */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input, .form-textarea, .form-select {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
-  background: var(--surface); outline: none; max-width: 400px;
+  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  background: var(--m-surface); outline: none; max-width: 400px;
 }
 .form-textarea { resize: vertical; width: 100%; max-width: 100%; }
 .form-select { width: 100%; max-width: 100%; }
@@ -390,21 +390,21 @@ onMounted(loadPresets)
 
 /* Modal */
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
+.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
-.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--muted); }
+.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
 .btn-danger { background:#e53e3e; color:#fff; }
 .btn-danger:hover { background:#c53030; }
 
 /* Preview */
 .preview-result { text-align:center; padding:12px 0; }
-.preview-img { max-width:100%; max-height:280px; border-radius:var(--radius-sm); border:1px solid var(--border); }
+.preview-img { max-width:100%; max-height:280px; border-radius:var(--radius-sm); border:1px solid var(--m-border); }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
-.btn-ghost { background:transparent; color:var(--muted); }
-.btn-ghost:hover { background:oklch(0 0 0 / 0.04); color:var(--fg); }
+.btn-ghost { background:transparent; color:var(--m-grey-500); }
+.btn-ghost:hover { background:rgba(0,0,0,0.04); color:var(--m-on-surface); }
 
 @media (max-width: 768px) {
   .page-header { flex-direction: column; align-items: flex-start; }

@@ -447,7 +447,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   padding: 48px;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.9rem;
 }
 
@@ -459,7 +459,7 @@ onMounted(async () => {
 
 .spinner-small {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .error-banner {
@@ -469,7 +469,7 @@ onMounted(async () => {
   padding: 12px 16px;
   background: oklch(65% 0.18 20);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
 }
 
@@ -487,9 +487,9 @@ onMounted(async () => {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
 }
 
@@ -498,7 +498,7 @@ onMounted(async () => {
   align-items: baseline;
   gap: 6px;
   padding: 8px 14px;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
   flex: 1;
   min-width: 140px;
@@ -506,14 +506,14 @@ onMounted(async () => {
 
 .stat-label {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   white-space: nowrap;
 }
 
 .stat-value {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-family: var(--font-display);
 }
 
@@ -526,9 +526,9 @@ onMounted(async () => {
 .tab-bar {
   display: flex;
   gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 6px;
 }
 
@@ -536,23 +536,23 @@ onMounted(async () => {
   flex: 1;
   padding: 10px 16px;
   border: none;
-  border-radius: calc(var(--radius) - 6px);
+  border-radius: calc(var(--m-radius-sm) - 6px);
   background: transparent;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--m-grey-500);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   font-family: inherit;
 }
 
 .tab-btn:hover {
-  color: var(--fg);
-  background: var(--bg);
+  color: var(--m-on-surface);
+  background: var(--m-bg-subtle);
 }
 
 .tab-btn.active {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
 }
 
@@ -568,20 +568,20 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 10px;
   align-items: flex-end;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
 
 .filter-select,
 .filter-input {
   padding: 7px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
-  background: var(--surface);
-  color: var(--fg);
+  background: var(--m-surface);
+  color: var(--m-on-surface);
   font-family: inherit;
   min-width: 140px;
 }
@@ -598,9 +598,9 @@ onMounted(async () => {
 }
 
 .video-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   transition: box-shadow 0.2s, border-color 0.2s;
 }
@@ -618,7 +618,7 @@ onMounted(async () => {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   overflow: hidden;
 }
 
@@ -637,7 +637,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .duration-badge {
@@ -670,14 +670,14 @@ onMounted(async () => {
 
 .video-info {
   padding: 10px 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
 }
 
 .video-title {
   display: block;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -686,7 +686,7 @@ onMounted(async () => {
 .video-meta {
   display: block;
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-top: 2px;
 }
 
@@ -694,8 +694,8 @@ onMounted(async () => {
   display: flex;
   gap: 8px;
   padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  background: var(--bg);
+  border-top: 1px solid var(--m-border);
+  background: var(--m-bg-subtle);
 }
 
 /* ── Buttons ───────────────────────────────────────────────── */
@@ -704,21 +704,21 @@ onMounted(async () => {
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg);
+  border: 1px solid var(--m-border);
+  background: var(--m-surface);
+  color: var(--m-on-surface);
   font-family: inherit;
   transition: background 0.2s;
 }
 
-.btn:hover { background: var(--bg); }
+.btn:hover { background: var(--m-bg-subtle); }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-xs { padding: 4px 10px; font-size: 0.75rem; }
 
 .btn-outline {
   background: transparent;
-  border-color: var(--muted);
+  border-color: var(--m-grey-500);
 }
 
 .btn-outline:disabled {
@@ -727,9 +727,9 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 
 .btn-primary:hover {
@@ -737,9 +737,9 @@ onMounted(async () => {
 }
 
 .btn-accent {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 
 .btn-danger {
@@ -759,7 +759,7 @@ onMounted(async () => {
 
 .page-info {
   font-size: 0.84rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 /* ── Empty state ───────────────────────────────────────────── */
@@ -769,7 +769,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   padding: 64px 24px;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-size: 0.95rem;
 }
 
@@ -795,9 +795,9 @@ onMounted(async () => {
   display: flex;
   gap: 12px;
   align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
 
@@ -811,9 +811,9 @@ onMounted(async () => {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
 }
 
 .result-badge {
@@ -826,7 +826,7 @@ onMounted(async () => {
 
 .result-detail {
   font-size: 0.84rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .match-list {
@@ -840,8 +840,8 @@ onMounted(async () => {
   align-items: center;
   gap: 16px;
   padding: 12px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
 }
 
@@ -856,13 +856,13 @@ onMounted(async () => {
   display: flex;
   gap: 16px;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .match-link {
   margin-left: auto;
   font-size: 0.84rem;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   text-decoration: none;
 }
 
@@ -872,13 +872,13 @@ onMounted(async () => {
 .section-title {
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   margin: 0;
 }
 
 .panel-desc {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin: 0 0 8px;
 }
 
@@ -908,9 +908,9 @@ onMounted(async () => {
   align-items: center;
   gap: 8px;
   padding: 24px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   text-align: center;
 }
 
@@ -926,12 +926,12 @@ onMounted(async () => {
 .platform-name {
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 
 .platform-status {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */

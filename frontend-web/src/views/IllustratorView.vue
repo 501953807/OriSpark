@@ -175,9 +175,9 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
 }
 
@@ -186,7 +186,7 @@ onMounted(() => {
   align-items: baseline;
   gap: 6px;
   padding: 8px 14px;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
   flex: 1;
   min-width: 140px;
@@ -194,14 +194,14 @@ onMounted(() => {
 
 .stat-label {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   white-space: nowrap;
 }
 
 .stat-value {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-family: var(--font-display);
 }
 
@@ -214,9 +214,9 @@ onMounted(() => {
 .tab-bar {
   display: flex;
   gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 6px;
 }
 
@@ -224,23 +224,23 @@ onMounted(() => {
   flex: 1;
   padding: 10px 16px;
   border: none;
-  border-radius: calc(var(--radius) - 6px);
+  border-radius: calc(var(--m-radius-sm) - 6px);
   background: transparent;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--m-grey-500);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   font-family: inherit;
 }
 
 .tab-btn:hover {
-  color: var(--fg);
-  background: var(--bg);
+  color: var(--m-on-surface);
+  background: var(--m-bg-subtle);
 }
 
 .tab-btn.active {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
 }
 
@@ -258,9 +258,9 @@ onMounted(() => {
 }
 
 .work-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   transition: box-shadow 0.2s;
 }
@@ -272,7 +272,7 @@ onMounted(() => {
 .work-thumb {
   height: 140px;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
 }
 
 .work-thumb img {
@@ -289,7 +289,7 @@ onMounted(() => {
   justify-content: center;
   font-size: 2.5rem;
   opacity: 0.5;
-  background: var(--bg);
+  background: var(--m-bg-subtle);
 }
 
 .work-info {
@@ -300,7 +300,7 @@ onMounted(() => {
   display: block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -309,21 +309,21 @@ onMounted(() => {
 
 .work-meta {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .work-link {
   display: block;
   padding: 8px 14px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--m-border);
   font-size: 0.82rem;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   text-align: center;
   text-decoration: none;
 }
 
 .work-link:hover {
-  background: var(--bg);
+  background: var(--m-bg-subtle);
 }
 
 /* ── Panel content ─────────────────────────────────────────── */
@@ -336,13 +336,13 @@ onMounted(() => {
 .section-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
   margin: 0;
 }
 
 .section-desc {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin: 0;
 }
 
@@ -353,9 +353,9 @@ onMounted(() => {
 }
 
 .info-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -370,13 +370,13 @@ onMounted(() => {
   margin: 0;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 
 .info-card p {
   margin: 0;
   font-size: 0.84rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   line-height: 1.5;
 }
 
@@ -386,7 +386,7 @@ onMounted(() => {
   align-items: center;
   gap: 12px;
   padding: 60px 20px;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 
 .placeholder-icon {
@@ -401,7 +401,7 @@ onMounted(() => {
   align-items: center;
   gap: 12px;
   padding: 48px;
-  color: var(--muted);
+  color: var(--m-grey-500);
   text-align: center;
 }
 
@@ -416,21 +416,21 @@ onMounted(() => {
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg);
+  border: 1px solid var(--m-border);
+  background: var(--m-surface);
+  color: var(--m-on-surface);
   font-family: inherit;
   text-decoration: none;
   transition: background 0.2s;
   display: inline-block;
 }
 
-.btn:hover { background: var(--bg); }
+.btn:hover { background: var(--m-bg-subtle); }
 
 .btn-primary {
-  background: var(--accent);
+  background: rgb(140, 87, 255);
   color: #fff;
-  border-color: var(--accent);
+  border-color: rgb(140, 87, 255);
 }
 
 .btn-primary:hover {
@@ -438,6 +438,6 @@ onMounted(() => {
 }
 
 .btn-secondary {
-  background: var(--bg);
+  background: var(--m-bg-subtle);
 }
 </style>

@@ -313,20 +313,20 @@ onMounted(async () => {
 /* Dashboard Bar */
 .dashboard-bar {
   display: flex; gap: 24px; flex-wrap: wrap;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 16px 20px;
+  background: var(--m-surface); border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm); padding: 16px 20px;
 }
 .dash-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.dash-num { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
-.dash-label { font-size: 0.75rem; color: var(--muted); }
+.dash-num { font-size: 1.3rem; font-weight: 700; color: rgb(140, 87, 255); }
+.dash-label { font-size: 0.75rem; color: var(--m-grey-500); }
 
 /* Forms */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input, .form-textarea, .form-select {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
-  background: var(--surface); outline: none; max-width: 400px;
+  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  background: var(--m-surface); outline: none; max-width: 400px;
 }
 .form-textarea { resize: vertical; width: 100%; max-width: 100%; }
 .form-select { width: 100%; max-width: 100%; }
@@ -334,19 +334,19 @@ onMounted(async () => {
 
 /* Modal */
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
+.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
-.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--muted); }
+.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
 
 /* Detail modal */
 .detail-grid { display: flex; flex-direction: column; gap: 12px; }
 .detail-item { display: flex; align-items: center; gap: 12px; }
 .detail-item.full-width { flex-direction: column; align-items: flex-start; }
-.detail-label { font-size: 0.82rem; color: var(--muted); font-weight: 600; min-width: 80px; }
+.detail-label { font-size: 0.82rem; color: var(--m-grey-500); font-weight: 600; min-width: 80px; }
 .detail-value { font-size: 0.9rem; }
-.detail-amount { font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+.detail-amount { font-weight: 700; font-size: 1.1rem; color: rgb(140, 87, 255); }
 .detail-desc { font-size: 0.88rem; line-height: 1.6; }
 .badge-status {
   font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; font-weight: 600;
@@ -355,7 +355,7 @@ onMounted(async () => {
 .status-confirmed { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
 .status-production { background: oklch(58% 0.16 280 / 0.1); color: var(--purple); }
 .status-delivery { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
-.status-settlement { background: var(--border); color: var(--muted); }
+.status-settlement { background: var(--m-border); color: var(--m-grey-500); }
 .priority-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }

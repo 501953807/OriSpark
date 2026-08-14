@@ -265,7 +265,7 @@ onMounted(loadDetail)
 .listing-detail-view { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
 .back-btn {
-  background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
   padding: 4px 12px; cursor: pointer; font-size: .82rem; margin-bottom: 16px;
 }
 
@@ -276,24 +276,24 @@ onMounted(loadDetail)
 
 .detail-header h2 { margin: 0; font-size: 1.4rem; }
 
-.header-meta { display: flex; gap: 16px; font-size: .78rem; color: var(--muted); margin-top: 4px; }
+.header-meta { display: flex; gap: 16px; font-size: .78rem; color: var(--m-grey-500); margin-top: 4px; }
 
 .header-actions { display: flex; gap: 8px; }
 
 .btn-edit, .btn-duplicate, .btn-delete {
-  padding: 6px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 
-.btn-edit:hover { border-color: var(--accent); }
+.btn-edit:hover { border-color: rgb(140, 87, 255); }
 .btn-duplicate:hover { border-color: oklch(65% 0.1 270); }
 .btn-delete:hover { border-color: oklch(56% 0.18 20); }
 
 .detail-main { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-bottom: 24px; }
 
 .preview-card {
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  overflow: hidden; background: var(--surface);
+  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--m-surface);
 }
 
 .preview-img { width: 100%; aspect-ratio: 1; object-fit: cover; }
@@ -301,22 +301,22 @@ onMounted(loadDetail)
 .preview-placeholder {
   aspect-ratio: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  color: var(--muted); font-size: 2rem;
+  color: var(--m-grey-500); font-size: 2rem;
 }
 .preview-placeholder p { font-size: .82rem; margin-top: 8px; }
 
 .info-card {
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  padding: 16px; background: var(--surface); margin-bottom: 12px;
+  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  padding: 16px; background: var(--m-surface); margin-bottom: 12px;
 }
 
 .info-card h4 { margin: 0 0 12px; font-size: .92rem; }
 
 .info-card dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .82rem; }
-.info-card dt { color: var(--muted); }
+.info-card dt { color: var(--m-grey-500); }
 .info-card dd { font-weight: 600; }
 
-.profit { color: var(--accent); }
+.profit { color: rgb(140, 87, 255); }
 
 .status-dot {
   display: inline-block; width: 8px; height: 8px;
@@ -343,35 +343,35 @@ onMounted(loadDetail)
 }
 
 .modal {
-  background: var(--bg); border: 1px solid var(--border);
+  background: var(--m-bg-subtle); border: 1px solid var(--m-border);
   border-radius: var(--radius-md); padding: 24px; width: 440px; max-width: 90vw;
 }
 
 .modal h4 { margin: 0 0 16px; }
 .form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-size: .78rem; margin-bottom: 4px; color: var(--muted); }
+.form-group label { display: block; font-size: .78rem; margin-bottom: 4px; color: var(--m-grey-500); }
 
 .form-input, .form-select {
-  width: 100%; padding: 6px 10px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); font-size: .85rem; background: var(--surface);
+  width: 100%; padding: 6px 10px; border: 1px solid var(--m-border);
+  border-radius: var(--radius-sm); font-size: .85rem; background: var(--m-surface);
 }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 .btn-cancel {
-  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 16px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 .btn-save {
   padding: 6px 16px; border: none; border-radius: var(--radius-sm);
-  background: var(--accent); color: #fff; cursor: pointer; font-size: .82rem;
+  background: rgb(140, 87, 255); color: #fff; cursor: pointer; font-size: .82rem;
 }
 
 .detail-empty {
   text-align: center;
   padding: 80px 20px;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .detail-empty p {
   margin: 0 0 16px;

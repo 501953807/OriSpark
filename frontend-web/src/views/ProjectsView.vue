@@ -3,8 +3,8 @@
     <!-- 规则说明 -->
     <div class="pv-rules card" style="padding:16px 20px;font-size:.85rem">
       <h3 style="margin:0 0 8px;font-size:.95rem">📁 项目分组说明</h3>
-      <p style="margin:0 0 8px;color:var(--muted)">项目分组用于组织和管理你的创意资产。你可以按系列、客户、年份等维度创建分组，将作品归入对应分组以便查找。</p>
-      <ul style="margin:0;padding-left:20px;color:var(--muted);line-height:1.8">
+      <p style="margin:0 0 8px;color:var(--m-grey-500)">项目分组用于组织和管理你的创意资产。你可以按系列、客户、年份等维度创建分组，将作品归入对应分组以便查找。</p>
+      <ul style="margin:0;padding-left:20px;color:var(--m-grey-500);line-height:1.8">
         <li>默认包含一个 <strong>"未分类"</strong> 分组</li>
         <li>点击分组卡片可快速筛选该分组下的所有作品</li>
         <li>删除分组不会删除其中的作品，作品将移入"未分类"</li>
@@ -128,26 +128,26 @@ onMounted(() => loadProjects())
 .projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
 .project-card { padding:0; overflow:hidden; cursor:pointer; }
 .proj-cover {
-  height:120px; background:oklch(56% 0.12 170 / 0.08);
+  height:120px; background:rgba(var(--m-success-rgb, 86, 202, 0), 0.08);
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
 }
 .proj-icon { font-size:3rem; }
-.proj-count { font-size:.75rem; color:var(--muted); }
+.proj-count { font-size:.75rem; color:var(--m-grey-500); }
 .proj-body { padding:16px; }
 .proj-name { font-weight:700; font-size:.95rem; }
-.proj-desc { font-size:.8rem; color:var(--muted); margin-top:4px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
-.proj-date { font-size:.7rem; color:var(--muted); margin-top:8px; }
+.proj-desc { font-size:.8rem; color:var(--m-grey-500); margin-top:4px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.proj-date { font-size:.7rem; color:var(--m-grey-500); margin-top:8px; }
 .proj-actions { padding:0 16px 12px; display:flex; justify-content:flex-end; gap:4px; }
 .btn-sm { padding:5px 10px; font-size:.75rem; }
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
+.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
-.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--muted); }
+.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; }
 .form-group { display:flex; flex-direction:column; gap:6px; }
-.form-group label { font-size:.82rem; font-weight:600; color:var(--muted); }
-.form-input,.form-textarea { padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:.88rem; font-family:var(--font-body); color:var(--fg); background:var(--surface); outline:none; }
-.form-input:focus,.form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
+.form-group label { font-size:.82rem; font-weight:600; color:var(--m-grey-500); }
+.form-input,.form-textarea { padding:10px 14px; border:1px solid var(--m-border); border-radius:var(--radius-sm); font-size:.88rem; font-family:var(--font-body); color:var(--m-on-surface); background:var(--m-surface); outline:none; }
+.form-input:focus,.form-textarea:focus { border-color:rgb(140, 87, 255); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
 .form-textarea { resize:vertical; }
 </style>

@@ -106,7 +106,7 @@
           <h3 style="color:#ef4444">确认删除</h3>
           <button class="modal-close-btn" @click="deleteGroupTarget = null">&times;</button>
         </div>
-        <p style="color:var(--muted);font-size:0.9rem">确定要删除分组「{{ deleteGroupTarget?.name }}」吗？此操作不可撤销。</p>
+        <p style="color:var(--m-grey-500);font-size:0.9rem">确定要删除分组「{{ deleteGroupTarget?.name }}」吗？此操作不可撤销。</p>
         <div class="modal-footer">
           <button class="btn btn-secondary" @click="deleteGroupTarget = null">取消</button>
           <button class="btn btn-danger" @click="doDeleteGroup" :disabled="deleting">确认删除</button>
@@ -326,52 +326,52 @@ onMounted(() => {
 <style scoped>
 .view-page { display: flex; flex-direction: column; gap: 20px; }
 .page-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.page-sub { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+.page-sub { color: var(--m-grey-500); font-size: 0.85rem; margin: 4px 0 0; }
 
 .groups-container { display: flex; flex-direction: column; gap: 20px; }
 .group-card {
-  border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px;
 }
 .group-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .group-name { font-weight: 700; font-size: 1.05rem; }
-.group-meta { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+.group-meta { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 2px; }
 .group-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .variants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px; }
 .variant-card {
-  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;
+  border: 1px solid var(--m-border); border-radius: var(--radius-sm); padding: 12px;
   display: flex; flex-direction: column; gap: 6px;
 }
 .variant-name { font-weight: 600; font-size: 0.9rem; }
 .variant-specs { display: flex; flex-wrap: wrap; gap: 6px; }
-.spec-item { font-size: 0.75rem; color: var(--muted); background: var(--border); padding: 2px 8px; border-radius: 10px; }
-.spec-item.sort { color: var(--accent); background: oklch(56% 0.12 170 / 0.08); }
+.spec-item { font-size: 0.75rem; color: var(--m-grey-500); background: var(--m-border); padding: 2px 8px; border-radius: 10px; }
+.spec-item.sort { color: rgb(140, 87, 255); background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); }
 .variant-actions { display: flex; gap: 4px; margin-top: 4px; }
 
-.empty-hint { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.9rem; }
+.empty-hint { text-align: center; padding: 48px 24px; color: var(--m-grey-500); font-size: 0.9rem; }
 
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
-  background: var(--surface); outline: none; max-width: 400px;
+  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  background: var(--m-surface); outline: none; max-width: 400px;
 }
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
+.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
-.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--muted); }
+.modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
 .btn-danger { background:#e53e3e; color:#fff; }
 .btn-danger:hover { background:#c53030; }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-xs { padding: 3px 10px; font-size: 0.78rem; }
-.btn-ghost { background:transparent; color:var(--muted); }
-.btn-ghost:hover { background:oklch(0 0 0 / 0.04); color:var(--fg); }
+.btn-ghost { background:transparent; color:var(--m-grey-500); }
+.btn-ghost:hover { background:rgba(0,0,0,0.04); color:var(--m-on-surface); }
 .btn-danger-sm { color: #ef4444; }
 
 @media (max-width: 768px) {

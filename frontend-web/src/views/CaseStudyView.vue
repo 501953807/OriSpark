@@ -137,25 +137,25 @@ onMounted(async () => {
 <style scoped>
 .case-study-view { max-width: 900px; margin: 0 auto; }
 h2 { font-size: 1.4rem; margin-bottom: 4px; }
-.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.subtitle { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 24px; }
 
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
-.stat-value { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
-.stat-label { font-size: 0.8rem; color: var(--muted); }
+.stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; text-align: center; }
+.stat-value { font-size: 1.8rem; font-weight: 800; color: rgb(140, 87, 255); }
+.stat-label { font-size: 0.8rem; color: var(--m-grey-500); }
 
 .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.form-select { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; }
-.btn-add { background: none; border: 1px dashed var(--border); padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; color: var(--accent); }
+.form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; color: rgb(140, 87, 255); }
 
-.section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; }
-.form-section .form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
+.form-section .form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
 .form-textarea { min-height: 60px; resize: vertical; }
-.btn-confirm { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
+.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
 
 .case-list { display: grid; gap: 12px; }
-.case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.case-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; }
 .case-card.success { border-left: 4px solid #22c55e; }
 .case-card.lesson { border-left: 4px solid #f59e0b; }
 .case-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -163,12 +163,12 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .case-badge { font-size: 0.75rem; padding: 2px 10px; border-radius: 10px; font-weight: 600; }
 .case-badge.success { background: #dcfce7; color: #16a34a; }
 .case-badge.lesson { background: #fef3c7; color: #d97706; }
-.case-desc { font-size: 0.85rem; color: var(--muted); margin: 0 0 8px; }
+.case-desc { font-size: 0.85rem; color: var(--m-grey-500); margin: 0 0 8px; }
 .case-meta { display: flex; gap: 8px; align-items: center; font-size: 0.8rem; flex-wrap: wrap; }
 .case-category { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 10px; }
 .case-tag { background: #f3f4f6; padding: 2px 8px; border-radius: 10px; }
-.case-takeaways { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.case-takeaways { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--m-border); }
 .case-takeaways strong { font-size: 0.85rem; }
 .case-takeaways ul { margin: 4px 0 0; padding-left: 20px; font-size: 0.85rem; }
-.empty-state { text-align: center; color: var(--muted); padding: 32px; font-size: 0.85rem; }
+.empty-state { text-align: center; color: var(--m-grey-500); padding: 32px; font-size: 0.85rem; }
 </style>
