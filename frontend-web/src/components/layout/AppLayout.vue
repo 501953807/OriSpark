@@ -16,13 +16,15 @@
     <!-- P3.4.1: Mobile overlay -->
     <div v-if="mobileMenuOpen" class="mobile-overlay" @click="mobileMenuOpen = false" aria-hidden="true"></div>
 
-    <DynamicSidebar :creator-type="typeStore.currentType" :class="{ 'mobile-visible': mobileMenuOpen }" />
+    <AppSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
 
     <div
       :id="'main-content'"
       :class="['main-content', isCollapsed ? 'sidebar-collapsed' : '']"
     >
       <AppTopbar :is-collapsed="isCollapsed" @toggle-mobile="mobileMenuOpen = !mobileMenuOpen" />
+      <div class="topbar-spacer"></div>
+      <Breadcrumb />
       <BusinessChainBar />
       <main class="p-6 max-w-[1400px]">
         <router-view v-slot="{ Component, route }">
@@ -230,15 +232,14 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import DynamicSidebar from './DynamicSidebar.vue'
+import AppSidebar from './AppSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
+import Breadcrumb from '@/components/common/Breadcrumb.vue'
 import { useAppStore } from '@/stores/useAppStore'
-import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
 import { worksApi } from '@/api/works'
 
 const appStore = useAppStore()
-const typeStore = useCreatorTypeStore()
 const isCollapsed = computed(() => appStore.sidebarCollapsed)
 const mobileMenuOpen = ref(false)
 const showHelp = ref(false)
