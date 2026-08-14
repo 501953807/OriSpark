@@ -149,7 +149,6 @@ const router = createRouter({
         { path: 'works/cull', name: 'culling', component: () => import('@/views/CullingView.vue') },
         { path: 'settings/subscriptions', name: 'subscriptions', component: () => import('@/views/SubscriptionView.vue') },
         { path: 'business/commissions', name: 'commissions', component: () => import('@/views/CommissionView.vue') },
-        { path: 'messages', name: 'messages', component: () => import('@/views/MessagesView.vue') },
         { path: 'business/commissions/:id', name: 'commission-detail', component: () => import('@/views/CommissionDetailView.vue') },
         { path: 'business', redirect: '/app/business/commissions' },
         { path: 'illustrator', name: 'illustrator', component: () => import('@/views/IllustratorView.vue') },
