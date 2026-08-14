@@ -59,7 +59,7 @@ function handleSend() {
 
 .chat-messages {
   max-height: 300px; overflow-y: auto;
-  padding: 12px; background: var(--bg); border-radius: var(--radius);
+  padding: 12px; background: var(--bg); border-radius: var(--m-radius-sm);
   display: flex; flex-direction: column; gap: 8px;
 }
 
@@ -68,7 +68,7 @@ function handleSend() {
 
 .msg-bubble {
   max-width: 80%; padding: 8px 12px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--m-radius-sm);
 }
 
 .msg.outgoing .msg-bubble { background: var(--accent); color: #fff; border-color: var(--accent); }

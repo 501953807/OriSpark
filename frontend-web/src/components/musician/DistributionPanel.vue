@@ -246,7 +246,7 @@ function formatDate(iso: string): string {
   padding: 18px 20px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   position: relative;
   overflow: hidden;
@@ -389,7 +389,7 @@ function formatDate(iso: string): string {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;

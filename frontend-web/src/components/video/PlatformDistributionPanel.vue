@@ -247,7 +247,7 @@ const STATUS_MAP: Record<string, string> = {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
   background: var(--surface);
   color: var(--fg);
@@ -287,7 +287,7 @@ const STATUS_MAP: Record<string, string> = {
   padding: 18px 20px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   position: relative;
   overflow: hidden;
@@ -409,7 +409,7 @@ const STATUS_MAP: Record<string, string> = {
 .form-textarea {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   background: var(--bg);
   color: var(--fg);
@@ -431,7 +431,7 @@ const STATUS_MAP: Record<string, string> = {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;

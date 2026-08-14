@@ -606,7 +606,7 @@ onMounted(async () => {
   gap: 6px;
   padding: 8px 14px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   flex: 1;
   min-width: 160px;
 }
@@ -621,7 +621,7 @@ onMounted(async () => {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--m-on-surface);
-  font-family: var(--font-display);
+  font-family: Inter;
 }
 
 .stat-pass .stat-value { color: #16a34a; }
@@ -739,7 +739,7 @@ onMounted(async () => {
 .filter-input {
   padding: 7px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   background: var(--m-surface);
   color: var(--m-on-surface);
@@ -863,7 +863,7 @@ onMounted(async () => {
 /* ── Buttons ───────────────────────────────────────────────── */
 .btn {
   padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
   border: 1px solid var(--m-border);
@@ -990,7 +990,7 @@ onMounted(async () => {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--m-on-surface);
-  font-family: var(--font-display);
+  font-family: Inter;
 }
 
 .detail-stat-label {
@@ -1022,7 +1022,7 @@ onMounted(async () => {
   padding: 10px 16px;
   background: var(--m-surface);
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
 }
 
@@ -1043,13 +1043,13 @@ onMounted(async () => {
 
 .exif-modal {
   background: var(--m-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   max-width: 860px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
 .exif-close {

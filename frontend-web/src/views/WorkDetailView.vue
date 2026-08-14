@@ -636,7 +636,7 @@ onUnmounted(() => {
 .detail-card {
   background: var(--m-surface);
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
@@ -698,7 +698,7 @@ onUnmounted(() => {
   text-align: left;
   cursor: pointer;
   color: var(--m-on-surface);
-  font-family: var(--font-body);
+  font-family: Inter;
   white-space: nowrap;
 }
 .dropdown-item:hover {
@@ -948,7 +948,7 @@ onUnmounted(() => {
   text-align: center;
   padding: 16px 8px;
   border: 1px dashed var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 /* Assets Grid */
@@ -961,7 +961,7 @@ onUnmounted(() => {
   width: 100%;
   height: 72px;
   object-fit: cover;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--m-border);
 }
 .asset-file-icon {
@@ -972,7 +972,7 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 1.6rem;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--m-border);
 }
 .asset-caption {
@@ -991,15 +991,15 @@ onUnmounted(() => {
   color: var(--m-on-surface);
   padding: 10px 12px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .notes-textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--m-on-surface);
   background: var(--m-surface);
   outline: none;
@@ -1013,7 +1013,7 @@ onUnmounted(() => {
 .btn-edit-note, .btn-save-note, .btn-cancel-note {
   background: none;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   padding: 2px 10px;
   font-size: 0.72rem;
   cursor: pointer;
@@ -1036,7 +1036,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   padding: 5px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.74rem;
 }
 .version-item:hover { background: var(--m-bg-subtle); }
@@ -1059,7 +1059,7 @@ onUnmounted(() => {
   color: var(--m-on-surface);
   padding: 8px 10px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1075,7 +1075,7 @@ onUnmounted(() => {
   display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
 }
 .c2pa-actions .btn { font-size: 0.78rem; padding: 4px 12px; }
-.c2pa-result { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.8rem; background: var(--m-surface); border: 1px solid var(--m-border); }
+.c2pa-result { margin-top: 10px; padding: 10px 14px; border-radius: var(--m-radius-sm); font-size: 0.8rem; background: var(--m-surface); border: 1px solid var(--m-border); }
 .c2pa-success { color: var(--m-on-surface); line-height: 1.6; }
 .c2pa-success code { background: rgba(0,0,0,0.04); padding: 1px 6px; border-radius: 3px; font-size: 0.75rem; font-family: monospace; }
 .c2pa-error { color: var(--m-error); }
@@ -1083,12 +1083,12 @@ onUnmounted(() => {
 /* ===== Buttons ===== */
 .btn {
   padding: 5px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
 .btn-primary { background: rgb(140, 87, 255); color: #fff; }

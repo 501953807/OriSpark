@@ -123,7 +123,7 @@ function typeLabel(type: string): string {
   align-items: center;
   gap: 10px;
   padding: 12px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: oklch(56% 0.18 20 / .1);
   color: oklch(56% 0.18 20);
   font-size: .88rem;
@@ -157,7 +157,7 @@ function typeLabel(type: string): string {
 .compatible-item {
   padding: 10px 12px;
   border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   transition: all .2s;
   font-size: .78rem;
@@ -217,7 +217,7 @@ function typeLabel(type: string): string {
   padding: 8px 12px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: .78rem;
 }
 
@@ -271,7 +271,7 @@ function typeLabel(type: string): string {
   color: #000;
   border: none;
   padding: 6px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: .78rem;
   font-weight: 600;
   cursor: pointer;

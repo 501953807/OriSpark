@@ -92,7 +92,7 @@ function toggleExpand() {
   left: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 12px 16px;
   box-shadow: 0 8px 24px oklch(0 0 0 / 0.1);
   z-index: 100;

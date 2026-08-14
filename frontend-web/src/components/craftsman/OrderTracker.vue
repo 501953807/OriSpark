@@ -173,7 +173,7 @@ function countdownText(deliveryDate?: string): string {
 .order-row {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -247,7 +247,7 @@ function countdownText(deliveryDate?: string): string {
 
 .step-approved .step-circle {
   border-color: var(--green);
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--green);
 }
 
@@ -358,7 +358,7 @@ function countdownText(deliveryDate?: string): string {
   color: var(--muted);
   font-size: 0.88rem;
   background: var(--surface);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px dashed var(--border);
 }
 

@@ -265,7 +265,7 @@ function formatDate(isoStr?: string): string {
 .create-form {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -298,7 +298,7 @@ function formatDate(isoStr?: string): string {
 .form-select {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   background: var(--bg);
   color: var(--fg);
@@ -337,7 +337,7 @@ function formatDate(isoStr?: string): string {
   padding: 12px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   transition: border-color 0.2s;
 }
 
@@ -430,7 +430,7 @@ function formatDate(isoStr?: string): string {
   color: var(--muted);
   font-size: 0.88rem;
   background: var(--surface);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px dashed var(--border);
 }
 
@@ -440,7 +440,7 @@ function formatDate(isoStr?: string): string {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
@@ -455,7 +455,7 @@ function formatDate(isoStr?: string): string {
 .btn:hover { background: var(--bg); }
 .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
 .btn-ghost { border: none; background: transparent; color: var(--muted); }
-.btn-ghost:hover { background: oklch(0 0 0 / 0.04); color: var(--fg); }
+.btn-ghost:hover { background: rgba(0,0,0,0.04); color: var(--fg); }
 
 .btn-primary {
   background: var(--accent);

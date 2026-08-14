@@ -218,7 +218,7 @@ onMounted(() => {
 
 .btn-add {
   background: var(--accent); color: #fff; border: none;
-  padding: 4px 12px; border-radius: var(--radius-sm); font-size: .78rem; cursor: pointer;
+  padding: 4px 12px; border-radius: var(--m-radius-sm); font-size: .78rem; cursor: pointer;
 }
 
 .summary-cards {
@@ -228,7 +228,7 @@ onMounted(() => {
 
 .summary-card {
   padding: 10px 12px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); background: var(--surface); text-align: center;
+  border-radius: var(--m-radius-sm); background: var(--surface); text-align: center;
 }
 
 .summary-label { font-size: .68rem; color: var(--muted); }
@@ -287,7 +287,7 @@ onMounted(() => {
 
 .modal {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 24px; width: 400px; max-width: 90vw;
+  border-radius: var(--m-radius-md); padding: 24px; width: 400px; max-width: 90vw;
 }
 
 .modal h4 { margin: 0 0 16px; }
@@ -296,16 +296,16 @@ onMounted(() => {
 
 .form-select, .form-input {
   width: 100%; padding: 6px 10px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); font-size: .85rem; background: var(--surface);
+  border-radius: var(--m-radius-sm); font-size: .85rem; background: var(--surface);
 }
 
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 .btn-cancel {
-  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 .btn-save {
-  padding: 6px 16px; border: none; border-radius: var(--radius-sm);
+  padding: 6px 16px; border: none; border-radius: var(--m-radius-sm);
   background: var(--accent); color: #fff; cursor: pointer; font-size: .82rem;
 }
 </style>

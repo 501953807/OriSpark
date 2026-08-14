@@ -116,7 +116,7 @@ function formatDate(dateStr: string): string {
 .album-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   transition: box-shadow 0.2s, transform 0.15s;
 }

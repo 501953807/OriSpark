@@ -39,9 +39,9 @@ const selectedIndex = computed(() => {
 select {
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   cursor: pointer;
@@ -50,7 +50,7 @@ select {
 
 select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 
 .stage-count {

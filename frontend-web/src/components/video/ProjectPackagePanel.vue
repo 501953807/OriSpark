@@ -255,7 +255,7 @@ function handleRetry(entry: HistoryEntry) {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
   background: var(--surface);
   color: var(--fg);
@@ -298,7 +298,7 @@ function handleRetry(entry: HistoryEntry) {
   padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .group-header {
@@ -382,7 +382,7 @@ function handleRetry(entry: HistoryEntry) {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -464,7 +464,7 @@ function handleRetry(entry: HistoryEntry) {
   gap: 8px;
   background: var(--surface);
   border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .empty-icon {
@@ -487,7 +487,7 @@ function handleRetry(entry: HistoryEntry) {
   padding: 10px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
 }
 

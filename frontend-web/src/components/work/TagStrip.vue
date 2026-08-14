@@ -28,7 +28,7 @@ defineProps<{
 .tag-pill-compact {
   display: flex; align-items: center; gap: 3px;
   padding: 3px 8px; border-radius: 100px;
-  font-size: 0.75rem; background: oklch(56% 0.12 170 / 0.1);
+  font-size: 0.75rem; background: rgba(86,202,0,0.1);
   color: var(--accent); font-weight: 600;
 }
 .card-empty { font-size: 0.78rem; color: var(--muted); padding: 4px 0; }

@@ -273,7 +273,7 @@ function confidenceLabel(c: number): string {
 
 /* Recommendation list */
 .recommend-list { margin-top: 16px; }
-.recommend-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); margin-bottom: 8px; }
+.recommend-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); margin-bottom: 8px; }
 .recommend-rank { font-size: 1.2rem; font-weight: 700; color: rgb(140, 87, 255); min-width: 24px; }
 .recommend-body { flex: 1; }
 .recommend-name { font-weight: 600; font-size: 0.95rem; }
@@ -314,8 +314,8 @@ function confidenceLabel(c: number): string {
 .mi-name { font-weight: 500; }
 .mi-desc { font-size: 0.78rem; color: var(--m-grey-500); text-align: right; max-width: 60%; }
 
-.form-select { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: .88rem; background: var(--m-surface); color: var(--m-on-surface); width: 100%; }
-.form-textarea { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: .88rem; font-family: var(--font-body); color: var(--m-on-surface); background: var(--m-surface); outline: none; resize: vertical; width: 100%; }
+.form-select { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: .88rem; background: var(--m-surface); color: var(--m-on-surface); width: 100%; }
+.form-textarea { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: .88rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; resize: vertical; width: 100%; }
 .form-textarea:focus { border-color: rgb(140, 87, 255); }
 
 @media (max-width: 768px) {

@@ -101,7 +101,7 @@ function reset() {
 .brand-logo {
   width: 56px; height: 56px;
   border-radius: var(--m-radius-sm);
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
   display: inline-flex; align-items: center; justify-content: center;
   color: #fff; font-weight: 800; font-size: 1.6rem;
   margin-bottom: 12px;
@@ -111,7 +111,7 @@ function reset() {
 .verify-form { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
-.form-input { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; font-family: var(--font-body); color: var(--m-on-surface); background: var(--m-surface); outline: none; }
+.form-input { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; }
 .form-input:focus { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
 .result-icon { font-size: 3rem; margin-bottom: 8px; }
 .result-details { text-align: left; margin-top: 16px; }

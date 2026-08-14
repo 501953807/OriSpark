@@ -185,7 +185,7 @@ function statusIcon(status: string): string {
   padding: 10px 14px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   transition: border-color 0.2s;
 }
 
@@ -244,7 +244,7 @@ function statusIcon(status: string): string {
   color: var(--muted);
   font-size: 0.88rem;
   background: var(--bg);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px dashed var(--border);
 }
 
@@ -273,7 +273,7 @@ function statusIcon(status: string): string {
   flex: 1;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   background: var(--surface);
   color: var(--fg);
@@ -287,7 +287,7 @@ function statusIcon(status: string): string {
 
 .btn {
   padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
   border: 1px solid var(--border);

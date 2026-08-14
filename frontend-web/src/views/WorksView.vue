@@ -511,7 +511,7 @@ onUnmounted(() => {
 .filter-select {
   padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: var(--m-surface); color: var(--m-on-surface); font-size: 0.85rem;
-  font-family: var(--font-body); cursor: pointer;
+  font-family: Inter; cursor: pointer;
 }
 .works-stats { font-size: 0.82rem; color: var(--m-grey-500); display: flex; gap: 16px; align-items: center; }
 .works-stats-tags { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -553,7 +553,7 @@ onUnmounted(() => {
 .batch-project-select {
   padding: 5px 10px; border: 1px solid oklch(100% 0 0 / 0.15);
   border-radius: 8px; background: rgba(255,255,255,0.1);
-  color: #fff; font-size: 0.8rem; font-family: var(--font-body);
+  color: #fff; font-size: 0.8rem; font-family: Inter;
   cursor: pointer; outline: none;
 }
 .batch-project-select option { background: #1a1a2e; color: #fff; }
@@ -571,7 +571,7 @@ onUnmounted(() => {
   padding: 10px 14px;
   background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08);
   border: 1px solid rgba(var(--m-success-rgb, 86, 202, 0), 0.2);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
 }
 .batch-toolbar .filter-select { padding: 6px 10px; font-size: 0.82rem; }
@@ -650,7 +650,7 @@ onUnmounted(() => {
 }
 .work-list-row {
   display: flex; align-items: center; gap: 14px;
-  padding: 12px 16px; border-radius: var(--radius-sm); cursor: pointer;
+  padding: 12px 16px; border-radius: var(--m-radius-sm); cursor: pointer;
   transition: background 0.15s;
 }
 .work-list-row:hover { background: var(--m-bg-subtle); }
@@ -662,7 +662,7 @@ onUnmounted(() => {
   accent-color: rgb(140, 87, 255);
 }
 .list-thumb {
-  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  width: 44px; height: 44px; border-radius: var(--m-radius-sm);
   overflow: hidden; flex-shrink: 0;
   background: var(--m-surface-2);
   display: flex; align-items: center; justify-content: center;
@@ -676,7 +676,7 @@ onUnmounted(() => {
 .btn-ghost-small {
   background: none; border: none; cursor: pointer;
   font-size: 1rem; color: var(--m-grey-500); padding: 4px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .btn-ghost-small:hover { background: rgba(0,0,0,0.04); }
 
@@ -687,7 +687,7 @@ onUnmounted(() => {
   display: flex; align-items: center; justify-content: center;
 }
 .modal-card {
-  background: var(--m-surface); border-radius: var(--radius-xl);
+  background: var(--m-surface); border-radius: var(--m-radius-xl);
   padding: 28px; max-width: 560px; width: 90%;
   box-shadow: 0 16px 64px rgba(0,0,0,0.16);
 }
@@ -702,7 +702,7 @@ onUnmounted(() => {
 .delete-confirm-text { font-size: 0.92rem; line-height: 1.6; color: var(--m-on-surface); }
 
 /* Edit panel */
-.edit-overlay { position: fixed; inset: 0; background: oklch(0 0 0 / 0.3); z-index: 9998; }
+.edit-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 9998; }
 .edit-panel {
   position: fixed; top: 0; right: 0; bottom: 0;
   width: 420px; max-width: 92vw;
@@ -732,13 +732,13 @@ onUnmounted(() => {
 .form-group { display: flex; flex-direction: column; gap: 4px; }
 .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input, .form-textarea {
-  padding: 9px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  padding: 9px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface);
   background: var(--m-surface); outline: none;
 }
 .form-input:focus, .form-textarea:focus { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
 .form-textarea { resize: vertical; }
-.btn { padding: 9px 18px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: var(--font-body); }
+.btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
 .btn-primary { background: rgb(140, 87, 255); color: #fff; }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
 .btn-danger { background: #e53e3e; color: #fff; }
@@ -752,7 +752,7 @@ onUnmounted(() => {
 }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 8px; }
-.pagination button { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.85rem; }
+.pagination button { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.85rem; }
 .pagination button:disabled { opacity: 0.4; cursor: default; }
 
 @keyframes scaleIn {

@@ -67,7 +67,7 @@ onMounted(async () => { await Promise.all([notary.fetchRecords(), notary.fetchPl
 .p-action { font-size: 0.8rem; color: rgb(140, 87, 255); }
 .empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 .record-list { display: flex; flex-direction: column; gap: 4px; }
-.record-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 0.8fr; gap: 8px; align-items: center; padding: 10px 14px; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; }
+.record-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 0.8fr; gap: 8px; align-items: center; padding: 10px 14px; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }
 .status.confirmed { color: #1a7d36; font-weight: 600; }
 .status.pending { color: #b8860b; }
 </style>

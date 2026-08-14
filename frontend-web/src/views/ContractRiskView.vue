@@ -373,14 +373,14 @@ onMounted(loadHistory)
   flex: 1;
   padding: 10px 20px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   color: var(--m-grey-500);
   transition: all 0.15s;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .tab-btn.active {
   background: var(--m-surface);
@@ -429,11 +429,11 @@ onMounted(loadHistory)
   min-height: 320px;
   padding: 14px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--m-bg-subtle);
   color: var(--m-on-surface);
   font-size: 0.88rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   line-height: 1.6;
   resize: vertical;
   transition: border-color 0.2s;
@@ -656,11 +656,11 @@ onMounted(loadHistory)
   flex: 1;
   padding: 8px 10px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--m-bg-subtle);
   color: var(--m-on-surface);
   font-size: 0.8rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   resize: vertical;
   min-height: 48px;
 }

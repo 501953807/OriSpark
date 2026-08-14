@@ -216,7 +216,7 @@ h3 { margin-top: 0; font-size: 1rem; }
   color: white;
   border: none;
   padding: 10px 24px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.95rem;
 }

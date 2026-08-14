@@ -155,7 +155,7 @@ onMounted(loadCategories)
 }
 
 .category-card {
-  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-md);
   padding: 14px; background: var(--m-surface);
   transition: border-color 0.2s;
 }

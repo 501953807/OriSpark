@@ -360,7 +360,7 @@ function handleSave() {
 </script>
 
 <style scoped>
-.edit-overlay { position: fixed; inset: 0; background: oklch(0 0 0 / 0.3); z-index: 9998; }
+.edit-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 9998; }
 .edit-panel {
   position: fixed; top: 0; right: 0; bottom: 0;
   width: 420px; max-width: 92vw;
@@ -390,11 +390,11 @@ function handleSave() {
 .form-group { display: flex; flex-direction: column; gap: 4px; }
 .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
 .form-input, .form-textarea {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--fg);
   background: var(--surface); outline: none;
 }
-.form-input:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
+.form-input:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(86,202,0,0.1); }
 .form-textarea { resize: vertical; }
 .form-hint {
   font-size: 0.7rem;
@@ -402,7 +402,7 @@ function handleSave() {
   font-style: italic;
   line-height: 1.4;
 }
-.btn { padding: 9px 18px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: var(--font-body); }
+.btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }
 .btn-danger { background: #e53e3e; color: #fff; }

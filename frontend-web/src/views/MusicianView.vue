@@ -510,7 +510,7 @@ onMounted(async () => {
   gap: 6px;
   padding: 8px 14px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   flex: 1;
   min-width: 160px;
 }
@@ -523,7 +523,7 @@ onMounted(async () => {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--m-on-surface);
-  font-family: var(--font-display);
+  font-family: Inter;
 }
 .stat-albums .stat-value { color: #7c3aed; }
 .stat-distributed .stat-value { color: #16a34a; }
@@ -595,7 +595,7 @@ onMounted(async () => {
 .form-input {
   padding: 8px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   background: var(--m-bg-subtle);
   color: var(--m-on-surface);
@@ -607,7 +607,7 @@ onMounted(async () => {
 }
 .btn {
   padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
   border: 1px solid var(--m-border);

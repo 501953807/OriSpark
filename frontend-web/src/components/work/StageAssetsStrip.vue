@@ -58,7 +58,7 @@ defineProps<{
   width: 100%;
   height: 72px;
   object-fit: cover;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--border);
 }
 .asset-file-icon {
@@ -68,8 +68,8 @@ defineProps<{
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  background: oklch(96% 0.003 240);
-  border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--border);
 }
 .asset-caption {
@@ -87,7 +87,7 @@ defineProps<{
   text-align: center;
   padding: 16px 8px;
   border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .stage-notes {
@@ -95,8 +95,8 @@ defineProps<{
   color: var(--fg);
   margin-top: 10px;
   padding: 8px 10px;
-  background: oklch(96% 0.003 240);
-  border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle);
+  border-radius: var(--m-radius-sm);
   line-height: 1.5;
 }
 .stage-notes strong { color: var(--accent); }

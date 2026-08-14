@@ -175,7 +175,7 @@ onMounted(async () => {
 .tabs-bar { display: flex; gap: 0; border-bottom: 2px solid var(--m-border); }
 .tab-btn {
   padding: 10px 24px; font-size: 0.9rem; font-weight: 600;
-  font-family: var(--font-body); border: none; background: none; color: var(--m-grey-500);
+  font-family: Inter; border: none; background: none; color: var(--m-grey-500);
   cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -183,7 +183,7 @@ onMounted(async () => {
 .tab-btn.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 768px) { .stats-row { grid-template-columns: 1fr; } }
-.section-title { font-size: 1rem; font-weight: 700; font-family: var(--font-display); }
+.section-title { font-size: 1rem; font-weight: 700; font-family: Inter; }
 .scan-actions { padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .scan-title { font-weight: 700; font-size: 0.95rem; }
 .scan-desc { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
@@ -191,7 +191,7 @@ onMounted(async () => {
 .filter-select {
   padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: var(--m-surface); color: var(--m-on-surface); font-size: 0.85rem;
-  font-family: var(--font-body); cursor: pointer;
+  font-family: Inter; cursor: pointer;
 }
 .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
 .result-card { padding: 20px; display: flex; flex-direction: column; gap: 10px; }

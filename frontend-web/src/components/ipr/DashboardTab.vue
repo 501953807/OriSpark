@@ -114,7 +114,7 @@ defineEmits<{
 .stat-detail { display:flex; gap:4px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
 .mini-badge { font-size:.65rem; padding:1px 5px; border-radius:4px; }
 .badge-info { background:oklch(56% 0.12 260 / 0.1); color:var(--blue); }
-.badge-success { background:oklch(56% 0.12 170 / 0.1); color:var(--accent); }
+.badge-success { background:rgba(86,202,0,0.1); color:var(--accent); }
 .badge-warning { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
 .badge-error { background:oklch(62% 0.18 20 / 0.1); color:var(--red); }
 
@@ -131,7 +131,7 @@ defineEmits<{
 .renewals-section { padding:20px; }
 .renewals-section h4 { margin:0 0 12px; font-size:.95rem; }
 .renewal-list { display:flex; flex-direction:column; gap:8px; }
-.renewal-item { display:flex; align-items:center; gap:12px; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border); }
+.renewal-item { display:flex; align-items:center; gap:12px; padding:12px; border-radius:var(--m-radius-sm); border:1px solid var(--border); }
 .urgency-red { border-left:4px solid var(--red); background:oklch(62% 0.18 20 / 0.03); }
 .urgency-orange { border-left:4px solid var(--orange); background:oklch(62% 0.18 55 / 0.03); }
 .urgency-dot { font-size:1rem; }

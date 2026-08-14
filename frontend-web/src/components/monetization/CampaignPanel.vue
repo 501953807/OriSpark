@@ -226,7 +226,7 @@ onMounted(loadCampaigns)
 
 .btn-add {
   background: var(--accent); color: #fff; border: none;
-  padding: 4px 12px; border-radius: var(--radius-sm); font-size: .78rem; cursor: pointer;
+  padding: 4px 12px; border-radius: var(--m-radius-sm); font-size: .78rem; cursor: pointer;
 }
 
 .loading-state, .empty-state {
@@ -239,7 +239,7 @@ onMounted(loadCampaigns)
 .campaign-item {
   display: flex; justify-content: space-between; align-items: flex-start;
   padding: 12px 14px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); background: var(--surface);
+  border-radius: var(--m-radius-sm); background: var(--surface);
 }
 
 .campaign-title { font-weight: 700; font-size: .88rem; }
@@ -273,7 +273,7 @@ onMounted(loadCampaigns)
 
 .campaign-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .ext-link, .ext-btn {
-  background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   padding: 4px 8px; cursor: pointer; font-size: .82rem;
 }
 
@@ -286,7 +286,7 @@ onMounted(loadCampaigns)
 
 .modal {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 24px;
+  border-radius: var(--m-radius-md); padding: 24px;
   width: 520px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
 }
 
@@ -296,12 +296,12 @@ onMounted(loadCampaigns)
 
 .form-select, .form-input {
   width: 100%; padding: 6px 10px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); font-size: .85rem; background: var(--surface);
+  border-radius: var(--m-radius-sm); font-size: .85rem; background: var(--surface);
 }
 
 .template-grid { display: flex; gap: 6px; flex-wrap: wrap; }
 .tpl-btn {
-  padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   background: var(--surface); cursor: pointer; font-size: .75rem;
 }
 .tpl-btn.active { border-color: var(--accent); background: oklch(56% 0.12 170 / .08); }
@@ -314,27 +314,27 @@ onMounted(loadCampaigns)
 
 .tier-input {
   flex: 1; padding: 4px 8px; border: 1px solid var(--border);
-  border-radius: var(--radius-sm); font-size: .78rem; background: var(--surface);
+  border-radius: var(--m-radius-sm); font-size: .78rem; background: var(--surface);
 }
 .tier-input.short { flex: 0.6; }
 
 .tier-remove {
-  background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   cursor: pointer; font-size: .72rem; padding: 4px 6px;
 }
 
 .tier-add {
-  background: none; border: 1px dashed var(--border); border-radius: var(--radius-sm);
+  background: none; border: 1px dashed var(--border); border-radius: var(--m-radius-sm);
   cursor: pointer; font-size: .75rem; color: var(--accent); padding: 4px;
 }
 
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 .btn-cancel {
-  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 .btn-save {
-  padding: 6px 16px; border: none; border-radius: var(--radius-sm);
+  padding: 6px 16px; border: none; border-radius: var(--m-radius-sm);
   background: var(--accent); color: #fff; cursor: pointer; font-size: .82rem;
 }
 .btn-save:disabled { opacity: .5; cursor: not-allowed; }

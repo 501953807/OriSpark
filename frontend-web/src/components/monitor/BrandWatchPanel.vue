@@ -184,14 +184,14 @@ onMounted(fetchBrands)
 
 <style scoped>
 .brand-panel { display: flex; flex-direction: column; gap: 16px; }
-.section-title { font-size: 1rem; font-weight: 700; font-family: var(--font-display); margin: 0; }
+.section-title { font-size: 1rem; font-weight: 700; font-family: Inter; margin: 0; }
 .brand-header { padding: 20px; }
 .brand-header-top { display: flex; justify-content: space-between; align-items: center; }
 .brand-form { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
 .form-row { display: flex; gap: 16px; flex-wrap: wrap; }
 .form-field { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
-.form-field input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; background: var(--surface); color: var(--fg); }
+.form-field input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--m-radius-sm); font-size: 0.85rem; background: var(--surface); color: var(--fg); }
 .platform-checks { display: flex; gap: 12px; flex-wrap: wrap; }
 .check-label { display: flex; align-items: center; gap: 4px; font-size: 0.82rem; cursor: pointer; }
 .form-actions { display: flex; gap: 8px; }

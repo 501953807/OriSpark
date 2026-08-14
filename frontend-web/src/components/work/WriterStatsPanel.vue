@@ -201,7 +201,7 @@ const hasAnyData = computed(() => {
   margin: 2px 4px 2px 0;
   border-radius: 10px;
   font-size: 0.78rem;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: #16a34a;
   font-weight: 500;
 }

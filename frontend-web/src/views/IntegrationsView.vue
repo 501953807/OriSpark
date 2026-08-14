@@ -188,7 +188,7 @@ function connectItem(item: any) {
 .cat-tab {
   padding: 8px 18px; border-radius: 100px; font-size: 0.84rem; font-weight: 600;
   cursor: pointer; border: 1px solid var(--m-border); background: var(--m-surface);
-  transition: all 0.2s; font-family: var(--font-body); color: var(--m-grey-500);
+  transition: all 0.2s; font-family: Inter; color: var(--m-grey-500);
 }
 .cat-tab.active { background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255); }
 .cat-tab:hover:not(.active) { border-color: rgb(140, 87, 255); color: rgb(140, 87, 255); }
@@ -205,7 +205,7 @@ function connectItem(item: any) {
 .ic-logo.publish { background: oklch(58% 0.16 280 / 0.12); }
 .ic-logo.ai { background: oklch(58% 0.14 245 / 0.12); }
 .ic-info { flex: 1; min-width: 0; }
-.ic-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
+.ic-name { font-family: Inter; font-size: 1.05rem; font-weight: 700; }
 .ic-cat { font-size: 0.72rem; color: var(--m-grey-500); text-transform: uppercase; letter-spacing: 0.04em; }
 .ic-desc { font-size: 0.85rem; color: var(--m-grey-500); line-height: 1.6; }
 .ic-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.75rem; }
@@ -220,7 +220,7 @@ function connectItem(item: any) {
 /* Platform Config */
 .platform-config-section { padding: 24px; }
 .platform-config-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.platform-config-card { padding: 16px; border: 1px solid var(--m-border); border-radius: var(--radius-md); background: var(--m-surface); }
+.platform-config-card { padding: 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-md); background: var(--m-surface); }
 .pc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .pc-icon { font-size: 1.5rem; }
 .pc-name { font-weight: 700; font-size: 0.9rem; }
@@ -229,6 +229,6 @@ function connectItem(item: any) {
 .pc-status.disconnected { color: var(--m-grey-500); }
 .pc-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-bottom: 10px; }
 .pc-input-row { margin-bottom: 10px; }
-.pc-key-input { width: 100%; padding: 6px 10px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.82rem; background: var(--m-bg-subtle); }
+.pc-key-input { width: 100%; padding: 6px 10px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.82rem; background: var(--m-bg-subtle); }
 .pc-actions { display: flex; gap: 6px; }
 </style>

@@ -157,7 +157,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tab {
   padding: 8px 16px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
@@ -187,7 +187,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   width: 100%;
   padding: 8px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .btn-primary {
@@ -195,7 +195,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: white;
   border: none;
   padding: 10px 24px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   width: 100%;
 }
@@ -233,7 +233,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   justify-content: space-between;
   padding: 8px 12px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
 }
 

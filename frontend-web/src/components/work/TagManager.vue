@@ -164,7 +164,7 @@ onMounted(() => { loadGlobalTags() })
   padding: 3px 8px;
   border-radius: 100px;
   font-size: 0.75rem;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--accent);
   font-weight: 600;
 }
@@ -191,9 +191,9 @@ onMounted(() => { loadGlobalTags() })
   align-items: center;
   gap: 10px;
   padding: 6px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
 }
 .gt-name { flex: 1; font-weight: 600; }
 .gt-count { color: var(--muted); font-size: 0.72rem; }
@@ -214,8 +214,8 @@ onMounted(() => { loadGlobalTags() })
 .modal-close-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
 .modal-lg { max-width: 480px; }
 .form-input {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--fg);
   background: var(--surface); outline: none; width: 100%;
 }
 </style>

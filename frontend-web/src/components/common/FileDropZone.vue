@@ -137,7 +137,7 @@ function formatSize(bytes: number): string {
   display: flex;
   gap: 4px;
   background: oklch(90% 0.005 240);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   padding: 3px;
 }
 .dark .mode-toggle {
@@ -154,7 +154,7 @@ function formatSize(bytes: number): string {
   cursor: pointer;
   color: var(--muted);
   transition: all 0.15s;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .mode-btn.active {
   background: var(--surface);
@@ -168,7 +168,7 @@ function formatSize(bytes: number): string {
 
 .drop-zone {
   border: 2px dashed var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   padding: 48px 24px;
   text-align: center;
   cursor: pointer;
@@ -201,7 +201,7 @@ function formatSize(bytes: number): string {
   padding: 10px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   margin-bottom: 6px;
   font-size: 0.88rem;
 }

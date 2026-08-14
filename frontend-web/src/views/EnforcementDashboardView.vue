@@ -270,9 +270,9 @@ onMounted(refresh)
 .filters { padding: 16px; }
 .filter-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .filter-select {
-  padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: var(--m-surface); color: var(--m-on-surface); font-size: 0.85rem;
-  font-family: var(--font-body); cursor: pointer;
+  font-family: Inter; cursor: pointer;
 }
 
 /* Actions grid */
@@ -317,7 +317,7 @@ onMounted(refresh)
 .template-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .template-item {
   display: flex; align-items: center; gap: 8px; padding: 8px 12px;
-  border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.82rem;
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.82rem;
 }
 .tpl-badge {
   font-size: 0.7rem; padding: 1px 6px; border-radius: 100px;

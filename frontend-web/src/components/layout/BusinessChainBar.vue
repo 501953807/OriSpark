@@ -41,7 +41,7 @@ const steps = computed(() => {
 <style scoped>
 .chain-bar {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 10px 16px; margin-bottom: 20px;
+  border-radius: var(--m-radius-sm); padding: 10px 16px; margin-bottom: 20px;
 }
 .chain-steps { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .chain-step {

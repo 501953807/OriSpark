@@ -124,7 +124,7 @@ function removeTag(index: number) {
   padding: 2px 6px 2px 8px;
   border-radius: 100px;
   font-size: 0.75rem;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--accent);
 }
 
@@ -155,9 +155,9 @@ function removeTag(index: number) {
   width: 100%;
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   outline: none;
@@ -165,7 +165,7 @@ function removeTag(index: number) {
 
 .tag-field:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 
 .suggestions-dropdown {
@@ -175,7 +175,7 @@ function removeTag(index: number) {
   right: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   box-shadow: 0 4px 12px oklch(0 0 0 / 0.1);
   z-index: 10;
   max-height: 160px;
@@ -190,6 +190,6 @@ function removeTag(index: number) {
 
 .suggestion-item:hover,
 .suggestion-item.selected {
-  background: oklch(56% 0.12 170 / 0.08);
+  background: rgba(86,202,0,0.08);
 }
 </style>

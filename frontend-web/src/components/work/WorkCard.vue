@@ -59,7 +59,7 @@ function formatSize(bytes: number): string {
   height: 160px;
   position: relative;
   overflow: hidden;
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
 }
 .card-thumb img {
   width: 100%; height: 100%; object-fit: cover;
@@ -78,7 +78,7 @@ function formatSize(bytes: number): string {
 .card-verified {
   position: absolute; bottom: 8px; right: 8px;
   padding: 2px 8px; border-radius: 100px;
-  background: oklch(56% 0.12 170 / 0.85); color: #fff;
+  background: rgba(86,202,0,0.85); color: #fff;
   font-size: 0.65rem; font-weight: 600;
 }
 .card-body { padding: 12px 14px; }
@@ -94,6 +94,6 @@ function formatSize(bytes: number): string {
 .tag {
   padding: 2px 8px; border-radius: 100px;
   font-size: 0.65rem; font-weight: 600;
-  background: oklch(56% 0.12 170 / 0.1); color: var(--accent);
+  background: rgba(86,202,0,0.1); color: var(--accent);
 }
 </style>

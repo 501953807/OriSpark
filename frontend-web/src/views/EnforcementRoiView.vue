@@ -218,7 +218,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tab {
   padding: 8px 16px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.85rem;
@@ -234,7 +234,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .form-group input, .form-group select {
   padding: 8px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
 }
 .btn-primary {
@@ -242,7 +242,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: white;
   border: none;
   padding: 8px 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.9rem;
   height: fit-content;
@@ -319,7 +319,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   text-align: center;
   padding: 12px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .stat span { display: block; font-size: 0.75rem; color: var(--m-grey-500); margin-bottom: 4px; }
 .stat strong { font-size: 1rem; }

@@ -37,9 +37,9 @@ const variant = computed(() => {
   width: 6px; height: 6px;
   border-radius: 50%;
 }
-.default { background: oklch(0 0 0 / 0.04); color: var(--muted); }
+.default { background: rgba(0,0,0,0.04); color: var(--muted); }
 .default .status-dot { background: var(--muted); }
-.success, .confirmed, .active { background: oklch(56% 0.12 170 / 0.1); color: var(--green); }
+.success, .confirmed, .active { background: rgba(86,202,0,0.1); color: var(--green); }
 .success .status-dot, .confirmed .status-dot, .active .status-dot { background: var(--green); }
 .warning, .pending, .pending_review { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
 .warning .status-dot, .pending .status-dot, .pending_review .status-dot { background: var(--orange); }

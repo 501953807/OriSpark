@@ -268,36 +268,36 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; display: flex; justify-content: space-between; align-items: center; }
 
-.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
 .btn-add:hover { border-color: rgb(140, 87, 255); }
 
 .add-form, .schedule-form, .simulate-form { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-.form-input, .form-select, .form-textarea { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; }
+.form-input, .form-select, .form-textarea { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }
 .form-textarea { min-height: 60px; resize: vertical; }
 
 .platform-checks { display: flex; flex-wrap: wrap; gap: 8px; }
 .platform-checkbox { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer; }
 .checkbox-label { font-size: 0.85rem; display: flex; align-items: center; gap: 4px; }
-.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; }
+.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; }
 
 .account-list { margin-top: 12px; display: grid; gap: 8px; }
-.account-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); }
+.account-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .account-info { display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
 .account-info strong { min-width: 60px; }
-.btn-remove { background: none; border: 1px solid #ef4444; color: #ef4444; padding: 4px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.75rem; }
+.btn-remove { background: none; border: 1px solid #ef4444; color: #ef4444; padding: 4px 12px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.75rem; }
 
 .schedule-list { margin-top: 12px; display: grid; gap: 8px; }
-.schedule-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); }
+.schedule-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .schedule-info { display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
 .schedule-time { color: var(--m-grey-500); font-size: 0.8rem; }
 .schedule-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
 .schedule-status.scheduled { background: #dbeafe; color: #2563eb; }
 .schedule-status.published { background: #dcfce7; color: #16a34a; }
 .schedule-status.failed { background: #fef2f2; color: #dc2626; }
-.btn-cancel { background: none; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.75rem; }
+.btn-cancel { background: none; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px 12px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.75rem; }
 
 .simulate-results { margin-top: 12px; display: grid; gap: 8px; }
-.simulate-card { padding: 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); }
+.simulate-card { padding: 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .simulate-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .simulate-header strong { font-size: 0.9rem; }
 .tags-badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }

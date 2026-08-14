@@ -225,7 +225,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
   padding: 10px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   flex-wrap: wrap;
 }
 
@@ -274,7 +274,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
 .shot-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
   cursor: pointer;
@@ -444,7 +444,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
 
 .btn {
   padding: 6px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -465,14 +465,14 @@ function thumbnailUrl(shot: PhotographerShot): string {
   padding: 10px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   flex-wrap: wrap;
 }
 
 .exif-filters input {
   padding: 4px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
   width: 110px;
   font-family: inherit;

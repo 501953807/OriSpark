@@ -117,7 +117,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tab {
   padding: 8px 16px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
@@ -222,7 +222,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: white;
   border: none;
   padding: 8px 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -231,7 +231,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: rgb(140, 87, 255);
   border: 1px solid rgb(140, 87, 255);
   padding: 4px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.8rem;
 }

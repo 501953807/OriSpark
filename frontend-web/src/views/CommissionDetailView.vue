@@ -545,7 +545,7 @@ fetchData()
 .revision-list { display: flex; flex-direction: column; gap: 10px; }
 .revision-card {
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
 .revision-desc { font-weight: 600; font-size: 0.9rem; }
@@ -558,7 +558,7 @@ fetchData()
 .milestone-list { display: flex; flex-direction: column; gap: 10px; }
 .milestone-card {
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
 .milestone-name { font-weight: 700; font-size: 0.95rem; }
@@ -570,7 +570,7 @@ fetchData()
 .payment-list { display: flex; flex-direction: column; gap: 10px; }
 .payment-card {
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
 .payment-amount { font-weight: 700; font-size: 1.1rem; color: rgb(140, 87, 255); }
@@ -595,15 +595,15 @@ fetchData()
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input, .form-select, .form-textarea {
-  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--m-on-surface);
+  padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface);
   background: var(--m-surface); outline: none; max-width: 400px;
 }
 .form-textarea { resize: vertical; width: 100%; max-width: 100%; }
 
 /* Modal */
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:420px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
+.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:420px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
 .modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }

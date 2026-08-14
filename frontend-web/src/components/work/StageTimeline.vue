@@ -304,7 +304,7 @@ function removeAsset(stageValue: string, index: number) {
   font-size: 0.72rem;
   color: var(--accent);
   font-weight: 600;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   padding: 2px 8px;
   border-radius: 100px;
 }
@@ -388,7 +388,7 @@ function removeAsset(stageValue: string, index: number) {
 
 .step-node.future {
   border: 2px solid oklch(78% 0.01 240);
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
 }
 .node-future {
   width: 8px;
@@ -414,7 +414,7 @@ function removeAsset(stageValue: string, index: number) {
   flex: 1;
   padding: 8px 12px 8px 0;
   cursor: pointer;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   transition: background 0.15s;
 }
 .step-card:hover {
@@ -468,7 +468,7 @@ function removeAsset(stageValue: string, index: number) {
   width: 100%;
   height: 90px;
   object-fit: cover;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--border);
   transition: border-color 0.15s;
 }
@@ -482,8 +482,8 @@ function removeAsset(stageValue: string, index: number) {
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  background: oklch(96% 0.003 240);
-  border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--border);
 }
 .expanded-asset-caption {
@@ -522,7 +522,7 @@ function removeAsset(stageValue: string, index: number) {
   text-align: center;
   padding: 14px;
   border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .expanded-notes {
@@ -530,8 +530,8 @@ function removeAsset(stageValue: string, index: number) {
   color: var(--fg);
   margin-top: 12px;
   padding: 8px 10px;
-  background: oklch(96% 0.003 240);
-  border-radius: var(--radius-sm);
+  background: var(--m-bg-subtle);
+  border-radius: var(--m-radius-sm);
   line-height: 1.5;
 }
 .expanded-notes strong { color: var(--accent); }
@@ -552,18 +552,18 @@ function removeAsset(stageValue: string, index: number) {
   padding: 6px 14px;
   font-size: 0.78rem;
   border: 1px dashed var(--accent);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   color: var(--accent);
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-upload:hover { background: oklch(56% 0.12 170 / 0.08); }
+.btn-upload:hover { background: rgba(86,202,0,0.08); }
 .btn-set-current {
   padding: 6px 14px;
   font-size: 0.78rem;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--accent);
   color: #fff;
   cursor: pointer;

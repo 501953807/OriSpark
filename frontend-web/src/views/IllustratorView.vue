@@ -187,7 +187,7 @@ onMounted(() => {
   gap: 6px;
   padding: 8px 14px;
   background: var(--m-bg-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   flex: 1;
   min-width: 140px;
 }
@@ -202,7 +202,7 @@ onMounted(() => {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--m-on-surface);
-  font-family: var(--font-display);
+  font-family: Inter;
 }
 
 .stat-verified .stat-value { color: #16a34a; }
@@ -413,7 +413,7 @@ onMounted(() => {
 /* ── Buttons ───────────────────────────────────────────────── */
 .btn {
   padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   cursor: pointer;
   border: 1px solid var(--m-border);

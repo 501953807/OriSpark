@@ -39,7 +39,7 @@ const loaded = defineModel<boolean>({ default: false })
   display: flex;
   align-items: center;
   justify-content: center;
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
   font-size: 2rem;
   z-index: 1;
 }

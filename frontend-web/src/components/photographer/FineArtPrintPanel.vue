@@ -144,7 +144,7 @@ onMounted(() => {
 .panel-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 16px;
 }
 .form-row {
@@ -157,7 +157,7 @@ onMounted(() => {
   min-width: 120px;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
 }
 .checkbox-label {
@@ -189,7 +189,7 @@ onMounted(() => {
   padding: 10px 14px;
   background: oklch(65% 0.18 20);
   color: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
 }
 </style>

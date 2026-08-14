@@ -275,12 +275,12 @@ onUnmounted(() => {
 }
 .work-list-row {
   display: flex; align-items: center; gap: 14px;
-  padding: 12px 16px; border-radius: var(--radius-sm);
+  padding: 12px 16px; border-radius: var(--m-radius-sm);
   transition: background 0.15s;
 }
 .work-list-row:hover { background: var(--m-bg-subtle); }
 .list-thumb {
-  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  width: 44px; height: 44px; border-radius: var(--m-radius-sm);
   overflow: hidden; flex-shrink: 0;
   background: var(--m-surface-2);
   display: flex; align-items: center; justify-content: center;
@@ -292,6 +292,6 @@ onUnmounted(() => {
 .list-meta { font-size: 0.72rem; color: var(--m-grey-500); }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 8px; }
-.pagination button { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.85rem; }
+.pagination button { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.85rem; }
 .pagination button:disabled { opacity: 0.4; cursor: default; }
 </style>

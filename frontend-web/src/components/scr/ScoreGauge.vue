@@ -11,7 +11,7 @@
                 transform="rotate(135 100 100)" style="transition: stroke-dashoffset 0.6s ease;" />
         <!-- Center text -->
         <text x="100" y="90" text-anchor="middle" fill="var(--fg)" font-size="36" font-weight="700"
-              font-family="var(--font-display)">{{ score }}</text>
+              font-family="Inter">{{ score }}</text>
         <text x="100" y="115" text-anchor="middle" fill="var(--muted)" font-size="12">SCORE</text>
       </svg>
     </div>

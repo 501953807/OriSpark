@@ -394,11 +394,11 @@ onMounted(async () => {
   font-size: 0.82rem; font-weight: 600; color: var(--muted);
 }
 .form-input {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.9rem; font-family: var(--font-body); color: var(--fg);
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
+  font-size: 0.9rem; font-family: Inter; color: var(--fg);
   background: var(--surface); outline: none; transition: border-color 0.2s;
 }
-.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(86,202,0,0.1); }
 
 .workflow-cards { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
 .wf-card { padding: 16px; border: 1px solid var(--border); border-radius: 12px; text-align: center; min-width: 120px; background: var(--surface); }
@@ -408,7 +408,7 @@ onMounted(async () => {
 .wf-arrow { font-size: 1.2rem; color: var(--accent); font-weight: 700; }
 
 .ob-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.btn { padding: 10px 20px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: var(--font-body); }
+.btn { padding: 10px 20px; border-radius: var(--m-radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: Inter; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { opacity: 0.9; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }

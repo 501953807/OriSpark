@@ -138,7 +138,7 @@ onMounted(() => {
   position: absolute; top: calc(100% + 8px); right: 0;
   width: 360px; max-height: 480px;
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); box-shadow: 0 12px 40px oklch(0 0 0 / 0.12);
+  border-radius: var(--m-radius-sm); box-shadow: 0 12px 40px rgba(0,0,0,0.12);
   z-index: 100; overflow: hidden; display: flex; flex-direction: column;
 }
 .notif-backdrop { position: fixed; inset: 0; z-index: 99; }
@@ -149,23 +149,23 @@ onMounted(() => {
 .notif-title { font-weight: 700; font-size: 0.95rem; }
 .notif-mark-all {
   font-size: 0.78rem; color: var(--accent); background: none; border: none;
-  cursor: pointer; font-family: var(--font-body);
+  cursor: pointer; font-family: Inter;
 }
 .notif-mark-all:hover { opacity: 0.8; }
 .notif-list { overflow-y: auto; flex: 1; }
 .notif-item {
   display: flex; gap: 10px; padding: 12px 16px;
   cursor: pointer; transition: background 0.15s;
-  border-bottom: 1px solid oklch(0 0 0 / 0.04);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
 }
 .notif-item:hover { background: var(--surface-hover); }
-.notif-item.unread { background: oklch(56% 0.12 170 / 0.03); }
+.notif-item.unread { background: rgba(86,202,0,0.03); }
 .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
 .notif-body { flex: 1; min-width: 0; }
 .notif-item-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
 .notif-item-content { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .notif-item-meta { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--muted); }
-.notif-type { padding: 1px 6px; border-radius: 4px; background: oklch(95% 0.01 240); }
+.notif-type { padding: 1px 6px; border-radius: 4px; background: var(--m-surface-2); }
 .notif-empty { padding: 40px 16px; text-align: center; color: var(--muted); font-size: 0.88rem; }
 .bell-icon { display: inline-flex; align-items: center; }
 .bell-icon.shake { animation: bell-shake 2s ease-in-out infinite; }

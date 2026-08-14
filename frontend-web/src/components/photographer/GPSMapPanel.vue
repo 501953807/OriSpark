@@ -187,7 +187,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   padding: 10px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   color: var(--fg);
 }
@@ -203,7 +203,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   height: 420px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
 }
 
@@ -245,7 +245,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
 
 .pin-icon {
   font-size: 1.5rem;
-  filter: drop-shadow(0 2px 4px oklch(0 0 0 / 0.3));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   line-height: 1;
 }
 
@@ -273,7 +273,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   z-index: 10;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
   display: flex;
   gap: 12px;
@@ -285,7 +285,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
 .tooltip-thumb {
   width: 72px;
   height: 54px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   flex-shrink: 0;
   background: var(--bg);
@@ -353,7 +353,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   padding: 10px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
@@ -385,7 +385,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   color: var(--muted);
   background: var(--bg);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   white-space: nowrap;
 }
 </style>

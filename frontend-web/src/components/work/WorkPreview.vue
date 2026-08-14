@@ -41,7 +41,7 @@ defineEmits<{ close: [] }>()
   display: flex; align-items: center; justify-content: center;
 }
 .preview-content {
-  background: var(--surface); border-radius: var(--radius-xl);
+  background: var(--surface); border-radius: var(--m-radius-xl);
   max-width: 90vw; max-height: 90vh; overflow: hidden;
   position: relative;
 }

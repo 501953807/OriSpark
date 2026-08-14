@@ -164,8 +164,8 @@ onUnmounted(() => {
   max-height: 480px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 12px 40px oklch(0 0 0 / 0.12);
+  border-radius: var(--m-radius-sm);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
   z-index: 100;
   overflow: hidden;
   display: flex;
@@ -194,7 +194,7 @@ onUnmounted(() => {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .notif-mark-all:hover { opacity: 0.8; }
 
@@ -208,10 +208,10 @@ onUnmounted(() => {
   padding: 12px 16px;
   cursor: pointer;
   transition: background 0.15s;
-  border-bottom: 1px solid oklch(0 0 0 / 0.04);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
 }
 .notif-item:hover { background: var(--surface-hover); }
-.notif-item.unread { background: oklch(56% 0.12 170 / 0.03); }
+.notif-item.unread { background: rgba(86,202,0,0.03); }
 
 .notif-dot {
   width: 8px;
@@ -245,7 +245,7 @@ onUnmounted(() => {
 .notif-type {
   padding: 1px 6px;
   border-radius: 4px;
-  background: oklch(95% 0.01 240);
+  background: var(--m-surface-2);
 }
 
 .notif-empty {

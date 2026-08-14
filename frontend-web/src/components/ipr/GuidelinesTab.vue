@@ -347,7 +347,7 @@
           </div>
           <div class="gl-section">
             <h4>💡 案例参考</h4>
-            <div class="sme-example card" style="padding:16px;background:oklch(96% 0.003 240)">
+            <div class="sme-example card" style="padding:16px;background:var(--m-bg-subtle)">
               <p style="margin:0 0 8px"><strong>{{ currentGuidelines.sme_fund.example.scenario }}</strong></p>
               <div class="fee-grid">
                 <div class="fee-chip"><strong>总费用</strong><span>{{ currentGuidelines.sme_fund.example.total_fee }}</span></div>
@@ -432,27 +432,27 @@ async function doTrademarkSearch() {
 .gl-section ul { padding-left:20px; font-size:.85rem; color:var(--muted); line-height:1.8; }
 .gl-meta { display:flex; gap:16px; font-size:.82rem; color:var(--muted); flex-wrap:wrap; align-items:center; }
 .gl-meta a { color:var(--accent); }
-.gl-warning { padding:12px; background:oklch(62% 0.18 55 / 0.08); border-radius:var(--radius-sm); font-size:.82rem; color:var(--orange); }
+.gl-warning { padding:12px; background:oklch(62% 0.18 55 / 0.08); border-radius:var(--m-radius-sm); font-size:.82rem; color:var(--orange); }
 .gl-fees { margin-top:4px; }
 .gl-fees h4 { font-size:.9rem; margin:0 0 8px; }
 .fee-grid { display:flex; gap:8px; flex-wrap:wrap; }
-.fee-chip { padding:6px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); font-size:.8rem; display:flex; gap:6px; align-items:center; }
+.fee-chip { padding:6px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--m-radius-sm); font-size:.8rem; display:flex; gap:6px; align-items:center; }
 .fee-chip strong { color:var(--accent); white-space:nowrap; }
 .category-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.category-chip { padding:8px 12px; background:oklch(96% 0.003 240); border-radius:var(--radius-sm); font-size:.8rem; cursor:pointer; transition:all .15s; }
+.category-chip { padding:8px 12px; background:var(--m-bg-subtle); border-radius:var(--m-radius-sm); font-size:.8rem; cursor:pointer; transition:all .15s; }
 .category-chip:hover { background:oklch(90% 0.01 240); }
 .category-chip strong { color:var(--accent); }
 
 .materials-list { display:flex; flex-direction:column; gap:8px; }
-.material-item { display:flex; gap:10px; padding:8px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--border); }
+.material-item { display:flex; gap:10px; padding:8px; border-radius:var(--m-radius-sm); background:var(--surface); border:1px solid var(--border); }
 .material-item.required { border-left:3px solid var(--red); }
 .material-check { font-size:.9rem; font-weight:700; color:var(--red); min-width:20px; }
 .material-name { font-weight:600; font-size:.84rem; display:block; }
 .material-desc { font-size:.78rem; color:var(--muted); display:block; margin-top:2px; }
-.material-tag { font-size:.72rem; background:oklch(56% 0.12 170 / 0.1); color:var(--accent); padding:1px 6px; border-radius:4px; margin-left:6px; }
+.material-tag { font-size:.72rem; background:rgba(86,202,0,0.1); color:var(--accent); padding:1px 6px; border-radius:4px; margin-left:6px; }
 
 .process-flow { display:flex; flex-direction:column; gap:10px; }
-.process-step { display:flex; gap:12px; padding:10px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--border); }
+.process-step { display:flex; gap:12px; padding:10px; border-radius:var(--m-radius-sm); background:var(--surface); border:1px solid var(--border); }
 .step-num { width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:var(--accent); color:#fff; border-radius:50%; font-size:.78rem; font-weight:700; flex-shrink:0; }
 .process-step strong { font-size:.85rem; display:block; }
 .process-step p { font-size:.78rem; color:var(--muted); margin:4px 0 2px; }
@@ -460,7 +460,7 @@ async function doTrademarkSearch() {
 
 /* ── P2.4: Jurisdiction Bar ───────────────────── */
 .jurisdiction-bar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
-.jur-btn { padding:8px 18px; border-radius:100px; font-size:.82rem; font-weight:600; cursor:pointer; border:2px solid var(--border); background:var(--surface); color:var(--muted); font-family:var(--font-body); transition:all .2s; display:flex; align-items:center; gap:6px; }
+.jur-btn { padding:8px 18px; border-radius:100px; font-size:.82rem; font-weight:600; cursor:pointer; border:2px solid var(--border); background:var(--surface); color:var(--muted); font-family:Inter; transition:all .2s; display:flex; align-items:center; gap:6px; }
 .jur-btn:hover { border-color:var(--accent); color:var(--accent); }
 .jur-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .jur-flag { font-size:1rem; }
@@ -472,14 +472,14 @@ async function doTrademarkSearch() {
 
 /* ── Fee examples ──────────────────────── */
 .fee-example-list { display:flex; flex-direction:column; gap:8px; }
-.fee-example-item { padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); }
+.fee-example-item { padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--m-radius-sm); }
 .fee-example-header { display:flex; justify-content:space-between; align-items:center; font-size:.84rem; }
 .fee-total { font-weight:800; color:var(--accent); }
 .fee-example-breakdown { font-size:.76rem; color:var(--muted); margin:4px 0 0; }
 
 /* ── SME Fund ──────────────────────────────── */
 .sme-coverage { display:flex; gap:10px; flex-direction:column; }
-.sme-cov-item { padding:10px 14px; background:oklch(56% 0.12 260 / 0.05); border:1px solid oklch(56% 0.12 260 / 0.15); border-radius:var(--radius-sm); display:flex; flex-direction:column; gap:2px; }
+.sme-cov-item { padding:10px 14px; background:oklch(56% 0.12 260 / 0.05); border:1px solid oklch(56% 0.12 260 / 0.15); border-radius:var(--m-radius-sm); display:flex; flex-direction:column; gap:2px; }
 .sme-cov-item strong { color:var(--blue); font-size:.9rem; }
 .sme-cov-item span { font-size:.8rem; color:var(--muted); }
 
@@ -493,7 +493,7 @@ async function doTrademarkSearch() {
 .sim-risk.warning { background:oklch(62% 0.18 55 / .1); color:var(--orange); }
 .sim-risk.low { background:oklch(56% 0.12 170 / .1); color:var(--accent); }
 .sim-list { display:flex; flex-direction:column; gap:6px; }
-.sim-item { display:flex; gap:12px; font-size:.82rem; align-items:center; padding:6px 10px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--border); }
+.sim-item { display:flex; gap:12px; font-size:.82rem; align-items:center; padding:6px 10px; background:var(--surface); border-radius:var(--m-radius-sm); border:1px solid var(--border); }
 .sim-name { flex:1; font-weight:600; }
 .sim-class { font-size:.75rem; color:var(--muted); }
 .sim-score { font-size:.75rem; font-weight:600; }

@@ -145,7 +145,7 @@ onMounted(async () => { await Promise.all([loadPRs(), loadBranches()]) })
 .pr-list { display: flex; flex-direction: column; gap: 8px; }
 
 .pr-item {
-  padding: 12px; background: var(--bg); border-radius: var(--radius-sm);
+  padding: 12px; background: var(--bg); border-radius: var(--m-radius-sm);
   border-left: 3px solid var(--border);
 }
 

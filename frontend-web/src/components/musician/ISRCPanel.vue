@@ -283,7 +283,7 @@ async function handleApply() {
 .form-select {
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
   background: var(--surface);
   color: var(--fg);
@@ -373,7 +373,7 @@ async function handleApply() {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
@@ -425,6 +425,6 @@ async function handleApply() {
   color: var(--muted);
   font-style: italic;
   border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
 }
 </style>

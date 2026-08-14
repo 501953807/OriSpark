@@ -132,7 +132,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; }
 
 .guide-grid { display: grid; gap: 12px; }
-.guide-card { border: 1px solid var(--m-border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; transition: background 0.2s; }
+.guide-card { border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 14px; cursor: pointer; transition: background 0.2s; }
 .guide-card:hover { background: #f9fafb; }
 .guide-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .guide-header strong { font-size: 0.95rem; }
@@ -142,14 +142,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .guide-steps ol { padding-left: 20px; font-size: 0.85rem; }
 .guide-steps li { margin-bottom: 4px; }
 
-.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
 
 .new-reg-form { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-.form-input, .form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; flex: 1; }
-.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
+.form-input, .form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; flex: 1; }
+.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; }
 
 .reg-list { margin-top: 12px; display: grid; gap: 8px; }
-.reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); }
+.reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .reg-info { display: flex; gap: 8px; align-items: center; font-size: 0.85rem; }
 .reg-type { font-size: 0.75rem; color: var(--m-grey-500); }
 .reg-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }

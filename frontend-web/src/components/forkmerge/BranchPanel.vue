@@ -84,7 +84,7 @@ onMounted(loadBranches)
 
 .branch-item {
   display: flex; align-items: center; gap: 8px;
-  padding: 8px 12px; background: var(--bg); border-radius: var(--radius-sm);
+  padding: 8px 12px; background: var(--bg); border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
 }
 

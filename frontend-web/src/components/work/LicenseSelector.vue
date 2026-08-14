@@ -156,7 +156,7 @@ function selectLicense(opt: LicenseOption) {
   gap: 4px;
   padding: 5px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--surface);
   cursor: pointer;
   font-size: 0.78rem;
@@ -169,7 +169,7 @@ function selectLicense(opt: LicenseOption) {
 }
 .license-option.selected {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--accent);
   font-weight: 600;
 }

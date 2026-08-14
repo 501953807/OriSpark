@@ -41,8 +41,8 @@ const gradientStyle = computed(() => {
     green: ['var(--success)', 'oklch(68% 0.11 170)'],
     orange: ['var(--warning)', 'oklch(72% 0.16 65)'],
     purple: ['var(--accent)', 'oklch(68% 0.14 290)'],
-    blue: ['oklch(58% 0.14 245)', 'oklch(68% 0.12 255)'],
-    default: ['var(--grad1)', 'var(--grad2)'],
+    blue: ['#6366f1', 'oklch(68% 0.12 255)'],
+    default: ['#8C57FF', '#6A3FCC'],
   }
   const c = colors[props.color || 'default']
   return `linear-gradient(135deg, ${c[0]}, ${c[1]})`
@@ -53,7 +53,7 @@ const gradientStyle = computed(() => {
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   padding: 20px;
   display: flex;
   align-items: flex-start;
@@ -86,7 +86,7 @@ const gradientStyle = computed(() => {
 .stat-value {
   font-size: 1.6rem;
   font-weight: 700;
-  font-family: var(--font-display);
+  font-family: Inter;
   color: var(--fg);
   line-height: 1.2;
 }

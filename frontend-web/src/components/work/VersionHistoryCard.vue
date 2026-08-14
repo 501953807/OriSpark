@@ -43,12 +43,12 @@ defineEmits<{
 .card-header-row h3 { margin: 0; font-size: 0.88rem; }
 .card-empty { font-size: 0.78rem; color: var(--muted); padding: 8px 0; }
 .version-list { display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto; }
-.version-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); font-size: 0.76rem; }
-.version-item:hover { background: oklch(96% 0.003 240); }
+.version-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--m-radius-sm); font-size: 0.76rem; }
+.version-item:hover { background: var(--m-bg-subtle); }
 .v-num { font-weight: 700; color: var(--accent); min-width: 28px; }
 .v-date { color: var(--muted); flex: 1; }
 .v-hash { font-size: 0.65rem; color: var(--muted); }
-.v-current { font-size: 0.65rem; background: oklch(56% 0.12 170 / 0.1); color: var(--accent); padding: 2px 6px; border-radius: 100px; font-weight: 600; }
+.v-current { font-size: 0.65rem; background: rgba(86,202,0,0.1); color: var(--accent); padding: 2px 6px; border-radius: 100px; font-weight: 600; }
 .mono { font-family: monospace; }
 .btn-sm { padding: 5px 10px; font-size: 0.75rem; }
 </style>

@@ -177,11 +177,11 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .check-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .check-section h3 { margin-top: 0; font-size: 1rem; }
 .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.input, .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.9rem; }
-.btn-primary { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 20px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; }
+.input, .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; }
+.btn-primary { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 20px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.9rem; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 .warning-list { display: flex; flex-direction: column; gap: 8px; }
-.warning-card { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--radius-sm); border-left: 4px solid var(--m-border); }
+.warning-card { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); border-left: 4px solid var(--m-border); }
 .warning-card.high { border-left-color: #dc2626; }
 .warning-card.medium { border-left-color: #f59e0b; }
 .warning-card.low { border-left-color: #22c55e; }
@@ -194,6 +194,6 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .warning-desc { font-size: 0.82rem; color: var(--m-grey-500); margin-bottom: 4px; }
 .warning-meta { display: flex; gap: 12px; font-size: 0.75rem; color: var(--m-grey-500); }
 .warning-actions { flex-shrink: 0; }
-.btn-small { padding: 4px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.8rem; }
+.btn-small { padding: 4px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-surface); cursor: pointer; font-size: 0.8rem; }
 .empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 </style>

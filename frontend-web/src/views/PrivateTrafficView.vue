@@ -173,7 +173,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   border-style: dashed;
 }
 .add-icon { font-size: 2rem; line-height: 1; }
-.total-bar { margin-top: 12px; padding: 12px; background: #f0fdf4; border-radius: var(--radius-sm); text-align: center; font-size: 0.95rem; }
+.total-bar { margin-top: 12px; padding: 12px; background: #f0fdf4; border-radius: var(--m-radius-sm); text-align: center; font-size: 0.95rem; }
 
 /* Communities */
 .community-list { display: grid; gap: 8px; }
@@ -197,7 +197,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .funnel-bar {
   height: 32px;
   background: rgb(140, 87, 255);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
   padding: 0 12px;

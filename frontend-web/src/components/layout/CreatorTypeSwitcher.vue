@@ -79,7 +79,7 @@ function handleSwitch(type: CreatorType) {
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
@@ -88,7 +88,7 @@ function handleSwitch(type: CreatorType) {
   color: var(--muted);
   transition: all 0.2s ease;
   white-space: nowrap;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .creator-switcher-item:hover {
   background: oklch(56% 0.12 170 / 0.06);

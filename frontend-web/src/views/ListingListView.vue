@@ -202,13 +202,13 @@ onMounted(loadListings)
 
 .btn-create {
   background: rgb(140, 87, 255); color: #fff; border: none;
-  padding: 8px 18px; border-radius: var(--radius-sm);
+  padding: 8px 18px; border-radius: var(--m-radius-sm);
   font-size: .88rem; font-weight: 600; cursor: pointer;
 }
 
 .view-toggle { display: flex; gap: 2px; }
 .toggle-btn {
-  background: none; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 4px 8px; cursor: pointer; font-size: 1rem;
 }
 .toggle-btn.active { border-color: rgb(140, 87, 255); background: oklch(56% 0.12 170 / .08); }
@@ -217,7 +217,7 @@ onMounted(loadListings)
 .filters-bar {
   display: flex; gap: 12px; align-items: flex-end;
   padding: 12px 16px; border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm); background: var(--m-surface);
+  border-radius: var(--m-radius-sm); background: var(--m-surface);
   margin-bottom: 16px; flex-wrap: wrap;
 }
 
@@ -225,12 +225,12 @@ onMounted(loadListings)
 .filter-group label { font-size: .68rem; color: var(--m-grey-500); font-weight: 600; }
 
 .filter-select, .filter-input {
-  padding: 4px 8px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 4px 8px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   font-size: .82rem; background: var(--m-bg-subtle); min-width: 120px;
 }
 
 .btn-reset {
-  padding: 4px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 4px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .78rem;
 }
 
@@ -264,7 +264,7 @@ onMounted(loadListings)
 
 .col-actions { display: flex; gap: 4px; }
 .list-action {
-  background: none; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 2px 6px; cursor: pointer; font-size: .78rem;
 }
 

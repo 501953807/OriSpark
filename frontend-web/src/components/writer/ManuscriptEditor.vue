@@ -310,7 +310,7 @@ function formatDate(dateStr: string): string {
 .form-input {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   background: var(--surface);
   color: var(--fg);
@@ -376,7 +376,7 @@ function formatDate(dateStr: string): string {
   min-height: 280px;
   padding: 14px 16px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
   line-height: 1.7;
   background: var(--surface);
@@ -403,7 +403,7 @@ function formatDate(dateStr: string): string {
   gap: 12px;
   padding: 8px 12px;
   background: var(--bg);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.78rem;
   color: var(--muted);
 }
@@ -426,7 +426,7 @@ function formatDate(dateStr: string): string {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -465,7 +465,7 @@ function formatDate(dateStr: string): string {
 .form-select-sm {
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
   background: var(--surface);
   color: var(--fg);

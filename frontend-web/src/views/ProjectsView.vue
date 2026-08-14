@@ -140,14 +140,14 @@ onMounted(() => loadProjects())
 .proj-actions { padding:0 16px 12px; display:flex; justify-content:flex-end; gap:4px; }
 .btn-sm { padding:5px 10px; font-size:.75rem; }
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--m-surface); border-radius:var(--radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
+.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
 .modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
 .modal-footer { display:flex; justify-content:flex-end; gap:10px; }
 .form-group { display:flex; flex-direction:column; gap:6px; }
 .form-group label { font-size:.82rem; font-weight:600; color:var(--m-grey-500); }
-.form-input,.form-textarea { padding:10px 14px; border:1px solid var(--m-border); border-radius:var(--radius-sm); font-size:.88rem; font-family:var(--font-body); color:var(--m-on-surface); background:var(--m-surface); outline:none; }
+.form-input,.form-textarea { padding:10px 14px; border:1px solid var(--m-border); border-radius:var(--m-radius-sm); font-size:.88rem; font-family:Inter; color:var(--m-on-surface); background:var(--m-surface); outline:none; }
 .form-input:focus,.form-textarea:focus { border-color:rgb(140, 87, 255); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
 .form-textarea { resize:vertical; }
 </style>

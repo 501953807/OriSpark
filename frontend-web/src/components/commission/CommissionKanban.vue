@@ -344,7 +344,7 @@ export default defineComponent({
   min-width: 220px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   display: flex;
   flex-direction: column;
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -400,7 +400,7 @@ export default defineComponent({
 .kanban-card {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   padding: 12px;
   cursor: grab;
   transition: all 0.15s ease;
@@ -502,7 +502,7 @@ export default defineComponent({
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--grad1), var(--grad2));
+  background: linear-gradient(90deg, #8C57FF, #6A3FCC);
   border-radius: 3px;
   transition: width 0.3s ease;
 }

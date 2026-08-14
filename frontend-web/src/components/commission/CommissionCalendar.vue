@@ -210,7 +210,7 @@ function typeLabel(type: string): string {
 .cal-nav-btn {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 1.1rem;
   line-height: 1;
   display: flex;
@@ -284,7 +284,7 @@ function typeLabel(type: string): string {
   gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
 }
 .cal-cell {
@@ -298,7 +298,7 @@ function typeLabel(type: string): string {
   gap: 2px;
 }
 .cal-cell:hover {
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
 }
 .cal-cell.cal-empty {
   background: var(--bg);
@@ -351,7 +351,7 @@ function typeLabel(type: string): string {
   flex-shrink: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -372,7 +372,7 @@ function typeLabel(type: string): string {
   height: 24px;
   font-size: 1.1rem;
   line-height: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,7 +397,7 @@ function typeLabel(type: string): string {
 }
 .cal-event-card {
   padding: 10px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border-left: 3px solid transparent;
 }
 .evt-milestone {

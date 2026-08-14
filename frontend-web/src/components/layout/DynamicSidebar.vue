@@ -458,19 +458,19 @@ function hasSharedSection(sectionRoute: string): boolean {
 .sb-logo {
   width: 34px;
   height: 34px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  border-radius: var(--m-radius-sm);
+  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-fg, var(--fg));
+  color: #FFFFFF;
   font-weight: 800;
   font-size: 1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px var(--accent-dim);
+  box-shadow: 0 2px 8px rgba(140, 87, 255, 0.1);
 }
 .sb-brand-text {
-  font-family: var(--font-display);
+  font-family: Inter;
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--sidebar-fg, var(--fg));
@@ -517,7 +517,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   gap: 8px;
   padding: 9px 14px;
   margin: 1px 6px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--sidebar-fg-dim, var(--muted));
@@ -581,7 +581,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   transition: background 0.2s;
   padding: 6px 8px;
   margin: -6px -8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   user-select: none;
 }
 .sb-type-selector:hover {
@@ -591,15 +591,15 @@ function hasSharedSection(sectionRoute: string): boolean {
   width: 36px;
   height: 36px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-fg, var(--fg));
+  color: #FFFFFF;
   font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px var(--accent-dim);
+  box-shadow: 0 2px 6px rgba(140, 87, 255, 0.1);
 }
 .sb-user-info {
   flex: 1;
@@ -634,7 +634,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   overflow-y: auto;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   box-shadow: var(--shadow-lg);
   padding: 12px;
   z-index: 200;
@@ -655,7 +655,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   width: 100%;
   padding: 10px 10px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.85rem;
@@ -663,7 +663,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   color: var(--fg);
   text-align: left;
   transition: background 0.15s;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .picker-item:hover {
   background: var(--surface-2);

@@ -68,15 +68,15 @@ function setLevel(level: ImmersionLevel) {
   bottom: 16px;
   right: 16px;
   z-index: 999;
-  background: oklch(15% 0.02 260);
-  color: oklch(85% 0.01 260);
-  border: 1px solid oklch(30% 0.02 260);
+  background: rgba(15,23,42,0.85);
+  color: #e2e8f0;
+  border: 1px solid #334155;
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 0.78rem;
   font-family: 'SF Mono', 'Fira Code', monospace;
   min-width: 130px;
-  box-shadow: 0 4px 20px oklch(0 0 0 / 0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -94,9 +94,9 @@ function setLevel(level: ImmersionLevel) {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid oklch(30% 0.02 260);
-  background: oklch(20% 0.02 260);
-  color: oklch(80% 0.01 260);
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f1f5f9;
   cursor: pointer;
   font-size: 0.7rem;
   display: flex;
@@ -112,7 +112,7 @@ function setLevel(level: ImmersionLevel) {
 }
 
 .fps-label {
-  color: oklch(60% 0.01 260);
+  color: #cbd5e1;
   font-size: 0.72rem;
 }
 
@@ -122,7 +122,7 @@ function setLevel(level: ImmersionLevel) {
 }
 
 .fps-value.level {
-  color: oklch(60% 0.15 230);
+  color: rgba(59,130,246,0.8);
 }
 
 .fps-value.fps-good { color: #22c55e; }
@@ -148,7 +148,7 @@ function setLevel(level: ImmersionLevel) {
 .level-btn {
   flex: 1;
   padding: 4px 0;
-  border: 1px solid oklch(30% 0.02 260);
+  border: 1px solid #334155;
   border-radius: 4px;
   background: transparent;
   color: oklch(70% 0.01 260);

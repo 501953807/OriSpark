@@ -68,7 +68,7 @@ function getStageLabel(stage: string): string {
   padding: 1px 6px;
   border-radius: 100px;
   font-size: 0.68rem;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--accent);
 }
 .btn-sm { padding: 5px 10px; font-size: 0.75rem; }

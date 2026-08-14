@@ -161,7 +161,7 @@ onUnmounted(() => {
 /* Level 1+: hover shadow + slight scale */
 .card-level-1:not(.reduced-motion):hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 /* Level 2+: brand border glow */

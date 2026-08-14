@@ -214,7 +214,7 @@ async function handleBatchEdit() {
   display: flex; align-items: center; justify-content: center;
 }
 .modal-card {
-  background: var(--surface); border-radius: var(--radius-xl);
+  background: var(--surface); border-radius: var(--m-radius-xl);
   padding: 0; width: 480px; max-width: 90vw; max-height: 85vh;
   box-shadow: 0 16px 64px oklch(0 0 0 / 0.16);
   display: flex; flex-direction: column; overflow: hidden;
@@ -243,12 +243,12 @@ async function handleBatchEdit() {
 .form-group { display: flex; flex-direction: column; gap: 4px; }
 .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
 .form-input {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--fg);
   background: var(--surface); outline: none;
 }
-.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1); }
-.btn { padding: 9px 18px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: var(--font-body); }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(86,202,0,0.1); }
+.btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }

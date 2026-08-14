@@ -145,14 +145,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .stat-label { font-size: 0.8rem; color: var(--m-grey-500); }
 
 .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; }
-.btn-add { background: none; border: 1px dashed var(--m-border); padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; color: rgb(140, 87, 255); }
+.form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; color: rgb(140, 87, 255); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; }
-.form-section .form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
+.form-section .form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
 .form-textarea { min-height: 60px; resize: vertical; }
-.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
+.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; }
 
 .case-list { display: grid; gap: 12px; }
 .case-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; }

@@ -139,7 +139,7 @@ onMounted(load)
   border-radius: var(--m-radius-sm);
 }
 
-.stat-value { font-size: 1.5rem; font-weight: 700; font-family: var(--font-display); }
+.stat-value { font-size: 1.5rem; font-weight: 700; font-family: Inter; }
 .stat-label { font-size: 0.78rem; color: var(--m-grey-500); }
 
 .stat-card.positive .stat-value { color: #16a34a; }
@@ -152,7 +152,7 @@ onMounted(load)
 
 .history-item {
   display: flex; align-items: center; gap: 12px;
-  padding: 8px 12px; background: var(--m-bg-subtle); border-radius: var(--radius-sm);
+  padding: 8px 12px; background: var(--m-bg-subtle); border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
 }
 
@@ -166,7 +166,7 @@ onMounted(load)
 
 .lb-row {
   display: flex; align-items: center; gap: 12px;
-  padding: 8px 12px; background: var(--m-bg-subtle); border-radius: var(--radius-sm);
+  padding: 8px 12px; background: var(--m-bg-subtle); border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
 }
 
@@ -190,7 +190,7 @@ onMounted(load)
 
 /* Badge */
 .badge {
-  display: inline-block; padding: 2px 8px; border-radius: var(--radius-sm);
+  display: inline-block; padding: 2px 8px; border-radius: var(--m-radius-sm);
   font-size: 0.75rem; background: var(--m-surface); color: var(--m-grey-500);
   border: 1px solid var(--m-border);
 }

@@ -61,7 +61,7 @@ function statusLabel(status: string): string {
   padding: 12px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }

@@ -299,7 +299,7 @@ onMounted(() => {
 .ai-generation-panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -312,9 +312,9 @@ onMounted(() => {
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
   border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
   color: var(--muted);
 }
@@ -338,13 +338,13 @@ onMounted(() => {
   border-bottom: 2px solid transparent;
   cursor: pointer;
   color: var(--muted);
-  font-family: var(--font-body);
+  font-family: Inter;
   transition: all 0.15s ease;
   border-radius: 0;
 }
 .ai-tab:hover {
   color: var(--fg);
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
 }
 .ai-tab.active {
   color: var(--accent);
@@ -381,9 +381,9 @@ onMounted(() => {
 .ai-input {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   outline: none;
@@ -391,15 +391,15 @@ onMounted(() => {
 }
 .ai-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 .ai-textarea {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   outline: none;
@@ -409,10 +409,10 @@ onMounted(() => {
 }
 .ai-textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 .ai-textarea[readonly] {
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
   cursor: default;
 }
 .ai-row {
@@ -423,9 +423,9 @@ onMounted(() => {
 .ai-select {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   outline: none;
@@ -438,12 +438,12 @@ onMounted(() => {
 /* Buttons */
 .ai-btn {
   padding: 7px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  font-family: var(--font-body);
+  font-family: Inter;
   transition: all 0.15s;
   white-space: nowrap;
 }
@@ -464,7 +464,7 @@ onMounted(() => {
   border: 1px solid var(--border);
 }
 .ai-btn-secondary:hover:not(:disabled) {
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
 }
 
 /* Tags output */
@@ -485,14 +485,14 @@ onMounted(() => {
   padding: 4px 12px;
   border-radius: 100px;
   font-size: 0.78rem;
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--accent);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
 .ai-tag-pill:hover {
-  background: oklch(56% 0.12 170 / 0.2);
+  background: rgba(86,202,0,0.2);
 }
 .ai-tag-conf {
   font-size: 0.68rem;
@@ -527,7 +527,7 @@ onMounted(() => {
   font-weight: 700;
 }
 .ai-status-badge.safe {
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--green);
 }
 .ai-status-badge.unsafe {
@@ -556,7 +556,7 @@ onMounted(() => {
   color: oklch(56% 0.18 20);
 }
 .ai-cat-pill.ok {
-  background: oklch(56% 0.12 170 / 0.1);
+  background: rgba(86,202,0,0.1);
   color: var(--green);
 }
 
@@ -565,7 +565,7 @@ onMounted(() => {
   padding: 8px 12px;
   background: oklch(56% 0.18 20 / 0.06);
   border: 1px solid oklch(56% 0.18 20 / 0.15);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.8rem;
   color: oklch(56% 0.18 20);
 }

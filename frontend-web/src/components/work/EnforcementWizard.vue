@@ -388,7 +388,7 @@ watch(() => props.visible, (val) => {
   max-height: 85vh;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--m-radius-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -497,7 +497,7 @@ watch(() => props.visible, (val) => {
   align-items: center;
   text-align: center;
   padding: 20px;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   gap: 8px;
 }
 .result-positive { background: #dcfce7; }
@@ -535,7 +535,7 @@ watch(() => props.visible, (val) => {
   gap: 10px;
   padding: 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   background: var(--bg);
 }
 .card-icon { font-size: 1.4rem; }
@@ -552,7 +552,7 @@ watch(() => props.visible, (val) => {
 .template-card {
   padding: 14px;
   border: 2px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   transition: border-color 0.15s;
 }
@@ -597,7 +597,7 @@ watch(() => props.visible, (val) => {
 .submit-result { margin-top: 12px; }
 .result-success {
   background: #dcfce7;
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -616,7 +616,7 @@ watch(() => props.visible, (val) => {
   width: 100%;
   text-align: left;
   margin: 0;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .prefill-link { font-size: 0.82rem; }
 .prefill-link a { color: var(--accent); font-weight: 600; }
@@ -631,12 +631,12 @@ watch(() => props.visible, (val) => {
 }
 .wizard-footer button {
   padding: 8px 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 .wizard-footer button:disabled {
   opacity: 0.5;

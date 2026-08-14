@@ -93,8 +93,8 @@ async function handleChangeProject() {
 .project-none { font-size: 0.82rem; color: var(--muted); font-style: italic; }
 .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .form-input {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-size: 0.88rem; font-family: var(--font-body); color: var(--fg);
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
+  font-size: 0.88rem; font-family: Inter; color: var(--fg);
   background: var(--surface); outline: none; width: 100%;
 }
 </style>

@@ -165,7 +165,7 @@ onMounted(loadSuggestions)
   text-align: center;
   padding: 16px;
   background: oklch(98% 0.002 240);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .stat-val {
   font-size: 1.5rem;
@@ -190,7 +190,7 @@ onMounted(loadSuggestions)
   padding: 16px;
   background: var(--m-surface);
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   margin-bottom: 12px;
   border-left: 4px solid var(--m-border);
 }
@@ -236,7 +236,7 @@ onMounted(loadSuggestions)
   color: var(--m-on-surface);
   padding: 8px 12px;
   background: oklch(98% 0.002 240);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .empty-state {
   text-align: center;
@@ -248,7 +248,7 @@ onMounted(loadSuggestions)
   color: white;
   border: none;
   padding: 10px 24px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.9rem;
   margin-top: 16px;

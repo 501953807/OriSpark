@@ -69,8 +69,8 @@ function addSession() {
 .ai-session-panel { padding: 16px 0; }
 h3 { font-size: 1rem; margin-bottom: 12px; }
 .add-form { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.input { flex: 1; min-width: 120px; padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; }
-.btn-add { padding: 6px 16px; background: var(--accent); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; white-space: nowrap; }
+.input { flex: 1; min-width: 120px; padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }
+.btn-add { padding: 6px 16px; background: var(--accent); color: white; border: none; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; white-space: nowrap; }
 .btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
 .timeline { position: relative; padding-left: 20px; }
 .timeline-item { position: relative; padding: 10px 0 10px 16px; border-left: 2px solid var(--border); }

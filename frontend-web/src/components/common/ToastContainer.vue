@@ -68,8 +68,8 @@ defineExpose({ show, remove })
   padding: 12px 20px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 24px oklch(0 0 0 / 0.12);
+  border-radius: var(--m-radius-sm);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
   font-size: 0.88rem;
   min-width: 280px;
   max-width: 420px;

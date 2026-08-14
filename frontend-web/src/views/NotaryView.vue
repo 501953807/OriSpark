@@ -174,7 +174,7 @@ onMounted(async () => {
 .notary-view { display: flex; flex-direction: column; gap: 24px; }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 768px) { .stats-row { grid-template-columns: 1fr; } }
-.section-title { font-size: 1rem; font-weight: 700; font-family: var(--font-display); }
+.section-title { font-size: 1rem; font-weight: 700; font-family: Inter; }
 .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 1024px) { .platforms-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .platforms-grid { grid-template-columns: 1fr; } }

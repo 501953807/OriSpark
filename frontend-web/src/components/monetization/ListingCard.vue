@@ -109,7 +109,7 @@ function handlePublish() { emit('publish', props.listing.id) }
 <style scoped>
 .listing-card {
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--m-radius-md);
   overflow: hidden;
   transition: all 0.2s;
   background: var(--surface);
@@ -260,7 +260,7 @@ function handlePublish() { emit('publish', props.listing.id) }
 .action-btn {
   background: none;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   padding: 4px 8px;
   cursor: pointer;
   font-size: .82rem;

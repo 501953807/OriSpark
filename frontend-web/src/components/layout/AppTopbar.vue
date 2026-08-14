@@ -186,7 +186,7 @@ onBeforeUnmount(() => {
 }
 
 .topbar-title {
-  font-family: var(--font-display); font-size: var(--text-lg);
+  font-family: Inter; font-size: var(--text-lg);
   font-weight: 700; margin: 0; color: var(--fg);
 }
 </style>

@@ -211,7 +211,7 @@ function getRawFormat(filePath: string): string {
   font-family: monospace;
   background: var(--bg);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 /* ── Dimension strip ───────────────────────────────────────── */
@@ -258,7 +258,7 @@ function getRawFormat(filePath: string): string {
   gap: 4px;
   padding: 10px 14px;
   background: var(--bg);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   border: 1px solid var(--border);
 }
 
@@ -284,7 +284,7 @@ function getRawFormat(filePath: string): string {
   color: var(--muted);
   font-size: 0.88rem;
   background: var(--bg);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 /* ── RAW info ──────────────────────────────────────────────── */
@@ -295,7 +295,7 @@ function getRawFormat(filePath: string): string {
   padding: 10px 14px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.84rem;
 }
 
@@ -317,7 +317,7 @@ function getRawFormat(filePath: string): string {
   color: var(--muted);
   background: var(--surface);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   white-space: nowrap;
 }
 
@@ -336,7 +336,7 @@ function getRawFormat(filePath: string): string {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   font-family: inherit;
   color: var(--fg);
@@ -359,7 +359,7 @@ function getRawFormat(filePath: string): string {
 
 .btn {
   padding: 6px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.82rem;
   cursor: pointer;
   border: 1px solid var(--border);

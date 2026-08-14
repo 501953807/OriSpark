@@ -95,7 +95,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   align-items: center;
   padding: 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 .tax-item.done { opacity: 0.5; }
 .tax-info { display: flex; flex-direction: column; }
@@ -106,7 +106,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: white;
   border: none;
   padding: 6px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.8rem;
 }

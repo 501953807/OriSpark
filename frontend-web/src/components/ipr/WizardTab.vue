@@ -279,14 +279,14 @@ const canProceedWithLawyerConfirm = computed(() => {
 .wiz-step.done { color:var(--accent); }
 .wiz-num { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:2px solid var(--border); font-size:.78rem; font-weight:700; }
 .wiz-step.active .wiz-num { background:var(--accent); color:#fff; border-color:var(--accent); }
-.wiz-step.done .wiz-num { background:oklch(56% 0.12 170 / 0.2); color:var(--accent); border-color:var(--accent); }
+.wiz-step.done .wiz-num { background:rgba(86,202,0,0.2); color:var(--accent); border-color:var(--accent); }
 
 .wizard-card { padding:24px; }
 .wizard-card h3 { margin:0 0 16px; font-size:1.05rem; }
 .wizard-card h4 { margin:0 0 12px; font-size:.95rem; }
 
 .ip-type-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.ip-type-card { padding:16px; border:2px solid var(--border); border-radius:var(--radius-lg); cursor:pointer; transition:all .15s; }
+.ip-type-card { padding:16px; border:2px solid var(--border); border-radius:var(--m-radius-lg); cursor:pointer; transition:all .15s; }
 .ip-type-card:hover { border-color:var(--accent); }
 .ip-type-card.selected { border-color:var(--accent); background:oklch(56% 0.12 170 / 0.05); }
 .ip-type-icon { font-size:1.5rem; display:block; margin-bottom:6px; }
@@ -294,7 +294,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .ip-type-card p { font-size:.78rem; color:var(--muted); margin:4px 0 0; }
 
 .jurisdiction-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.jur-card { padding:12px 16px; border:2px solid var(--border); border-radius:var(--radius-lg); cursor:pointer; transition:all .15s; display:flex; flex-direction:column; gap:4px; }
+.jur-card { padding:12px 16px; border:2px solid var(--border); border-radius:var(--m-radius-lg); cursor:pointer; transition:all .15s; display:flex; flex-direction:column; gap:4px; }
 .jur-card:hover { border-color:var(--accent); }
 .jur-card.selected { border-color:var(--accent); background:oklch(56% 0.12 170 / 0.05); }
 .jur-card strong { font-size:.9rem; }
@@ -319,29 +319,29 @@ const canProceedWithLawyerConfirm = computed(() => {
 .prefill-field label { font-size:.78rem; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:4px; }
 .req-mark { color:var(--red); }
 .source-tag { font-size:.65rem; padding:0 4px; border-radius:3px; font-weight:400; }
-.src-work { background:oklch(56% 0.12 170 / 0.1); color:var(--accent); }
+.src-work { background:rgba(86,202,0,0.1); color:var(--accent); }
 .src-notary { background:oklch(56% 0.12 260 / 0.1); color:var(--blue); }
 .src-manual { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
 .src-user { background:oklch(62% 0.15 320 / 0.1); color:var(--purple); }
-.readonly-val { font-size:.84rem; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--muted); }
+.readonly-val { font-size:.84rem; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--m-radius-sm); color:var(--muted); }
 
 .validate-result { margin-top:16px; }
-.valid-ok { padding:12px; background:oklch(56% 0.12 170 / 0.08); border-radius:var(--radius-sm); font-weight:600; color:var(--accent); }
+.valid-ok { padding:12px; background:rgba(86,202,0,0.08); border-radius:var(--m-radius-sm); font-weight:600; color:var(--accent); }
 .issues-list { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-.issue-item { padding:8px 12px; border-radius:var(--radius-sm); font-size:.82rem; }
+.issue-item { padding:8px 12px; border-radius:var(--m-radius-sm); font-size:.82rem; }
 .issue-error { background:oklch(62% 0.18 20 / 0.06); color:var(--red); }
 .issue-warning { background:oklch(62% 0.18 55 / 0.06); color:var(--orange); }
 .issue-item strong { margin:0 4px; }
 
 .export-actions { display:flex; gap:10px; margin-bottom:16px; }
 .export-result { margin-top:16px; }
-.export-disclaimer { padding:8px 12px; background:oklch(62% 0.18 55 / 0.06); border-radius:var(--radius-sm); font-size:.8rem; color:var(--orange); margin:10px 0; }
+.export-disclaimer { padding:8px 12px; background:oklch(62% 0.18 55 / 0.06); border-radius:var(--m-radius-sm); font-size:.8rem; color:var(--orange); margin:10px 0; }
 .preview-table { width:100%; border-collapse:collapse; font-size:.82rem; margin:10px 0; }
 .preview-table td { padding:6px 10px; border-bottom:1px solid var(--border); }
 .preview-table td:first-child { font-weight:600; color:var(--muted); width:30%; }
 .checklist-item { display:flex; flex-wrap:wrap; gap:6px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--border); font-size:.84rem; }
 .item-status { font-size:.72rem; padding:1px 6px; border-radius:4px; }
-.status-prepared { background:oklch(56% 0.12 170 / 0.1); color:var(--accent); }
+.status-prepared { background:rgba(86,202,0,0.1); color:var(--accent); }
 .status-requires_manual { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
 .item-desc { font-size:.76rem; color:var(--muted); width:100%; margin:0; }
 
@@ -358,7 +358,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .rec-class-item strong { min-width:60px; }
 .rec-reason { color:var(--muted); font-size:.78rem; flex:1; }
 .rec-fee { font-weight:600; color:var(--accent); }
-.rec-summary { margin-top:12px; padding:12px; background:oklch(56% 0.12 170 / 0.05); border-radius:var(--radius-sm); }
+.rec-summary { margin-top:12px; padding:12px; background:oklch(56% 0.12 170 / 0.05); border-radius:var(--m-radius-sm); }
 .rec-summary strong { font-size:.9rem; color:var(--accent); }
 .rec-summary p { font-size:.78rem; color:var(--muted); margin:4px 0 0; }
 
@@ -368,7 +368,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .audit-option {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px; border: 2px solid var(--border);
-  border-radius: var(--radius-lg); cursor: pointer;
+  border-radius: var(--m-radius-lg); cursor: pointer;
   transition: all .15s; background: var(--surface);
 }
 .audit-option:hover { border-color: var(--accent); }
@@ -390,7 +390,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .audit-option-content span { font-size: .8rem; color: var(--muted); }
 .risk-confirmations {
   padding: 16px; background: oklch(62% .18 55 / .06);
-  border-radius: var(--radius-sm); margin-bottom: 12px;
+  border-radius: var(--m-radius-sm); margin-bottom: 12px;
 }
 .risk-confirm-item {
   display: flex; align-items: center; gap: 8px;

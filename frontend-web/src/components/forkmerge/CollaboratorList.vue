@@ -67,6 +67,6 @@ onMounted(load)
 .collab-panel { display: flex; flex-direction: column; gap: 12px; }
 .panel-header { display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; font-weight: 600; }
 .collab-list { display: flex; flex-direction: column; gap: 6px; }
-.collab-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); border-radius: var(--radius-sm); font-size: 0.84rem; }
+.collab-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); border-radius: var(--m-radius-sm); font-size: 0.84rem; }
 .empty-state { padding: 24px; text-align: center; color: var(--muted); font-size: 0.85rem; }
 </style>

@@ -55,7 +55,7 @@ defineEmits<{
   padding: 4px 10px;
   font-size: 0.72rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--surface);
   color: var(--fg);
   cursor: pointer;

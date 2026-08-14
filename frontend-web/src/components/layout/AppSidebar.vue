@@ -126,7 +126,7 @@ const { t } = useI18n()
   width: var(--sidebar-w);
   background: var(--sidebar-bg, oklch(99% 0.002 260));
   border-right: 1px solid var(--border);
-  box-shadow: 2px 0 12px oklch(0 0 0 / 0.04);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -151,14 +151,14 @@ const { t } = useI18n()
 }
 .sb-logo {
   width: 34px; height: 34px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  border-radius: var(--m-radius-sm);
+  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
   display: flex; align-items: center; justify-content: center;
-  color: var(--accent-fg, #fff); font-weight: 800; font-size: 1rem;
+  color: #FFFFFF; font-weight: 800; font-size: 1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px oklch(56% 0.15 280 / 0.3);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
 }
-.sb-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: var(--sidebar-fg, var(--fg)); }
+.sb-brand-text { font-family: Inter; font-weight: 700; font-size: 0.95rem; color: var(--sidebar-fg, var(--fg)); }
 .sb-brand-sub { font-size: 0.62rem; color: var(--sidebar-fg-dim, var(--muted)); }
 .sb-nav { flex: 1; padding: 8px 0; overflow-y: auto; overflow-x: hidden; }
 .sb-section-title {
@@ -170,7 +170,7 @@ const { t } = useI18n()
 .sb-link {
   display: flex; align-items: center; gap: 8px;
   padding: 9px 14px; margin: 1px 6px;
-  border-radius: var(--radius-sm); font-size: 0.85rem;
+  border-radius: var(--m-radius-sm); font-size: 0.85rem;
   font-weight: 500; color: var(--sidebar-fg-dim, var(--muted));
   text-decoration: none; transition: all 0.2s ease;
   white-space: nowrap;
@@ -208,9 +208,9 @@ const { t } = useI18n()
 }
 .sb-avatar {
   width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
   display: flex; align-items: center; justify-content: center;
-  color: var(--accent-fg, #fff); font-weight: 600; font-size: 0.8rem;
+  color: #FFFFFF; font-weight: 600; font-size: 0.8rem;
   flex-shrink: 0;
   box-shadow: 0 2px 6px oklch(56% 0.15 280 / 0.2);
 }

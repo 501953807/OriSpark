@@ -58,14 +58,14 @@ function formatSize(bytes: number): string {
 .list-body { display: flex; flex-direction: column; gap: 2px; }
 .list-row {
   display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; border-radius: var(--radius-sm); cursor: pointer;
+  padding: 12px 14px; border-radius: var(--m-radius-sm); cursor: pointer;
   transition: background 0.15s;
 }
-.list-row:hover { background: oklch(96% 0.003 240); }
+.list-row:hover { background: var(--m-bg-subtle); }
 .row-thumb {
-  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  width: 40px; height: 40px; border-radius: var(--m-radius-sm);
   overflow: hidden; flex-shrink: 0;
-  background: oklch(95% 0.003 240);
+  background: var(--m-surface-2);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
 }
@@ -76,7 +76,7 @@ function formatSize(bytes: number): string {
 .row-hash { font-size: 0.65rem; color: var(--muted); font-family: monospace; }
 .row-action {
   background: none; border: none; cursor: pointer;
-  font-size: 0.9rem; color: var(--muted); padding: 4px 8px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; color: var(--muted); padding: 4px 8px; border-radius: var(--m-radius-sm);
 }
-.row-action:hover { background: oklch(0 0 0 / 0.04); }
+.row-action:hover { background: rgba(0,0,0,0.04); }
 </style>

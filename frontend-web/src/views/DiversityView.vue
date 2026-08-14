@@ -190,15 +190,15 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 
 .warning-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .warning-section h3 { margin-top: 0; font-size: 1rem; }
-.warning-item { padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
+.warning-item { padding: 8px 12px; border-radius: var(--m-radius-sm); font-size: 0.85rem; margin-bottom: 8px; }
 .warning-item.warn { background: #fffbeb; color: #92400e; border-left: 3px solid #f59e0b; }
 .warning-item.ok { background: #f0fdf4; color: #166534; border-left: 3px solid #22c55e; }
 
 .add-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }
 .add-section h3 { margin-top: 0; font-size: 1rem; }
 .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.input, .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm); font-size: 0.9rem; }
-.btn-primary { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 20px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; }
+.input, .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; }
+.btn-primary { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 20px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.9rem; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 .empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 </style>

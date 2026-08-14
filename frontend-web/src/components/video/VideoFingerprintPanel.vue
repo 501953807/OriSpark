@@ -227,7 +227,7 @@ async function handleScan() {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.9rem;
   background: var(--surface);
   color: var(--fg);
@@ -253,7 +253,7 @@ async function handleScan() {
   justify-content: center;
   gap: 6px;
   padding: 10px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -323,7 +323,7 @@ async function handleScan() {
   padding: 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
 }
 
 .summary-item {
@@ -383,7 +383,7 @@ async function handleScan() {
   padding: 14px 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   transition: border-color 0.2s;
 }
 
@@ -460,7 +460,7 @@ async function handleScan() {
   gap: 8px;
   background: var(--surface);
   border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
 }
 
 .no-match-icon {

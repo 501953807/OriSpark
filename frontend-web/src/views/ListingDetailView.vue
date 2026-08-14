@@ -265,7 +265,7 @@ onMounted(loadDetail)
 .listing-detail-view { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
 .back-btn {
-  background: none; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 4px 12px; cursor: pointer; font-size: .82rem; margin-bottom: 16px;
 }
 
@@ -281,7 +281,7 @@ onMounted(loadDetail)
 .header-actions { display: flex; gap: 8px; }
 
 .btn-edit, .btn-duplicate, .btn-delete {
-  padding: 6px 14px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 6px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 
@@ -292,7 +292,7 @@ onMounted(loadDetail)
 .detail-main { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-bottom: 24px; }
 
 .preview-card {
-  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-md);
   overflow: hidden; background: var(--m-surface);
 }
 
@@ -306,7 +306,7 @@ onMounted(loadDetail)
 .preview-placeholder p { font-size: .82rem; margin-top: 8px; }
 
 .info-card {
-  border: 1px solid var(--m-border); border-radius: var(--radius-md);
+  border: 1px solid var(--m-border); border-radius: var(--m-radius-md);
   padding: 16px; background: var(--m-surface); margin-bottom: 12px;
 }
 
@@ -328,7 +328,7 @@ onMounted(loadDetail)
 .status-dot.discontinued { background: oklch(56% 0.12 20); }
 
 .spec-result {
-  padding: 8px 12px; border-radius: var(--radius-sm); font-size: .82rem; font-weight: 600;
+  padding: 8px 12px; border-radius: var(--m-radius-sm); font-size: .82rem; font-weight: 600;
 }
 
 .spec-result.spec-pass { background: oklch(56% 0.12 140 / .1); color: oklch(56% 0.12 140); }
@@ -344,7 +344,7 @@ onMounted(loadDetail)
 
 .modal {
   background: var(--m-bg-subtle); border: 1px solid var(--m-border);
-  border-radius: var(--radius-md); padding: 24px; width: 440px; max-width: 90vw;
+  border-radius: var(--m-radius-md); padding: 24px; width: 440px; max-width: 90vw;
 }
 
 .modal h4 { margin: 0 0 16px; }
@@ -353,18 +353,18 @@ onMounted(loadDetail)
 
 .form-input, .form-select {
   width: 100%; padding: 6px 10px; border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm); font-size: .85rem; background: var(--m-surface);
+  border-radius: var(--m-radius-sm); font-size: .85rem; background: var(--m-surface);
 }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 .btn-cancel {
-  padding: 6px 16px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 6px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 .btn-save {
-  padding: 6px 16px; border: none; border-radius: var(--radius-sm);
+  padding: 6px 16px; border: none; border-radius: var(--m-radius-sm);
   background: rgb(140, 87, 255); color: #fff; cursor: pointer; font-size: .82rem;
 }
 

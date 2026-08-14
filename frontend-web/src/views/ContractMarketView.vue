@@ -364,7 +364,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tab {
   padding: 8px 16px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
@@ -377,7 +377,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .filter-bar select {
   padding: 6px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--m-bg-subtle);
 }
 
@@ -440,7 +440,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .form-group textarea {
   padding: 8px 12px;
   border: 1px solid var(--m-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--m-bg-subtle);
   font-size: 0.9rem;
 }
@@ -452,7 +452,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: white;
   border: none;
   padding: 8px 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -462,7 +462,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: var(--m-on-surface);
   border: 1px solid var(--m-border);
   padding: 8px 20px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -498,7 +498,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   border: 1px solid rgb(140, 87, 255);
   color: rgb(140, 87, 255);
   background: transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.85rem;
   transition: all 0.15s;

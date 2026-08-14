@@ -302,11 +302,11 @@ onUnmounted(() => {
 .filter-group { display: flex; flex-direction: column; gap: 4px; }
 .filter-group label { font-size: 0.75rem; font-weight: 600; color: var(--m-grey-500); }
 .form-select-sm {
-  padding: 7px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 7px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   font-size: 0.84rem; background: var(--m-surface); color: var(--m-on-surface); min-width: 130px;
 }
 .form-input-sm {
-  padding: 7px 12px; border: 1px solid var(--m-border); border-radius: var(--radius-sm);
+  padding: 7px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   font-size: 0.84rem; background: var(--m-surface); color: var(--m-on-surface); min-width: 140px;
 }
 
@@ -391,7 +391,7 @@ onUnmounted(() => {
   position: absolute; top: 8px; left: 8px; z-index: 3;
   width: 20px; height: 20px; border-radius: 4px;
   border: 2px solid rgba(255,255,255,0.6);
-  background: oklch(0 0 0 / 0.3);
+  background: rgba(0,0,0,0.3);
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 0.7rem;
 }

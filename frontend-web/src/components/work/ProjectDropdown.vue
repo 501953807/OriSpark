@@ -79,9 +79,9 @@ async function handleCreate() {
 select {
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   cursor: pointer;
@@ -91,7 +91,7 @@ select {
 
 select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 
 .btn-create {
@@ -109,7 +109,7 @@ select:focus {
 }
 
 .btn-create:hover {
-  background: oklch(56% 0.12 170 / 0.08);
+  background: rgba(86,202,0,0.08);
   color: var(--accent);
 }
 
@@ -126,7 +126,7 @@ select:focus {
 
 .modal-card {
   background: var(--surface);
-  border-radius: var(--radius-xl);
+  border-radius: var(--m-radius-xl);
   padding: 28px;
   max-width: 440px;
   width: 90%;
@@ -169,9 +169,9 @@ select:focus {
 .form-input, .form-textarea {
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
-  font-family: var(--font-body);
+  font-family: Inter;
   color: var(--fg);
   background: var(--surface);
   outline: none;
@@ -179,19 +179,19 @@ select:focus {
 
 .form-input:focus, .form-textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  box-shadow: 0 0 0 3px rgba(86,202,0,0.1);
 }
 
 .form-textarea { resize: vertical; }
 
 .btn {
   padding: 9px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  font-family: var(--font-body);
+  font-family: Inter;
 }
 
 .btn-primary { background: var(--accent); color: #fff; }

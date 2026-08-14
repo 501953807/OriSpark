@@ -202,7 +202,7 @@ onMounted(loadPublications)
   color: #fff;
   border: none;
   padding: 4px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: .78rem;
   cursor: pointer;
 }
@@ -223,7 +223,7 @@ onMounted(loadPublications)
   align-items: center;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   background: var(--surface);
 }
 
@@ -249,7 +249,7 @@ onMounted(loadPublications)
 
 .pub-actions { display: flex; gap: 4px; }
 .pub-link-btn, .pub-edit-btn, .pub-delete-btn {
-  background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: none; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   padding: 4px 8px; cursor: pointer; font-size: .82rem;
 }
 .pub-link-btn:hover { border-color: var(--accent); }
@@ -265,7 +265,7 @@ onMounted(loadPublications)
 .modal {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--m-radius-md);
   padding: 24px;
   width: 400px;
   max-width: 90vw;
@@ -280,18 +280,18 @@ onMounted(loadPublications)
   width: 100%;
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   font-size: .85rem;
   background: var(--surface);
 }
 
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
 .btn-cancel {
-  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   background: none; cursor: pointer; font-size: .82rem;
 }
 .btn-save {
-  padding: 6px 16px; border: none; border-radius: var(--radius-sm);
+  padding: 6px 16px; border: none; border-radius: var(--m-radius-sm);
   background: var(--accent); color: #fff; cursor: pointer; font-size: .82rem;
 }
 .btn-save:disabled { opacity: .5; cursor: not-allowed; }
