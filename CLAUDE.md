@@ -201,3 +201,62 @@ Issues 追踪在 GitHub（501953807/OriSpark），通过 `gh` CLI 操作。详�
 ### Domain docs
 
 单上下文布局：根目录 `CONTEXT.md` + `docs/adr/` 存放架构决策。详见 `docs/agents/domain.md`。
+---
+
+## 🎯 双平台定位（v6.0 核心架构）
+
+### 平台划分原则
+
+**严格分离，互不交叉**：创作者只使用 OriStudio，非创作者只使用 OriSpark。
+
+| 平台 | 子系统 | 目标用户 | 端口 | 核心功能 |
+|------|--------|----------|------|----------|
+| **OriStudio** | frontend-web | 创作者 | :5174 | 作品管理、权益保护、IP登记、合约挂牌、AI增长 |
+| **OriStudio** | frontend-electron | 创作者（桌面端） | 自定义 | 同上（复用代码） |
+| **OriSpark** | frontend-nuxt | 非创作者（8种角色） | :3000 | 合约交易、运营合作、工厂对接、数据看板 |
+| **OriSpark** | frontend-miniprogram | 非创作者（移动端） | - | 远期规划 |
+
+### 用户角色与平台映射
+
+| 角色 (role) | 平台 | 说明 |
+|------------|------|------|
+| `creator` | **OriStudio** | 创作者专属 |
+| `local` | **OriStudio** | 本地演示用户 |
+| `operator` | **OriSpark** | 运营方 |
+| `trader` | **OriSpark** | 采购方 |
+| `legal_rep` | **OriSpark** | 法务代表 |
+| `tax_agent` | **OriSpark** | 税务代理 |
+| `logistics` | **OriSpark** | 物流方 |
+| `insurer` | **OriSpark** | 保险方 |
+| `payment_provider` | **OriSpark** | 支付托管方 |
+| `platform` | **OriSpark** | 平台方 |
+
+### 按钮文案规范（禁止混淆）
+
+- ❌ **错误**：OriSpark 显示"进入 OriStudio"
+- ❌ **错误**：OriStudio 显示"进入 OriSpark"
+- ✅ **正确**：OriStudio 按钮显示 **"进入 OriStudio"**
+- ✅ **正确**：OriSpark 按钮显示 **"进入 OriSpark"**
+
+### 启动命令
+
+```bash
+# 后端 API
+cd /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/backend
+python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload
+
+# OriStudio (创作者工作台)
+cd /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/frontend-web
+npm run dev  # :5174
+
+# OriSpark (交易后台)
+cd /Users/tangxiaochuan/AIWorkspace/ClaudeWorkspace/OriSpark/frontend-nuxt
+npm run dev  # :3000
+```
+
+### 登录账号
+
+| 平台 | 地址 | 邮箱 | 密码 |
+|------|------|------|------|
+| OriStudio | http://localhost:5174/login | local@oristudio | local |
+| OriSpark | http://localhost:3000/auth/login | local@oristudio | local |
