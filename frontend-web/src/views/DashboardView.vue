@@ -3,6 +3,13 @@
     <div v-if="dashboardStore.loading" class="page-loading-overlay">
       <LoadingSpinner full-screen text="正在加载数据..." />
     </div>
+
+    <!-- Page Title -->
+    <div class="m-page-header">
+      <h1 class="m-page-title">工作台</h1>
+      <p class="m-page-subtitle">创作者全链路助手 · 数据概览</p>
+    </div>
+
     <!-- Stats row (only for creator role) -->
     <div v-if="isCreatorRole" class="stats-row">
       <StatCard icon="🎨" label="作品总数" :value="stats?.total_works ?? 0" to="/app/works" color="green" />
@@ -20,8 +27,7 @@
     </div>
 
     <!-- Business Overview -->
-    <div class="card business-overview">
-      <h3 class="section-title">📊 经营概览</h3>
+    <MCard title="📊 经营概览">
       <div class="overview-grid">
         <div class="overview-item">
           <span class="overview-label">总收入</span>
@@ -40,46 +46,35 @@
           <span class="overview-value">{{ overview.pending_orders }}</span>
         </div>
       </div>
-    </div>
+    </MCard>
 
     <!-- Analytics Charts -->
     <div class="charts-section">
-      <div class="chart-card card">
-        <div class="chart-header">
-          <h3 class="chart-title">收入趋势</h3>
-          <span class="chart-subtitle">最近 12 个月</span>
-        </div>
+      <MCard title="收入趋势" subtitle="最近 12 个月">
         <RevenueChart :data="dashboardStore.revenue" />
-      </div>
-
-      <div class="chart-card card">
-        <div class="chart-header">
-          <h3 class="chart-title">作品创建趋势</h3>
-          <span class="chart-subtitle">
-            最近 30 天 · 平均 {{ dashboardStore.trends?.avg_daily ?? 0 }}/日
-          </span>
-        </div>
+      </MCard>
+      <MCard title="作品创建趋势" :subtitle="`最近 30 天 · 平均 ${dashboardStore.trends?.avg_daily ?? 0}/日`">
         <TrendChart :data="dashboardStore.trends" />
-      </div>
+      </MCard>
     </div>
 
     <!-- Quick modules -->
-    <div class="section-title">快捷模块</div>
-    <div class="quick-modules">
-      <div v-for="mod in modules" :key="mod.path" class="module-tile card" @click="$router.push(mod.path)">
-        <div class="module-icon">{{ mod.icon }}</div>
-        <div class="module-name">{{ mod.name }}</div>
-        <div class="module-desc">{{ mod.desc }}</div>
+    <MCard title="快捷模块">
+      <div class="quick-modules">
+        <div v-for="mod in modules" :key="mod.path" class="module-tile" @click="$router.push(mod.path)">
+          <div class="module-icon">{{ mod.icon }}</div>
+          <div class="module-name">{{ mod.name }}</div>
+          <div class="module-desc">{{ mod.desc }}</div>
+        </div>
       </div>
-    </div>
+    </MCard>
 
     <!-- Two-column panels (only for creator role) -->
     <div v-if="isCreatorRole" class="panels-row">
-      <div class="panel card">
-        <div class="panel-header">
-          <h3 class="panel-title">最近作品</h3>
-          <router-link to="/app/works" class="panel-link">查看全部 →</router-link>
-        </div>
+      <MCard title="最近作品">
+        <template #actions>
+          <router-link to="/app/works" class="m-link">查看全部 →</router-link>
+        </template>
         <div class="panel-body">
           <div v-if="dashboardStore.loading" class="panel-empty"><LoadingSpinner text="加载中..." /></div>
           <div v-else-if="recentWorks.length === 0" class="panel-empty">还没有导入作品</div>
@@ -95,13 +90,12 @@
             <StatusBadge :status="work.is_verified ? 'confirmed' : 'draft'" :labels="{ confirmed: '已存证', draft: '待存证' }" :variants="{ confirmed: 'success', draft: 'info' }" />
           </div>
         </div>
-      </div>
+      </MCard>
 
-      <div class="panel card">
-        <div class="panel-header">
-          <h3 class="panel-title">侵权告警</h3>
-          <router-link to="/app/monitor" class="panel-link">查看全部 →</router-link>
-        </div>
+      <MCard title="侵权告警">
+        <template #actions>
+          <router-link to="/app/monitor" class="m-link">查看全部 →</router-link>
+        </template>
         <div class="panel-body">
           <div v-if="dashboardStore.loading" class="panel-empty"><LoadingSpinner text="加载中..." /></div>
           <div v-else-if="(stats?.infringement_alerts ?? 0) === 0" class="panel-empty">暂无告警</div>
@@ -115,7 +109,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </MCard>
     </div>
   </div>
 </template>
@@ -128,6 +122,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import RevenueChart from '@/components/dashboard/RevenueChart.vue'
 import TrendChart from '@/components/dashboard/TrendChart.vue'
+import MCard from '@/components/ui/MCard.vue'
 import { useDashboardStore } from '@/stores/useDashboardStore'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { storeToRefs } from 'pinia'
@@ -137,7 +132,6 @@ const dashboardStore = useDashboardStore()
 const authStore = useAuthStore()
 const { stats, recentWorks } = storeToRefs(dashboardStore)
 
-// Determine current participant role
 const currentRole = computed(() => {
   const roles = authStore.participantRoles
   if (roles.length > 0) return roles[0]
@@ -151,7 +145,6 @@ const fileTypeEmoji: Record<string, string> = {
   document: '📄', design: '🎨', code: '💻',
 }
 
-// Role-specific dashboard modules
 const roleModules: Record<string, Array<{ path: string; icon: string; name: string; desc: string }>> = {
   creator: [
     { path: '/app/works', icon: '🎨', name: '作品管理', desc: '导入、分类、搜索你的创作作品' },
@@ -236,7 +229,6 @@ function fmtMoney(n: number): string {
 }
 
 onMounted(async () => {
-  // 并行加载 dashboard 数据和 supply 概览，互不阻塞
   const loadDashboard = dashboardStore.refreshAll()
   const loadSupply = (async () => {
     try {
@@ -264,125 +256,100 @@ onMounted(async () => {
 .dashboard-view {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--m-space-6);
 }
+
+/* ── Page Header ── */
+.m-page-header { margin-bottom: 0; }
+.m-page-title {
+  font-size: var(--m-font-size-xl);
+  font-weight: var(--m-font-weight-bold);
+  color: var(--m-on-surface);
+  margin: 0 0 4px;
+}
+.m-page-subtitle {
+  font-size: var(--m-font-size-sm);
+  color: var(--m-grey-500);
+  margin: 0;
+}
+
+/* ── Stats Row ── */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: var(--m-space-4);
 }
 @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .stats-row { grid-template-columns: 1fr; } }
-.section-title {
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: var(--font-display);
-}
-.quick-modules {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-}
-@media (max-width: 1200px) { .quick-modules { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 640px) { .quick-modules { grid-template-columns: repeat(2, 1fr); } }
-.module-tile {
-  padding: 20px;
-  cursor: pointer;
-}
-.module-icon { font-size: 1.8rem; margin-bottom: 8px; }
-.module-name { font-size: 0.9rem; font-weight: 700; }
-.module-desc { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
 
-/* Business Overview */
-.business-overview { padding: 16px 20px; }
-.business-overview .section-title { font-size: 0.85rem; margin-bottom: 12px; }
+/* ── Overview Grid ── */
 .overview-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: var(--m-space-3);
 }
 @media (max-width: 768px) { .overview-grid { grid-template-columns: repeat(2, 1fr); } }
 .overview-item {
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  padding: var(--m-space-3);
+  background: var(--m-bg-subtle);
+  border-radius: var(--m-radius-sm);
 }
-.overview-label { font-size: 0.75rem; color: var(--muted); }
-.overview-value { font-size: 1.1rem; font-weight: 700; margin-top: 4px; }
+.overview-label { font-size: var(--m-font-size-xs); color: var(--m-grey-500); }
+.overview-value { font-size: var(--m-font-size-lg); font-weight: var(--m-font-weight-bold); margin-top: 4px; color: var(--m-on-surface); }
 
-/* Analytics Charts */
+/* ── Charts ── */
 .charts-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: var(--m-space-5);
 }
 @media (max-width: 1024px) { .charts-section { grid-template-columns: 1fr; } }
-.chart-card {
-  overflow: hidden;
-}
-.chart-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 18px 20px 8px;
-  border-bottom: 1px solid var(--border);
-}
-.chart-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin: 0;
-}
-.chart-subtitle {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
 
-/* Panels */
+/* ── Quick Modules ── */
+.quick-modules {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--m-space-3);
+}
+@media (max-width: 1200px) { .quick-modules { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .quick-modules { grid-template-columns: repeat(2, 1fr); } }
+.module-tile {
+  padding: var(--m-space-4);
+  cursor: pointer;
+  border-radius: var(--m-radius-md);
+  transition: background var(--m-transition-fast);
+}
+.module-tile:hover { background: var(--m-bg-subtle); }
+.module-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.module-name { font-size: var(--m-font-size-sm); font-weight: var(--m-font-weight-semibold); color: var(--m-on-surface); }
+.module-desc { font-size: var(--m-font-size-xs); color: var(--m-grey-500); margin-top: 4px; }
+
+/* ── Panels ── */
 .panels-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: var(--m-space-5);
 }
 @media (max-width: 1024px) { .panels-row { grid-template-columns: 1fr; } }
-.panel { overflow: hidden; }
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
-}
-.panel-title { font-size: 0.95rem; font-weight: 700; margin: 0; }
-.panel-tabs { display: flex; gap: 4px; }
-.panel-tab {
-  padding: 4px 12px; border-radius: 100px; border: none; cursor: pointer;
-  font-size: 0.78rem; font-weight: 600; background: transparent;
-  color: var(--muted); transition: all 0.2s; font-family: var(--font-body);
-}
-.panel-tab.active { background: var(--accent); color: #fff; }
-.panel-link { font-size: 0.82rem; color: var(--accent); font-weight: 600; text-decoration: none; }
-.panel-body { padding: 12px 20px; }
-.panel-empty { padding: 32px; text-align: center; color: var(--muted); font-size: 0.88rem; }
+.panel-body { padding: var(--m-space-3) 0; }
+.panel-empty { padding: var(--m-space-8); text-align: center; color: var(--m-grey-400); font-size: var(--m-font-size-sm); }
 .work-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  gap: var(--m-space-3);
+  padding: var(--m-space-2) 0;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background var(--m-transition-fast);
 }
-.work-row:last-child { border-bottom: none; }
-.work-row:hover { background: var(--bg-subtle); margin: 0 -8px; padding: 10px 8px; border-radius: var(--radius-sm); }
+.work-row:hover { background: var(--m-bg-subtle); margin: 0 calc(-1 * var(--m-space-3)); padding: var(--m-space-2) var(--m-space-3); border-radius: var(--m-radius-sm); }
 .work-thumb {
   width: 40px; height: 40px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--m-radius-sm);
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--surface-2);
+  background: var(--m-surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -390,10 +357,14 @@ onMounted(async () => {
 .work-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .work-thumb-placeholder { font-size: 1.2rem; }
 .work-info { flex: 1; min-width: 0; }
-.work-name { font-size: 0.85rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.work-meta { font-size: 0.72rem; color: var(--muted); }
+.work-name { font-size: var(--m-font-size-sm); font-weight: var(--m-font-weight-medium); color: var(--m-on-surface); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.work-meta { font-size: var(--m-font-size-xs); color: var(--m-grey-500); }
 
-/* Full-screen loading overlay */
+/* ── Link ── */
+.m-link { font-size: var(--m-font-size-sm); color: rgb(140, 87, 255); text-decoration: none; font-weight: var(--m-font-weight-medium); }
+.m-link:hover { text-decoration: underline; }
+
+/* ── Loading Overlay ── */
 .dashboard-view--loading {
   position: relative;
   pointer-events: none;
@@ -411,6 +382,6 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  background: var(--m-bg);
 }
 </style>

@@ -634,8 +634,8 @@ onUnmounted(() => {
 <style scoped>
 /* ===== Outer Container ===== */
 .detail-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-lg);
   padding: 20px 24px;
   display: flex;
@@ -651,14 +651,14 @@ onUnmounted(() => {
   align-items: center;
   gap: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 .toolbar-title {
   flex: 1;
   text-align: center;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -680,10 +680,10 @@ onUnmounted(() => {
   top: 100%;
   right: 0;
   margin-top: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.1);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   z-index: 100;
   min-width: 180px;
   padding: 4px 0;
@@ -697,12 +697,12 @@ onUnmounted(() => {
   border: none;
   text-align: left;
   cursor: pointer;
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-family: var(--font-body);
   white-space: nowrap;
 }
 .dropdown-item:hover {
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
 }
 
 /* ===== Main Body: Preview + Info ===== */
@@ -718,7 +718,7 @@ onUnmounted(() => {
 /* Preview */
 .detail-preview {
   background: oklch(15% 0.005 240);
-  border-radius: var(--radius);
+  border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -762,12 +762,12 @@ onUnmounted(() => {
   padding-right: 4px;
 }
 .detail-info::-webkit-scrollbar { width: 4px; }
-.detail-info::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.detail-info::-webkit-scrollbar-thumb { background: var(--m-border); border-radius: 4px; }
 
 /* Info Groups */
 .info-group {
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 .info-group:last-child {
   border-bottom: none;
@@ -778,7 +778,7 @@ onUnmounted(() => {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   margin: 0 0 10px 0;
 }
 
@@ -792,19 +792,19 @@ onUnmounted(() => {
 }
 .info-row:last-child { margin-bottom: 0; }
 .info-label {
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 600;
   font-size: 0.8rem;
   min-width: 60px;
   flex-shrink: 0;
 }
 .info-value {
-  color: var(--fg);
+  color: var(--m-on-surface);
   font-size: 0.85rem;
   word-break: break-word;
 }
 .project-link {
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -822,8 +822,8 @@ onUnmounted(() => {
   padding: 2px 10px;
   border-radius: 100px;
   font-size: 0.75rem;
-  background: oklch(56% 0.12 170 / 0.1);
-  color: var(--accent);
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  color: rgb(140, 87, 255);
   font-weight: 600;
 }
 
@@ -835,7 +835,7 @@ onUnmounted(() => {
   font-size: 0.85rem;
 }
 .stage-current-label {
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 600;
   font-size: 0.8rem;
 }
@@ -854,7 +854,7 @@ onUnmounted(() => {
 .synopsis-text {
   font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--fg);
+  color: var(--m-on-surface);
   white-space: pre-wrap;
   margin: 0;
 }
@@ -868,9 +868,9 @@ onUnmounted(() => {
 
 /* Stage Detail Panel */
 .stage-detail-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--m-surface);
+  border: 1px solid var(--m-border);
+  border-radius: var(--m-radius-sm);
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
@@ -881,7 +881,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--m-border);
 }
 .stage-detail-header h3 {
   margin: 0;
@@ -899,7 +899,7 @@ onUnmounted(() => {
 }
 .stage-index {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 600;
 }
 
@@ -935,19 +935,19 @@ onUnmounted(() => {
   margin-bottom: 10px;
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--fg);
+  color: var(--m-on-surface);
 }
 .count {
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   font-weight: 400;
 }
 .section-empty {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   text-align: center;
   padding: 16px 8px;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--m-border);
   border-radius: var(--radius-sm);
 }
 
@@ -962,7 +962,7 @@ onUnmounted(() => {
   height: 72px;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
 }
 .asset-file-icon {
   width: 100%;
@@ -971,13 +971,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
 }
 .asset-caption {
   font-size: 0.65rem;
-  color: var(--muted);
+  color: var(--m-grey-500);
   margin-top: 3px;
   white-space: nowrap;
   overflow: hidden;
@@ -988,40 +988,40 @@ onUnmounted(() => {
 .notes-display {
   font-size: 0.82rem;
   line-height: 1.6;
-  color: var(--fg);
+  color: var(--m-on-surface);
   padding: 10px 12px;
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
 }
 .notes-textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   font-size: 0.82rem;
   font-family: var(--font-body);
-  color: var(--fg);
-  background: var(--surface);
+  color: var(--m-on-surface);
+  background: var(--m-surface);
   outline: none;
   resize: vertical;
   line-height: 1.6;
 }
 .notes-textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px oklch(56% 0.12 170 / 0.1);
+  border-color: rgb(140, 87, 255);
+  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
 }
 .btn-edit-note, .btn-save-note, .btn-cancel-note {
   background: none;
-  border: 1px solid var(--border);
+  border: 1px solid var(--m-border);
   border-radius: var(--radius-sm);
   padding: 2px 10px;
   font-size: 0.72rem;
   cursor: pointer;
   font-weight: 600;
 }
-.btn-edit-note { color: var(--accent); }
+.btn-edit-note { color: rgb(140, 87, 255); }
 .btn-save-note { color: #2ECC71; border-color: #2ECC71; }
-.btn-cancel-note { color: var(--muted); }
+.btn-cancel-note { color: var(--m-grey-500); }
 
 /* Version List */
 .version-list {
@@ -1039,14 +1039,14 @@ onUnmounted(() => {
   border-radius: var(--radius-sm);
   font-size: 0.74rem;
 }
-.version-item:hover { background: oklch(96% 0.003 240); }
-.v-num { font-weight: 700; color: var(--accent); min-width: 28px; }
-.v-date { color: var(--muted); flex: 1; }
-.v-hash { font-size: 0.65rem; color: var(--muted); }
+.version-item:hover { background: var(--m-bg-subtle); }
+.v-num { font-weight: 700; color: rgb(140, 87, 255); min-width: 28px; }
+.v-date { color: var(--m-grey-500); flex: 1; }
+.v-hash { font-size: 0.65rem; color: var(--m-grey-500); }
 .v-current {
   font-size: 0.65rem;
-  background: oklch(56% 0.12 170 / .1);
-  color: var(--accent);
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  color: rgb(140, 87, 255);
   padding: 2px 6px;
   border-radius: 100px;
   font-weight: 600;
@@ -1056,9 +1056,9 @@ onUnmounted(() => {
 /* Notary Summary */
 .notary-summary {
   font-size: 0.82rem;
-  color: var(--fg);
+  color: var(--m-on-surface);
   padding: 8px 10px;
-  background: oklch(96% 0.003 240);
+  background: var(--m-bg-subtle);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -1066,7 +1066,7 @@ onUnmounted(() => {
 }
 .view-link {
   font-size: 0.78rem;
-  color: var(--accent);
+  color: rgb(140, 87, 255);
   margin-left: auto;
 }
 
@@ -1075,10 +1075,10 @@ onUnmounted(() => {
   display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
 }
 .c2pa-actions .btn { font-size: 0.78rem; padding: 4px 12px; }
-.c2pa-result { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.8rem; background: var(--surface); border: 1px solid var(--border); }
-.c2pa-success { color: var(--fg); line-height: 1.6; }
-.c2pa-success code { background: oklch(0 0 0 / 0.04); padding: 1px 6px; border-radius: 3px; font-size: 0.75rem; font-family: monospace; }
-.c2pa-error { color: oklch(56% 0.18 20); }
+.c2pa-result { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.8rem; background: var(--m-surface); border: 1px solid var(--m-border); }
+.c2pa-success { color: var(--m-on-surface); line-height: 1.6; }
+.c2pa-success code { background: rgba(0,0,0,0.04); padding: 1px 6px; border-radius: 3px; font-size: 0.75rem; font-family: monospace; }
+.c2pa-error { color: var(--m-error); }
 
 /* ===== Buttons ===== */
 .btn {
@@ -1091,10 +1091,10 @@ onUnmounted(() => {
   font-family: var(--font-body);
 }
 .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }
-.btn-ghost { background: none; border: none; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; color: var(--muted); }
-.btn-ghost:hover { background: oklch(0 0 0 / 0.04); }
+.btn-primary { background: rgb(140, 87, 255); color: #fff; }
+.btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
+.btn-ghost { background: none; border: none; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; color: var(--m-grey-500); }
+.btn-ghost:hover { background: rgba(0,0,0,0.04); }
 .text-danger { color: #e53e3e; }
 
 /* Transitions */
@@ -1111,7 +1111,7 @@ onUnmounted(() => {
 .detail-empty {
   text-align: center;
   padding: 80px 20px;
-  color: var(--muted);
+  color: var(--m-grey-500);
 }
 .detail-empty p {
   margin: 0 0 16px;

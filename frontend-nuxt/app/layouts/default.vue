@@ -1,25 +1,12 @@
-<!-- app/layouts/default.vue -->
-<script setup lang="ts">
-</script>
-
+<!-- Nuxt Default Layout - wraps all pages without topnav (for auth pages) -->
 <template>
-  <div class="portal-layout">
-    <PortalHeader />
-    <main class="portal-main">
-      <slot />
-    </main>
-    <PortalFooter />
+  <div class="nuxt-default-layout">
+    <slot />
   </div>
 </template>
 
 <style scoped>
-.portal-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.portal-main {
-  flex: 1;
+.nuxt-default-layout {
+  min-height: 100dvh;
 }
 </style>

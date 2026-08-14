@@ -6,8 +6,10 @@
 
 :root {
   /* ── Primary Colors ── */
+  --m-primary-rgb: 140, 87, 255;
   --m-primary: #8C57FF;
   --m-primary-darken-1: #7E4EE6;
+  --m-primary-darken-2: #6A3FCC;
   --m-on-primary: #FFFFFF;
 
   /* ── Semantic Colors ── */
@@ -20,6 +22,7 @@
   --m-info: #16B1FF;
   --m-on-info: #FFFFFF;
   --m-secondary: #8A8D93;
+  --m-on-secondary: #FFFFFF;
 
   /* ── Greyscale ── */
   --m-grey-50: #FAFAFA;
@@ -38,7 +41,9 @@
   --m-bg-subtle: #F4F5FA;
   --m-surface: #FFFFFF;
   --m-surface-2: #EEF0F4;
+  --m-surface-bright: #FFFFFF;
   --m-on-surface: #2E263D;
+  --m-on-surface-variant: #EEEEEE;
   --m-on-background: #2E263D;
 
   /* ── Border ── */
@@ -50,15 +55,19 @@
   --m-activated-opacity: 0.16;
   --m-focus-opacity: 0.1;
   --m-disabled-opacity: 0.4;
+  --m-medium-emphasis-opacity: 0.7;
+  --m-high-emphasis-opacity: 0.9;
 
-  /* ── Shadows ── */
+  /* ── Shadows (Vuetify style RGB values) ── */
   --m-shadow-key-umbra-color: 46, 38, 61;
   --m-shadow-xs: 0 0.125rem 0.25rem rgba(var(--m-shadow-key-umbra-color), 0.16);
   --m-shadow-sm: 0 0.25rem 0.5rem rgba(var(--m-shadow-key-umbra-color), 0.18);
   --m-shadow-md: 0 0.5rem 1rem rgba(var(--m-shadow-key-umbra-color), 0.20);
   --m-shadow-lg: 0 1rem 2rem rgba(var(--m-shadow-key-umbra-color), 0.22);
+  --m-shadow-xl: 0 1.5rem 3rem rgba(var(--m-shadow-key-umbra-color), 0.24);
 
   /* ── Border Radius ── */
+  --m-radius-xs: 4px;
   --m-radius-sm: 6px;
   --m-radius-md: 10px;
   --m-radius-lg: 12px;
@@ -67,34 +76,79 @@
 
   /* ── Typography ── */
   --m-font-family: 'Inter', 'Source Han Sans SC', 'PingFang SC', sans-serif;
-  --m-font-size-xs: 0.6875rem;
-  --m-font-size-sm: 0.8125rem;
-  --m-font-size-base: 0.9375rem;
-  --m-font-size-md: 1.0625rem;
-  --m-font-size-lg: 1.1875rem;
+  --m-font-size-xs: 0.6875rem;    /* 11px */
+  --m-font-size-sm: 0.8125rem;    /* 13px */
+  --m-font-size-base: 0.9375rem;  /* 15px */
+  --m-font-size-md: 1.0625rem;    /* 17px */
+  --m-font-size-lg: 1.1875rem;    /* 19px */
+  --m-font-size-xl: 1.5rem;       /* 24px */
   --m-font-weight-regular: 400;
   --m-font-weight-medium: 500;
   --m-font-weight-semibold: 600;
   --m-font-weight-bold: 700;
   --m-line-height-base: 1.625;
+  --m-line-height-xs: 1.25;
+  --m-line-height-sm: 1.5;
+  --m-line-height-lg: 1.75;
 
   /* ── Spacing ── */
-  --m-space-1: 0.25rem;
-  --m-space-2: 0.5rem;
-  --m-space-3: 0.75rem;
-  --m-space-4: 1rem;
-  --m-space-6: 1.5rem;
-  --m-space-8: 2rem;
-  --m-space-10: 2.5rem;
-  --m-space-16: 4rem;
+  --m-space-1: 0.25rem;   /* 4px */
+  --m-space-2: 0.5rem;    /* 8px */
+  --m-space-3: 0.75rem;   /* 12px */
+  --m-space-4: 1rem;      /* 16px */
+  --m-space-5: 1.25rem;   /* 20px */
+  --m-space-6: 1.5rem;    /* 24px */
+  --m-space-8: 2rem;      /* 32px */
+  --m-space-10: 2.5rem;   /* 40px */
+  --m-space-12: 3rem;     /* 48px */
+  --m-space-16: 4rem;     /* 64px */
 
   /* ── Transitions ── */
+  --m-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --m-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --m-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ── Layout Dimensions ── */
   --m-topbar-height: 64px;
+  --m-topbar-height-expanded: 72px;
   --m-sidebar-width: 256px;
   --m-sidebar-collapsed: 80px;
+
+  /* ── Z-index ── */
+  --m-z-dropdown: 100;
+  --m-z-sticky: 200;
+  --m-z-overlay: 300;
+  --m-z-modal: 400;
+  --m-z-toast: 500;
+  --m-z-tooltip: 600;
+
+  /* ── Spark Brand Aliases ── */
+  --spark-blue: #3b82f6;
+  --spark-green: #56CA00;
+  --spark-red: #FF4C51;
+  --spark-gold: #D4AF37;
+  --spark-silver: #C0C0C0;
+  --spark-dark: #1e293b;
+  --spark-surface: var(--m-surface);
+  --spark-border: var(--m-border);
+  --spark-text: var(--m-on-surface);
+  --spark-muted: var(--m-grey-500);
+  --spark-bg: var(--m-bg-subtle);
+
+  /* ── Vuetify Theme Tokens ── */
+  --v-theme-primary: var(--m-primary);
+  --v-theme-on-primary: var(--m-on-primary);
+  --v-theme-surface: var(--m-surface);
+  --v-theme-on-surface: var(--m-on-surface);
+  --v-theme-background: var(--m-bg-subtle);
+  --v-theme-on-background: var(--m-on-background);
+  --v-theme-error: var(--m-error);
+  --v-theme-warning: var(--m-warning);
+  --v-theme-success: var(--m-success);
+  --v-theme-info: var(--m-info);
+  --v-theme-secondary: var(--m-secondary);
+  --v-border-color: var(--m-on-surface);
+  --v-border-opacity: 0.12;
 }
 
 /* ── Dark Theme ── */
@@ -106,4 +160,15 @@
   --m-on-surface: #E8E6E7;
   --m-on-background: #E8E6E7;
   --m-border: rgba(232, 230, 231, 0.12);
+  --m-border-strong: rgba(232, 230, 231, 0.2);
+  --m-grey-50: #2C2C2C;
+  --m-grey-100: #333333;
+  --m-grey-200: #444444;
+  --m-grey-300: #666666;
+  --m-grey-400: #888888;
+  --m-grey-500: #999999;
+  --m-grey-600: #AAAAAA;
+  --m-grey-700: #BBBBBB;
+  --m-grey-800: #CCCCCC;
+  --m-grey-900: #DDDDDD;
 }
