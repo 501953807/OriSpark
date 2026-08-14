@@ -391,9 +391,10 @@ def local_login_endpoint(db: Session = Depends(get_db)):
     """
     try:
         user_dict, token = get_or_create_local_user(db)
+        return ApiResponse(data={"token": token, "user": user_dict})
     except Exception as e:
-        raise HTTPException(status_code=500, detail="本地登录失败，请稍后重试")
-    return ApiResponse(data={"token": token, "user": user_dict})
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"本地登录失败: {str(e)}")
 
 
 @router.get("/api/participant-roles", response_model=ApiResponse)

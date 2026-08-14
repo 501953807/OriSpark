@@ -49,7 +49,7 @@
         </div>
         <div class="form-group">
           <label for="login-password">密码</label>
-          <input id="login-password" v-model="form.password" type="password" class="form-input" placeholder="••••••" required minlength="6" autocomplete="current-password" />
+          <input id="login-password" v-model="form.password" type="password" class="form-input" placeholder="••••••" required minlength="1" autocomplete="current-password" />
         </div>
         <button type="submit" class="btn btn-primary login-submit-btn" :disabled="loading">
           {{ loading ? '处理中...' : mode === 'login' ? '登录' : '注册' }}

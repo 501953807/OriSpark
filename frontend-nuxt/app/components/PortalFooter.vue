@@ -15,9 +15,9 @@
         </ul>
       </div>
       <div class="footer-section">
-        <h4>进入 OriStudio</h4>
+        <h4>进入 OriSpark</h4>
         <ul>
-          <li><a href="https://studio.orispark.local" target="_blank">创作者工作台</a></li>
+          <li><a href="/app" target="_blank">创作者工作台</a></li>
           <li><a href="https://studio.orispark.local/login" target="_blank">登录</a></li>
         </ul>
       </div>

@@ -12,8 +12,8 @@
       <NuxtLink to="/supply">供应链</NuxtLink>
     </nav>
     <div class="nav-actions">
-      <NuxtLink to="https://studio.orispark.local" target="_blank" class="btn-primary">
-        进入 OriStudio
+      <NuxtLink to="/login" class="btn-primary">
+        进入 OriSpark
       </NuxtLink>
     </div>
   </header>

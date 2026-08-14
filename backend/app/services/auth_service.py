@@ -156,6 +156,9 @@ def get_or_create_local_user(db: Session) -> tuple[dict, str]:
             db.commit()
         except Exception:
             db.rollback()
+            raise
+        # 重新查询以确保获取最新数据
+        db.refresh(local_user)
         return _user_to_dict(local_user)
 
     user = User(

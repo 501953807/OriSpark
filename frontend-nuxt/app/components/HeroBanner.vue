@@ -13,7 +13,7 @@
       </p>
       <div class="hero-actions">
         <a href="https://studio.orispark.local" target="_blank" class="btn-hero">
-          进入 OriStudio
+          进入 OriSpark
         </a>
         <NuxtLink to="/gallery" class="btn-hero-secondary">
           浏览作品画廊

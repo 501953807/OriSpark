@@ -8,14 +8,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const publicPages = ['/', '/gallery', '/auth/login', '/auth/register']
   if (publicPages.includes(to.path)) return
 
-  // Check if user is logged in
-  if (!auth.isLoggedIn) {
-    // Try to restore from localStorage
-    const savedToken = localStorage.getItem('orispark-token')
-    const savedUser = localStorage.getItem('orispark-user')
-    if (savedToken && savedUser) {
-      auth.token = savedToken
-      auth.user = JSON.parse(savedUser)
+  // Check if user is logged in (only on client side)
+  if (!auth.isLoggedIn && process.client) {
+    try {
+      const savedToken = localStorage.getItem('orispark-token')
+      const savedUser = localStorage.getItem('orispark-user')
+      if (savedToken && savedUser) {
+        auth.token = savedToken
+        auth.user = JSON.parse(savedUser)
+      }
+    } catch (e) {
+      console.warn('Failed to restore auth from localStorage', e)
     }
   }
 

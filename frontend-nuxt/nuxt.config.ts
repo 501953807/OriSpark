@@ -9,6 +9,15 @@ export default {
     },
   },
 
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
+    },
+  },
+
   routeRules: {
     '/': { prerender: true },
     '/gallery': { prerender: true },
