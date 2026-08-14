@@ -112,7 +112,7 @@
     </div>
 
     <!-- 三栏布局 -->
-    <div class="market-layout" v-loading="loading">
+    <div class="market-layout" :class="{\'market-loading\': loading}">
       <!-- 左侧：合约行情表 -->
       <div class="column column-table">
         <div class="column-header">
@@ -265,7 +265,7 @@
             <span class="op-change" :class="getChangeClass(selectedContract)">{{ getChangePct(selectedContract) }}</span>
           </div>
           <div class="op-sub">
-            <span>昨收: ¥{{ (selectedContract?.total_amount ?? 0) * 0.95 | precision(0) }}</span>
+            <span>昨收: ¥{{ ((selectedContract?.total_amount ?? 0) * 0.95).toFixed(0) }}</span>
             <span>今开: ¥{{ selectedContract?.total_amount ?? '—' }}</span>
           </div>
         </div>

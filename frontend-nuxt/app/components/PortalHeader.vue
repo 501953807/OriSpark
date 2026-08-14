@@ -12,7 +12,7 @@
       <NuxtLink to="/supply">供应链</NuxtLink>
     </nav>
     <div class="nav-actions">
-      <NuxtLink to="/login" class="btn-primary">
+      <NuxtLink to="/auth/login" class="btn-primary">
         进入 OriSpark
       </NuxtLink>
     </div>
