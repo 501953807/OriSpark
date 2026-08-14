@@ -1,0 +1,95 @@
+/* ============================================
+   OriSpark Global Styles
+   Materio Vuetify 风格基础样式
+   ============================================ */
+
+@import './materio-tokens.css';
+
+/* ── Base Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--m-font-family);
+  font-size: var(--m-font-size-base);
+  line-height: var(--m-line-height-base);
+  color: var(--m-on-surface);
+  background-color: var(--m-bg-subtle);
+  margin: 0;
+  min-height: 100dvh;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--m-font-weight-semibold);
+  line-height: 1.25;
+  margin: 0 0 var(--m-space-4) 0;
+}
+
+h1 { font-size: var(--m-font-size-xl); }
+h2 { font-size: var(--m-font-size-lg); }
+h3 { font-size: var(--m-font-size-md); }
+h4 { font-size: var(--m-font-size-base); }
+
+p {
+  margin: 0 0 var(--m-space-4) 0;
+}
+
+a {
+  color: var(--m-primary);
+  text-decoration: none;
+  transition: color var(--m-transition);
+}
+
+a:hover {
+  color: var(--m-primary-darken-1);
+  text-decoration: underline;
+}
+
+/* ── Utility Classes ── */
+.text-muted { color: var(--m-grey-600); }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.font-medium { font-weight: var(--m-font-weight-medium); }
+.font-semibold { font-weight: var(--m-font-weight-semibold); }
+.font-bold { font-weight: var(--m-font-weight-bold); }
+
+.mt-1 { margin-top: var(--m-space-1); }
+.mt-2 { margin-top: var(--m-space-2); }
+.mt-4 { margin-top: var(--m-space-4); }
+.mb-1 { margin-bottom: var(--m-space-1); }
+.mb-2 { margin-bottom: var(--m-space-2); }
+.mb-4 { margin-bottom: var(--m-space-4); }
+.p-2 { padding: var(--m-space-2); }
+.p-4 { padding: var(--m-space-4); }
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--m-space-4); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--m-space-4); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--m-space-4); }
+
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ── Flex ── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: var(--m-space-1); }
+.gap-2 { gap: var(--m-space-2); }
+.gap-4 { gap: var(--m-space-4); }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 

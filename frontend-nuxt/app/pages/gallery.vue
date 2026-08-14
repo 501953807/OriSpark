@@ -48,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, onMounted, watch } from 'vue'
 import type { Work } from '~/types/public'
 import { fetchPublicWorks } from '~/composables/usePublicApi'

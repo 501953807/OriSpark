@@ -112,7 +112,7 @@
     </div>
 
     <!-- 三栏布局 -->
-    <div class="market-layout" :class="{\'market-loading\': loading}">
+    <div class="market-layout" :class="{'market-loading': loading}">
       <!-- 左侧：合约行情表 -->
       <div class="column column-table">
         <div class="column-header">
@@ -339,6 +339,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import type { Contract, Work, DashboardStats } from '~/types/public'
 import { fetchPublicContracts, fetchDashboardStats, fetchMarketTrends } from '~/composables/usePublicApi'

@@ -5,7 +5,7 @@ export default {
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE_URL || 'http://localhost:8001/api',
+      apiBase: process.env.API_BASE_URL || 'http://localhost:8002/api',
     },
   },
 
@@ -19,15 +19,16 @@ export default {
   },
 
   routeRules: {
-    '/': { prerender: true },
-    '/gallery': { prerender: true },
-    '/contracts': {},
-    '/market': {},
-    '/opportunities': {},
-    '/works/**': { prerender: true },
+    '/': { ssr: false },
+    '/gallery': { ssr: false },
+    '/contracts': { ssr: false },
+    '/market': { ssr: false },
+    '/opportunities': { ssr: false },
+    '/works/**': { ssr: false },
+    '/auth/**': { ssr: false },
   },
 
-  css: ['~/assets/styles/global.css', '~/assets/styles/hope-ui-tokens.css', '~/assets/styles/hope-ui.css'],
+  css: ['~/assets/styles/global.css'],
 
   app: {
     head: {

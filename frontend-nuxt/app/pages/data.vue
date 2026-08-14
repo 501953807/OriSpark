@@ -191,6 +191,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, onMounted, computed, watch } from 'vue'
 import {
   fetchPlatformStats,

@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, onMounted, watch } from 'vue'
 import type { Contract } from '~/types/public'
 import { fetchPublicContracts } from '~/composables/usePublicApi'

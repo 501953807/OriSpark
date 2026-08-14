@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'materio-topnav' })
 import { ref, onMounted, computed } from 'vue'
 import type { Opportunity } from '~/types/public'
 import { fetchOpportunities } from '~/composables/usePublicApi'

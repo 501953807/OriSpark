@@ -4,6 +4,7 @@
  */
 @import './design-tokens.css';
 @import './themes.css';
+@import './materio-tokens.css';
 @import './components.css';
 @import './layout.css';
 @import './transitions.css';

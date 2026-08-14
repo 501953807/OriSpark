@@ -106,7 +106,7 @@ const router = createRouter({
     // 应用主体 (需要登录)
     {
       path: '/app',
-      component: () => import('@/components/layout/AppLayout.vue'),
+      component: () => import('@/layouts/MaterioLayout.vue'),
       meta: { requiresAuth: true },
       children: [
         { path: '', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
