@@ -82,18 +82,18 @@ defineEmits<{
 
 /* ── Variants ── */
 .m-alert--variant-filled {
-  background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.12);
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
-  border: 1px solid rgba(var(--m-primary-rgb, 140, 87, 255), 0.2);
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.2);
 }
 .m-alert--variant-outlined {
   background: transparent;
-  border: 1px solid rgba(var(--m-primary-rgb, 140, 87, 255), 0.5);
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5);
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-alert--variant-plain {
   background: transparent;
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 
 /* ── Colors ── */

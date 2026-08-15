@@ -207,8 +207,8 @@ function handleFinish() {
   cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);
 }
 .creator-card:hover { border-color: var(--accent); }
-.creator-card.selected { border-color: var(--accent); background: rgba(140, 87, 255, 0.04); }
-.creator-card.highlighted { border-color: var(--accent); border-width: 3px; box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.1); }
+.creator-card.selected { border-color: var(--accent); background: rgba(85, 133, 255, 0.04); }
+.creator-card.highlighted { border-color: var(--accent); border-width: 3px; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
 .creator-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
 .creator-card strong { font-size: 0.9rem; display: block; color: var(--fg); }
 .creator-card p { font-size: 0.76rem; color: var(--muted); margin: 4px 0; }

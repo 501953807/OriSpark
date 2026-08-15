@@ -133,7 +133,7 @@ const isFocused = ref(false)
   overflow: hidden;
 }
 .m-field--focused .m-field__wrapper {
-  border-color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
   border-width: 2px;
   padding: 0 0 0 0;
 }
@@ -189,7 +189,7 @@ const isFocused = ref(false)
 }
 .m-field--focused .m-field__label,
 .m-field__label--floating {
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-field--error .m-field__label {
   color: var(--m-error);
@@ -213,7 +213,7 @@ const isFocused = ref(false)
 }
 .m-field--focused .m-field__underline {
   transform: scaleX(1);
-  background: rgb(var(--m-primary-rgb, 140, 87, 255));
+  background: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-field--error .m-field__underline {
   background: var(--m-error);

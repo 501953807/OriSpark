@@ -165,7 +165,7 @@ const onSort = (accessor: string) => {
   user-select: none;
 }
 .m-table__header--sorted {
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-table__header:hover {
   background: #eef0f4;
@@ -180,7 +180,7 @@ const onSort = (accessor: string) => {
 }
 .m-table__header--sorted .m-table__header-sort {
   opacity: 1;
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 
 /* ── Body ── */
@@ -192,7 +192,7 @@ const onSort = (accessor: string) => {
   border-bottom: none;
 }
 .m-table__row--hover:hover {
-  background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.04);
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.04);
 }
 .m-table__cell {
   padding: 0.75rem 1rem;
@@ -239,12 +239,12 @@ const onSort = (accessor: string) => {
   transition: all var(--m-transition-fast);
 }
 .m-table__page-btn:hover:not(:disabled) {
-  border-color: rgb(var(--m-primary-rgb, 140, 87, 255));
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-table__page-btn--active {
-  background: rgb(var(--m-primary-rgb, 140, 87, 255));
-  border-color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  background: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
   color: var(--m-on-primary);
 }
 .m-table__page-btn:disabled {
