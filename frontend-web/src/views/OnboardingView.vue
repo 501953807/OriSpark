@@ -37,18 +37,10 @@ onMounted(async () => {
   }
 })
 
-async function onFinish(payload: { creatorType: string; participantRole: string; importCount: number }) {
-  try {
-    await systemApi.completeOnboarding({
-      creator_type: payload.creatorType,
-      participant_role: payload.participantRole,
-    })
-  } catch {
-    // Silently fail
-  }
+async function onFinish(payload: { creatorType: string; importCount: number }) {
   const globalState = useGlobalState()
   globalState.setCreatorType(payload.creatorType)
-  globalState.setParticipantRole(payload.participantRole)
+  globalState.setParticipantRole('creator')
   globalState.markOnboarded()
   router.push('/app')
 }

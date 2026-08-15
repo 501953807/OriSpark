@@ -46,7 +46,7 @@
         <span class="sb-icon material-icons">publish</span>
         <span v-if="!isCollapsed">内容分发</span>
       </router-link>
-      <router-link to="/app/supply" class="sb-link" active-class="active" title="商业转化：授权变现、交易撮合、合同管理">
+      <router-link to="/app/contract-market" class="sb-link" active-class="active" title="商业转化：授权变现、交易撮合、合同管理">
         <span class="sb-icon material-icons">payments</span>
         <span v-if="!isCollapsed">商业转化</span>
       </router-link>

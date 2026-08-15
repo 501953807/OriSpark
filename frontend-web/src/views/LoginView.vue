@@ -151,6 +151,18 @@ async function handleSubmit() {
 
     if (success) {
       const globalState = useGlobalState()
+      const savedUser = localStorage.getItem('oristudio-user')
+      const user = savedUser ? JSON.parse(savedUser) : null
+
+      // Local 用户直接进入工作台，跳过 Onboarding
+      if (user?.role === 'local' || user?.participant_roles?.includes('creator')) {
+        globalState.setCreatorType(user?.creator_type || 'illustrator')
+        globalState.setParticipantRole('creator')
+        globalState.markOnboarded()
+        router.push('/app')
+        return
+      }
+
       if (!globalState.isOnboarded) {
         router.push('/onboarding')
       } else {
