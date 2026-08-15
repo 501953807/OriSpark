@@ -144,7 +144,7 @@ onMounted(loadCategories)
 }
 
 .mat-tab.active {
-  background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255);
+  background: rgb(85, 133, 255); color: #fff; border-color: rgb(85, 133, 255);
 }
 
 /* Grid */
@@ -160,7 +160,7 @@ onMounted(loadCategories)
   transition: border-color 0.2s;
 }
 
-.category-card:hover { border-color: rgb(140, 87, 255); }
+.category-card:hover { border-color: rgb(85, 133, 255); }
 
 .card-header { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
 
@@ -186,7 +186,7 @@ onMounted(loadCategories)
   margin-bottom: 8px;
 }
 
-.price-range { font-weight: 700; font-size: .82rem; color: rgb(140, 87, 255); }
+.price-range { font-weight: 700; font-size: .82rem; color: rgb(85, 133, 255); }
 .suggested-price { font-size: .68rem; color: var(--m-grey-500); }
 
 /* Platforms */

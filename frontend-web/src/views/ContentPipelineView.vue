@@ -262,14 +262,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
 .stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; text-align: center; }
-.stat-value { font-size: 1.8rem; font-weight: 800; color: rgb(140, 87, 255); }
+.stat-value { font-size: 1.8rem; font-weight: 800; color: rgb(85, 133, 255); }
 .stat-label { font-size: 0.8rem; color: var(--m-grey-500); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
 .section h3 { margin: 0 0 12px; font-size: 1rem; display: flex; justify-content: space-between; align-items: center; }
 
-.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(140, 87, 255); }
-.btn-add:hover { border-color: rgb(140, 87, 255); }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(85, 133, 255); }
+.btn-add:hover { border-color: rgb(85, 133, 255); }
 
 .add-form, .schedule-form, .simulate-form { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .form-input, .form-select, .form-textarea { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }
@@ -278,7 +278,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .platform-checks { display: flex; flex-wrap: wrap; gap: 8px; }
 .platform-checkbox { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer; }
 .checkbox-label { font-size: 0.85rem; display: flex; align-items: center; gap: 4px; }
-.btn-confirm { background: rgb(140, 87, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; }
+.btn-confirm { background: rgb(85, 133, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; }
 
 .account-list { margin-top: 12px; display: grid; gap: 8px; }
 .account-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }

@@ -274,7 +274,7 @@ function confidenceLabel(c: number): string {
 /* Recommendation list */
 .recommend-list { margin-top: 16px; }
 .recommend-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); margin-bottom: 8px; }
-.recommend-rank { font-size: 1.2rem; font-weight: 700; color: rgb(140, 87, 255); min-width: 24px; }
+.recommend-rank { font-size: 1.2rem; font-weight: 700; color: rgb(85, 133, 255); min-width: 24px; }
 .recommend-body { flex: 1; }
 .recommend-name { font-weight: 600; font-size: 0.95rem; }
 .recommend-sub { font-size: 0.78rem; color: var(--m-grey-500); }
@@ -293,13 +293,13 @@ function confidenceLabel(c: number): string {
   content: ''; position: absolute; top: 14px; left: 55%; right: -45%;
   height: 2px; background: var(--m-border); z-index: 0;
 }
-.step-item.done:not(:last-child)::after { background: rgb(140, 87, 255); }
+.step-item.done:not(:last-child)::after { background: rgb(85, 133, 255); }
 .step-dot {
   width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-size: 0.82rem; font-weight: 600; border: 2px solid var(--m-border); background: var(--m-surface);
   position: relative; z-index: 1; color: var(--m-grey-500);
 }
-.step-item.active .step-dot, .step-item.done .step-dot { border-color: rgb(140, 87, 255); background: rgb(140, 87, 255); color: #fff; }
+.step-item.active .step-dot, .step-item.done .step-dot { border-color: rgb(85, 133, 255); background: rgb(85, 133, 255); color: #fff; }
 .step-label { font-size: 0.72rem; color: var(--m-grey-500); margin-top: 4px; text-align: center; }
 .step-item.active .step-label { color: var(--m-on-surface); font-weight: 600; }
 .step-desc { font-size: 0.85rem; color: var(--m-grey-500); padding: 8px 0; border-top: 1px solid var(--m-border); }
@@ -316,7 +316,7 @@ function confidenceLabel(c: number): string {
 
 .form-select { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: .88rem; background: var(--m-surface); color: var(--m-on-surface); width: 100%; }
 .form-textarea { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: .88rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; resize: vertical; width: 100%; }
-.form-textarea:focus { border-color: rgb(140, 87, 255); }
+.form-textarea:focus { border-color: rgb(85, 133, 255); }
 
 @media (max-width: 768px) {
   .ipg-layout { grid-template-columns: 1fr; }

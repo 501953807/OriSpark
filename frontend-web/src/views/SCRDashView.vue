@@ -185,7 +185,7 @@ onMounted(load)
   transition: color 0.15s, border-color 0.15s;
 }
 .tab:hover { color: var(--m-on-surface); }
-.tab.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); }
+.tab.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); }
 .tab-panel { padding: 12px 0; }
 
 /* Badge */

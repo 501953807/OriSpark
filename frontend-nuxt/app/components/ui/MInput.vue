@@ -82,7 +82,7 @@ const isFocused = ref(false)
   transition: border-color var(--m-transition);
   overflow: hidden;
 }
-.m-field--focused .m-field__wrapper { border-color: rgb(var(--m-primary-rgb, 140, 87, 255)); border-width: 2px; }
+.m-field--focused .m-field__wrapper { border-color: rgb(var(--m-primary-rgb, 85, 133, 255)); border-width: 2px; }
 .m-field--error .m-field__wrapper { border-color: var(--m-error); border-width: 2px; }
 .m-field__input {
   flex: 1; width: 100%; height: 100%;
@@ -95,7 +95,7 @@ const isFocused = ref(false)
 .m-field__input--error { color: var(--m-error); }
 .m-field--disabled .m-field__input { opacity: var(--m-disabled-opacity); cursor: not-allowed; }
 .m-field__label--floating { transform: translateY(-1.25rem) scale(0.75); padding-inline-start: 0.5rem; }
-.m-field--focused .m-field__label, .m-field__label--floating { color: rgb(var(--m-primary-rgb, 140, 87, 255)); }
+.m-field--focused .m-field__label, .m-field__label--floating { color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
 .m-field--error .m-field__label { color: var(--m-error); }
 .m-field--disabled .m-field__label { color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.38); }
 .m-field__underline {
@@ -104,7 +104,7 @@ const isFocused = ref(false)
   transform: scaleX(0); transform-origin: bottom;
   transition: all var(--m-transition); border-radius: 0 0 var(--m-radius-sm) var(--m-radius-sm);
 }
-.m-field--focused .m-field__underline { transform: scaleX(1); background: rgb(var(--m-primary-rgb, 140, 87, 255)); }
+.m-field--focused .m-field__underline { transform: scaleX(1); background: rgb(var(--m-primary-rgb, 85, 133, 255)); }
 .m-field--error .m-field__underline { background: var(--m-error); transform: scaleX(1); }
 .m-field__hint { padding: 0.25rem 0.75rem; font-size: 0.75rem; color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.6); }
 .m-field__error { padding: 0.25rem 0.75rem; font-size: 0.75rem; color: var(--m-error); }

@@ -180,7 +180,7 @@ onMounted(async () => {
   transition: color 0.2s, border-color 0.2s;
 }
 .tab-btn:hover { color: var(--m-on-surface); }
-.tab-btn.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); }
+.tab-btn.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 768px) { .stats-row { grid-template-columns: 1fr; } }
 .section-title { font-size: 1rem; font-weight: 700; font-family: Inter; }

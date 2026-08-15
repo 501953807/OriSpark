@@ -60,14 +60,14 @@ defineEmits<{ (e: 'dismiss'): void }>()
   line-height: 1.5;
 }
 .m-alert--variant-filled {
-  background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.12);
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
-  border: 1px solid rgba(var(--m-primary-rgb, 140, 87, 255), 0.2);
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.2);
 }
 .m-alert--variant-outlined {
   background: transparent;
-  border: 1px solid rgba(var(--m-primary-rgb, 140, 87, 255), 0.5);
-  color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5);
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
 }
 .m-alert--color-success.m-alert--variant-filled { background: rgba(86,202,0,0.12); color: #3CB600; border-color: rgba(86,202,0,0.2); }
 .m-alert--color-warning.m-alert--variant-filled { background: rgba(255,180,0,0.12); color: #B87800; border-color: rgba(255,180,0,0.2); }

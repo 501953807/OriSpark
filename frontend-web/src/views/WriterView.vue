@@ -747,13 +747,13 @@ onMounted(() => {
 /* ── Tab Bar ───────────────────────────────────────────────────── */
 .tab-bar { display: flex; gap: 8px; flex-wrap: wrap; }
 .tab-btn { padding: 8px 20px; border-radius: 100px; font-size: 0.84rem; font-weight: 600; cursor: pointer; border: 1px solid var(--m-border); background: var(--m-surface); color: var(--m-grey-500); font-family: Inter; transition: all .2s; }
-.tab-btn.active { background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255); }
+.tab-btn.active { background: rgb(85, 133, 255); color: #fff; border-color: rgb(85, 133, 255); }
 
 /* ── Toolbar ───────────────────────────────────────────────────── */
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .toolbar-filters { display: flex; gap: 8px; flex-wrap: wrap; }
 .form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.82rem; font-family: Inter; background: var(--m-surface); color: var(--m-on-surface); outline: none; cursor: pointer; }
-.form-select:focus { border-color: rgb(140, 87, 255); }
+.form-select:focus { border-color: rgb(85, 133, 255); }
 
 /* ── Card Grid ─────────────────────────────────────────────────── */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
@@ -767,12 +767,12 @@ onMounted(() => {
 .card-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
 
 /* ── Tags & Pills ──────────────────────────────────────────────── */
-.tag { padding: 2px 10px; border-radius: 100px; font-size: 0.68rem; background: oklch(56% 0.12 170 / .1); color: rgb(140, 87, 255); }
+.tag { padding: 2px 10px; border-radius: 100px; font-size: 0.68rem; background: oklch(56% 0.12 170 / .1); color: rgb(85, 133, 255); }
 .stat-pill { font-size: 0.72rem; color: var(--m-grey-500); padding: 2px 8px; background: oklch(0 0 0 / .03); border-radius: 100px; }
 
 /* ── Buttons ───────────────────────────────────────────────────── */
 .btn { padding: 10px 20px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; transition: all .2s; }
-.btn-primary { background: rgb(140, 87, 255); color: #fff; }
+.btn-primary { background: rgb(85, 133, 255); color: #fff; }
 .btn-primary:hover { filter: brightness(1.1); }
 .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
@@ -796,11 +796,11 @@ onMounted(() => {
 .book-cover-placeholder { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: var(--m-surface); }
 .book-info { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
 .book-title { font-size: 0.95rem; }
-.book-genre { font-size: 0.78rem; color: rgb(140, 87, 255); font-weight: 600; }
+.book-genre { font-size: 0.78rem; color: rgb(85, 133, 255); font-weight: 600; }
 .book-detail { font-size: 0.74rem; color: var(--m-grey-500); }
 .book-progress { margin-top: 8px; }
 .progress-bar { width: 100%; height: 6px; background: var(--m-border); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
-.progress-fill { height: 100%; background: rgb(140, 87, 255); border-radius: 3px; transition: width .3s; }
+.progress-fill { height: 100%; background: rgb(85, 133, 255); border-radius: 3px; transition: width .3s; }
 .progress-label { font-size: 0.72rem; color: var(--m-grey-500); }
 
 /* ── Manuscript Row ────────────────────────────────────────────── */
@@ -811,7 +811,7 @@ onMounted(() => {
 .ms-title { font-size: 0.9rem; font-weight: 600; }
 .ms-version { font-size: 0.72rem; color: var(--m-grey-500); }
 .ms-body { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.ms-book-link { font-size: 0.78rem; color: rgb(140, 87, 255); cursor: pointer; text-decoration: underline; }
+.ms-book-link { font-size: 0.78rem; color: rgb(85, 133, 255); cursor: pointer; text-decoration: underline; }
 .ms-date { font-size: 0.72rem; color: var(--m-grey-500); margin-left: auto; }
 
 /* ── Modal ─────────────────────────────────────────────────────── */
@@ -826,7 +826,7 @@ onMounted(() => {
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; }
-.form-input:focus { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / .1); }
+.form-input:focus { border-color: rgb(85, 133, 255); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / .1); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 textarea.form-input { resize: vertical; }
 

@@ -102,7 +102,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .tax-info strong { font-size: 0.9rem; }
 .tax-due { font-size: 0.8rem; color: var(--m-grey-500); }
 .btn-complete {
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
   color: white;
   border: none;
   padding: 6px 16px;

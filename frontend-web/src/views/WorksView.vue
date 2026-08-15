@@ -517,10 +517,10 @@ onUnmounted(() => {
 .works-stats-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .filter-chip {
   padding: 2px 10px; border-radius: 100px; font-size: 0.75rem;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: rgb(140, 87, 255);
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: rgb(85, 133, 255);
   display: flex; align-items: center; gap: 4px;
 }
-.filter-chip button { background: none; border: none; cursor: pointer; color: rgb(140, 87, 255); font-size: 1rem; }
+.filter-chip button { background: none; border: none; cursor: pointer; color: rgb(85, 133, 255); font-size: 1rem; }
 
 /* Floating batch bar */
 .floating-batch-bar {
@@ -582,8 +582,8 @@ onUnmounted(() => {
   gap: 16px;
 }
 .work-grid-card { cursor: pointer; overflow: hidden; padding: 0; position: relative; }
-.work-grid-card.selected { outline: 2px solid rgb(140, 87, 255); }
-.work-grid-card input[type="checkbox"] { accent-color: rgb(140, 87, 255); }
+.work-grid-card.selected { outline: 2px solid rgb(85, 133, 255); }
+.work-grid-card input[type="checkbox"] { accent-color: rgb(85, 133, 255); }
 .card-thumb {
   height: 180px; position: relative; overflow: hidden;
   background: var(--m-surface-2);
@@ -634,7 +634,7 @@ onUnmounted(() => {
 }
 .card-checkbox input {
   width: 20px; height: 20px; cursor: pointer;
-  accent-color: rgb(140, 87, 255);
+  accent-color: rgb(85, 133, 255);
 }
 
 /* List view */
@@ -659,7 +659,7 @@ onUnmounted(() => {
 }
 .list-checkbox input {
   width: 18px; height: 18px; cursor: pointer;
-  accent-color: rgb(140, 87, 255);
+  accent-color: rgb(85, 133, 255);
 }
 .list-thumb {
   width: 44px; height: 44px; border-radius: var(--m-radius-sm);
@@ -694,7 +694,7 @@ onUnmounted(() => {
 .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .modal-header h3 { margin: 0; font-size: 1.15rem; }
 .modal-close-btn { background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--m-grey-500); }
-.uploading-hint { text-align: center; margin-top: 12px; color: rgb(140, 87, 255); font-weight: 600; font-size: 0.88rem; }
+.uploading-hint { text-align: center; margin-top: 12px; color: rgb(85, 133, 255); font-weight: 600; font-size: 0.88rem; }
 .import-options { padding: 12px 0; }
 .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--m-grey-500); cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
@@ -725,7 +725,7 @@ onUnmounted(() => {
 }
 .section-label {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.05em; color: rgb(140, 87, 255);
+  letter-spacing: 0.05em; color: rgb(85, 133, 255);
   padding-top: 4px; border-top: 1px solid var(--m-border);
 }
 .section-label:first-child { border-top: none; padding-top: 0; }
@@ -736,10 +736,10 @@ onUnmounted(() => {
   font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface);
   background: var(--m-surface); outline: none;
 }
-.form-input:focus, .form-textarea:focus { border-color: rgb(140, 87, 255); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
+.form-input:focus, .form-textarea:focus { border-color: rgb(85, 133, 255); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
 .form-textarea { resize: vertical; }
 .btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
-.btn-primary { background: rgb(140, 87, 255); color: #fff; }
+.btn-primary { background: rgb(85, 133, 255); color: #fff; }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
 .btn-danger { background: #e53e3e; color: #fff; }
 .btn-sm { padding: 4px 10px; font-size: 0.75rem; }

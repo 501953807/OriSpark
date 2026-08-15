@@ -72,5 +72,5 @@ watch(() => appStore.workCount, (val) => {
 .tabs-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--m-border); margin-bottom: 20px; padding-bottom: 0; }
 .tab-btn { padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 0.95rem; color: var(--m-grey-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
 .tab-btn:hover { color: var(--m-on-surface); }
-.tab-btn.active { color: rgb(140, 87, 255); border-bottom-color: rgb(140, 87, 255); font-weight: 600; }
+.tab-btn.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); font-weight: 600; }
 </style>

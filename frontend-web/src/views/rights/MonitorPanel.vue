@@ -47,16 +47,16 @@ onMounted(async () => { await Promise.all([monitor.fetchTasks(), monitor.fetchRe
 .disclaimer-banner { background: #fff8e1; border: 1px solid #f0c040; color: #6d4c00; padding: 10px 16px; border-radius: var(--m-radius-sm); font-size: 0.82rem; margin-bottom: 16px; }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
 .stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; text-align: center; }
-.stat-val { font-size: 1.5rem; font-weight: 700; color: rgb(140, 87, 255); }
+.stat-val { font-size: 1.5rem; font-weight: 700; color: rgb(85, 133, 255); }
 .stat-lbl { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 .toolbar { display: flex; gap: 8px; margin-bottom: 16px; }
 .select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .btn { padding: 8px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.85rem; }
-.btn-primary { background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255); }
+.btn-primary { background: rgb(85, 133, 255); color: #fff; border-color: rgb(85, 133, 255); }
 .empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
 .result-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; }
-.r-sim { font-size: 1.3rem; font-weight: 700; color: rgb(140, 87, 255); }
+.r-sim { font-size: 1.3rem; font-weight: 700; color: rgb(85, 133, 255); }
 .r-title { font-weight: 600; margin: 6px 0 2px; }
 .r-url { font-size: 0.78rem; color: var(--m-grey-500); word-break: break-all; margin-bottom: 8px; }
 .r-date { font-size: 0.75rem; color: var(--m-grey-500); margin-bottom: 8px; }

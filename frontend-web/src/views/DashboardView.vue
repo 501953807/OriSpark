@@ -361,7 +361,7 @@ onMounted(async () => {
 .work-meta { font-size: var(--m-font-size-xs); color: var(--m-grey-500); }
 
 /* ── Link ── */
-.m-link { font-size: var(--m-font-size-sm); color: rgb(140, 87, 255); text-decoration: none; font-weight: var(--m-font-weight-medium); }
+.m-link { font-size: var(--m-font-size-sm); color: rgb(85, 133, 255); text-decoration: none; font-weight: var(--m-font-weight-medium); }
 .m-link:hover { text-decoration: underline; }
 
 /* ── Loading Overlay ── */

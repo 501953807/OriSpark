@@ -322,7 +322,7 @@ onMounted(loadTemplates)
   border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px 20px;
   cursor: pointer; transition: all 0.2s;
 }
-.template-card:hover { box-shadow: 0 4px 16px oklch(0 0 0 / 0.05); border-color: rgb(140, 87, 255); }
+.template-card:hover { box-shadow: 0 4px 16px oklch(0 0 0 / 0.05); border-color: rgb(85, 133, 255); }
 .card-header { display: flex; align-items: center; justify-content: space-between; }
 .card-title-row { display: flex; align-items: center; gap: 8px; }
 .card-title { font-weight: 700; font-size: 1rem; }
@@ -340,7 +340,7 @@ onMounted(loadTemplates)
 }
 .field-drag-handle { color: var(--m-grey-500); font-size: 1.1rem; cursor: grab; user-select: none; }
 .field-details { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 1; }
-.field-key { font-family: monospace; font-size: 0.78rem; color: rgb(140, 87, 255); background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); padding: 1px 6px; border-radius: 4px; }
+.field-key { font-family: monospace; font-size: 0.78rem; color: rgb(85, 133, 255); background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); padding: 1px 6px; border-radius: 4px; }
 .field-label { font-weight: 600; }
 .field-type { font-size: 0.75rem; color: var(--m-grey-500); }
 .required-star { color: #ef4444; font-weight: 700; }

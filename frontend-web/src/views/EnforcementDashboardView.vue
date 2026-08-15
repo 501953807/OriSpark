@@ -298,7 +298,7 @@ onMounted(refresh)
 }
 .action-infringement .label { color: var(--m-grey-500); font-weight: 600; font-size: 0.72rem; }
 .action-infringement a {
-  color: rgb(140, 87, 255); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: rgb(85, 133, 255); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   flex: 1; font-size: 0.75rem;
 }
 
@@ -306,7 +306,7 @@ onMounted(refresh)
   display: flex; align-items: center; justify-content: space-between;
   font-size: 0.72rem; color: var(--m-grey-500);
 }
-.view-link { color: rgb(140, 87, 255); font-weight: 600; }
+.view-link { color: rgb(85, 133, 255); font-weight: 600; }
 
 /* Templates */
 .templates-section { padding: 16px; }

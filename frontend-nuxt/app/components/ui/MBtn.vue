@@ -56,18 +56,18 @@ defineEmits<{ (e: 'click', event: MouseEvent): void }>()
   overflow: hidden;
 }
 .m-btn--variant-elevated, .m-btn--variant-flat {
-  background: rgb(var(--m-primary-rgb, 140, 87, 255));
+  background: rgb(var(--m-primary-rgb, 85, 133, 255));
   color: var(--m-on-primary);
 }
 .m-btn--variant-elevated { box-shadow: var(--m-shadow-xs); }
 .m-btn--variant-elevated:hover:not(:disabled) { background: var(--m-primary-darken-1); box-shadow: var(--m-shadow-sm); }
 .m-btn--variant-flat:hover:not(:disabled) { background: var(--m-primary-darken-1); }
-.m-btn--variant-outlined { background: transparent; color: rgb(var(--m-primary-rgb, 140, 87, 255)); border: 1px solid rgba(var(--m-primary-rgb, 140, 87, 255), 0.5); }
-.m-btn--variant-outlined:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08); }
-.m-btn--variant-text { background: transparent; color: rgb(var(--m-primary-rgb, 140, 87, 255)); }
-.m-btn--variant-text:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08); }
-.m-btn--variant-tonal { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.12); color: rgb(var(--m-primary-rgb, 140, 87, 255)); }
-.m-btn--variant-tonal:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.2); }
+.m-btn--variant-outlined { background: transparent; color: rgb(var(--m-primary-rgb, 85, 133, 255)); border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5); }
+.m-btn--variant-outlined:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08); }
+.m-btn--variant-text { background: transparent; color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
+.m-btn--variant-text:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08); }
+.m-btn--variant-tonal { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12); color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
+.m-btn--variant-tonal:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.2); }
 .m-btn--size-xs { height: 22px; padding: 0 10px; font-size: var(--m-font-size-xs); }
 .m-btn--size-sm { height: 30px; padding: 0 14px; font-size: var(--m-font-size-sm); }
 .m-btn--size-default { height: 38px; padding: 0 18px; }

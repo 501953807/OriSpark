@@ -162,7 +162,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .sub-platform { font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
 .sub-stats { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--m-grey-500); margin-bottom: 8px; }
-.sub-link { font-size: 0.8rem; color: rgb(140, 87, 255); text-decoration: none; }
+.sub-link { font-size: 0.8rem; color: rgb(85, 133, 255); text-decoration: none; }
 .add-card {
   display: flex;
   flex-direction: column;
@@ -188,7 +188,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .comm-members { font-size: 0.8rem; color: var(--m-grey-500); margin-top: 4px; }
 .comm-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
 .tag { font-size: 0.7rem; padding: 2px 8px; background: var(--m-bg-subtle); border-radius: 10px; }
-.join-link { font-size: 0.8rem; color: rgb(140, 87, 255); text-decoration: none; margin-top: 4px; display: inline-block; }
+.join-link { font-size: 0.8rem; color: rgb(85, 133, 255); text-decoration: none; margin-top: 4px; display: inline-block; }
 
 /* Funnel */
 .funnel-chart { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
@@ -196,7 +196,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .funnel-label { width: 80px; font-size: 0.8rem; text-align: right; color: var(--m-grey-500); flex-shrink: 0; }
 .funnel-bar {
   height: 32px;
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
   border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;

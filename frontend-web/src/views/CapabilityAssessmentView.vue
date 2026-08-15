@@ -212,7 +212,7 @@ h3 { margin-top: 0; font-size: 1rem; }
 }
 
 .btn-primary {
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
   color: white;
   border: none;
   padding: 10px 24px;

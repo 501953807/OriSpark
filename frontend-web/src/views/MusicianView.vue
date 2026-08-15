@@ -555,7 +555,7 @@ onMounted(async () => {
   background: var(--m-bg-subtle);
 }
 .tab-btn.active {
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
   color: #fff;
 }
 .tab-panel {
@@ -619,13 +619,13 @@ onMounted(async () => {
 .btn:hover { background: var(--m-bg-subtle); }
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-primary {
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
   color: #fff;
-  border-color: rgb(140, 87, 255);
+  border-color: rgb(85, 133, 255);
 }
 .btn-primary:hover {
   opacity: 0.9;
-  background: rgb(140, 87, 255);
+  background: rgb(85, 133, 255);
 }
 .btn-outline {
   background: transparent;

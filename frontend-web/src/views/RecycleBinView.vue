@@ -229,7 +229,7 @@ onUnmounted(() => {
   gap: 16px;
 }
 .work-grid-card { overflow: hidden; padding: 0; }
-.work-grid-card.selected { outline: 2px solid rgb(140, 87, 255); }
+.work-grid-card.selected { outline: 2px solid rgb(85, 133, 255); }
 .card-thumb {
   height: 180px; position: relative; overflow: hidden;
   background: var(--m-surface-2);

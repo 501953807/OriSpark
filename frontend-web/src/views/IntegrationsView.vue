@@ -190,8 +190,8 @@ function connectItem(item: any) {
   cursor: pointer; border: 1px solid var(--m-border); background: var(--m-surface);
   transition: all 0.2s; font-family: Inter; color: var(--m-grey-500);
 }
-.cat-tab.active { background: rgb(140, 87, 255); color: #fff; border-color: rgb(140, 87, 255); }
-.cat-tab:hover:not(.active) { border-color: rgb(140, 87, 255); color: rgb(140, 87, 255); }
+.cat-tab.active { background: rgb(85, 133, 255); color: #fff; border-color: rgb(85, 133, 255); }
+.cat-tab:hover:not(.active) { border-color: rgb(85, 133, 255); color: rgb(85, 133, 255); }
 .integrations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
 .integration-card { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
 .ic-top { display: flex; align-items: flex-start; gap: 14px; }
@@ -210,7 +210,7 @@ function connectItem(item: any) {
 .ic-desc { font-size: 0.85rem; color: var(--m-grey-500); line-height: 1.6; }
 .ic-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.75rem; }
 .ic-tag { padding: 3px 10px; border-radius: 100px; font-weight: 600; }
-.ic-tag.active { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: rgb(140, 87, 255); }
+.ic-tag.active { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: rgb(85, 133, 255); }
 .ic-tag.inactive { background: rgba(0,0,0,0.04); color: var(--m-grey-500); }
 .ic-tag.free { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: var(--green); }
 .ic-tag.paid { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
@@ -225,7 +225,7 @@ function connectItem(item: any) {
 .pc-icon { font-size: 1.5rem; }
 .pc-name { font-weight: 700; font-size: 0.9rem; }
 .pc-status { font-size: 0.72rem; font-weight: 600; }
-.pc-status.connected { color: rgb(140, 87, 255); }
+.pc-status.connected { color: rgb(85, 133, 255); }
 .pc-status.disconnected { color: var(--m-grey-500); }
 .pc-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-bottom: 10px; }
 .pc-input-row { margin-bottom: 10px; }

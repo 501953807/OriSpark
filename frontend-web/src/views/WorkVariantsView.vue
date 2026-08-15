@@ -345,7 +345,7 @@ onMounted(() => {
 .variant-name { font-weight: 600; font-size: 0.9rem; }
 .variant-specs { display: flex; flex-wrap: wrap; gap: 6px; }
 .spec-item { font-size: 0.75rem; color: var(--m-grey-500); background: var(--m-border); padding: 2px 8px; border-radius: 10px; }
-.spec-item.sort { color: rgb(140, 87, 255); background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); }
+.spec-item.sort { color: rgb(85, 133, 255); background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); }
 .variant-actions { display: flex; gap: 4px; margin-top: 4px; }
 
 .empty-hint { text-align: center; padding: 48px 24px; color: var(--m-grey-500); font-size: 0.9rem; }

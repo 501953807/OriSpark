@@ -440,7 +440,7 @@ onMounted(loadHistory)
 }
 .contract-textarea:focus {
   outline: none;
-  border-color: rgb(140, 87, 255);
+  border-color: rgb(85, 133, 255);
   box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
 }
 .contract-textarea::placeholder {
@@ -626,7 +626,7 @@ onMounted(loadHistory)
 }
 .clause-suggestion {
   font-size: 0.8rem;
-  color: rgb(140, 87, 255);
+  color: rgb(85, 133, 255);
   margin-bottom: 8px;
 }
 .flag-badge {
@@ -666,7 +666,7 @@ onMounted(loadHistory)
 }
 .edit-textarea:focus {
   outline: none;
-  border-color: rgb(140, 87, 255);
+  border-color: rgb(85, 133, 255);
 }
 
 /* Suggestions card */
