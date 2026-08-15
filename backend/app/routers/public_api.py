@@ -7,10 +7,11 @@
 """
 
 from datetime import datetime, timedelta, timezone
+from decimal import Decimal
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -45,6 +46,7 @@ class PublicWorkOut(BaseModel):
 
 
 class PublicContractOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: str
     title: str
     description: str = ""
@@ -146,7 +148,23 @@ def list_public_contracts_endpoint(
     db: Session = Depends(get_db),
 ):
     """公开合约列表（仅 approved + 活跃状态）."""
-    return list_public_contracts(db, contract_type, status, recent, limit)
+    contracts = list_public_contracts(db, contract_type, status, recent, limit)
+    # 手动构造响应对象，避免 Decimal 序列化问题
+    return [
+        PublicContractOut(
+            id=c.id,
+            title=c.title,
+            description=c.description or "",
+            contract_type=c.contract_type,
+            total_amount=float(c.total_amount) if hasattr(c, 'total_amount') and isinstance(c.total_amount, Decimal) else c.total_amount,
+            currency=c.currency,
+            status=c.status,
+            scope_usage=c.scope_usage or "",
+            scope_geography=c.scope_geography or "",
+            created_at=c.created_at,
+        )
+        for c in contracts
+    ]
 
 
 @router.get("/public/dashboard-stats", response_model=DashboardStatsOut)

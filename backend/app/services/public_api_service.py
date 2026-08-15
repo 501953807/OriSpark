@@ -113,6 +113,10 @@ def list_public_contracts(db: Session, contract_type: Optional[str] = None,
         contracts = q.order_by(
             ContractInstance.published_at.desc().nullslast()
         ).limit(limit).all()
+        # 转换 Decimal 为 float 以避免 Pydantic 序列化错误
+        for c in contracts:
+            if hasattr(c, 'total_amount') and isinstance(c.total_amount, Decimal):
+                c.total_amount = float(c.total_amount)
         return contracts
     except OperationalError:
         return []
