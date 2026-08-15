@@ -48,7 +48,7 @@ async function handleLogin() {
             <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.9)" />
             <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.9)" stroke-width="20" fill="none" stroke-linecap="round" />
             <!-- Floating elements -->
-            <circle cx="100" cy="120" r="20" fill="#8C57FF" opacity="0.8" />
+            <circle cx="100" cy="120" r="20" fill="#5585FF" opacity="0.8" />
             <circle cx="300" cy="160" r="15" fill="#56CA00" opacity="0.8" />
             <rect x="80" y="240" width="30" height="30" rx="6" fill="#16B1FF" opacity="0.8" transform="rotate(15 95 255)" />
             <rect x="290" y="260" width="25" height="25" rx="4" fill="#FFB400" opacity="0.8" transform="rotate(-10 302 272)" />
@@ -185,7 +185,7 @@ async function handleLogin() {
 .auth-left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #8C57FF 0%, #6A3FCC 50%, #4A2D99 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #2A52B0 50%, #4A2D99 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,7 +272,7 @@ async function handleLogin() {
 .auth-logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -300,8 +300,8 @@ async function handleLogin() {
   background: #FFFFFF;
 }
 .form-input-wrapper:focus-within {
-  border-color: #8C57FF;
-  box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.1);
+  border-color: #5585FF;
+  box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1);
 }
 .form-input-wrapper--error {
   border-color: #EF4444;
@@ -354,8 +354,8 @@ async function handleLogin() {
   transition: all 0.15s;
 }
 .form-checkbox input:checked + .form-checkbox-mark {
-  background: #8C57FF;
-  border-color: #8C57FF;
+  background: #5585FF;
+  border-color: #5585FF;
 }
 .form-checkbox input:checked + .form-checkbox-mark::after {
   content: '✓';
@@ -365,7 +365,7 @@ async function handleLogin() {
 }
 .form-link {
   font-size: 0.8125rem;
-  color: #8C57FF;
+  color: #5585FF;
   text-decoration: none;
 }
 .form-link:hover { text-decoration: underline; }
@@ -374,7 +374,7 @@ async function handleLogin() {
 .btn-primary {
   height: 44px;
   padding: 0 1.5rem;
-  background: linear-gradient(135deg, #8C57FF 0%, #7E4EE6 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #3D6DD6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -388,8 +388,8 @@ async function handleLogin() {
   gap: 0.5rem;
 }
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7E4EE6 0%, #6A3FCC 100%);
-  box-shadow: 0 4px 12px rgba(140, 87, 255, 0.4);
+  background: linear-gradient(135deg, #3D6DD6 0%, #2A52B0 100%);
+  box-shadow: 0 4px 12px rgba(85, 133, 255, 0.4);
 }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
 .btn-spinner { animation: spin 0.8s linear infinite; }
@@ -430,8 +430,8 @@ async function handleLogin() {
   color: #374151;
 }
 .btn-oauth:hover {
-  border-color: #8C57FF;
-  background: rgba(140, 87, 255, 0.04);
+  border-color: #5585FF;
+  background: rgba(85, 133, 255, 0.04);
 }
 
 /* ── Footer ── */
@@ -442,7 +442,7 @@ async function handleLogin() {
   margin: 1.5rem 0 0.5rem;
 }
 .auth-link {
-  color: #8C57FF;
+  color: #5585FF;
   text-decoration: none;
   font-weight: 600;
 }
@@ -453,7 +453,7 @@ async function handleLogin() {
   color: #9CA3AF;
   margin: 0.5rem 0 0;
 }
-.auth-redirect a { color: #8C57FF; }
+.auth-redirect a { color: #5585FF; }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {

@@ -502,7 +502,7 @@ export default defineComponent({
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(90deg, #5585FF, #2A52B0);
   border-radius: 3px;
   transition: width 0.3s ease;
 }

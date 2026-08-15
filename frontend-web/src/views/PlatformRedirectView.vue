@@ -46,7 +46,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
 .redirect-icon {
   width: 64px; height: 64px;
   border-radius: var(--m-radius-sm);
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: inline-flex; align-items: center; justify-content: center;
   color: #FFFFFF;
   font-size: 1.8rem; font-weight: 700;
@@ -83,7 +83,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   cursor: pointer;
   font-weight: 600;
   color: #FFFFFF;
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   text-decoration: none;
   transition: opacity 0.2s;
 }

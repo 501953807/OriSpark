@@ -459,7 +459,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   width: 34px;
   height: 34px;
   border-radius: var(--m-radius-sm);
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -467,7 +467,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   font-weight: 800;
   font-size: 1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(140, 87, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(85, 133, 255, 0.1);
 }
 .sb-brand-text {
   font-family: Inter;
@@ -591,7 +591,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   width: 36px;
   height: 36px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -599,7 +599,7 @@ function hasSharedSection(sectionRoute: string): boolean {
   font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(140, 87, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(85, 133, 255, 0.1);
 }
 .sb-user-info {
   flex: 1;

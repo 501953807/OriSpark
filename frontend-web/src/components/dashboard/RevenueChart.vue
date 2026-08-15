@@ -130,7 +130,7 @@ function niceStep(maxVal: number, target: number): number {
   min-width: 20px;
   max-width: 48px;
   border-radius: 4px 4px 0 0;
-  background: linear-gradient(to top, #8C57FF, #6A3FCC);
+  background: linear-gradient(to top, #5585FF, #2A52B0);
   transition: height 0.4s ease;
   position: relative;
   cursor: pointer;

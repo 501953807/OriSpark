@@ -79,7 +79,7 @@ async function handleSubmit() {
 
 <style scoped>
 .auth-layout { min-height: 100dvh; display: flex; }
-.auth-left { flex: 1; position: relative; background: linear-gradient(135deg, #8C57FF 0%, #6A3FCC 50%, #4A2D99 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 100dvh; }
+.auth-left { flex: 1; position: relative; background: linear-gradient(135deg, #5585FF 0%, #2A52B0 50%, #4A2D99 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 100dvh; }
 .auth-left-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(140,87,255,0.95) 0%, rgba(106,63,204,0.95) 100%); }
 .auth-left-shapes { position: absolute; inset: 0; }
 .auth-shape { position: absolute; border-radius: 50%; opacity: 0.15; background: white; }
@@ -93,25 +93,25 @@ async function handleSubmit() {
 .auth-left-desc { font-size: 0.9375rem; opacity: 0.8; margin: 0; }
 .auth-right { flex: 1; display: flex; align-items: center; justify-content: center; background: #FFFFFF; padding: 2rem; }
 .auth-right-inner { width: 100%; max-width: 420px; }
-.auth-back { display: inline-block; font-size: 0.875rem; color: #8C57FF; text-decoration: none; margin-bottom: 1.5rem; }
+.auth-back { display: inline-block; font-size: 0.875rem; color: #5585FF; text-decoration: none; margin-bottom: 1.5rem; }
 .auth-header { margin-bottom: 2rem; }
 .auth-logo { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; margin-bottom: 1rem; }
 .auth-logo-icon { font-size: 2rem; }
-.auth-logo-text { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #8C57FF, #6A3FCC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-logo-text { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #5585FF, #2A52B0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .auth-welcome { font-size: 1.25rem; font-weight: 600; color: #1F2937; margin: 0 0 0.5rem; }
 .auth-desc { font-size: 0.875rem; color: #64748B; margin: 0 0 1.5rem; }
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
 .form-field { display: flex; flex-direction: column; gap: 0.375rem; }
 .form-label { font-size: 0.8125rem; font-weight: 500; color: #374151; }
 .form-input-wrapper { position: relative; display: flex; align-items: center; border: 1.5px solid #E5E7EB; border-radius: 8px; transition: all 0.15s; background: #FFFFFF; }
-.form-input-wrapper:focus-within { border-color: #8C57FF; box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.1); }
+.form-input-wrapper:focus-within { border-color: #5585FF; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
 .form-input-icon { position: absolute; left: 12px; color: #9CA3AF; pointer-events: none; }
 .form-input { flex: 1; height: 44px; padding: 0 0.75rem 0 2.75rem; border: none; outline: none; font-size: 0.9375rem; font-family: inherit; color: #1F2937; background: transparent; }
 .form-input::placeholder { color: #9CA3AF; }
 .form-error { color: #EF4444; font-size: 0.8125rem; margin: 0; }
-.btn-primary { height: 44px; padding: 0 1.5rem; background: linear-gradient(135deg, #8C57FF 0%, #7E4EE6 100%); color: white; border: none; border-radius: 8px; font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #7E4EE6 0%, #6A3FCC 100%); box-shadow: 0 4px 12px rgba(140, 87, 255, 0.4); }
+.btn-primary { height: 44px; padding: 0 1.5rem; background: linear-gradient(135deg, #5585FF 0%, #3D6DD6 100%); color: white; border: none; border-radius: 8px; font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #3D6DD6 0%, #2A52B0 100%); box-shadow: 0 4px 12px rgba(85, 133, 255, 0.4); }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-.auth-link-secondary { display: block; text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: #8C57FF; text-decoration: none; }
+.auth-link-secondary { display: block; text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: #5585FF; text-decoration: none; }
 @media (max-width: 768px) { .auth-left { display: none; } .auth-right { flex: 1; } }
 </style>

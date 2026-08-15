@@ -81,7 +81,7 @@ async function handleRegister() {
             <circle cx="200" cy="200" r="160" fill="rgba(255,255,255,0.1)" />
             <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.9)" />
             <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.9)" stroke-width="20" fill="none" stroke-linecap="round" />
-            <circle cx="100" cy="120" r="20" fill="#8C57FF" opacity="0.8" />
+            <circle cx="100" cy="120" r="20" fill="#5585FF" opacity="0.8" />
             <circle cx="300" cy="160" r="15" fill="#56CA00" opacity="0.8" />
           </svg>
         </div>
@@ -193,7 +193,7 @@ async function handleRegister() {
 .auth-layout { min-height: 100dvh; display: flex; }
 .auth-left {
   flex: 1; position: relative;
-  background: linear-gradient(135deg, #8C57FF 0%, #6A3FCC 50%, #4A2D99 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #2A52B0 50%, #4A2D99 100%);
   display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 100dvh;
 }
 .auth-left-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(140,87,255,0.95) 0%, rgba(106,63,204,0.95) 100%); }
@@ -217,7 +217,7 @@ async function handleRegister() {
 .auth-header { margin-bottom: 2rem; }
 .auth-logo { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; margin-bottom: 1rem; }
 .auth-logo-icon { font-size: 2rem; }
-.auth-logo-text { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #8C57FF, #6A3FCC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-logo-text { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #5585FF, #2A52B0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .auth-welcome { font-size: 1.25rem; font-weight: 600; color: #1F2937; margin: 0 0 0.25rem; }
 .auth-desc { font-size: 0.875rem; color: #64748B; margin: 0 0 1.5rem; }
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -229,7 +229,7 @@ async function handleRegister() {
   border: 1.5px solid #E5E7EB; border-radius: 8px;
   transition: all 0.15s; background: #FFFFFF;
 }
-.form-input-wrapper:focus-within { border-color: #8C57FF; box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.1); }
+.form-input-wrapper:focus-within { border-color: #5585FF; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
 .form-input-icon { position: absolute; left: 12px; color: #9CA3AF; pointer-events: none; }
 .form-input {
   flex: 1; height: 44px; padding: 0 0.75rem 0 2.75rem;
@@ -249,28 +249,28 @@ async function handleRegister() {
   border-radius: 8px; cursor: pointer;
   transition: all 0.15s;
 }
-.role-item:hover { border-color: #8C57FF; background: rgba(140, 87, 255, 0.04); }
-.role-item input[type="checkbox"] { margin-top: 3px; accent-color: #8C57FF; }
+.role-item:hover { border-color: #5585FF; background: rgba(85, 133, 255, 0.04); }
+.role-item input[type="checkbox"] { margin-top: 3px; accent-color: #5585FF; }
 .role-info { flex: 1; min-width: 0; }
 .role-label { font-size: 0.8125rem; font-weight: 600; color: #1F2937; }
 .role-desc { font-size: 0.6875rem; color: #9CA3AF; margin-top: 2px; }
 
 .btn-primary {
   height: 44px; padding: 0 1.5rem;
-  background: linear-gradient(135deg, #8C57FF 0%, #7E4EE6 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #3D6DD6 100%);
   color: white; border: none; border-radius: 8px;
   font-size: 0.9375rem; font-weight: 600; cursor: pointer;
   transition: all 0.15s;
 }
-.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #7E4EE6 0%, #6A3FCC 100%); box-shadow: 0 4px 12px rgba(140, 87, 255, 0.4); }
+.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #3D6DD6 0%, #2A52B0 100%); box-shadow: 0 4px 12px rgba(85, 133, 255, 0.4); }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
 
 .auth-footer { margin-top: 1.5rem; text-align: center; }
 .auth-footer p { font-size: 0.875rem; color: #64748B; margin: 0.5rem 0; }
-.auth-link { color: #8C57FF; text-decoration: none; font-weight: 600; }
+.auth-link { color: #5585FF; text-decoration: none; font-weight: 600; }
 .auth-link:hover { text-decoration: underline; }
 .auth-redirect { font-size: 0.75rem; color: #9CA3AF; }
-.auth-redirect a { color: #8C57FF; }
+.auth-redirect a { color: #5585FF; }
 
 @media (max-width: 768px) {
   .auth-left { display: none; }

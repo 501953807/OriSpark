@@ -14,8 +14,8 @@
         <!-- Area gradient -->
         <defs>
           <linearGradient id="trendAreaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8C57FF" stop-opacity="0.35" />
-            <stop offset="100%" stop-color="#6A3FCC" stop-opacity="0.05" />
+            <stop offset="0%" stop-color="#5585FF" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#2A52B0" stop-opacity="0.05" />
           </linearGradient>
         </defs>
 
@@ -38,8 +38,8 @@
         <!-- Gradient def for polyline (SVG doesn't support CSS vars directly in stroke) -->
         <defs>
           <linearGradient id="trendLineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#8C57FF" />
-            <stop offset="100%" stop-color="#6A3FCC" />
+            <stop offset="0%" stop-color="#5585FF" />
+            <stop offset="100%" stop-color="#2A52B0" />
           </linearGradient>
         </defs>
 
@@ -50,7 +50,7 @@
           :cx="pt.x"
           :cy="pt.y"
           r="1.5"
-          fill="#8C57FF"
+          fill="#5585FF"
         />
       </svg>
     </div>

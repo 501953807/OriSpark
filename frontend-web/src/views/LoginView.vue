@@ -15,7 +15,7 @@
             <circle cx="200" cy="200" r="160" fill="rgba(255,255,255,0.1)" />
             <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.9)" />
             <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.9)" stroke-width="20" fill="none" stroke-linecap="round" />
-            <circle cx="100" cy="120" r="20" fill="#8C57FF" opacity="0.8" />
+            <circle cx="100" cy="120" r="20" fill="#5585FF" opacity="0.8" />
             <circle cx="300" cy="160" r="15" fill="#56CA00" opacity="0.8" />
           </svg>
         </div>
@@ -198,14 +198,14 @@ function oauthLogin(provider: string) {
 .auth-left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #8C57FF 0%, #6A3FCC 50%, #4A2D99 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #2A52B0 50%, #4A2D99 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   min-height: 100dvh;
 }
-.auth-left-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(140,87,255,0.95) 0%, rgba(106,63,204,0.95) 100%); }
+.auth-left-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(85,133,255,0.95) 0%, rgba(106,63,204,0.95) 100%); }
 .auth-left-shapes { position: absolute; inset: 0; }
 .auth-shape { position: absolute; border-radius: 50%; opacity: 0.15; background: white; }
 .auth-shape-1 { width: 300px; height: 300px; top: -50px; right: -50px; }
@@ -237,7 +237,7 @@ function oauthLogin(provider: string) {
 .auth-logo-icon { font-size: 2rem; }
 .auth-logo-text {
   font-size: 1.5rem; font-weight: 700;
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 .auth-welcome { font-size: 1.25rem; font-weight: 600; color: #1F2937; margin: 0 0 0.25rem; }
@@ -290,7 +290,7 @@ function oauthLogin(provider: string) {
   transition: all 0.15s;
   font-family: inherit;
 }
-.oauth-btn:hover { border-color: #8C57FF; background: rgba(140,87,255,0.04); }
+.oauth-btn:hover { border-color: #5585FF; background: rgba(85,133,255,0.04); }
 
 /* ── Divider ── */
 .auth-divider {
@@ -316,7 +316,7 @@ function oauthLogin(provider: string) {
   transition: all 0.15s;
   background: #FFFFFF;
 }
-.form-input-wrapper:focus-within { border-color: #8C57FF; box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.1); }
+.form-input-wrapper:focus-within { border-color: #5585FF; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
 .form-input-icon { position: absolute; left: 12px; color: #9CA3AF; pointer-events: none; }
 .form-input {
   flex: 1;
@@ -336,7 +336,7 @@ function oauthLogin(provider: string) {
 .btn-primary {
   height: 44px;
   padding: 0 1.5rem;
-  background: linear-gradient(135deg, #8C57FF 0%, #7E4EE6 100%);
+  background: linear-gradient(135deg, #5585FF 0%, #3D6DD6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -347,15 +347,15 @@ function oauthLogin(provider: string) {
   font-family: inherit;
 }
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7E4EE6 0%, #6A3FCC 100%);
-  box-shadow: 0 4px 12px rgba(140, 87, 255, 0.4);
+  background: linear-gradient(135deg, #3D6DD6 0%, #2A52B0 100%);
+  box-shadow: 0 4px 12px rgba(85, 133, 255, 0.4);
 }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
 
 /* ── Footer ── */
 .auth-footer { margin-top: 1.5rem; text-align: center; }
 .auth-footer p { font-size: 0.8125rem; color: #9CA3AF; margin: 0.25rem 0; }
-.auth-footer a { color: #8C57FF; text-decoration: none; font-weight: 500; }
+.auth-footer a { color: #5585FF; text-decoration: none; font-weight: 500; }
 .auth-footer a:hover { text-decoration: underline; }
 
 /* ── Responsive ── */

@@ -114,7 +114,7 @@ function markAllRead() {
   color: var(--m-on-surface, #2E263D);
 }
 .messages-tab.active {
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   color: #FFFFFF;
   font-weight: 600;
 }

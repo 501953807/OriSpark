@@ -181,7 +181,7 @@ const avatarGradient = computed(() => {
   width: 34px;
   height: 34px;
   border-radius: 6px;
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,7 +235,7 @@ const avatarGradient = computed(() => {
   color: #2e263d;
 }
 .sb-link.active {
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   color: #ffffff;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
@@ -260,7 +260,7 @@ const avatarGradient = computed(() => {
   font-size: 0.65rem;
   font-weight: 700;
   background: rgba(139, 92, 246, 0.12);
-  color: #8C57FF;
+  color: #5585FF;
 }
 .sb-badge--danger {
   background: rgba(239, 68, 68, 0.12);
@@ -295,7 +295,7 @@ const avatarGradient = computed(() => {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8C57FF, #6A3FCC);
+  background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: flex;
   align-items: center;
   justify-content: center;

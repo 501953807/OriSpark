@@ -257,7 +257,7 @@ onBeforeUnmount(() => {
 }
 .topbar-search-input::placeholder { color: var(--m-muted, #8A8D93); }
 .topbar-search-input:focus {
-  border-color: #8C57FF;
+  border-color: #5585FF;
   background: #fff;
 }
 .topbar-search-shortcut {

@@ -42,7 +42,7 @@ const gradientStyle = computed(() => {
     orange: ['var(--warning)', 'oklch(72% 0.16 65)'],
     purple: ['var(--accent)', 'oklch(68% 0.14 290)'],
     blue: ['#6366f1', 'oklch(68% 0.12 255)'],
-    default: ['#8C57FF', '#6A3FCC'],
+    default: ['#5585FF', '#2A52B0'],
   }
   const c = colors[props.color || 'default']
   return `linear-gradient(135deg, ${c[0]}, ${c[1]})`
