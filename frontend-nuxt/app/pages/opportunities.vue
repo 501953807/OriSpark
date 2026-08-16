@@ -85,61 +85,75 @@ function oppTypeLabel(type: string): string {
 
 <style scoped>
 .page-opportunities {
-  padding: 32px;
-  max-width: 960px;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
+  color: var(--m-on-surface);
+  padding: 0 24px;
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 0;
   margin-bottom: 24px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--m-border);
 }
 
 .tab-btn {
-  padding: 8px 20px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  color: #374151;
+  color: var(--m-grey-500);
+  font-family: inherit;
+  transition: all 0.2s;
 }
 
 .tab-btn.active {
-  background: #059669;
-  color: #fff;
-  border-color: #059669;
+  color: var(--m-primary);
+  border-bottom-color: var(--m-primary);
+  font-weight: 600;
 }
 
 .opportunities-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 0 24px;
 }
 
 .opportunity-card {
-  background: #fff;
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.opportunity-card:hover {
+  box-shadow: rgba(46, 38, 61, 0.2) 0px 4px 10px 0px;
 }
 
 .opp-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   margin: 0 0 8px;
+  color: var(--m-on-surface);
 }
 
 .opp-desc {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--m-grey-700);
   margin: 0 0 12px;
   line-height: 1.5;
 }
@@ -147,28 +161,30 @@ function oppTypeLabel(type: string): string {
 .opp-meta {
   display: flex;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .meta-type,
 .meta-by {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .btn-apply {
   padding: 8px 20px;
-  background: #059669;
+  background: var(--m-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
 }
 
 .btn-apply:hover {
-  background: #047857;
+  background: rgb(110, 57, 220);
 }
 
 .loading-state,
@@ -176,10 +192,10 @@ function oppTypeLabel(type: string): string {
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--m-error);
 }
 </style>

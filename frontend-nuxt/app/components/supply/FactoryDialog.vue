@@ -148,8 +148,8 @@ async function handleSubmit() {
 }
 
 .modal {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
+  background: rgba(46, 38, 61, 0.04);
+  border: 1px solid rgba(46, 38, 61, 0.12);
   border-radius: 16px;
   width: 100%;
   max-width: 520px;
@@ -163,14 +163,14 @@ async function handleSubmit() {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--spark-border);
+  border-bottom: 1px solid rgba(46, 38, 61, 0.12);
 }
 
 .modal-header h2 {
   font-size: 18px;
   font-weight: 700;
   margin: 0;
-  color: var(--spark-text);
+  color: rgba(46, 38, 61, 0.9);
 }
 
 .close-btn {
@@ -178,7 +178,7 @@ async function handleSubmit() {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.5);
 }
 
 .modal-body {
@@ -197,23 +197,23 @@ async function handleSubmit() {
 .form-group label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.5);
 }
 
 .input, .textarea {
   padding: 10px 14px;
-  border: 1px solid var(--spark-border);
+  border: 1px solid rgba(46, 38, 61, 0.12);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   transition: border-color 0.2s;
-  background: var(--spark-bg);
-  color: var(--spark-text);
+  background: rgba(46, 38, 61, 0.02);
+  color: rgba(46, 38, 61, 0.9);
 }
 
 .input:focus, .textarea:focus {
   outline: none;
-  border-color: var(--spark-gold);
+  border-color: var(--m-warning);
 }
 
 .textarea {
@@ -232,21 +232,21 @@ async function handleSubmit() {
   align-items: center;
   gap: 4px;
   font-size: 13px;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.5);
   cursor: pointer;
   padding: 4px 10px;
-  border: 1px solid var(--spark-border);
+  border: 1px solid rgba(46, 38, 61, 0.12);
   border-radius: 6px;
   transition: all 0.2s;
 }
 
 .option-label:hover {
-  border-color: var(--spark-gold);
-  background: rgba(212, 175, 55, 0.08);
+  border-color: var(--m-warning);
+  background: rgba(255, 180, 0, 0.08);
 }
 
 .option-label input[type="checkbox"] {
-  accent-color: var(--spark-gold);
+  accent-color: var(--m-warning);
 }
 
 .modal-footer {
@@ -254,14 +254,14 @@ async function handleSubmit() {
   gap: 12px;
   justify-content: flex-end;
   padding: 16px 24px;
-  border-top: 1px solid var(--spark-border);
+  border-top: 1px solid rgba(46, 38, 61, 0.12);
 }
 
 .btn-cancel {
   padding: 10px 20px;
   background: transparent;
-  color: var(--spark-muted);
-  border: 1px solid var(--spark-border);
+  color: rgba(46, 38, 61, 0.5);
+  border: 1px solid rgba(46, 38, 61, 0.12);
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
@@ -269,7 +269,7 @@ async function handleSubmit() {
 
 .btn-submit {
   padding: 10px 20px;
-  background: var(--spark-gold);
+  background: var(--m-warning);
   color: #0f172a;
   border: none;
   border-radius: 8px;

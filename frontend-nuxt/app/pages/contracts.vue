@@ -69,35 +69,39 @@ watch([selectedType, selectedStatus], loadContracts)
 
 <style scoped>
 .page-contracts {
-  padding: 32px;
-  max-width: 960px;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
+  color: var(--m-on-surface);
+  padding: 0 24px;
 }
 
 .filter-bar {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 24px;
+  padding: 0 24px;
 }
 
 .category-select {
-  padding: 10px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--m-border);
+  border-radius: 6px;
   font-size: 14px;
-  background: #fff;
+  background: #FFFFFF;
+  color: var(--m-on-surface);
+  font-family: inherit;
 }
 
 .contracts-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 0 24px;
 }
 
 .loading-state,
@@ -105,10 +109,10 @@ watch([selectedType, selectedStatus], loadContracts)
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--m-error);
 }
 </style>

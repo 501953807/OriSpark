@@ -10,13 +10,13 @@ export const ORDER_STATUS_LABEL: Record<string, string> = {
 }
 
 export const ORDER_STATUS_COLOR: Record<string, string> = {
-  draft: '#6b7280',
-  quoting: '#f59e0b',
-  confirmed: '#3b82f6',
-  in_production: '#8b5cf6',
-  quality_check: '#ef4444',
-  shipped: '#0ea5e9',
-  completed: '#10b981',
+  draft: 'var(--m-grey-500)',
+  quoting: 'var(--m-warning)',
+  confirmed: 'var(--m-primary)',
+  in_production: 'var(--m-primary)',
+  quality_check: 'var(--m-error)',
+  shipped: 'var(--m-info)',
+  completed: 'var(--m-success)',
   cancelled: '#9ca3af',
 }
 

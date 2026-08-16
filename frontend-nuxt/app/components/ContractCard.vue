@@ -61,9 +61,13 @@ function contractTypeLabel(type: string): string {
 <style scoped>
 .contract-card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--m-shadow-md);
+  transition: box-shadow 0.2s;
+}
+.contract-card:hover {
+  box-shadow: rgba(46, 38, 61, 0.2) 0px 4px 10px 0px;
 }
 
 .card-header {
@@ -76,27 +80,27 @@ function contractTypeLabel(type: string): string {
 .contract-title {
   font-size: 16px;
   font-weight: 600;
-  color: #111827;
+  color: var(--m-on-surface);
   margin: 0;
 }
 
 .status-badge {
-  padding: 4px 10px;
-  border-radius: 12px;
+  padding: 3px 10px;
+  border-radius: 100px;
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.status-listed { background: #fef3c7; color: #92400e; }
-.status-active { background: #d1fae5; color: #065f46; }
-.status-executing { background: #dbeafe; color: #1e40af; }
-.status-completed { background: #e5e7eb; color: #374151; }
-.status-dispute { background: #fee2e2; color: #991b1b; }
+.status-listed { background: var(--m-warning-light); color: rgb(160, 100, 0); }
+.status-active { background: var(--m-success-light); color: rgb(40, 120, 0); }
+.status-executing { background: rgba(85, 133, 255, 0.12); color: rgb(40, 80, 180); }
+.status-completed { background: var(--m-grey-100); color: var(--m-grey-700); }
+.status-dispute { background: var(--m-error-light); color: rgb(180, 40, 40); }
 
 .contract-desc {
   font-size: 14px;
-  color: #4b5563;
+  color: rgba(46, 38, 61, 0.6);
   margin: 0 0 12px;
   line-height: 1.5;
 }
@@ -110,7 +114,7 @@ function contractTypeLabel(type: string): string {
 
 .meta-item {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .card-actions {
@@ -121,30 +125,31 @@ function contractTypeLabel(type: string): string {
 .btn-detail,
 .btn-cta {
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+  transition: all 0.15s;
 }
 
 .btn-detail {
-  background: #fff;
-  color: #059669;
-  border: 1px solid #059669;
+  background: transparent;
+  color: var(--m-success);
+  border: 1px solid var(--m-success);
 }
 
 .btn-detail:hover {
-  background: #ecfdf5;
+  background: rgba(86, 202, 0, 0.06);
 }
 
 .btn-cta {
-  background: #059669;
+  background: var(--m-primary);
   color: #fff;
   border: none;
 }
 
 .btn-cta:hover {
-  background: #047857;
+  background: rgb(110, 57, 220);
 }
 </style>

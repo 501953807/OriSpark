@@ -39,7 +39,7 @@ function formatCurrency(value?: number): string {
 <style scoped>
 .stats-section {
   padding: 48px 32px;
-  background: #f9fafb;
+  background: var(--m-bg);
 }
 
 .section-title {
@@ -47,7 +47,7 @@ function formatCurrency(value?: number): string {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 32px;
-  color: #111827;
+  color: var(--m-on-surface);
 }
 
 .stats-grid {
@@ -63,29 +63,29 @@ function formatCurrency(value?: number): string {
   padding: 24px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--m-shadow-md);
 }
 
 .stat-value {
   font-size: 32px;
   font-weight: 700;
-  color: #059669;
+  color: var(--m-success);
 }
 
 .stat-label {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--m-grey-500);
   margin-top: 8px;
 }
 
 .loading-state,
 .error-state {
   text-align: center;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--m-error);
 }
 
 @media (max-width: 768px) {

@@ -81,7 +81,7 @@
         <div v-for="coop in creatorPendingOperations" :key="coop.id" class="coop-card pending-card">
           <div class="coop-header">
             <span class="coop-work-title">{{ coop.work_title || coop.work_id }}</span>
-            <span class="status-badge" style="color: #f59e0b">待处理</span>
+            <span class="status-badge" style="color: var(--m-warning)">待处理</span>
           </div>
           <div class="coop-body">
             <div class="coop-meta">
@@ -229,49 +229,50 @@ onMounted(() => {
 
 <style scoped>
 .page-operations {
-  padding: 32px;
-  max-width: 960px;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: #1f2937;
+  color: var(--m-on-surface);
+  padding: 0 24px;
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 0;
   margin-bottom: 24px;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--m-border);
 }
 
 .tab-btn {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   background: none;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--m-grey-500);
   display: flex;
   align-items: center;
   gap: 6px;
   transition: all 0.2s;
+  font-family: inherit;
 }
 
 .tab-btn.active {
-  color: #059669;
-  border-bottom-color: #059669;
+  color: var(--m-primary);
+  border-bottom-color: var(--m-primary);
+  font-weight: 600;
 }
 
 .badge {
-  background: #ef4444;
+  background: var(--m-error);
   color: #fff;
   font-size: 11px;
   padding: 1px 6px;
@@ -287,27 +288,30 @@ onMounted(() => {
 }
 
 .filter-select {
-  padding: 10px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--m-border);
+  border-radius: 6px;
   font-size: 14px;
-  background: #fff;
+  background: #FFFFFF;
+  color: var(--m-on-surface);
+  font-family: inherit;
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background: #059669;
+  padding: 8px 20px;
+  background: var(--m-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .btn-primary:hover {
-  background: #047857;
+  background: rgb(110, 57, 220);
 }
 
 .coop-list {
@@ -317,19 +321,20 @@ onMounted(() => {
 }
 
 .coop-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 20px;
   transition: box-shadow 0.2s;
 }
 
 .coop-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: rgba(46, 38, 61, 0.2) 0px 4px 10px 0px;
 }
 
 .pending-card {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--m-warning);
 }
 
 .coop-header {
@@ -342,7 +347,7 @@ onMounted(() => {
 .coop-work-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--m-on-surface);
 }
 
 .status-badge {
@@ -363,16 +368,16 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
   flex-wrap: wrap;
 }
 
 .coop-notes {
   font-size: 14px;
-  color: #374151;
+  color: var(--m-on-surface);
   line-height: 1.5;
   padding: 8px 12px;
-  background: #f9fafb;
+  background: var(--m-grey-100);
   border-radius: 6px;
 }
 
@@ -390,12 +395,12 @@ onMounted(() => {
 }
 
 .scope-label {
-  color: #6b7280;
+  color: var(--m-grey-500);
   font-weight: 500;
 }
 
 .scope-values {
-  color: #1f2937;
+  color: var(--m-on-surface);
 }
 
 .days-remaining {
@@ -404,7 +409,7 @@ onMounted(() => {
 }
 
 .days-remaining.urgent {
-  color: #ef4444;
+  color: var(--m-error);
 }
 
 .coop-actions {
@@ -412,37 +417,37 @@ onMounted(() => {
   gap: 12px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid rgba(46, 38, 61, 0.06);
 }
 
 .btn-accept {
   padding: 8px 24px;
-  background: #10b981;
+  background: var(--m-success);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btn-accept:hover {
-  background: #059669;
+  background: var(--m-success);
 }
 
 .btn-reject {
   padding: 8px 24px;
-  background: #fff;
-  color: #ef4444;
-  border: 1px solid #ef4444;
-  border-radius: 8px;
+  background: transparent;
+  color: var(--m-error);
+  border: 1px solid var(--m-error);
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btn-reject:hover {
-  background: #fef2f2;
+  background: rgba(255, 76, 81, 0.06);
 }
 
 .loading-state,
@@ -450,10 +455,10 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--m-error);
 }
 </style>

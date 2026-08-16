@@ -63,11 +63,11 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 .section-title {
   font-size: 24px;
   font-weight: 700;
-  color: #111827;
+  color: var(--m-on-surface);
 }
 
 .view-all {
-  color: #059669;
+  color: var(--m-success);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -96,12 +96,12 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 
 .work-thumbnail {
   height: 180px;
-  background: #f3f4f6;
+  background: rgba(46, 38, 61, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 48px;
-  color: #d1d5db;
+  color: var(--m-grey-300);
 }
 
 .work-info {
@@ -111,13 +111,13 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 .work-title {
   font-size: 16px;
   font-weight: 600;
-  color: #111827;
+  color: var(--m-on-surface);
   margin: 0 0 4px;
 }
 
 .work-creator {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
   margin: 0 0 8px;
 }
 
@@ -130,7 +130,7 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 .tag {
   padding: 2px 8px;
   background: #ecfdf5;
-  color: #059669;
+  color: var(--m-success);
   border-radius: 4px;
   font-size: 12px;
 }
@@ -138,7 +138,7 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 .loading-state,
 .error-state {
   text-align: center;
-  color: #6b7280;
+  color: var(--m-grey-500);
   padding: 48px 0;
 }
 

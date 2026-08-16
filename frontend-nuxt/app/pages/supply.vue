@@ -35,7 +35,7 @@
         <div v-for="factory in factories" :key="factory.id" class="factory-card">
           <div class="factory-header">
             <span class="factory-name">{{ factory.name }}</span>
-            <span class="status-badge" :style="{ color: factory.status === 'active' ? '#10b981' : '#6b7280' }">
+            <span class="status-badge" :style="{ color: factory.status === 'active' ? 'var(--m-success)' : 'var(--m-grey-500)' }">
               {{ factory.status === 'active' ? '运营中' : '停用' }}
             </span>
           </div>
@@ -120,7 +120,7 @@
               <span v-if="order.tracking_number">追踪号: {{ order.tracking_number }}</span>
             </div>
             <div v-if="order.quality_passed !== null" class="order-quality">
-              <span :style="{ color: order.quality_passed ? '#10b981' : '#ef4444' }">
+              <span :style="{ color: order.quality_passed ? 'var(--m-success)' : 'var(--m-error)' }">
                 {{ order.quality_passed ? '✅ 质检通过' : '❌ 质检退回' }}
               </span>
               <span v-if="order.quality_notes">{{ order.quality_notes }}</span>
@@ -160,7 +160,7 @@
         <div v-for="config in podConfigs" :key="config.id" class="pod-card">
           <div class="pod-header">
             <span class="pod-platform">{{ config.platform }}</span>
-            <span class="status-badge" :style="{ color: config.is_active ? '#10b981' : '#6b7280' }">
+            <span class="status-badge" :style="{ color: config.is_active ? 'var(--m-success)' : 'var(--m-grey-500)' }">
               {{ config.is_active ? '启用' : '停用' }}
             </span>
           </div>
@@ -345,42 +345,43 @@ onMounted(() => {
 
 <style scoped>
 .page-supply {
-  padding: 32px;
-  max-width: 1100px;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
+  padding: 0 24px;
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 0;
   margin-bottom: 24px;
-  border-bottom: 2px solid var(--spark-border);
-  padding-bottom: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--m-border);
 }
 
 .tab-btn {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   background: none;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
   transition: all 0.2s;
+  font-family: inherit;
 }
 
 .tab-btn.active {
-  color: var(--spark-gold);
-  border-bottom-color: var(--spark-gold);
+  color: var(--m-primary);
+  border-bottom-color: var(--m-primary);
+  font-weight: 600;
 }
 
 .filter-bar {
@@ -391,28 +392,30 @@ onMounted(() => {
 }
 
 .filter-select {
-  padding: 10px 16px;
-  border: 1px solid var(--spark-border);
-  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--m-border);
+  border-radius: 6px;
   font-size: 14px;
-  background: var(--spark-surface);
-  color: var(--spark-text);
+  background: #FFFFFF;
+  color: var(--m-on-surface);
+  font-family: inherit;
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background: var(--spark-gold);
-  color: #0f172a;
+  padding: 8px 20px;
+  background: var(--m-primary);
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .btn-primary:hover {
-  background: #c4a030;
+  background: rgb(110, 57, 220);
 }
 
 /* 工厂网格 */
@@ -423,16 +426,16 @@ onMounted(() => {
 }
 
 .factory-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 20px;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s;
 }
 
 .factory-card:hover {
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
-  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: rgba(46, 38, 61, 0.2) 0px 4px 10px 0px;
 }
 
 .factory-header {
@@ -445,7 +448,7 @@ onMounted(() => {
 .factory-name {
   font-size: 16px;
   font-weight: 600;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .factory-info {
@@ -457,7 +460,7 @@ onMounted(() => {
 
 .info-row {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.6);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -476,9 +479,10 @@ onMounted(() => {
 .tag {
   font-size: 12px;
   padding: 2px 8px;
-  background: var(--spark-bg);
-  border-radius: 4px;
-  color: var(--spark-muted);
+  background: rgba(140, 87, 255, 0.1);
+  color: var(--m-primary);
+  border-radius: 100px;
+  font-weight: 500;
 }
 
 /* 订单列表 */
@@ -489,9 +493,10 @@ onMounted(() => {
 }
 
 .order-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 16px 20px;
 }
 
@@ -511,13 +516,13 @@ onMounted(() => {
 .mono {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .product-name {
   font-size: 16px;
   font-weight: 600;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .order-body {
@@ -530,17 +535,17 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.6);
 }
 
 .order-date {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .order-shipping {
   font-size: 13px;
-  color: var(--spark-blue);
+  color: var(--m-primary);
 }
 
 .order-quality {
@@ -551,9 +556,9 @@ onMounted(() => {
 
 .order-notes {
   font-size: 14px;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
   padding: 8px 12px;
-  background: var(--spark-bg);
+  background: var(--m-grey-100);
   border-radius: 6px;
 }
 
@@ -563,7 +568,7 @@ onMounted(() => {
 }
 
 .days-remaining.urgent {
-  color: var(--spark-red);
+  color: var(--m-error);
 }
 
 .order-actions {
@@ -571,7 +576,7 @@ onMounted(() => {
   gap: 8px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--spark-border);
+  border-top: 1px solid rgba(46, 38, 61, 0.1);
 }
 
 .btn-confirm, .btn-start, .btn-ship, .btn-inspect-pass, .btn-inspect-fail {
@@ -584,49 +589,49 @@ onMounted(() => {
 }
 
 .btn-confirm {
-  background: var(--spark-green);
+  background: var(--m-success);
   color: #fff;
 }
 
 .btn-confirm:hover {
-  background: #0ea072;
+  background: var(--m-success);
 }
 
 .btn-start {
-  background: var(--spark-blue);
+  background: var(--m-primary);
   color: #fff;
 }
 
 .btn-start:hover {
-  background: #2563eb;
+  background: var(--m-primary-dark);
 }
 
 .btn-ship {
-  background: #0ea5e9;
+  background: var(--m-primary);
   color: #fff;
 }
 
 .btn-ship:hover {
-  background: #0284c7;
+  background: rgb(110, 57, 220);
 }
 
 .btn-inspect-pass {
-  background: var(--spark-green);
+  background: var(--m-success);
   color: #fff;
 }
 
 .btn-inspect-pass:hover {
-  background: #059669;
+  background: var(--m-success);
 }
 
 .btn-inspect-fail {
   background: transparent;
-  color: var(--spark-red);
-  border: 1px solid var(--spark-red);
+  color: var(--m-error);
+  border: 1px solid var(--m-error);
 }
 
 .btn-inspect-fail:hover {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(255, 76, 81, 0.08);
 }
 
 /* POD 列表 */
@@ -637,9 +642,10 @@ onMounted(() => {
 }
 
 .pod-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 16px 20px;
   display: flex;
   justify-content: space-between;
@@ -649,7 +655,7 @@ onMounted(() => {
 .pod-platform {
   font-size: 16px;
   font-weight: 600;
-  color: var(--spark-gold);
+  color: var(--m-primary);
   text-transform: uppercase;
 }
 
@@ -657,7 +663,7 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   font-size: 13px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 /* 通用状态 */
@@ -666,11 +672,11 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: var(--spark-red);
+  color: var(--m-error);
 }
 
 .status-badge {
@@ -678,6 +684,7 @@ onMounted(() => {
   font-weight: 600;
   padding: 2px 10px;
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(46, 38, 61, 0.06);
+  color: var(--m-grey-700);
 }
 </style>

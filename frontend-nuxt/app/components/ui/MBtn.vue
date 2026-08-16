@@ -1,4 +1,4 @@
-<!-- Materio Vuetify-Style Button Component (Nuxt version) -->
+<!-- Materio Vuetify-Style Button Component -->
 <template>
   <button
     class="m-btn"
@@ -6,9 +6,10 @@
       `m-btn--variant-${variant}`,
       `m-btn--size-${size}`,
       { 'm-btn--loading': loading },
-      { 'm-btn--disabled': disabled },
+      { 'm-btn--disabled': disabled || loading },
       { 'm-btn--rounded': rounded },
       { 'm-btn--block': block },
+      `m-btn--color-${color}`,
     ]"
     :disabled="disabled || loading"
     @click="$emit('click', $event)"
@@ -33,6 +34,7 @@ defineProps<{
   disabled?: boolean
   rounded?: boolean
   block?: boolean
+  color?: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'default'
 }>()
 defineEmits<{ (e: 'click', event: MouseEvent): void }>()
 </script>
@@ -43,7 +45,7 @@ defineEmits<{ (e: 'click', event: MouseEvent): void }>()
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
+  gap: 6px;
   font-family: var(--m-font-family);
   font-size: var(--m-font-size-base);
   font-weight: var(--m-font-weight-medium);
@@ -51,36 +53,102 @@ defineEmits<{ (e: 'click', event: MouseEvent): void }>()
   white-space: nowrap;
   border: none;
   cursor: pointer;
-  transition: all var(--m-transition);
+  transition: all var(--m-transition-fast);
   border-radius: var(--m-radius-sm);
   overflow: hidden;
+  text-decoration: none;
 }
-.m-btn--variant-elevated, .m-btn--variant-flat {
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
-  color: var(--m-on-primary);
+
+/* Variants */
+.m-btn--variant-elevated {
+  background: var(--m-primary);
+  color: #fff;
+  box-shadow: var(--m-shadow-xs);
 }
-.m-btn--variant-elevated { box-shadow: var(--m-shadow-xs); }
-.m-btn--variant-elevated:hover:not(:disabled) { background: var(--m-primary-darken-1); box-shadow: var(--m-shadow-sm); }
-.m-btn--variant-flat:hover:not(:disabled) { background: var(--m-primary-darken-1); }
-.m-btn--variant-outlined { background: transparent; color: rgb(var(--m-primary-rgb, 85, 133, 255)); border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5); }
-.m-btn--variant-outlined:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08); }
-.m-btn--variant-text { background: transparent; color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
-.m-btn--variant-text:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08); }
-.m-btn--variant-tonal { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12); color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
-.m-btn--variant-tonal:hover:not(:disabled) { background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.2); }
-.m-btn--size-xs { height: 22px; padding: 0 10px; font-size: var(--m-font-size-xs); }
-.m-btn--size-sm { height: 30px; padding: 0 14px; font-size: var(--m-font-size-sm); }
-.m-btn--size-default { height: 38px; padding: 0 18px; }
-.m-btn--size-lg { height: 46px; padding: 0 22px; font-size: var(--m-font-size-md); }
+.m-btn--variant-elevated:hover:not(:disabled) {
+  background: var(--m-primary-dark);
+  box-shadow: var(--m-shadow-sm);
+}
+
+.m-btn--variant-flat {
+  background: var(--m-primary);
+  color: #fff;
+}
+.m-btn--variant-flat:hover:not(:disabled) {
+  background: var(--m-primary-dark);
+}
+
+.m-btn--variant-outlined {
+  background: transparent;
+  color: var(--m-primary);
+  border: 1px solid var(--m-border);
+}
+.m-btn--variant-outlined:hover:not(:disabled) {
+  background: var(--m-primary-light);
+  border-color: var(--m-primary);
+}
+
+.m-btn--variant-text {
+  background: transparent;
+  color: var(--m-primary);
+}
+.m-btn--variant-text:hover:not(:disabled) {
+  background: var(--m-primary-light);
+}
+
+.m-btn--variant-tonal {
+  background: var(--m-primary-light);
+  color: var(--m-primary);
+}
+.m-btn--variant-tonal:hover:not(:disabled) {
+  background: rgba(140, 87, 255, 0.2);
+}
+
+/* Sizes */
+.m-btn--size-xs { height: 24px; padding: 0 8px; font-size: var(--m-font-size-xs); }
+.m-btn--size-sm { height: 30px; padding: 0 12px; font-size: var(--m-font-size-sm); }
+.m-btn--size-default { height: 36px; padding: 0 16px; }
+.m-btn--size-lg { height: 44px; padding: 0 20px; font-size: var(--m-font-size-md); }
+
 .m-btn--rounded { border-radius: 36px; }
 .m-btn--block { display: flex; width: 100%; }
 .m-btn--loading, .m-btn--disabled { cursor: not-allowed; opacity: var(--m-disabled-opacity); }
+
+/* Color overrides */
+.m-btn--color-success.m-btn--variant-elevated,
+.m-btn--color-success.m-btn--variant-flat { background: var(--m-success); color: #fff; }
+.m-btn--color-success.m-btn--variant-elevated:hover:not(:disabled),
+.m-btn--color-success.m-btn--variant-flat:hover:not(:disabled) { background: var(--m-success); }
+.m-btn--color-success.m-btn--variant-outlined { color: var(--m-success); border-color: var(--m-success); }
+.m-btn--color-success.m-btn--variant-outlined:hover:not(:disabled) { background: var(--m-success-light); }
+.m-btn--color-success.m-btn--variant-tonal { background: var(--m-success-light); color: var(--m-success); }
+.m-btn--color-success.m-btn--variant-tonal:hover:not(:disabled) { background: rgba(86, 202, 0, 0.2); }
+
+.m-btn--color-error.m-btn--variant-elevated,
+.m-btn--color-error.m-btn--variant-flat { background: var(--m-error); color: #fff; }
+.m-btn--color-error.m-btn--variant-elevated:hover:not(:disabled),
+.m-btn--color-error.m-btn--variant-flat:hover:not(:disabled) { background: rgb(200, 50, 55); }
+.m-btn--color-error.m-btn--variant-outlined { color: var(--m-error); border-color: var(--m-error); }
+.m-btn--color-error.m-btn--variant-outlined:hover:not(:disabled) { background: var(--m-error-light); }
+.m-btn--color-error.m-btn--variant-tonal { background: var(--m-error-light); color: var(--m-error); }
+
+.m-btn--color-warning.m-btn--variant-elevated,
+.m-btn--color-warning.m-btn--variant-flat { background: var(--m-warning); color: #0f172a; }
+.m-btn--color-warning.m-btn--variant-outlined { color: var(--m-warning); border-color: var(--m-warning); }
+.m-btn--color-warning.m-btn--variant-tonal { background: var(--m-warning-light); color: var(--m-warning); }
+
+.m-btn--color-info.m-btn--variant-elevated,
+.m-btn--color-info.m-btn--variant-flat { background: var(--m-info); color: #fff; }
+.m-btn--color-info.m-btn--variant-outlined { color: var(--m-info); border-color: var(--m-info); }
+.m-btn--color-info.m-btn--variant-tonal { background: var(--m-info-light); color: var(--m-info); }
+
+/* Subtle elements */
 .m-btn__spinner { display: flex; align-items: center; justify-content: center; }
 .m-btn__spinner-svg { width: 1em; height: 1em; animation: m-btn-spin 0.8s linear infinite; }
 @keyframes m-btn-spin { to { transform: rotate(360deg); } }
-.m-btn__prepend { margin-inline-end: 0.375rem; }
-.m-btn__append { margin-inline-start: 0.375rem; }
-.m-btn__content { display: flex; align-items: center; gap: 0.375rem; }
+.m-btn__prepend { margin-inline-end: 4px; }
+.m-btn__append { margin-inline-start: 4px; }
+.m-btn__content { display: flex; align-items: center; gap: 6px; }
 .m-btn__overlay {
   position: absolute; inset: 0; background: currentColor; opacity: 0;
   transition: opacity var(--m-transition-fast); border-radius: inherit;

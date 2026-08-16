@@ -486,7 +486,7 @@ onUnmounted(() => stopRolling())
 .hero__bg-orb--1 {
   width: 500px; height: 500px;
   top: -150px; right: -100px;
-  background: radial-gradient(circle, rgba(85,133,255,0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(140,87,255,0.25) 0%, transparent 70%);
 }
 .hero__bg-orb--2 {
   width: 400px; height: 400px;
@@ -566,11 +566,11 @@ onUnmounted(() => stopRolling())
 .btn--primary {
   background: var(--m-primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(85,133,255,0.25);
+  box-shadow: 0 2px 8px rgba(140,87,255,0.25);
 }
 .btn--primary:hover {
   background: var(--m-primary-dark);
-  box-shadow: 0 6px 20px rgba(85,133,255,0.35);
+  box-shadow: 0 6px 20px rgba(140,87,255,0.35);
   transform: translateY(-1px);
 }
 .btn--outline {
@@ -581,7 +581,7 @@ onUnmounted(() => stopRolling())
 .btn--outline:hover {
   border-color: var(--m-primary);
   color: var(--m-primary);
-  background: rgba(85,133,255,0.04);
+  background: rgba(140,87,255,0.04);
 }
 
 /* Trust row */
@@ -629,7 +629,7 @@ onUnmounted(() => stopRolling())
 .hv-card__label { font-size: 0.75rem; color: var(--m-on-surface-muted); margin-bottom: 2px; }
 .hv-card__value { font-size: 1.375rem; font-weight: 700; color: var(--m-on-surface); }
 .hv-card__badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.6875rem; font-weight: 600; margin-top: 4px; }
-.hv-card__badge--up { background: rgba(16, 185, 129, 0.12); color: #059669; }
+.hv-card__badge--up { background: rgba(16, 185, 129, 0.12); color: var(--m-success); }
 .hv-card__mini { font-size: 0.6875rem; color: var(--m-on-surface-muted); margin-top: 4px; }
 .hv-card__sparkline { margin-top: 8px; }
 .hv-card__sparkline svg { width: 100%; height: 30px; }
@@ -809,7 +809,7 @@ onUnmounted(() => stopRolling())
   border-radius: 100px;
   font-size: 0.6875rem;
   font-weight: 600;
-  color: #059669;
+  color: var(--m-success);
   backdrop-filter: blur(4px);
 }
 .work-card__certified i { font-size: 14px; }
@@ -860,7 +860,7 @@ onUnmounted(() => stopRolling())
   transition: all 0.15s;
 }
 .contract-row:hover {
-  border-color: rgba(85,133,255,0.3);
+  border-color: rgba(140,87,255,0.3);
   box-shadow: var(--m-shadow-sm);
 }
 .contract-row__left {
@@ -874,7 +874,7 @@ onUnmounted(() => stopRolling())
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  background: rgba(85,133,255,0.10);
+  background: rgba(140,87,255,0.10);
   border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
@@ -913,9 +913,9 @@ onUnmounted(() => stopRolling())
   font-size: 0.6875rem;
   font-weight: 600;
 }
-.contract-status.active, .contract-status.listed { background: #dcfce7; color: #16a34a; }
-.contract-status.subscribed { background: #fef3c7; color: #d97706; }
-.contract-status.pending { background: #e0e7ff; color: #4f46e5; }
+.contract-status.active, .contract-status.listed { background: var(--m-success-light); color: rgb(40, 120, 0); }
+.contract-status.subscribed { background: var(--m-warning-light); color: rgb(160, 100, 0); }
+.contract-status.pending { background: rgba(85, 133, 255, 0.12); color: rgb(40, 80, 180); }
 .contracts-empty {
   text-align: center;
   padding: 60px 20px;
@@ -932,8 +932,8 @@ onUnmounted(() => stopRolling())
   color: white;
 }
 .capabilities-section .section-label {
-  background: rgba(85,133,255,0.20);
-  color: #8BA8FF;
+  background: rgba(140,87,255,0.20);
+  color: var(--m-primary);
 }
 .capabilities-section .section-title { color: white; }
 .capabilities-section .section-desc { color: rgba(255,255,255,0.65); }
@@ -953,7 +953,7 @@ onUnmounted(() => stopRolling())
 }
 .cap-card:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(85,133,255,0.4);
+  border-color: rgba(140,87,255,0.4);
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0,0,0,0.3);
 }

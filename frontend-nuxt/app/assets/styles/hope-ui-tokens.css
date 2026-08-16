@@ -32,7 +32,7 @@
   --hope-success-300: #6EE7B7;
   --hope-success-400: #34D399;
   --hope-success-500: #10B981;
-  --hope-success-600: #059669;
+  --hope-success-600: var(--m-success);
   --hope-success-700: #047857;
   --hope-success-800: #065F46;
   --hope-success-900: #064E3B;

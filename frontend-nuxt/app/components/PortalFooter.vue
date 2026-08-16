@@ -33,8 +33,8 @@
 
 <style scoped>
 .portal-footer {
-  background: #1f2937;
-  color: #e5e7eb;
+  background: var(--m-on-surface);
+  color: var(--m-border);
   padding: 48px 32px 24px;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .footer-section h3 {
-  color: #059669;
+  color: var(--m-success);
   font-size: 20px;
   margin-bottom: 12px;
 }
@@ -55,13 +55,13 @@
 .footer-section h4 {
   font-size: 14px;
   margin-bottom: 12px;
-  color: #f3f4f6;
+  color: rgba(46, 38, 61, 0.06);
 }
 
 .footer-section p {
   font-size: 14px;
   line-height: 1.6;
-  color: #9ca3af;
+  color: rgba(46, 38, 61, 0.4);
 }
 
 .footer-section ul {
@@ -74,23 +74,23 @@
 }
 
 .footer-section a {
-  color: #9ca3af;
+  color: rgba(46, 38, 61, 0.4);
   text-decoration: none;
   font-size: 14px;
 }
 
 .footer-section a:hover {
-  color: #059669;
+  color: var(--m-success);
 }
 
 .footer-bottom {
   max-width: 1200px;
   margin: 32px auto 0;
   padding-top: 24px;
-  border-top: 1px solid #374151;
+  border-top: 1px solid rgba(46, 38, 61, 0.15);
   text-align: center;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
 }
 
 @media (max-width: 768px) {

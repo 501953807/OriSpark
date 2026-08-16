@@ -181,7 +181,7 @@ async function handleSubmit() {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(46, 38, 61, 0.12);
 }
 
 .modal-header h2 {
@@ -195,7 +195,7 @@ async function handleSubmit() {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #6b7280;
+  color: rgba(46, 38, 61, 0.5);
   padding: 0 4px;
 }
 
@@ -215,12 +215,12 @@ async function handleSubmit() {
 .form-group label {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
 }
 
 .input, .textarea {
   padding: 10px 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--m-border);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
@@ -229,7 +229,7 @@ async function handleSubmit() {
 
 .input:focus, .textarea:focus {
   outline: none;
-  border-color: #059669;
+  border-color: var(--m-success);
 }
 
 .textarea {
@@ -239,7 +239,7 @@ async function handleSubmit() {
 
 .work-info {
   font-size: 13px;
-  color: #059669;
+  color: var(--m-success);
   padding: 8px 12px;
   background: #ecfdf5;
   border-radius: 6px;
@@ -247,7 +247,7 @@ async function handleSubmit() {
 
 .field-error {
   font-size: 13px;
-  color: #ef4444;
+  color: var(--m-error);
 }
 
 .multi-select {
@@ -261,21 +261,21 @@ async function handleSubmit() {
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
   cursor: pointer;
   padding: 6px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--m-border);
   border-radius: 6px;
   transition: all 0.2s;
 }
 
 .option-label:hover {
-  border-color: #059669;
+  border-color: var(--m-success);
   background: #ecfdf5;
 }
 
 .option-label input[type="checkbox"] {
-  accent-color: #059669;
+  accent-color: var(--m-success);
 }
 
 .modal-footer {
@@ -283,14 +283,14 @@ async function handleSubmit() {
   gap: 12px;
   justify-content: flex-end;
   padding: 16px 24px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(46, 38, 61, 0.12);
 }
 
 .btn-cancel {
   padding: 10px 20px;
   background: #fff;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  color: rgba(46, 38, 61, 0.9);
+  border: 1px solid var(--m-border);
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
@@ -298,7 +298,7 @@ async function handleSubmit() {
 
 .btn-submit {
   padding: 10px 20px;
-  background: #059669;
+  background: var(--m-success);
   color: #fff;
   border: none;
   border-radius: 8px;

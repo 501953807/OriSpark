@@ -70,7 +70,7 @@
   color: #fff;
 }
 .hope-btn-success:hover {
-  background-color: #059669;
+  background-color: var(--m-success);
   transform: translateY(-1px);
   box-shadow: var(--hope-shadow-md);
 }
@@ -245,7 +245,7 @@
 .hope-input-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--m-on-surface);
 }
 .hope-input-hint {
   font-size: 0.75rem;

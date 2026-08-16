@@ -59,7 +59,7 @@ useHead({
 }
 
 .back-link {
-  color: #059669;
+  color: var(--m-success);
   font-size: 14px;
   text-decoration: none;
 }
@@ -73,13 +73,13 @@ useHead({
 
 .work-thumbnail {
   height: 300px;
-  background: #f3f4f6;
+  background: rgba(46, 38, 61, 0.06);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 64px;
-  color: #d1d5db;
+  color: var(--m-grey-500);
 }
 
 .work-title {
@@ -90,13 +90,13 @@ useHead({
 
 .work-creator {
   font-size: 14px;
-  color: #6b7280;
+  color: rgba(46, 38, 61, 0.5);
   margin: 0 0 16px;
 }
 
 .work-desc {
   font-size: 14px;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
   line-height: 1.6;
   margin: 0 0 16px;
 }
@@ -110,7 +110,7 @@ useHead({
 .tag {
   padding: 4px 10px;
   background: #ecfdf5;
-  color: #059669;
+  color: var(--m-success);
   border-radius: 4px;
   font-size: 13px;
 }
@@ -119,11 +119,11 @@ useHead({
 .error-state {
   text-align: center;
   padding: 48px 0;
-  color: #6b7280;
+  color: rgba(46, 38, 61, 0.5);
 }
 
 .error-state {
-  color: #ef4444;
+  color: var(--m-error);
 }
 
 @media (max-width: 768px) {

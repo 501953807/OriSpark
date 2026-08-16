@@ -102,7 +102,7 @@ async function handleSubmit() {
 .auth-desc { font-size: 0.875rem; color: #64748B; margin: 0 0 1.5rem; }
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
 .form-field { display: flex; flex-direction: column; gap: 0.375rem; }
-.form-label { font-size: 0.8125rem; font-weight: 500; color: #374151; }
+.form-label { font-size: 0.8125rem; font-weight: 500; color: rgba(46, 38, 61, 0.9); }
 .form-input-wrapper { position: relative; display: flex; align-items: center; border: 1.5px solid #E5E7EB; border-radius: 8px; transition: all 0.15s; background: #FFFFFF; }
 .form-input-wrapper:focus-within { border-color: #5585FF; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
 .form-input-icon { position: absolute; left: 12px; color: #9CA3AF; pointer-events: none; }

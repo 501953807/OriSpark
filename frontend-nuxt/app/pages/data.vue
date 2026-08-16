@@ -296,42 +296,43 @@ onMounted(() => {
 
 <style scoped>
 .page-data {
-  padding: 32px;
-  max-width: 1100px;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
+  padding: 0 24px;
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 0;
   margin-bottom: 24px;
-  border-bottom: 2px solid var(--spark-border);
-  padding-bottom: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--m-border);
 }
 
 .tab-btn {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  margin-bottom: -1px;
   background: none;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
   transition: all 0.2s;
+  font-family: inherit;
 }
 
 .tab-btn.active {
-  color: var(--spark-gold);
-  border-bottom-color: var(--spark-gold);
+  color: var(--m-primary);
+  border-bottom-color: var(--m-primary);
+  font-weight: 600;
 }
 
 .filter-bar {
@@ -342,28 +343,30 @@ onMounted(() => {
 }
 
 .filter-select, .input-date {
-  padding: 10px 16px;
-  border: 1px solid var(--spark-border);
-  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--m-border);
+  border-radius: 6px;
   font-size: 14px;
-  background: var(--spark-surface);
-  color: var(--spark-text);
+  background: #FFFFFF;
+  color: var(--m-on-surface);
+  font-family: inherit;
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background: var(--spark-gold);
-  color: #0f172a;
+  padding: 8px 20px;
+  background: var(--m-primary);
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .btn-primary:hover {
-  background: #c4a030;
+  background: rgb(110, 57, 220);
 }
 
 /* 平台总览 */
@@ -374,28 +377,28 @@ onMounted(() => {
 }
 
 .stat-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 20px;
   text-align: center;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s;
 }
 
 .stat-card:hover {
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: rgba(46, 38, 61, 0.2) 0px 4px 10px 0px;
 }
 
 .stat-icon {
-  font-size: 28px;
+  font-size: 24px;
   margin-bottom: 8px;
 }
 
 .stat-value {
   font-size: 28px;
   font-weight: 700;
-  color: var(--spark-gold);
+  color: var(--m-on-surface);
   margin-bottom: 4px;
 }
 
@@ -405,14 +408,15 @@ onMounted(() => {
 
 .stat-label {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 /* 创作者排行 */
 .ranking-table {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   overflow: hidden;
 }
 
@@ -420,28 +424,29 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 50px 1fr 100px 100px;
   padding: 12px 16px;
-  background: var(--spark-bg);
-  border-bottom: 1px solid var(--spark-border);
+  background: var(--m-grey-100);
+  border-bottom: 1px solid var(--m-border);
   font-size: 13px;
   font-weight: 600;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .table-row {
   display: grid;
   grid-template-columns: 50px 1fr 100px 100px;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--spark-border);
+  border-bottom: 1px solid var(--m-grey-100);
   align-items: center;
   transition: background 0.15s;
+  background: #FFFFFF;
 }
 
 .table-row:hover {
-  background: rgba(212, 175, 55, 0.05);
+  background: rgba(140, 87, 255, 0.04);
 }
 
 .table-row.top-ranker {
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(140, 87, 255, 0.06);
 }
 
 .table-row:last-child {
@@ -451,7 +456,7 @@ onMounted(() => {
 .col-rank {
   font-size: 14px;
   font-weight: 600;
-  color: var(--spark-gold);
+  color: var(--m-primary);
 }
 
 .col-user {
@@ -463,22 +468,22 @@ onMounted(() => {
 .username {
   font-size: 14px;
   font-weight: 600;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .email {
   font-size: 12px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .col-type {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: rgba(46, 38, 61, 0.6);
 }
 
 .col-stat {
   font-size: 14px;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .rating-badge {
@@ -495,9 +500,10 @@ onMounted(() => {
 }
 
 .trend-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 16px 20px;
 }
 
@@ -511,18 +517,18 @@ onMounted(() => {
 .trend-category {
   font-size: 15px;
   font-weight: 600;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .trend-count {
   font-size: 14px;
   font-weight: 600;
-  color: var(--spark-gold);
+  color: var(--m-primary);
 }
 
 .trend-bar {
   height: 8px;
-  background: var(--spark-bg);
+  background: rgba(46, 38, 61, 0.06);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 4px;
@@ -530,21 +536,22 @@ onMounted(() => {
 
 .trend-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--spark-gold), var(--spark-silver));
+  background: linear-gradient(90deg, var(--m-primary), var(--m-primary-dark));
   border-radius: 4px;
   transition: width 0.3s ease;
 }
 
 .trend-period {
   font-size: 12px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 /* 行业报告 */
 .report-card {
-  background: var(--spark-surface);
-  border: 1px solid var(--spark-border);
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--m-shadow-md);
   padding: 24px;
 }
 
@@ -554,29 +561,29 @@ onMounted(() => {
   align-items: flex-start;
   margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--spark-border);
+  border-bottom: 1px solid var(--m-border);
 }
 
 .report-title {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
 }
 
 .report-time {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .report-summary {
   font-size: 15px;
   line-height: 1.7;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
   margin-bottom: 24px;
   padding: 16px;
-  background: var(--spark-bg);
-  border-radius: 8px;
+  background: var(--m-grey-100);
+  border-radius: 6px;
 }
 
 .report-stats {
@@ -586,24 +593,17 @@ onMounted(() => {
   margin-bottom: 24px;
 }
 
-.report-stat {
-  text-align: center;
-  padding: 16px;
-  background: var(--spark-bg);
-  border-radius: 8px;
-}
-
 .stat-num {
   display: block;
   font-size: 24px;
   font-weight: 700;
-  color: var(--spark-gold);
+  color: var(--m-primary);
   margin-bottom: 4px;
 }
 
 .stat-desc {
   font-size: 13px;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .report-categories {
@@ -615,14 +615,14 @@ onMounted(() => {
 
 .categories-label {
   font-size: 14px;
-  color: var(--spark-text);
+  color: var(--m-on-surface);
   font-weight: 500;
 }
 
 .category-tag {
   padding: 4px 12px;
-  background: rgba(212, 175, 55, 0.12);
-  color: var(--spark-gold);
+  background: var(--m-primary-light);
+  color: var(--m-primary);
   border-radius: 100px;
   font-size: 13px;
   font-weight: 500;
@@ -633,10 +633,10 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 48px 0;
-  color: var(--spark-muted);
+  color: var(--m-grey-500);
 }
 
 .error-state {
-  color: var(--spark-red);
+  color: var(--m-error);
 }
 </style>

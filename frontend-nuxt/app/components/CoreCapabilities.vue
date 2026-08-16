@@ -51,13 +51,13 @@ const capabilities = [
 .capability-title {
   font-size: 16px;
   font-weight: 600;
-  color: #111827;
+  color: var(--m-on-surface);
   margin: 0 0 8px;
 }
 
 .capability-desc {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--m-grey-500);
   line-height: 1.5;
   margin: 0;
 }

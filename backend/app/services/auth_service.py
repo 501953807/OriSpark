@@ -159,7 +159,8 @@ def get_or_create_local_user(db: Session) -> tuple[dict, str]:
             raise
         # 重新查询以确保获取最新数据
         db.refresh(local_user)
-        return _user_to_dict(local_user)
+        token = _create_token("local")
+        return _user_to_dict(local_user), token
 
     user = User(
         id="local",

@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
  */
 
 const BASE_URL = 'http://localhost:5174';
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'http://localhost:8001';
 
 test.describe('Data Injection via UI', () => {
   let token: string | null = null;

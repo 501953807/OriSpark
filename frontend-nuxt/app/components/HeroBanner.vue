@@ -58,7 +58,7 @@
 .hero-subtitle {
   font-family: 'Merriweather', Georgia, serif;
   font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-  color: #cbd5e1;
+  color: var(--m-grey-300);
   margin: 0 0 2.5rem;
   line-height: 1.6;
   opacity: 0.95;
@@ -73,7 +73,7 @@
 
 .btn-hero {
   padding: 0.875rem 2rem;
-  background: var(--motion-brand-linear-gradient, linear-gradient(135deg, #0ea5e9, #3b82f6));
+  background: var(--motion-brand-linear-gradient, linear-gradient(135deg, var(--m-primary-dark), var(--m-primary)));
   color: white;
   border: none;
   border-radius: 12px;

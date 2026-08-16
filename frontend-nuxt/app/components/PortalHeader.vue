@@ -29,7 +29,7 @@
   justify-content: space-between;
   padding: 16px 32px;
   background: #fff;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--m-border);
 }
 
 .logo {
@@ -39,7 +39,7 @@
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #059669;
+  color: var(--m-success);
 }
 
 .nav-links {
@@ -49,13 +49,13 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #374151;
+  color: var(--m-on-surface);
   font-size: 14px;
   font-weight: 500;
 }
 
 .nav-links a.router-link-active {
-  color: #059669;
+  color: var(--m-success);
 }
 
 .nav-actions {
@@ -65,7 +65,7 @@
 
 .btn-primary {
   padding: 8px 20px;
-  background: #059669;
+  background: var(--m-success);
   color: #fff;
   border: none;
   border-radius: 8px;

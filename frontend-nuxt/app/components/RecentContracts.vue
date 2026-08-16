@@ -50,11 +50,11 @@ const recentContracts = computed(() => contracts.value.slice(0, 5))
 .section-title {
   font-size: 24px;
   font-weight: 700;
-  color: #111827;
+  color: var(--m-on-surface);
 }
 
 .view-all {
-  color: #059669;
+  color: var(--m-success);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -71,7 +71,7 @@ const recentContracts = computed(() => contracts.value.slice(0, 5))
 .loading-state,
 .error-state {
   text-align: center;
-  color: #6b7280;
+  color: var(--m-grey-500);
   padding: 48px 0;
 }
 </style>

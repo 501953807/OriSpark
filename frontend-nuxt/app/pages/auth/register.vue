@@ -556,7 +556,7 @@ async function handleRegister() {
 .form-label {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
 }
 .form-required { color: #EF4444; }
 .form-input {
@@ -769,7 +769,7 @@ async function handleRegister() {
   background: white;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
   cursor: pointer;
   transition: all 0.15s;
   font-family: inherit;

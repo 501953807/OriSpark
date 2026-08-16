@@ -495,7 +495,7 @@ async function handleDemoLogin() {
 .form-label {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
 }
 .form-input {
   position: relative;
@@ -705,7 +705,7 @@ async function handleDemoLogin() {
   background: white;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: rgba(46, 38, 61, 0.9);
   cursor: pointer;
   transition: all 0.15s;
   font-family: inherit;

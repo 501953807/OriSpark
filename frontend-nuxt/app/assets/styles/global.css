@@ -6,12 +6,12 @@
 :root {
   /* 主色 */
   --brand-primary: #0ea5e9;
-  --brand-primary-dark: #3b82f6;
+  --brand-primary-dark: var(--m-primary-dark);
 
   /* 辅助色 */
-  --brand-accent-amber: #f59e0b;
-  --brand-success: #10b981;
-  --brand-error: #ef4444;
+  --brand-accent-amber: var(--m-warning);
+  --brand-success: var(--m-success);
+  --brand-error: var(--m-error);
 
   /* 背景色 */
   --brand-bg-light: #f8fafc;
@@ -56,17 +56,71 @@
    ==================== */
 :root {
   /* 行情色彩 */
-  --spark-blue: #3b82f6;
-  --spark-green: #10b981;
-  --spark-red: #ef4444;
+  --spark-blue: var(--m-primary);
+  --spark-green: var(--m-success);
+  --spark-red: var(--m-error);
   --spark-gold: #D4AF37;
   --spark-silver: #C0C0C0;
   --spark-dark: #0f172a;
-  --spark-surface: #1e293b;
+  --spark-surface: var(--m-bg);
   --spark-border: #334155;
   --spark-text: #f1f5f9;
   --spark-muted: #94a3b8;
   --spark-bg: #f8fafc;
+}
+
+/* ====================
+   Materio Design Tokens (Global)
+   ==================== */
+:root {
+  --m-primary: rgb(140, 87, 255);
+  --m-primary-light: rgba(140, 87, 255, 0.12);
+  --m-primary-dark: rgb(110, 57, 220);
+  --m-success: rgb(86, 202, 0);
+  --m-success-light: rgba(86, 202, 0, 0.12);
+  --m-warning: rgb(255, 180, 0);
+  --m-warning-light: rgba(255, 180, 0, 0.12);
+  --m-error: rgb(255, 76, 81);
+  --m-error-light: rgba(255, 76, 81, 0.12);
+  --m-info: rgb(0, 177, 255);
+  --m-info-light: rgba(0, 177, 255, 0.12);
+  --m-surface: #FFFFFF;
+  --m-bg: #F4F5FA;
+  --m-on-surface: rgba(46, 38, 61, 0.9);
+  --m-grey-900: rgba(46, 38, 61, 0.9);
+  --m-grey-700: rgba(46, 38, 61, 0.7);
+  --m-grey-500: rgba(46, 38, 61, 0.5);
+  --m-grey-300: rgba(46, 38, 61, 0.3);
+  --m-grey-100: rgba(46, 38, 61, 0.08);
+  --m-border: rgba(46, 38, 61, 0.12);
+  --m-space-1: 0.25rem;
+  --m-space-2: 0.5rem;
+  --m-space-3: 0.75rem;
+  --m-space-4: 1rem;
+  --m-space-5: 1.25rem;
+  --m-space-6: 1.5rem;
+  --m-radius-sm: 6px;
+  --m-radius-md: 12px;
+  --m-radius-lg: 16px;
+  --m-radius-full: 100px;
+  --m-shadow-xs: 0 1px 3px rgba(46, 38, 61, 0.12);
+  --m-shadow-sm: 0 2px 8px rgba(46, 38, 61, 0.16);
+  --m-shadow-md: 0 4px 16px rgba(46, 38, 61, 0.2);
+  --m-shadow-lg: 0 8px 32px rgba(46, 38, 61, 0.24);
+  --m-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --m-font-size-xs: 0.75rem;
+  --m-font-size-sm: 0.8125rem;
+  --m-font-size-base: 0.875rem;
+  --m-font-size-md: 1rem;
+  --m-font-size-lg: 1.125rem;
+  --m-font-weight-medium: 500;
+  --m-font-weight-semibold: 600;
+  --m-font-weight-bold: 700;
+  --m-line-height: 1.5;
+  --m-transition: 250ms;
+  --m-transition-fast: 150ms;
+  --m-disabled-opacity: 0.5;
+  --m-hover-opacity: 0.08;
 }
 
 /* Reduced motion preference */
@@ -88,20 +142,20 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #1f2937;
-  background: var(--brand-bg-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(46, 38, 61, 0.9);
+  background: #F4F5FA;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings use Satoshi */
+/* Display headings */
 h1, h2, h3, h4, h5, h6, .display-font {
-  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.2;
 }
 

@@ -36,7 +36,7 @@
   display: inline-block;
   padding: 12px 32px;
   background: #fff;
-  color: #059669;
+  color: var(--m-success);
   border: none;
   border-radius: 8px;
   font-size: 16px;

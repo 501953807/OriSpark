@@ -59,7 +59,7 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
   font-family: 'Satoshi', sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #111827;
+  color: var(--m-on-surface);
   margin: 0;
 }
 
@@ -118,14 +118,14 @@ const featuredWorks = computed(() => works.value.slice(0, 6))
 /* 加载状态骨架屏 */
 .loading-state {
   text-align: center;
-  color: #6b7280;
+  color: var(--m-grey-500);
   padding: 48px 0;
   font-size: 16px;
 }
 
 .error-state {
   text-align: center;
-  color: #ef4444;
+  color: var(--m-error);
   padding: 48px 0;
   font-size: 16px;
 }

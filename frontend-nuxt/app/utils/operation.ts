@@ -63,9 +63,9 @@ export const STATUS_LABEL: Record<string, string> = {
 }
 
 export const STATUS_COLOR: Record<string, string> = {
-  pending: '#f59e0b',
-  accepted: '#10b981',
-  rejected: '#ef4444',
-  expired: '#6b7280',
+  pending: 'var(--m-warning)',
+  accepted: 'var(--m-success)',
+  rejected: 'var(--m-error)',
+  expired: 'var(--m-grey-500)',
   cancelled: '#9ca3af',
 }

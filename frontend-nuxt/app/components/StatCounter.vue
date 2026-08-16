@@ -77,7 +77,7 @@ watch(() => props.value, (newVal) => {
 
 .stat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--m-grey-500);
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -85,7 +85,7 @@ watch(() => props.value, (newVal) => {
 .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+  background: linear-gradient(135deg, var(--m-primary), var(--m-primary-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
