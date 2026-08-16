@@ -55,6 +55,7 @@ defineProps<{
   position: relative;
   background: var(--m-surface);
   border-radius: var(--m-radius-lg);
+  border: none;
   overflow: hidden;
   transition: box-shadow var(--m-transition-fast), transform var(--m-transition-fast);
 }

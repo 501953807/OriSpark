@@ -319,9 +319,10 @@ onMounted(async () => {
   padding: var(--m-space-4);
   cursor: pointer;
   border-radius: var(--m-radius-md);
-  transition: background var(--m-transition-fast);
+  box-shadow: var(--m-shadow-xs);
+  transition: background var(--m-transition-fast), box-shadow var(--m-transition-fast);
 }
-.module-tile:hover { background: var(--m-bg-subtle); }
+.module-tile:hover { background: var(--m-bg-subtle); box-shadow: var(--m-shadow-sm); }
 .module-icon { font-size: 1.8rem; margin-bottom: 8px; }
 .module-name { font-size: var(--m-font-size-sm); font-weight: var(--m-font-weight-semibold); color: var(--m-on-surface); }
 .module-desc { font-size: var(--m-font-size-xs); color: var(--m-grey-500); margin-top: 4px; }
@@ -361,7 +362,7 @@ onMounted(async () => {
 .work-meta { font-size: var(--m-font-size-xs); color: var(--m-grey-500); }
 
 /* ── Link ── */
-.m-link { font-size: var(--m-font-size-sm); color: rgb(85, 133, 255); text-decoration: none; font-weight: var(--m-font-weight-medium); }
+.m-link { font-size: var(--m-font-size-sm); color: var(--m-primary); text-decoration: none; font-weight: var(--m-font-weight-medium); }
 .m-link:hover { text-decoration: underline; }
 
 /* ── Loading Overlay ── */

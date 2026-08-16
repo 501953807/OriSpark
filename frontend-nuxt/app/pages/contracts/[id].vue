@@ -315,7 +315,6 @@ async function handlePay() {
   subscribing.value = true
   try {
     const result = await subscribeContract(contract.value.id)
-    console.log('Subscribed:', result)
     wizardStep.value = 4
   } catch (e) {
     error.value = e instanceof Error ? e.message : '认购失败，请稍后重试'

@@ -10,6 +10,23 @@
 @import './a11y.css';
 @import './motion.css';
 
+/* ── 全局基础重置 ── */
+html {
+  scroll-behavior: smooth;
+  background: var(--m-bg-subtle, #F4F5FA);
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--m-bg-subtle, #F4F5FA);
+}
+
+/* ── 隐藏滚动条（默认不显示，hover 时出现）── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--m-border, rgba(46,38,61,0.12)); }
+
 /* ── 通用工具类 ── */
 .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--space-2); }
 .flex { display: flex; }

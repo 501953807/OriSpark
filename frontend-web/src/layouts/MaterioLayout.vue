@@ -8,6 +8,11 @@
     <!-- Mobile overlay -->
     <div v-if="isMobile && sidebarOpen" class="m-layout__overlay" @click="sidebarOpen = false" />
 
+    <!-- Collapsed hover tooltip -->
+    <div v-if="isCollapsed && tooltipVisible" ref="tooltipRef" class="m-tooltip">
+      {{ tooltipText }}
+    </div>
+
     <!-- ═══════════════ LEFT SIDEBAR ═══════════════ -->
     <aside class="m-sidebar" :class="{ 'm-sidebar--collapsed': isCollapsed, 'm-sidebar--open': sidebarOpen }">
       <!-- Brand + Collapse toggle -->
@@ -29,13 +34,6 @@
         </button>
       </div>
 
-      <!-- Search -->
-      <div v-show="!isCollapsed" class="m-sidebar__search">
-        <i class="material-icons">search</i>
-        <input v-model="searchQuery" class="m-sidebar__search-input" placeholder="搜索功能..." @keydown.enter="handleSearch" />
-        <kbd>⌘K</kbd>
-      </div>
-
       <!-- Navigation -->
       <nav class="m-sidebar__nav">
         <template v-for="group in navGroups" :key="group.key">
@@ -49,7 +47,11 @@
                 :to="item.path"
                 class="m-sidebar__link"
                 :class="{ 'm-sidebar__link--active': isActive(item.path) }"
+                :data-label="item.label"
+                :data-badge="item.badge || ''"
                 @click="closeMobile()"
+                @mouseenter="showTooltip($event, item.label)"
+                @mouseleave="hideTooltip"
               >
                 <i class="material-icons m-sidebar__link-icon">{{ item.icon }}</i>
                 <span class="m-sidebar__link-label">{{ item.label }}</span>
@@ -61,19 +63,39 @@
       </nav>
 
       <!-- Footer — User Card -->
-      <div v-show="!isCollapsed" class="m-sidebar__footer">
-        <div class="m-sidebar__user">
-          <div class="m-sidebar__avatar" style="background: linear-gradient(135deg, #8C57FF, #6C3DD9);">
-            {{ auth.user?.username?.[0] || auth.user?.email?.[0] || 'U' }}
+      <div class="m-sidebar__footer">
+        <div class="m-sidebar__type-selector" @click="togglePicker" :data-label="pickerTypeInfo?.label ?? '创作者'" :class="{ 'm-sidebar__type-selector--collapsed': isCollapsed }"
+          @mouseenter="showTooltip($event, pickerTypeInfo?.label ?? '创作者')"
+          @mouseleave="hideTooltip"
+        >
+          <div class="m-sidebar__avatar" :style="{ background: pickerTypeInfo?.color ?? 'linear-gradient(135deg, #8C57FF, #6C3DD9)' }">
+            {{ pickerTypeInfo?.icon ?? '🎨' }}
           </div>
-          <div class="m-sidebar__user-info">
-            <div class="m-sidebar__user-name">{{ auth.user?.username || '创作者' }}</div>
-            <div class="m-sidebar__user-role">{{ auth.user?.role || 'Creator' }}</div>
+          <div v-show="!isCollapsed" class="m-sidebar__user-info">
+            <div class="m-sidebar__user-name">{{ pickerTypeInfo?.label ?? '创作者' }}</div>
+            <div class="m-sidebar__user-role">点击切换身份</div>
           </div>
-          <button class="m-sidebar__logout-btn" @click="handleLogout" title="退出登录">
-            <i class="material-icons">logout</i>
-          </button>
+          <span v-show="!isCollapsed" class="m-sidebar__chevron">{{ pickerOpen ? '▲' : '▼' }}</span>
         </div>
+
+        <!-- Type picker popup -->
+        <Teleport to="body">
+          <div v-if="pickerOpen" class="type-picker-overlay" @click="closePicker"></div>
+          <Transition name="picker-fade">
+            <div v-if="pickerOpen" class="type-picker">
+              <div class="picker-title">选择创作者类型</div>
+              <button
+                v-for="ct in allTypes"
+                :key="ct.type"
+                :class="['picker-item', { active: ct.type === currentType }]"
+                @click="selectType(ct.type)"
+              >
+                <span class="picker-dot" :style="{ background: ct.color }"></span>
+                <span>{{ ct.label }}</span>
+              </button>
+            </div>
+          </Transition>
+        </Teleport>
       </div>
     </aside>
 
@@ -147,6 +169,9 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { useCreatorTypeStore } from '@/stores/useCreatorTypeStore'
+import { getAllCreators } from '@/types/creator'
+import type { CreatorType } from '@/types/creator'
 
 interface NavItem {
   label: string
@@ -164,15 +189,67 @@ interface NavGroup {
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
+const typeStore = useCreatorTypeStore()
+
+// Creator type picker
+const allTypes = getAllCreators()
+const currentType = computed(() => typeStore.getCurrentType())
+const pickerOpen = ref(false)
+
+const iconEmoji: Record<string, string> = {
+  illustrator: '🖌️',
+  photographer: '📸',
+  video: '🎬',
+  craftsman: '🔨',
+  musician: '🎵',
+  writer: '✒️',
+}
+
+const pickerTypeInfo = computed(() => {
+  const info = typeStore.getTypeInfo(currentType.value)
+  return info ? { ...info, icon: iconEmoji[info.type] ?? '🎨' } : null
+})
+
+function togglePicker() { pickerOpen.value = !pickerOpen.value }
+function closePicker() { pickerOpen.value = false }
+function selectType(type: CreatorType) { typeStore.switchType(type); pickerOpen.value = false }
+
+function showTooltip(event: MouseEvent, text: string): void {
+  if (!isCollapsed.value) return
+  tooltipText.value = text
+  tooltipVisible.value = true
+  tooltipTarget.value = event.currentTarget as HTMLElement
+  requestAnimationFrame(() => positionTooltip())
+}
+
+function hideTooltip(): void {
+  tooltipVisible.value = false
+  tooltipTarget.value = null
+}
+
+function positionTooltip(): void {
+  if (!tooltipRef.value || !tooltipTarget.value || !isCollapsed.value) return
+  const target = tooltipTarget.value.getBoundingClientRect()
+  const sidebarRect = document.querySelector('.m-sidebar')?.getBoundingClientRect()
+  if (!sidebarRect) return
+  const top = target.top + target.height / 2 - 18
+  tooltipRef.value.style.left = `${sidebarRect.right + 6}px`
+  tooltipRef.value.style.top = `${top}px`
+}
 
 // State
 const isCollapsed = ref(false)
 const sidebarOpen = ref(false)
 const userMenuOpen = ref(false)
 const isDark = ref(false)
-const searchQuery = ref('')
 const userMenuRef = ref<HTMLElement | null>(null)
 const isMobile = ref(window.innerWidth < 1024)
+
+// Tooltip for collapsed state
+const tooltipVisible = ref(false)
+const tooltipText = ref('')
+const tooltipRef = ref<HTMLElement | null>(null)
+const tooltipTarget = ref<HTMLElement | null>(null)
 
 // Breadcrumb
 const currentBreadcrumb = computed(() => {
@@ -310,20 +387,6 @@ function closeMobile(): void {
   if (isMobile.value) sidebarOpen.value = false
 }
 
-function handleSearch(): void {
-  if (!searchQuery.value.trim()) return
-  const q = searchQuery.value.toLowerCase()
-  for (const group of navGroups) {
-    for (const item of group.items) {
-      if (item.label.toLowerCase().includes(q)) {
-        router.push(item.path)
-        searchQuery.value = ''
-        return
-      }
-    }
-  }
-}
-
 function toggleTheme(): void {
   isDark.value = !isDark.value
   document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light')
@@ -346,15 +409,6 @@ onMounted(() => {
     if (!isMobile.value) sidebarOpen.value = false
   })
   document.addEventListener('click', handleClickOutside)
-
-  const handler = (e: KeyboardEvent) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault()
-      const input = document.querySelector('.m-sidebar__search-input') as HTMLInputElement
-      input?.focus()
-    }
-  }
-  document.addEventListener('keydown', handler)
 })
 
 onUnmounted(() => {
@@ -369,7 +423,7 @@ onUnmounted(() => {
 .m-layout {
   display: flex;
   min-height: 100dvh;
-  background: #FFFFFF;
+  background: var(--m-bg-subtle, #F4F5FA);
   font-family: var(--m-font-family, 'Inter', sans-serif);
 }
 
@@ -393,19 +447,21 @@ onUnmounted(() => {
   transition: width 250ms cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
-
-.m-sidebar--collapsed { width: var(--m-sidebar-collapsed, 80px); }
+.m-sidebar--collapsed { width: var(--m-sidebar-collapsed, 80px); overflow: visible; }
 
 /* ── Brand Row ── */
 .m-sidebar__brand {
   display: flex; align-items: center; gap: 8px;
   padding: 0 20px; height: 64px; flex-shrink: 0;
 }
+.m-sidebar--collapsed .m-sidebar__brand { justify-content: center; padding: 0 16px; }
 
 .m-sidebar__logo {
   display: flex; align-items: center; gap: 8px;
   text-decoration: none; color: var(--m-on-surface, #2E263D); flex: 1; min-width: 0;
 }
+.m-sidebar--collapsed .m-sidebar__logo { flex: none; }
+.m-sidebar--collapsed .m-sidebar__title { display: none; }
 
 .m-sidebar__logo svg { flex-shrink: 0; color: var(--m-primary, #8C57FF); }
 
@@ -431,37 +487,13 @@ onUnmounted(() => {
   background: rgba(140, 87, 255, 0.08); color: var(--m-primary, #8C57FF);
 }
 
-/* ── Search ── */
-.m-sidebar__search {
-  display: flex; align-items: center; gap: 8px;
-  margin: 0 16px 8px; padding: 0 12px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(46, 38, 61, 0.08);
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-.m-sidebar__search input {
-  flex: 1; border: none; outline: none;
-  font-size: 0.8125rem; font-family: inherit;
-  background: transparent; color: var(--m-on-surface, #2E263D);
-}
-.m-sidebar__search input::placeholder { color: var(--m-grey-400, #BDBDBD); }
-.m-sidebar__search kbd {
-  padding: 1px 6px;
-  background: var(--m-bg-subtle, #F4F5FA);
-  border: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
-  border-radius: 4px; font-size: 0.6875rem; font-family: monospace;
-  color: var(--m-grey-400, #BDBDBD); flex-shrink: 0;
-}
-.m-sidebar__search i { color: var(--m-grey-400, #BDBDBD); font-size: 18px; flex-shrink: 0; }
-
 /* ── Nav ── */
 .m-sidebar__nav {
   flex: 1; overflow-y: auto;
   padding: 0 12px 16px;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
+.m-sidebar__nav::-webkit-scrollbar { display: none; }
 
 /* ── Section Divider (Materio nav-section-title) ── */
 .m-sidebar__section {
@@ -534,19 +566,57 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* ── Footer — User Card ── */
+/* ── Collapsed hover tooltip ── */
+.m-sidebar--collapsed .m-sidebar__link-label,
+.m-sidebar--collapsed .m-sidebar__badge { display: none; }
+.m-sidebar--collapsed .m-sidebar__nav ul { padding: 0 12px; }
+
+.m-sidebar--collapsed .m-sidebar__link {
+  position: relative;
+  justify-content: center;
+  padding: 0 16px;
+}
+.m-sidebar--collapsed .m-sidebar__section { display: none; }
+
+/* JS tooltip */
+.m-tooltip {
+  position: fixed;
+  white-space: nowrap;
+  background: var(--m-surface, #FFFFFF);
+  border: 1px solid var(--m-border, rgba(46,38,61,0.12));
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--m-on-surface, #2E263D);
+  box-shadow: var(--m-shadow-sm, 0 1px 2px rgba(46,38,61,0.08));
+  z-index: 300;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Footer — Type Selector ── */
 .m-sidebar__footer {
   padding: 12px; margin: 0 4px 8px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 12px;
   flex-shrink: 0;
 }
-
-.m-sidebar__user { display: flex; align-items: center; gap: 10px; }
+.m-sidebar__type-selector {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; padding: 6px 8px; margin: -6px -8px;
+  border-radius: var(--m-radius-sm, 8px);
+  transition: background 150ms; user-select: none;
+  position: relative;
+}
+.m-sidebar__type-selector:hover { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08); }
 .m-sidebar__avatar {
   width: 36px; height: 36px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.8125rem; font-weight: 600; color: white; flex-shrink: 0;
+  font-size: 1.1rem; flex-shrink: 0;
+  background: linear-gradient(135deg, #8C57FF, #6C3DD9);
 }
 .m-sidebar__user-info { min-width: 0; flex: 1; }
 .m-sidebar__user-name {
@@ -554,16 +624,42 @@ onUnmounted(() => {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .m-sidebar__user-role { font-size: 0.6875rem; color: var(--m-grey-500, #9E9E9E); }
-.m-sidebar__logout-btn {
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  border: none; background: transparent; color: var(--m-grey-400, #BDBDBD);
-  border-radius: 8px; cursor: pointer; flex-shrink: 0;
-  transition: all 150ms;
+.m-sidebar__chevron { font-size: 0.6rem; color: var(--m-grey-400, #BDBDBD); flex-shrink: 0; }
+
+/* Footer collapsed state */
+.m-sidebar--collapsed .m-sidebar__type-selector--collapsed { justify-content: center; padding: 8px; }
+
+/* Type picker popup */
+.type-picker-overlay { position: fixed; inset: 0; z-index: 199; }
+.type-picker {
+  position: fixed; bottom: 80px; left: 10px;
+  max-height: 320px; overflow-y: auto;
+  background: var(--m-bg-subtle, #F4F5FA);
+  border: 1px solid var(--m-border, rgba(46,38,61,0.12));
+  border-radius: var(--m-radius-sm, 8px);
+  box-shadow: var(--m-shadow-lg, 0 10px 15px -3px rgba(46,38,61,0.1));
+  padding: 12px; z-index: 200; width: 200px;
 }
-.m-sidebar__logout-btn:hover {
-  background: rgba(var(--m-error-rgb, 255, 76, 81), 0.08); color: var(--m-error, #FF4C51);
+.picker-title {
+  font-size: 0.6875rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--m-grey-500, #9E9E9E);
+  padding: 4px 8px 8px;
 }
+.picker-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px;
+  border: none; border-radius: var(--m-radius-sm, 8px);
+  background: transparent; cursor: pointer;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--m-on-surface, #2E263D);
+  text-align: left; transition: background 150ms;
+}
+.picker-item:hover { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08); }
+.picker-item.active { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.12); color: var(--m-primary, #8C57FF); font-weight: 600; }
+.picker-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.picker-fade-enter-active, .picker-fade-leave-active { transition: opacity 150ms ease; }
+.picker-fade-enter-from, .picker-fade-leave-to { opacity: 0; }
 
 /* ═══════════════════════════════════════════════════════════
    MAIN — 透明顶部导航
@@ -572,7 +668,8 @@ onUnmounted(() => {
   flex: 1;
   margin-inline-start: var(--m-sidebar-width, 256px);
   display: flex; flex-direction: column;
-  min-height: 100dvh;
+  height: 100dvh;
+  background: var(--m-bg-subtle, #F4F5FA);
   transition: margin-inline-start 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -681,7 +778,12 @@ onUnmounted(() => {
 .m-topbar__divider { height: 1px; background: var(--m-border, rgba(46, 38, 61, 0.12)); margin: 8px 0; }
 
 /* ══ CONTENT ══ */
-.m-main__content { flex: 1; padding: 24px; overflow-y: auto; background: var(--m-bg-subtle, #F4F5FA); }
+.m-main__content { flex: 1; padding: 24px; overflow-y: auto; background: var(--m-bg-subtle, #F4F5FA); scrollbar-width: none; }
+.m-main__content::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   TRANSITIONS
+   ═══════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════
    TRANSITIONS
@@ -705,7 +807,7 @@ onUnmounted(() => {
 .m-card {
   background: var(--m-surface, #FFFFFF);
   border-radius: var(--m-radius-lg, 12px);
-  border: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
+  border: none;
   box-shadow: var(--m-shadow-xs, 0 0.125rem 0.25rem rgba(46, 38, 61, 0.16));
   overflow: hidden;
 }
@@ -726,7 +828,7 @@ onUnmounted(() => {
 .m-stat-card {
   background: var(--m-surface, #FFFFFF);
   border-radius: var(--m-radius-lg, 12px);
-  border: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
+  border: none;
   box-shadow: var(--m-shadow-xs, 0 0.125rem 0.25rem rgba(46, 38, 61, 0.16));
   padding: var(--m-space-6, 1.5rem);
   display: flex; flex-direction: column; gap: var(--m-space-2, 0.5rem);

@@ -99,11 +99,9 @@ async function handleCreate() {
       ...newAgent,
       service_areas: newAgent.service_areas_str.split(',').map((s: string) => s.trim()).filter(Boolean),
     })
-    console.warn('创建成功')
     showCreate.value = false
     fetchAgents()
   } catch {
-    console.warn('创建失败')
   }
 }
 

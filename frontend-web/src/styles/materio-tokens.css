@@ -1,26 +1,33 @@
 /* ============================================
    Materio Vuetify Design Tokens
-   Materio Vuetify Admin Template 风格令牌
-   https://demos.themeselection.com/materio-vuetify-vuejs-admin-template/demo-2/
+   Materio Vuetify Admin Template — Exact Colors & Shadows
+   Reference: https://demos.themeselection.com/materio-vuetify-vuejs-admin-template/demo-1/
    ============================================ */
 
 :root {
-  /* ── Primary Colors (Materio Purple) ── */
+  /* ── Primary Palette (Materio Purple) ── */
   --m-primary-rgb: 140, 87, 255;
   --m-primary: #8C57FF;
   --m-primary-darken-1: #7E44F0;
   --m-primary-darken-2: #6C3DD9;
+  --m-primary-lighten: #A78BFF;
   --m-on-primary: #FFFFFF;
+  --m-primary-tint: rgba(140, 87, 255, 0.08);
+  --m-primary-tint-2: rgba(140, 87, 255, 0.16);
 
   /* ── Semantic Colors ── */
   --m-error: #FF4C51;
   --m-on-error: #FFFFFF;
+  --m-error-rgb: 255, 76, 81;
   --m-warning: #FFB400;
   --m-on-warning: #000000;
+  --m-warning-rgb: 255, 180, 0;
   --m-success: #56CA00;
   --m-on-success: #FFFFFF;
+  --m-success-rgb: 86, 202, 0;
   --m-info: #16B1FF;
   --m-on-info: #FFFFFF;
+  --m-info-rgb: 22, 177, 255;
   --m-secondary: #8A8D93;
   --m-on-secondary: #FFFFFF;
 
@@ -38,11 +45,11 @@
 
   /* ── Background & Surface ── */
   --m-bg: #FFFFFF;
-  --m-bg-subtle: #F4F5FA;
+  --m-bg-subtle: #F4F5FA;       /* Materio page background — light purple tint */
   --m-surface: #FFFFFF;
   --m-surface-2: #EEF0F4;
   --m-surface-bright: #FFFFFF;
-  --m-on-surface: #2E263D;
+  --m-on-surface: #2E263D;      /* Materio dark text */
   --m-on-surface-variant: #EEEEEE;
   --m-on-background: #2E263D;
 
@@ -65,7 +72,7 @@
   --m-medium-emphasis-opacity: 0.7;
   --m-high-emphasis-opacity: 0.9;
 
-  /* ── Shadows (Vuetify style RGB values) ── */
+  /* ── Shadows (Materio elevated cards — no border, pure shadow) ── */
   --m-shadow-key-umbra-color: 46, 38, 61;
   --m-shadow-xs: 0 0.125rem 0.25rem rgba(var(--m-shadow-key-umbra-color), 0.16);
   --m-shadow-sm: 0 0.25rem 0.5rem rgba(var(--m-shadow-key-umbra-color), 0.18);
@@ -83,12 +90,12 @@
 
   /* ── Typography ── */
   --m-font-family: 'Inter', 'Source Han Sans SC', 'PingFang SC', sans-serif;
-  --m-font-size-xs: 0.6875rem;    /* 11px */
-  --m-font-size-sm: 0.8125rem;    /* 13px */
-  --m-font-size-base: 0.9375rem;  /* 15px */
-  --m-font-size-md: 1.0625rem;    /* 17px */
-  --m-font-size-lg: 1.1875rem;    /* 19px */
-  --m-font-size-xl: 1.5rem;       /* 24px */
+  --m-font-size-xs: 0.6875rem;
+  --m-font-size-sm: 0.8125rem;
+  --m-font-size-base: 0.9375rem;
+  --m-font-size-md: 1.0625rem;
+  --m-font-size-lg: 1.1875rem;
+  --m-font-size-xl: 1.5rem;
   --m-font-weight-regular: 400;
   --m-font-weight-medium: 500;
   --m-font-weight-semibold: 600;
@@ -99,16 +106,16 @@
   --m-line-height-lg: 1.75;
 
   /* ── Spacing ── */
-  --m-space-1: 0.25rem;   /* 4px */
-  --m-space-2: 0.5rem;    /* 8px */
-  --m-space-3: 0.75rem;   /* 12px */
-  --m-space-4: 1rem;      /* 16px */
-  --m-space-5: 1.25rem;   /* 20px */
-  --m-space-6: 1.5rem;    /* 24px */
-  --m-space-8: 2rem;      /* 32px */
-  --m-space-10: 2.5rem;   /* 40px */
-  --m-space-12: 3rem;     /* 48px */
-  --m-space-16: 4rem;     /* 64px */
+  --m-space-1: 0.25rem;
+  --m-space-2: 0.5rem;
+  --m-space-3: 0.75rem;
+  --m-space-4: 1rem;
+  --m-space-5: 1.25rem;
+  --m-space-6: 1.5rem;
+  --m-space-8: 2rem;
+  --m-space-10: 2.5rem;
+  --m-space-12: 3rem;
+  --m-space-16: 4rem;
 
   /* ── Transitions ── */
   --m-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -123,16 +130,16 @@
   --m-sidebar-fg-dim: #8A8D93;
   --m-sidebar-active-bg: linear-gradient(135deg, #5585FF, #2A52B0);
   --m-sidebar-active-fg: #FFFFFF;
-  --m-sidebar-hover-bg: #F4F5FA;
-  --m-sidebar-border: rgba(46, 38, 61, 0.12);
-  --m-sidebar-shadow: 0 0.25rem 0.5rem rgba(46,38,61,0.18);
+  --m-sidebar-hover-bg: #EDEDF9;
+  --m-sidebar-border: none;          /* Materio sidebar has no border */
+  --m-sidebar-shadow: none;
   --m-topbar-height: 64px;
-  --m-topbar-bg: #FFFFFF;
-  --m-topbar-border: rgba(46, 38, 61, 0.12);
-  --m-topbar-shadow: 0 1px 0 rgba(46, 38, 61, 0.08);
+  --m-topbar-bg: transparent;        /* Transparent over page bg */
+  --m-topbar-border: none;
+  --m-topbar-shadow: none;
   --m-bg-subtle-materio: #F4F5FA;
   --m-search-bg: #F4F5FA;
-  --m-search-border: rgba(46, 38, 61, 0.12);
+  --m-search-border: none;
   --m-topbar-height-expanded: 72px;
 
   /* ── Layout Spacing (Materio) ── */
@@ -146,7 +153,7 @@
   --m-z-toast: 500;
   --m-z-tooltip: 600;
 
-  /* ── Vuetify Theme Tokens (for reference) ── */
+  /* ── Vuetify Theme Tokens ── */
   --v-theme-primary: var(--m-primary);
   --v-theme-on-primary: var(--m-on-primary);
   --v-theme-surface: var(--m-surface);
@@ -182,4 +189,8 @@
   --m-grey-700: #BBBBBB;
   --m-grey-800: #CCCCCC;
   --m-grey-900: #DDDDDD;
+  --m-sidebar-bg: #1E1E1E;
+  --m-sidebar-fg: #E8E6E7;
+  --m-sidebar-fg-dim: #6B6B7A;
+  --m-topbar-bg: transparent;
 }

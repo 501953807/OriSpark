@@ -39,12 +39,12 @@ const variant = computed(() => {
 }
 .default { background: rgba(0,0,0,0.04); color: var(--muted); }
 .default .status-dot { background: var(--muted); }
-.success, .confirmed, .active { background: rgba(86,202,0,0.1); color: var(--green); }
-.success .status-dot, .confirmed .status-dot, .active .status-dot { background: var(--green); }
-.warning, .pending, .pending_review { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
-.warning .status-dot, .pending .status-dot, .pending_review .status-dot { background: var(--orange); }
-.error, .failed { background: oklch(58% 0.18 30 / 0.1); color: #e53e3e; }
-.error .status-dot, .failed .status-dot { background: #e53e3e; }
-.info, .draft { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
-.info .status-dot, .draft .status-dot { background: var(--blue); }
+.success, .confirmed, .active { background: rgba(86,202,0,0.1); color: var(--m-success, #56CA00); }
+.success .status-dot, .confirmed .status-dot, .active .status-dot { background: var(--m-success, #56CA00); }
+.warning, .pending, .pending_review { background: rgba(255,180,0,0.1); color: var(--m-warning, #FFB400); }
+.warning .status-dot, .pending .status-dot, .pending_review .status-dot { background: var(--m-warning, #FFB400); }
+.error, .failed { background: rgba(255,76,81,0.1); color: var(--m-error, #FF4C51); }
+.error .status-dot, .failed .status-dot { background: var(--m-error, #FF4C51); }
+.info, .draft { background: rgba(140,87,255,0.1); color: var(--m-primary, #8C57FF); }
+.info .status-dot, .draft .status-dot { background: var(--m-primary, #8C57FF); }
 </style>

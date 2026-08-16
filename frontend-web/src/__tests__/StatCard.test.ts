@@ -49,7 +49,7 @@ describe('StatCard', () => {
     })
     const circle = wrapper.find('.stat-icon-circle')
     expect(circle.attributes('style')).toContain('background')
-    expect(circle.attributes('style')).toContain('linear-gradient')
+    expect(circle.attributes('style')).toContain('--m-primary')
   })
 
   it('applies custom color background', () => {
@@ -58,7 +58,7 @@ describe('StatCard', () => {
     })
     const circle = wrapper.find('.stat-icon-circle')
     expect(circle.attributes('style')).toContain('background')
-    expect(circle.attributes('style')).toContain('linear-gradient')
+    expect(circle.attributes('style')).toContain('--m-warning')
   })
 })
 

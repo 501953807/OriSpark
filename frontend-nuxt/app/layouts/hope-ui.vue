@@ -131,7 +131,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+const route = useState('route')
 
 const route = useRoute()
 const isCollapsed = ref(false)
@@ -143,7 +143,7 @@ const toggleGroup = (key: string) => {
   const idx = expandedGroups.value.indexOf(key)
   idx >= 0 ? expandedGroups.value.splice(idx, 1) : expandedGroups.value.push(key)
 }
-const closeMobileSidebar = () => { if (window.innerWidth < 1024) mobileOpen.value = false }
+const closeMobileSidebar = () => { if (import.meta.client && window.innerWidth < 1024) mobileOpen.value = false }
 
 const navItems = [
   { key: 'dashboard', label: '数据看板', path: '/data', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },

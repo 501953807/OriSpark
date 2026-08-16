@@ -144,7 +144,6 @@ async function loadPanel(type: string): Promise<unknown> {
     if (loadedPanels[type]) loadedPanels[type].value = comp
     return comp
   } catch (_err: unknown) {
-    console.warn(`[CreatorTypeInfo] Failed to load panel for "${type}"`, _err)
     return null
   } finally {
     panelLoading.value = false

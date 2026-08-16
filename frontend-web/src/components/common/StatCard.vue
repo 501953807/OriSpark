@@ -37,27 +37,27 @@ const bgColor = computed(() => {
 })
 
 const gradientStyle = computed(() => {
-  const colors: Record<string, string[]> = {
-    green: ['var(--success)', 'oklch(68% 0.11 170)'],
-    orange: ['var(--warning)', 'oklch(72% 0.16 65)'],
-    purple: ['var(--accent)', 'oklch(68% 0.14 290)'],
-    blue: ['#6366f1', 'oklch(68% 0.12 255)'],
-    default: ['#5585FF', '#2A52B0'],
+  const colors: Record<string, string> = {
+    green: 'var(--m-success, #56CA00)',
+    orange: 'var(--m-warning, #FFB400)',
+    purple: 'var(--m-primary, #8C57FF)',
+    blue: '#6366f1',
+    default: 'var(--m-primary, #8C57FF)',
   }
-  const c = colors[props.color || 'default']
-  return `linear-gradient(135deg, ${c[0]}, ${c[1]})`
+  return colors[props.color || 'default']
 })
 </script>
 
 <style scoped>
 .stat-card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: var(--m-radius-lg);
   padding: 20px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  box-shadow: var(--m-shadow-xs);
   transition: all 0.3s ease;
 }
 .stat-card.clickable {

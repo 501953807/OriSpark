@@ -220,7 +220,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+const route = useState('route')
 import { useAuthStore } from '~/stores/auth'
 
 interface NavGroupItem {
@@ -386,17 +386,20 @@ function handleLogout(): void {
   navigateTo('/auth/login')
 }
 
+const handleScroll = () => { isScrolled.value = window.scrollY > 10 }
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 1024
+  if (!isMobile.value) mobileMenuOpen.value = false
+}
+
 onMounted(() => {
-  window.addEventListener('scroll', () => { isScrolled.value = window.scrollY > 10 })
-  window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth < 1024
-    if (!isMobile.value) mobileMenuOpen.value = false
-  })
+  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', () => {})
-  window.removeEventListener('resize', () => {})
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
   Object.values(closeTimers.value).forEach(clearTimeout)
   if (userCloseTimer.value) clearTimeout(userCloseTimer.value)
 })

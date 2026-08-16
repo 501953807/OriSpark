@@ -138,21 +138,17 @@ async function fetchLinks() {
 async function handleCreate() {
   try {
     await api.create(createForm)
-    console.warn('短链已创建')
     showCreate.value = false
     fetchLinks()
   } catch {
-    console.warn('创建失败')
   }
 }
 
 async function handleDelete(id: string) {
   try {
     await api.delete(id)
-    console.warn('已删除')
     fetchLinks()
   } catch {
-    console.warn('删除失败')
   }
 }
 

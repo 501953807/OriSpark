@@ -19,7 +19,7 @@
 .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .btn-primary {
-  background: rgb(var(--m-primary-rgb, 85, 133, 255)); color: var(--m-on-primary, #fff);
+  background: rgb(var(--m-primary-rgb, 140, 87, 255)); color: var(--m-on-primary, #fff);
   box-shadow: var(--m-shadow-xs, 0 0.125rem 0.25rem rgba(46, 38, 61, 0.16));
 }
 .btn-primary:hover:not(:disabled) {
@@ -34,11 +34,11 @@
 }
 
 .btn-secondary {
-  background: transparent; color: rgb(var(--m-primary-rgb, 85, 133, 255));
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: transparent; color: rgb(var(--m-primary-rgb, 140, 87, 255));
+  border-color: rgb(var(--m-primary-rgb, 140, 87, 255));
 }
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
+  background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08);
 }
 
 .btn-ghost {

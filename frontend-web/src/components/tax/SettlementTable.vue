@@ -91,11 +91,9 @@ async function fetchReports() {
 async function handleGenerate() {
   try {
     await taxApi.taxAgentApi.createReport(reportForm)
-    console.warn('报告已生成')
     showGenerate.value = false
     fetchReports()
   } catch {
-    console.warn('生成失败')
   }
 }
 </script>
