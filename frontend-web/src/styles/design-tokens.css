@@ -1,3 +1,4 @@
+/* DEPRECATED — Use materio-tokens.css instead. This file is kept for backward compatibility only. */
 /* ============================================
    OriStudio Design Tokens
    全局 CSS 变量 — 所有主题共用，组件样式统一
@@ -71,8 +72,8 @@
   --z-tooltip: 600;
 
   /* ── 补充业务色（组件/视图内使用）── */
-  --primary: #3A57E8;
-  --blue: #0EA5E9;
+  --primary: var(--m-primary, #5585FF);
+  --blue: var(--m-info, #16B1FF);
   --green: #1AE053;
   --orange: #F59E0B;
   --purple: #8B5CF6;

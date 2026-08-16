@@ -1,45 +1,46 @@
 /* ============================================
    OriStudio Theme Presets
    三套主题预设，通过 data-theme 属性切换
+   ── Note: These override --accent etc. for legacy components
+              while materio-tokens.css provides --m-* variables
    ============================================ */
 
-/* ── 主题 1：冷白（默认商务，Hope UI 风格）── */
+/* ── 主题 1：冷白（默认商务）── */
 [data-theme="cold-white"] {
-  --bg:            #FFFFFF;
-  --bg-subtle:     #F5F6FA;
-  --surface:       #FFFFFF;
-  --surface-2:     #F8F9FA;
+  --bg:            var(--m-bg, #FFFFFF);
+  --bg-subtle:     var(--m-bg-subtle, #F4F5FA);
+  --surface:       var(--m-surface, #FFFFFF);
+  --surface-2:     var(--m-surface-2, #EEF0F4);
   --surface-hover: #F0F2F5;
-  --fg:            #232D42;
+  --fg:            var(--m-on-surface, #2E263D);
   --fg-subtle:     #6C757D;
-  --muted:         #8A92A6;
-  --muted-dim:     #B0B8C8;
-  --border:        #E9ECEF;
-  --border-strong: #CED4DA;
-  --accent:        #3A57E8;
-  --accent-dim:    rgba(58, 87, 232, 0.08);
-  --accent-fg:     #FFFFFF;
-  --accent-hover:  #283CA8;
-  --sidebar-bg:    #FFFFFF;
-  --sidebar-fg:    #232D42;
-  --sidebar-fg-dim:#8A92A6;
-  --sidebar-active: rgba(58, 87, 232, 0.08);
-  --success:       #1AE053;
-  --warning:       #F59E0B;
-  --danger:        #EF4444;
-  --info:          #0EA5E9;
-  --shadow-color:  rgba(35, 45, 66, 0.08);
-  --shadow-lg:     0 10px 15px -3px rgba(35,45,66,0.08), 0 4px 6px -4px rgba(35,45,66,0.05);
-  --grad1:         #3A57E8;
-  --grad2:         #0EA5E9;
-  --grad3:         #1AE053;
+  --muted:         var(--m-grey-500, #9E9E9E);
+  --muted-dim:     var(--m-grey-300, #E0E0E0);
+  --border:        var(--m-border, rgba(46, 38, 61, 0.12));
+  --border-strong: var(--m-border-strong, rgba(46, 38, 61, 0.2));
+  --accent:        rgb(var(--m-primary-rgb, 85, 133, 255));
+  --accent-dim:    rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
+  --accent-fg:     var(--m-on-primary, #FFFFFF);
+  --accent-hover:  var(--m-primary-darken-1, #3D6DD6);
+  --sidebar-bg:    var(--m-sidebar-bg, #FFFFFF);
+  --sidebar-fg:    var(--m-sidebar-fg, #2E263D);
+  --sidebar-fg-dim:var(--m-sidebar-fg-dim, #8A8D93);
+  --sidebar-active: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
+  --success:       var(--m-success, #56CA00);
+  --warning:       var(--m-warning, #FFB400);
+  --danger:        var(--m-error, #FF4C51);
+  --info:          var(--m-info, #16B1FF);
+  --shadow-color:  rgba(var(--m-shadow-key-umbra-color, 46, 38, 61), 0.08);
+  --grad1:         rgb(var(--m-primary-rgb, 85, 133, 255));
+  --grad2:         var(--m-info, #16B1FF);
+  --grad3:         var(--m-success, #56CA00);
 }
 
 /* ── 主题 2：暖灰 ── */
 [data-theme="warm-gray"] {
   --bg:            #FAFAF8;
-  --bg-subtle:     #F3F1EE;
-  --surface:       #FFFFFF;
+  --bg-subtle:     var(--m-bg-subtle, #F4F5FA);
+  --surface:       var(--m-surface, #FFFFFF);
   --surface-2:     #F8F7F5;
   --surface-hover: #F0EDE9;
   --fg:            #2C2A28;
@@ -48,21 +49,20 @@
   --muted-dim:     #B8B3AD;
   --border:        #E8E4DF;
   --border-strong: #D4CFC9;
-  --accent:        #3A57E8;
-  --accent-dim:    rgba(58, 87, 232, 0.08);
-  --accent-fg:     #FFFFFF;
-  --accent-hover:  #283CA8;
-  --sidebar-bg:    #FFFFFF;
+  --accent:        rgb(var(--m-primary-rgb, 85, 133, 255));
+  --accent-dim:    rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
+  --accent-fg:     var(--m-on-primary, #FFFFFF);
+  --accent-hover:  var(--m-primary-darken-1, #3D6DD6);
+  --sidebar-bg:    var(--m-sidebar-bg, #FFFFFF);
   --sidebar-fg:    #2C2A28;
   --sidebar-fg-dim:#9A9590;
-  --sidebar-active: rgba(58, 87, 232, 0.08);
+  --sidebar-active: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
   --success:       #10B981;
-  --warning:       #F59E0B;
-  --danger:        #EF4444;
-  --info:          #0EA5E9;
+  --warning:       var(--m-warning, #FFB400);
+  --danger:        var(--m-error, #FF4C51);
+  --info:          var(--m-info, #16B1FF);
   --shadow-color:  rgba(44, 42, 40, 0.08);
-  --shadow-lg:     0 10px 15px -3px rgba(44,42,40,0.08), 0 4px 6px -4px rgba(44,42,40,0.05);
-  --grad1:         #3A57E8;
+  --grad1:         rgb(var(--m-primary-rgb, 85, 133, 255));
   --grad2:         #2D4A9E;
   --grad3:         #1AE053;
 }
@@ -93,7 +93,6 @@
   --danger:        #EF4444;
   --info:          #0EA5E9;
   --shadow-color:  rgba(0, 0, 0, 0.3);
-  --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -4px rgba(0,0,0,0.2);
   --grad1:         #6366F1;
   --grad2:         #8B5CF6;
   --grad3:         #EC4899;
@@ -112,21 +111,20 @@
   --muted-dim:     #475569;
   --border:        #334155;
   --border-strong: #475569;
-  --accent:        #3A57E8;
-  --accent-dim:    rgba(58, 87, 232, 0.15);
-  --accent-fg:     #FFFFFF;
-  --accent-hover:  #283CA8;
+  --accent:        rgb(var(--m-primary-rgb, 85, 133, 255));
+  --accent-dim:    rgba(var(--m-primary-rgb, 85, 133, 255), 0.15);
+  --accent-fg:     var(--m-on-primary, #FFFFFF);
+  --accent-hover:  var(--m-primary-darken-1, #3D6DD6);
   --sidebar-bg:    #0f172a;
   --sidebar-fg:    #E2E8F0;
   --sidebar-fg-dim:#64748B;
-  --sidebar-active: rgba(58, 87, 232, 0.12);
+  --sidebar-active: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
   --success:       #1AE053;
   --warning:       #F59E0B;
   --danger:        #EF4444;
   --info:          #0EA5E9;
   --shadow-color:  rgba(0, 0, 0, 0.4);
-  --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3);
-  --grad1:         #3A57E8;
+  --grad1:         rgb(var(--m-primary-rgb, 85, 133, 255));
   --grad2:         #0EA5E9;
   --grad3:         #1AE053;
 }
