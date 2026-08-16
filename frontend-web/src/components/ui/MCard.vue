@@ -56,7 +56,7 @@ defineProps<{
   background: var(--m-surface);
   border-radius: var(--m-radius-lg);
   overflow: hidden;
-  transition: all var(--m-transition);
+  transition: box-shadow var(--m-transition-fast), transform var(--m-transition-fast);
 }
 
 /* ── Variants ── */

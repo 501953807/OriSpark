@@ -29,7 +29,7 @@
           v-for="(row, rowIndex) in sortedData"
           :key="rowIndex"
           class="m-table__row"
-          :class="{ 'm-table__row--hover': hoverable }"
+          :class="{ 'm-table__row--hover': hoverable, 'm-table__row--striped': rowIndex % 2 === 1 }"
         >
           <td
             v-for="col in columns"
@@ -178,9 +178,15 @@ const onSort = (accessor: string) => {
   margin-inline-start: 0.25rem;
   opacity: 0.5;
 }
-.m-table__header--sorted .m-table__header-sort {
-  opacity: 1;
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+.m-table__header-sort svg {
+  transition: transform var(--m-transition-fast, 150ms);
+  display: inline-block;
+}
+.m-table__row--striped {
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.02);
+}
+.m-table__row--striped:hover {
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.05);
 }
 
 /* ── Body ── */

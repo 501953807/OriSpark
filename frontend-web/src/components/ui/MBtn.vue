@@ -12,6 +12,7 @@
       { 'm-btn--icon': iconOnly },
     ]"
     :disabled="disabled || loading"
+    @click.capture="createRipple"
     @click="$emit('click', $event)"
   >
     <!-- Loading Spinner -->
@@ -38,10 +39,17 @@
 
     <!-- Overlay for hover/active states -->
     <span class="m-btn__overlay" />
+
+    <!-- Ripple -->
+    <span class="m-btn__ripple-container" ref="rippleContainer">
+      <span v-for="ripple in ripples" :key="ripple.id" class="m-btn__ripple" :style="{ left: ripple.x + 'px', top: ripple.y + 'px' }" />
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 defineProps<{
   variant?: 'flat' | 'elevated' | 'outlined' | 'text' | 'tonal'
   size?: 'xs' | 'sm' | 'default' | 'lg'
@@ -55,6 +63,24 @@ defineProps<{
 defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
+
+const rippleContainer = ref<HTMLElement | null>(null)
+const ripples = ref<{ id: number; x: number; y: number }[]>([])
+let rippleId = 0
+
+function createRipple(event: MouseEvent) {
+  if (!rippleContainer.value || disabled) return
+  const rect = rippleContainer.value.getBoundingClientRect()
+  const size = Math.max(rect.width, rect.height) * 2
+  ripples.value.push({
+    id: ++rippleId,
+    x: event.clientX - rect.left - size / 2,
+    y: event.clientY - rect.top - size / 2,
+  })
+  setTimeout(() => {
+    ripples.value = ripples.value.filter(r => r.id !== rippleId)
+  }, 600)
+}
 </script>
 
 <style scoped>
@@ -214,5 +240,24 @@ defineEmits<{
 }
 .m-btn:hover:not(:disabled):not(.m-btn--loading) .m-btn__overlay {
   opacity: var(--m-hover-opacity);
+}
+.m-btn__ripple-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.m-btn__ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scale(0);
+  animation: m-btn-ripple 600ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes m-btn-ripple {
+  to { transform: scale(1); opacity: 0; }
 }
 </style>
