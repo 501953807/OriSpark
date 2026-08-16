@@ -131,7 +131,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-const route = useState('route')
 
 const route = useRoute()
 const isCollapsed = ref(false)

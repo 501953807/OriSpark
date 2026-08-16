@@ -220,7 +220,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-const route = useState('route')
 import { useAuthStore } from '~/stores/auth'
 
 interface NavGroupItem {
