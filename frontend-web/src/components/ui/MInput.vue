@@ -120,6 +120,27 @@ const isFocused = ref(false)
   font-size: 0.75rem;
 }
 
+/* ── Variant: Filled ── */
+.m-field--variant-filled .m-field__wrapper {
+  background: var(--m-bg-subtle, #F4F5FA);
+  border-color: transparent;
+  border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
+}
+.m-field--variant-filled.m-field--focused .m-field__wrapper {
+  background: var(--m-bg-subtle, #F4F5FA);
+  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border-width: 2px;
+  border-bottom-color: transparent;
+  border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
+}
+.m-field--variant-filled.m-field--error .m-field__wrapper {
+  background: var(--m-bg-subtle, #F4F5FA);
+  border-color: var(--m-error);
+  border-width: 2px;
+  border-bottom-color: transparent;
+  border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
+}
+
 /* ── Wrapper ── */
 .m-field__wrapper {
   position: relative;

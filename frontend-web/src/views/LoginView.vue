@@ -81,33 +81,15 @@
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="auth-form">
           <div v-if="mode === 'register'" class="form-field">
-            <label class="form-label">用户名</label>
-            <div class="form-input-wrapper">
-              <svg class="form-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-              </svg>
-              <input v-model="form.username" class="form-input" placeholder="创作者名称" autocomplete="username" />
-            </div>
+            <MInput v-model="form.username" label="用户名" variant="filled" placeholder="创作者名称" required />
           </div>
 
           <div class="form-field">
-            <label class="form-label">邮箱</label>
-            <div class="form-input-wrapper">
-              <svg class="form-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-              </svg>
-              <input v-model="form.email" type="email" class="form-input" placeholder="creator@example.com" required autocomplete="email" />
-            </div>
+            <MInput v-model="form.email" label="邮箱" variant="filled" type="email" placeholder="creator@example.com" required />
           </div>
 
           <div class="form-field">
-            <label class="form-label">密码</label>
-            <div class="form-input-wrapper">
-              <svg class="form-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-              <input v-model="form.password" type="password" class="form-input" placeholder="••••••" required minlength="1" autocomplete="current-password" />
-            </div>
+            <MInput v-model="form.password" label="密码" variant="filled" type="password" placeholder="••••••" required />
           </div>
 
           <div v-if="errorMsg" class="form-error">{{ errorMsg }}</div>
@@ -132,6 +114,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useGlobalState } from '@/stores/useGlobalState'
+import MInput from '@/components/ui/MInput.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -306,30 +289,6 @@ function oauthLogin(provider: string) {
 /* ── Form ── */
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
 .form-field { display: flex; flex-direction: column; gap: 0.375rem; }
-.form-label { font-size: 0.8125rem; font-weight: 500; color: #374151; }
-.form-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 8px;
-  transition: all 0.15s;
-  background: #FFFFFF;
-}
-.form-input-wrapper:focus-within { border-color: #5585FF; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
-.form-input-icon { position: absolute; left: 12px; color: #9CA3AF; pointer-events: none; }
-.form-input {
-  flex: 1;
-  height: 44px;
-  padding: 0 0.75rem 0 2.75rem;
-  border: none;
-  outline: none;
-  font-size: 0.9375rem;
-  font-family: inherit;
-  color: #1F2937;
-  background: transparent;
-}
-.form-input::placeholder { color: #9CA3AF; }
 .form-error { color: #EF4444; font-size: 0.8125rem; }
 
 /* ── Primary Button ── */
