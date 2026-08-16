@@ -271,7 +271,7 @@ const searchQuery = ref('')
 const userMenuRef = ref<HTMLElement | null>(null)
 const langMenuRef = ref<HTMLElement | null>(null)
 const langMenuOpen = ref(false)
-const isMobile = ref(window.innerWidth < 1024)
+const isMobile = ref(false)
 const isDark = ref(false)
 const isBookmarked = ref(false)
 

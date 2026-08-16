@@ -40,7 +40,8 @@ export function formatDateTime(iso?: string): string {
   })
 }
 
-export function formatCurrency(amount: number): string {
+export function formatCurrency(amount: number | null | undefined): string {
+  if (amount == null || isNaN(amount)) return '¥0.00'
   return `¥${amount.toFixed(2)}`
 }
 

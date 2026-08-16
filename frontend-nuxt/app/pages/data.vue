@@ -90,9 +90,9 @@
           <span v-if="sortMode === 'works'" class="col-stat mono">{{ item.work_count }}</span>
           <span v-if="sortMode === 'transactions'" class="col-stat mono">{{ formatCurrency(item.total_transactions) }}</span>
           <span v-if="sortMode === 'scr'" class="col-stat">
-            <span class="mono">{{ item.scr_score?.toFixed(1) ?? '-' }}</span>
+            <span class="mono">{{ typeof item.scr_score === 'number' ? item.scr_score.toFixed(1) : '-' }}</span>
             <span
-              v-if="item.rating_level"
+              v-if="item.rating_level && RATING_LEVEL_LABEL[item.rating_level]"
               class="rating-badge"
               :style="{ color: RATING_LEVEL_COLOR[item.rating_level] }"
             >

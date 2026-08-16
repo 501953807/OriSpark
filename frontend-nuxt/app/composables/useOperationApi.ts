@@ -5,7 +5,7 @@ function getApiBase(): string {
 }
 
 function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orispark-token')
+  const token = import.meta.client ? localStorage.getItem('orispark-token') : useCookie('orispark-token').value
   if (!token) throw new Error('未登录')
   return { Authorization: `Bearer ${token}` }
 }

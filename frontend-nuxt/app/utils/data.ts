@@ -23,7 +23,8 @@ export const RATING_LEVEL_COLOR: Record<string, string> = {
   platinum: '#e5e4e2',
 }
 
-export function formatCurrency(amount: number): string {
+export function formatCurrency(amount: number | null | undefined): string {
+  if (amount == null || isNaN(amount)) return '¥0.00'
   if (amount >= 10000) {
     return `¥${(amount / 10000).toFixed(2)}万`
   }
