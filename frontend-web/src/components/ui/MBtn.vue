@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   variant?: 'flat' | 'elevated' | 'outlined' | 'text' | 'tonal'
   size?: 'xs' | 'sm' | 'default' | 'lg'
   loading?: boolean
@@ -69,7 +69,7 @@ const ripples = ref<{ id: number; x: number; y: number }[]>([])
 let rippleId = 0
 
 function createRipple(event: MouseEvent) {
-  if (!rippleContainer.value || disabled) return
+  if (!rippleContainer.value || props.disabled) return
   const rect = rippleContainer.value.getBoundingClientRect()
   const size = Math.max(rect.width, rect.height) * 2
   ripples.value.push({

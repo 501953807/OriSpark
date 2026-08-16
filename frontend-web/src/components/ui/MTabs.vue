@@ -49,7 +49,7 @@ function select(index: number) {
   if (tab) emit('update:modelValue', tab.value)
 }
 
-function positionIndicator(el: HTMLElement) {
+function positionIndicator(el: Element) {
   if (!barRef.value) return
   const barRect = barRef.value.getBoundingClientRect()
   const tabRect = el.getBoundingClientRect()
