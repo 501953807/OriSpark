@@ -1,3 +1,5 @@
+<!-- OriSpark Login Page — Materio Demo-5 Style
+     Left: Illustration + OriSpark intro | Right: White form panel -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
@@ -9,6 +11,7 @@ const email = ref('')
 const password = ref('')
 const submitting = ref(false)
 const errorMsg = ref('')
+const showPassword = ref(false)
 const remember = ref(false)
 
 async function handleLogin() {
@@ -29,74 +32,164 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div class="auth-layout">
-    <!-- Left Panel: Illustration -->
+  <div class="auth-page">
+    <!-- ═══════════════════════════════════════════════════════════
+         LEFT PANEL — Branding & Illustration
+         ═══════════════════════════════════════════════════════════ -->
     <div class="auth-left">
-      <div class="auth-left-bg">
-        <div class="auth-left-shapes">
-          <div class="auth-shape auth-shape-1" />
-          <div class="auth-shape auth-shape-2" />
-          <div class="auth-shape auth-shape-3" />
+      <div class="auth-left__bg" />
+      <div class="auth-left__overlay" />
+
+      <!-- Floating decorative cards -->
+      <div class="auth-left__floats">
+        <div class="auth-float auth-float--1">
+          <div class="auth-float__icon">📊</div>
+          <div class="auth-float__text">合约增长</div>
+          <div class="auth-float__value">+48.5%</div>
+        </div>
+        <div class="auth-float auth-float--2">
+          <div class="auth-float__icon">💰</div>
+          <div class="auth-float__text">交易额</div>
+          <div class="auth-float__value">¥21,845</div>
+        </div>
+        <div class="auth-float auth-float--3">
+          <div class="auth-float__icon">🔗</div>
+          <div class="auth-float__text">存证</div>
+          <div class="auth-float__value">50k+</div>
         </div>
       </div>
-      <div class="auth-left-content">
-        <div class="auth-illustration">
-          <svg viewBox="0 0 400 400" class="auth-svg">
-            <!-- Background circle -->
-            <circle cx="200" cy="200" r="160" fill="rgba(255,255,255,0.1)" />
-            <!-- Abstract person -->
-            <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.9)" />
-            <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.9)" stroke-width="20" fill="none" stroke-linecap="round" />
-            <!-- Floating elements -->
-            <circle cx="100" cy="120" r="20" fill="#5585FF" opacity="0.8" />
-            <circle cx="300" cy="160" r="15" fill="#56CA00" opacity="0.8" />
-            <rect x="80" y="240" width="30" height="30" rx="6" fill="#16B1FF" opacity="0.8" transform="rotate(15 95 255)" />
-            <rect x="290" y="260" width="25" height="25" rx="4" fill="#FFB400" opacity="0.8" transform="rotate(-10 302 272)" />
+
+      <!-- Left content -->
+      <div class="auth-left__content">
+        <!-- Logo -->
+        <div class="auth-left__logo">
+          <svg class="auth-left__logo-icon" width="32" height="26" viewBox="0 0 30 24" fill="none">
+            <path d="M1.476 0.435L6.799 3.722C7.084 3.898 7.258 4.21 7.258 4.546V19.56C7.258 19.901 7.079 20.216 6.787 20.391L1.465 23.578C1.006 23.852 0.412 23.703 0.137 23.244C0.047 23.094 0 22.922 0 22.747V1.259C0 0.724 0.433 0.291 0.968 0.291C1.147 0.291 1.323 0.341 1.476 0.435Z" fill="currentColor"/>
+            <path d="M28.525 0.432L23.203 3.707C22.916 3.883 22.742 4.196 22.742 4.532V19.56C22.742 19.901 22.921 20.216 23.213 20.391L28.535 23.578C28.994 23.852 29.588 23.703 29.863 23.244C29.952 23.094 30 22.922 30 22.747V1.256C30 0.722 29.567 0.288 29.032 0.288C28.853 0.288 28.678 0.338 28.525 0.432Z" fill="currentColor"/>
+            <path d="M1.473 0.427L15 8.722V16.709L0 8.114V1.253C0 0.718 0.433 0.285 0.968 0.285C1.146 0.285 1.321 0.334 1.473 0.427Z" fill="currentColor"/>
+            <path d="M28.527 0.427L15 8.722V16.709L30 8.114V1.253C30 0.718 29.567 0.285 29.032 0.285C28.854 0.285 28.679 0.334 28.527 0.427Z" fill="currentColor"/>
+          </svg>
+          <span class="auth-left__logo-text">OriSpark</span>
+        </div>
+
+        <!-- 3D character illustration (SVG) -->
+        <div class="auth-left__illustration">
+          <svg viewBox="0 0 300 300" class="auth-left__svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Platform -->
+            <ellipse cx="150" cy="260" rx="100" ry="20" fill="rgba(255,255,255,0.08)"/>
+            <ellipse cx="150" cy="255" rx="80" ry="14" fill="rgba(255,255,255,0.06)"/>
+            <!-- Body -->
+            <rect x="115" y="130" width="70" height="100" rx="16" fill="rgba(255,255,255,0.15)"/>
+            <rect x="115" y="130" width="70" height="100" rx="16" fill="url(#bodyGrad)"/>
+            <!-- Head -->
+            <circle cx="150" cy="95" r="42" fill="rgba(255,255,255,0.9)"/>
+            <!-- Hair -->
+            <ellipse cx="150" cy="72" rx="38" ry="24" fill="#FF6B6B"/>
+            <ellipse cx="150" cy="78" rx="40" ry="18" fill="#FF8E8E"/>
+            <!-- Eyes -->
+            <circle cx="137" cy="95" r="4" fill="#1F2937"/>
+            <circle cx="163" cy="95" r="4" fill="#1F2937"/>
+            <circle cx="138" cy="94" r="1.5" fill="white"/>
+            <circle cx="164" cy="94" r="1.5" fill="white"/>
+            <!-- Smile -->
+            <path d="M142 108 Q150 116 158 108" stroke="#1F2937" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Arms -->
+            <rect x="80" y="145" width="35" height="14" rx="7" fill="rgba(255,255,255,0.85)" transform="rotate(-15 97 152)"/>
+            <rect x="185" y="145" width="35" height="14" rx="7" fill="rgba(255,255,255,0.85)" transform="rotate(15 202 152)"/>
+            <!-- Laptop -->
+            <rect x="100" y="160" width="55" height="35" rx="4" fill="#7C3AED" opacity="0.9"/>
+            <rect x="103" y="163" width="49" height="26" rx="2" fill="#A78BFA" opacity="0.6"/>
+            <!-- Legs -->
+            <rect x="125" y="225" width="18" height="40" rx="9" fill="rgba(255,255,255,0.7)"/>
+            <rect x="157" y="225" width="18" height="40" rx="9" fill="rgba(255,255,255,0.7)"/>
+            <!-- Shoes -->
+            <ellipse cx="134" cy="268" rx="14" ry="7" fill="#3B82F6"/>
+            <ellipse cx="166" cy="268" rx="14" ry="7" fill="#3B82F6"/>
+            <!-- Gradient defs -->
+            <defs>
+              <linearGradient id="bodyGrad" x1="115" y1="130" x2="185" y2="230">
+                <stop offset="0%" stop-color="rgba(124,58,237,0.5)"/>
+                <stop offset="100%" stop-color="rgba(59,130,246,0.3)"/>
+              </linearGradient>
+            </defs>
           </svg>
         </div>
-        <div class="auth-stats">
-          <div class="auth-stat">
-            <div class="auth-stat-value">13k+</div>
-            <div class="auth-stat-label">创作者</div>
+
+        <!-- Text content -->
+        <h1 class="auth-left__title">欢迎来到 OriSpark 👋</h1>
+        <p class="auth-left__desc">登录您的账户，开始探索创作者经济的信任枢纽</p>
+
+        <!-- Stats -->
+        <div class="auth-left__stats">
+          <div class="auth-left__stat">
+            <div class="auth-left__stat-value">13k+</div>
+            <div class="auth-left__stat-label">创作者</div>
           </div>
-          <div class="auth-stat-divider" />
-          <div class="auth-stat">
-            <div class="auth-stat-value">50k+</div>
-            <div class="auth-stat-label">作品存证</div>
+          <div class="auth-left__stat-divider" />
+          <div class="auth-left__stat">
+            <div class="auth-left__stat-value">50k+</div>
+            <div class="auth-left__stat-label">作品存证</div>
           </div>
-          <div class="auth-stat-divider" />
-          <div class="auth-stat">
-            <div class="auth-stat-value">99.9%</div>
-            <div class="auth-stat-label">可信度</div>
+          <div class="auth-left__stat-divider" />
+          <div class="auth-left__stat">
+            <div class="auth-left__stat-value">99.9%</div>
+            <div class="auth-left__stat-label">可信度</div>
           </div>
+        </div>
+
+        <!-- Decorative plants -->
+        <div class="auth-left__plant auth-left__plant--1">
+          <svg viewBox="0 0 60 100" fill="none">
+            <rect x="25" y="70" width="10" height="25" rx="3" fill="rgba(255,255,255,0.2)"/>
+            <ellipse cx="30" cy="55" rx="20" ry="30" fill="rgba(167,139,250,0.3)"/>
+            <ellipse cx="20" cy="40" rx="14" ry="22" fill="rgba(139,92,246,0.35)"/>
+            <ellipse cx="40" cy="42" rx="12" ry="18" fill="rgba(167,139,250,0.25)"/>
+          </svg>
+        </div>
+        <div class="auth-left__plant auth-left__plant--2">
+          <svg viewBox="0 0 50 80" fill="none">
+            <rect x="20" y="55" width="10" height="20" rx="3" fill="rgba(255,255,255,0.15)"/>
+            <ellipse cx="25" cy="42" rx="16" ry="24" fill="rgba(139,92,246,0.25)"/>
+            <ellipse cx="18" cy="30" rx="11" ry="18" fill="rgba(167,139,250,0.3)"/>
+          </svg>
         </div>
       </div>
     </div>
 
-    <!-- Right Panel: Form -->
+    <!-- ═══════════════════════════════════════════════════════════
+         RIGHT PANEL — Login Form
+         ═══════════════════════════════════════════════════════════ -->
     <div class="auth-right">
-      <div class="auth-right-inner">
-        <div class="auth-header">
-          <NuxtLink to="/" class="auth-logo">
-            <span class="auth-logo-icon">⚡</span>
-            <span class="auth-logo-text">OriSpark</span>
-          </NuxtLink>
-          <p class="auth-welcome">欢迎回来！请登录您的账户</p>
+      <div class="auth-right__inner">
+        <!-- Logo (small, top) -->
+        <NuxtLink to="/" class="auth-right__logo">
+          <svg class="auth-right__logo-icon" width="28" height="22" viewBox="0 0 30 24" fill="none">
+            <path d="M1.476 0.435L6.799 3.722C7.084 3.898 7.258 4.21 7.258 4.546V19.56C7.258 19.901 7.079 20.216 6.787 20.391L1.465 23.578C1.006 23.852 0.412 23.703 0.137 23.244C0.047 23.094 0 22.922 0 22.747V1.259C0 0.724 0.433 0.291 0.968 0.291C1.147 0.291 1.323 0.341 1.476 0.435Z" fill="currentColor"/>
+            <path d="M28.525 0.432L23.203 3.707C22.916 3.883 22.742 4.196 22.742 4.532V19.56C22.742 19.901 22.921 20.216 23.213 20.391L28.535 23.578C28.994 23.852 29.588 23.703 29.863 23.244C29.952 23.094 30 22.922 30 22.747V1.256C30 0.722 29.567 0.288 29.032 0.288C28.853 0.288 28.678 0.338 28.525 0.432Z" fill="currentColor"/>
+            <path d="M1.473 0.427L15 8.722V16.709L0 8.114V1.253C0 0.718 0.433 0.285 0.968 0.285C1.146 0.285 1.321 0.334 1.473 0.427Z" fill="currentColor"/>
+            <path d="M28.527 0.427L15 8.722V16.709L30 8.114V1.253C30 0.718 29.567 0.285 29.032 0.285C28.854 0.285 28.679 0.334 28.527 0.427Z" fill="currentColor"/>
+          </svg>
+          <span class="auth-right__logo-text">OriSpark</span>
+        </NuxtLink>
+
+        <!-- Welcome text -->
+        <div class="auth-right__welcome">
+          <h2 class="auth-right__heading">欢迎来到 OriSpark！👋</h2>
+          <p class="auth-right__subheading">请登录您的账户，开启创作者交易之旅</p>
         </div>
 
+        <!-- Login form -->
         <form @submit.prevent="handleLogin" class="auth-form">
           <!-- Email -->
-          <div class="form-field">
-            <label for="email" class="form-label">邮箱</label>
-            <div class="form-input-wrapper" :class="{ 'form-input-wrapper--error': errorMsg }">
-              <svg class="form-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-              </svg>
+          <div class="form-group">
+            <label class="form-label" for="email">邮箱</label>
+            <div class="form-input" :class="{ 'form-input--error': errorMsg }">
+              <i class="material-icons form-input__icon">mail</i>
               <input
                 id="email"
                 v-model="email"
                 type="email"
-                class="form-input"
+                class="form-input__field"
                 placeholder="your@email.com"
                 autocomplete="email"
                 required
@@ -105,21 +198,22 @@ async function handleLogin() {
           </div>
 
           <!-- Password -->
-          <div class="form-field">
-            <label for="password" class="form-label">密码</label>
-            <div class="form-input-wrapper">
-              <svg class="form-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
+          <div class="form-group">
+            <label class="form-label" for="password">密码</label>
+            <div class="form-input">
+              <i class="material-icons form-input__icon">lock</i>
               <input
                 id="password"
                 v-model="password"
-                type="password"
-                class="form-input"
+                :type="showPassword ? 'text' : 'password'"
+                class="form-input__field"
                 placeholder="••••••••"
                 autocomplete="current-password"
                 required
               />
+              <button type="button" class="form-input__toggle" @click="showPassword = !showPassword" aria-label="显示密码">
+                <i class="material-icons">{{ showPassword ? 'visibility_off' : 'visibility' }}</i>
+              </button>
             </div>
           </div>
 
@@ -127,26 +221,28 @@ async function handleLogin() {
           <div v-if="errorMsg" class="form-error">{{ errorMsg }}</div>
 
           <!-- Remember + Forgot -->
-          <div class="form-extras">
+          <div class="form-options">
             <label class="form-checkbox">
               <input v-model="remember" type="checkbox" />
-              <span class="form-checkbox-mark" />
+              <span class="form-checkbox__box" />
               <span>记住我</span>
             </label>
             <NuxtLink to="/auth/forgot-password" class="form-link">忘记密码？</NuxtLink>
           </div>
 
           <!-- Submit -->
-          <button type="submit" class="btn-primary" :disabled="submitting">
-            <span v-if="submitting">
-              <svg class="btn-spinner" viewBox="0 0 24 24" width="16" height="16">
-                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="31.4 31.4" stroke-linecap="round" />
-              </svg>
-              登录中...
-            </span>
-            <span v-else>登录</span>
+          <button type="submit" class="btn-submit" :disabled="submitting">
+            <svg v-if="submitting" class="btn-submit__spinner" viewBox="0 0 24 24" width="18" height="18">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="31.4 31.4" stroke-linecap="round"/>
+            </svg>
+            {{ submitting ? '登录中...' : '登录' }}
           </button>
         </form>
+
+        <!-- Register link -->
+        <p class="auth-footer-text">
+          还没有账号？<NuxtLink to="/auth/register" class="auth-footer-link">立即注册</NuxtLink>
+        </p>
 
         <!-- Divider -->
         <div class="auth-divider">
@@ -154,20 +250,19 @@ async function handleLogin() {
         </div>
 
         <!-- OAuth -->
-        <div class="oauth-buttons">
-          <button class="btn-oauth" @click="auth.loginWith('google')">
-            <span>G</span> Google
+        <div class="oauth-group">
+          <button class="btn-oauth" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l-3.15 3.15c-.73.55-1.63.88-2.69.88-2.08 0-3.85-1.35-4.57-3.25l-2.85 2.22C2.19 11.55 7.07 8 12 8z" fill="#EA4335"/></svg>
+            Google
           </button>
-          <button class="btn-oauth" @click="auth.loginWith('wechat')">
-            <span>💬</span> 微信
+          <button class="btn-oauth" type="button">
+            <span class="oauth-icon">💬</span>
+            微信
           </button>
         </div>
 
-        <!-- Register link -->
-        <p class="auth-footer">
-          还没有账号？<NuxtLink to="/auth/register" class="auth-link">立即注册</NuxtLink>
-        </p>
-        <p class="auth-redirect">
+        <!-- Redirect -->
+        <p class="auth-redirect-text">
           创作者请前往 <a href="http://localhost:5174" target="_blank">OriStudio</a>
         </p>
       </div>
@@ -176,78 +271,148 @@ async function handleLogin() {
 </template>
 
 <style scoped>
-.auth-layout {
+/* ═══════════════════════════════════════════════════════════
+   PAGE LAYOUT
+   ═══════════════════════════════════════════════════════════ */
+.auth-page {
   min-height: 100dvh;
   display: flex;
+  background: #FFFFFF;
 }
 
-/* ── Left Panel ── */
+/* ═══════════════════════════════════════════════════════════
+   LEFT PANEL
+   ═══════════════════════════════════════════════════════════ */
 .auth-left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #5585FF 0%, #2A52B0 50%, #4A2D99 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   min-height: 100dvh;
+  background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 30%, #C4B5FD 60%, #A78BFA 100%);
 }
-.auth-left-bg {
+.auth-left__bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(140,87,255,0.95) 0%, rgba(106,63,204,0.95) 100%);
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(139,92,246,0.3) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(59,130,246,0.2) 0%, transparent 50%);
 }
-.auth-left-shapes {
+.auth-left__overlay {
   position: absolute;
   inset: 0;
+  background: linear-gradient(180deg, rgba(139,92,246,0.05) 0%, rgba(88,28,135,0.15) 100%);
 }
-.auth-shape {
+
+/* Floating cards */
+.auth-left__floats {
   position: absolute;
-  border-radius: 50%;
-  opacity: 0.15;
-  background: white;
+  inset: 0;
+  pointer-events: none;
 }
-.auth-shape-1 { width: 300px; height: 300px; top: -50px; right: -50px; }
-.auth-shape-2 { width: 200px; height: 200px; bottom: 50px; left: -30px; }
-.auth-shape-3 { width: 150px; height: 150px; bottom: -30px; right: 100px; }
-.auth-left-content {
+.auth-float {
+  position: absolute;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+.auth-float--1 { top: 15%; left: 10%; animation: floatSlow 7s ease-in-out infinite; }
+.auth-float--2 { top: 25%; right: 8%; animation: floatSlow 8s ease-in-out infinite 1s; }
+.auth-float--3 { bottom: 25%; left: 15%; animation: floatSlow 6s ease-in-out infinite 0.5s; }
+.auth-float__icon { font-size: 20px; margin-bottom: 4px; }
+.auth-float__text { font-size: 11px; color: #6B7280; }
+.auth-float__value { font-size: 16px; font-weight: 700; color: #1F2937; }
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Left content */
+.auth-left__content {
   position: relative;
   z-index: 1;
   text-align: center;
   padding: 2rem;
   color: white;
+  max-width: 400px;
 }
-.auth-illustration {
+.auth-left__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2rem;
+  color: white;
+  text-decoration: none;
+}
+.auth-left__logo-icon { color: white; }
+.auth-left__logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.auth-left__illustration {
   margin-bottom: 2rem;
 }
-.auth-svg {
-  width: 200px;
-  height: 200px;
-  filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+.auth-left__svg {
+  width: 220px;
+  height: 220px;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
 }
-.auth-stats {
+.auth-left__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.auth-left__desc {
+  font-size: 0.9375rem;
+  opacity: 0.85;
+  margin: 0 0 2rem;
+  line-height: 1.6;
+}
+
+/* Stats */
+.auth-left__stats {
   display: flex;
   align-items: center;
-  gap: 2rem;
   justify-content: center;
+  gap: 1.5rem;
 }
-.auth-stat { text-align: center; }
-.auth-stat-value {
-  font-size: 1.75rem;
+.auth-left__stat { text-align: center; }
+.auth-left__stat-value {
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2;
 }
-.auth-stat-label {
-  font-size: 0.8125rem;
+.auth-left__stat-label {
+  font-size: 0.75rem;
   opacity: 0.8;
 }
-.auth-stat-divider {
+.auth-left__stat-divider {
   width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.3);
+  height: 36px;
+  background: rgba(255,255,255,0.35);
 }
 
-/* ── Right Panel ── */
+/* Plants */
+.auth-left__plant {
+  position: absolute;
+  bottom: 0;
+  opacity: 0.6;
+}
+.auth-left__plant--1 { left: 5%; }
+.auth-left__plant--2 { right: 8%; }
+
+/* ═══════════════════════════════════════════════════════════
+   RIGHT PANEL
+   ═══════════════════════════════════════════════════════════ */
 .auth-right {
   flex: 1;
   display: flex;
@@ -255,67 +420,89 @@ async function handleLogin() {
   justify-content: center;
   background: #FFFFFF;
   padding: 2rem;
+  min-height: 100dvh;
 }
-.auth-right-inner {
+.auth-right__inner {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
 }
-.auth-header { margin-bottom: 2rem; }
-.auth-logo {
+
+/* Logo */
+.auth-right__logo {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   text-decoration: none;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  color: #1F2937;
 }
-.auth-logo-icon { font-size: 2rem; }
-.auth-logo-text {
-  font-size: 1.5rem;
+.auth-right__logo-icon { color: #7C3AED; }
+.auth-right__logo-text {
+  font-size: 1.375rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #5585FF, #2A52B0);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #7C3AED, #3B82F6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.auth-welcome {
-  font-size: 1rem;
-  color: #64748B;
+
+/* Welcome */
+.auth-right__welcome { margin-bottom: 2rem; }
+.auth-right__heading {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 4px;
+}
+.auth-right__subheading {
+  font-size: 0.875rem;
+  color: #6B728B;
   margin: 0;
 }
 
-/* ── Form ── */
-.auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
-.form-field { display: flex; flex-direction: column; gap: 0.375rem; }
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-label {
   font-size: 0.8125rem;
   font-weight: 500;
   color: #374151;
 }
-.form-input-wrapper {
+.form-input {
   position: relative;
   display: flex;
   align-items: center;
   border: 1.5px solid #E5E7EB;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.15s;
+  background: #F9FAFB;
+}
+.form-input:focus-within {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
   background: #FFFFFF;
 }
-.form-input-wrapper:focus-within {
-  border-color: #5585FF;
-  box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1);
-}
-.form-input-wrapper--error {
+.form-input--error {
   border-color: #EF4444;
 }
-.form-input-icon {
+.form-input--error:focus-within {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+.form-input__icon {
   position: absolute;
   left: 12px;
+  font-size: 18px;
   color: #9CA3AF;
   pointer-events: none;
 }
-.form-input {
+.form-input__field {
   flex: 1;
-  height: 44px;
-  padding: 0 0.75rem 0 2.75rem;
+  height: 46px;
+  padding: 0 44px 0 42px;
   border: none;
   outline: none;
   font-size: 0.9375rem;
@@ -323,13 +510,33 @@ async function handleLogin() {
   color: #1F2937;
   background: transparent;
 }
-.form-input::placeholder { color: #9CA3AF; }
+.form-input__field::placeholder { color: #9CA3AF; }
+.form-input__toggle {
+  position: absolute;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #9CA3AF;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+.form-input__toggle:hover { color: #6B7280; }
+
+/* Error */
 .form-error {
   color: #EF4444;
   font-size: 0.8125rem;
   margin: 0;
 }
-.form-extras {
+
+/* Options */
+.form-options {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -337,65 +544,84 @@ async function handleLogin() {
 .form-checkbox {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   cursor: pointer;
   font-size: 0.8125rem;
   color: #4B5563;
+  user-select: none;
 }
 .form-checkbox input { display: none; }
-.form-checkbox-mark {
-  width: 16px;
-  height: 16px;
+.form-checkbox__box {
+  width: 18px;
+  height: 18px;
   border: 2px solid #D1D5DB;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s;
+  flex-shrink: 0;
 }
-.form-checkbox input:checked + .form-checkbox-mark {
-  background: #5585FF;
-  border-color: #5585FF;
+.form-checkbox input:checked + .form-checkbox__box {
+  background: #7C3AED;
+  border-color: #7C3AED;
 }
-.form-checkbox input:checked + .form-checkbox-mark::after {
+.form-checkbox input:checked + .form-checkbox__box::after {
   content: '✓';
   color: white;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
 }
 .form-link {
   font-size: 0.8125rem;
-  color: #5585FF;
+  color: #7C3AED;
   text-decoration: none;
+  font-weight: 500;
 }
 .form-link:hover { text-decoration: underline; }
 
-/* ── Buttons ── */
-.btn-primary {
-  height: 44px;
-  padding: 0 1.5rem;
-  background: linear-gradient(135deg, #5585FF 0%, #3D6DD6 100%);
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
+  font-family: inherit;
 }
-.btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #3D6DD6 0%, #2A52B0 100%);
-  box-shadow: 0 4px 12px rgba(85, 133, 255, 0.4);
+.btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6D28D9 0%, #5B21B6 100%);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+  transform: translateY(-1px);
 }
-.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-.btn-spinner { animation: spin 0.8s linear infinite; }
+.btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+.btn-submit__spinner { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Divider ── */
+/* Footer text */
+.auth-footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6B728B;
+  margin: 1.5rem 0 0;
+}
+.auth-footer-link {
+  color: #7C3AED;
+  text-decoration: none;
+  font-weight: 600;
+}
+.auth-footer-link:hover { text-decoration: underline; }
+
+/* Divider */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -411,52 +637,52 @@ async function handleLogin() {
   background: #E5E7EB;
 }
 
-/* ── OAuth ── */
-.oauth-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
+/* OAuth */
+.oauth-group {
+  display: flex;
+  gap: 12px;
+}
 .btn-oauth {
+  flex: 1;
   height: 44px;
-  padding: 0 1rem;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 8px;
-  background: white;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 10px;
+  background: white;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
 }
 .btn-oauth:hover {
-  border-color: #5585FF;
-  background: rgba(85, 133, 255, 0.04);
+  border-color: #7C3AED;
+  background: rgba(124, 58, 237, 0.04);
+  color: #7C3AED;
 }
+.oauth-icon { font-size: 18px; }
 
-/* ── Footer ── */
-.auth-footer {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #64748B;
-  margin: 1.5rem 0 0.5rem;
-}
-.auth-link {
-  color: #5585FF;
-  text-decoration: none;
-  font-weight: 600;
-}
-.auth-link:hover { text-decoration: underline; }
-.auth-redirect {
+/* Redirect */
+.auth-redirect-text {
   text-align: center;
   font-size: 0.75rem;
   color: #9CA3AF;
-  margin: 0.5rem 0 0;
+  margin: 1rem 0 0;
 }
-.auth-redirect a { color: #5585FF; }
+.auth-redirect-text a {
+  color: #7C3AED;
+  text-decoration: none;
+}
+.auth-redirect-text a:hover { text-decoration: underline; }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
   .auth-left { display: none; }
   .auth-right { flex: 1; }
 }
