@@ -52,7 +52,7 @@
             </button>
 
             <!-- Group Items -->
-            <ul v-show="!isCollapsed && expandedGroups.includes(group.key)" class="m-sidebar__group-items">
+            <ul class="m-sidebar__group-items" :style="{ maxHeight: expandedGroups.includes(group.key) ? (group.items.length * 44) + 'px' : '0px', overflow: 'hidden' }">
               <li v-for="item in group.items" :key="item.path">
                 <router-link
                   :to="item.path"
@@ -152,6 +152,22 @@
           </div>
         </div>
       </header>
+
+      <!-- Nav Pills -->
+      <div class="m-nav-pills" :class="{ 'm-nav-pills--collapsed': isCollapsed }">
+        <div class="m-nav-pills__inner">
+          <button
+            v-for="pill in navPills"
+            :key="pill.key"
+            class="m-nav-pill"
+            :class="{ 'm-nav-pill--active': pill.active }"
+            @click="pill.onClick?.()"
+          >
+            <i class="material-icons m-nav-pill__icon">{{ pill.icon }}</i>
+            <span>{{ pill.label }}</span>
+          </button>
+        </div>
+      </div>
 
       <!-- ══ CONTENT ══ -->
       <main class="m-main__content">
@@ -363,6 +379,22 @@ const navGroups: NavGroup[] = [
 ]
 
 // ═══════════════════════════════════════════════════════════
+// NAV PILLS — Horizontal navigation below topbar
+// ═══════════════════════════════════════════════════════════
+const navPills = computed(() => {
+  const currentPath = route.path
+  return [
+    { key: 'dashboards', label: 'Dashboards', icon: 'dashboard', active: currentPath === '/app' || currentPath === '/app/dashboard', onClick: () => router.push('/app') },
+    { key: 'works', label: 'Works', icon: 'inventory_2', active: currentPath.startsWith('/app/works') || currentPath.startsWith('/app/recycle'), onClick: () => router.push('/app/works') },
+    { key: 'rights', label: 'Rights', icon: 'verified_user', active: /\/app\/(rights|monitor|risk-warning|risk-center|enforcement|enforcement-roi|ipr|ipr-guide|copyright-guide)/.test(currentPath), onClick: () => router.push('/app/rights') },
+    { key: 'growth', label: 'AI Growth', icon: 'psychology', active: /\/app\/(ai-growth|content-pipeline|growth-stages|credit-improvement|capability|navigation)/.test(currentPath), onClick: () => router.push('/app/ai-growth') },
+    { key: 'business', label: 'Business', icon: 'business', active: /\/app\/(contract-market|supply|contract-risk|multimarket|private-traffic|insurance|publish|revenue|case-studies|attribution)/.test(currentPath), onClick: () => router.push('/app/contract-market') },
+    { key: 'tools', label: 'Tools', icon: 'build', active: /\/app\/(illustrator|photographer|video|musician|writer|craftsman|projects|fork-merge|negotiation|scr|tax|distribution|business)/.test(currentPath), onClick: () => router.push('/app/illustrator') },
+    { key: 'system', label: 'System', icon: 'settings', active: currentPath.startsWith('/app/settings') || currentPath.startsWith('/app/messages'), onClick: () => router.push('/app/settings') },
+  ]
+})
+
+// ═══════════════════════════════════════════════════════════
 // INTERACTIONS
 // ═══════════════════════════════════════════════════════════
 function isActive(path: string): boolean {
@@ -545,8 +577,9 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: var(--m-space-3, 0.75rem) var(--m-space-4, 1rem);
+  padding: var(--m-space-2, 0.5rem) var(--m-space-4, 1rem);
   border-bottom: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
+  background: var(--m-bg-subtle, #F4F5FA);
 }
 
 .m-sidebar__search-icon {
@@ -628,6 +661,9 @@ onUnmounted(() => {
   list-style: none;
   margin: 0;
   padding: var(--m-space-1, 0.25rem) 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--m-transition-slow, 350ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .m-sidebar__item {
@@ -915,6 +951,53 @@ onUnmounted(() => {
   background: var(--m-border, rgba(46, 38, 61, 0.12));
   margin: var(--m-space-2, 0.5rem) 0;
 }
+
+/* ── Nav Pills ── */
+.m-nav-pills {
+  background: var(--m-surface, #FFFFFF);
+  border-bottom: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
+  padding: 0 var(--m-space-6, 1.5rem);
+  overflow-x: auto;
+  white-space: nowrap;
+  transition: padding var(--m-transition, 250ms);
+  flex-shrink: 0;
+}
+.m-nav-pills--collapsed { padding: 0 var(--m-space-4, 1rem); }
+.m-nav-pills__inner {
+  display: flex;
+  gap: 0.25rem;
+  height: 44px;
+  align-items: center;
+}
+.m-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 1rem;
+  height: 32px;
+  border-radius: var(--m-radius-full, 9999px);
+  font-size: var(--m-font-size-sm, 0.8125rem);
+  font-weight: var(--m-font-weight-medium, 500);
+  color: var(--m-grey-600, #757575);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--m-transition-fast, 150ms);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.m-nav-pill:hover {
+  background: var(--m-bg-subtle, #F4F5FA);
+  color: var(--m-on-surface, #2E263D);
+}
+.m-nav-pill--active {
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
+  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+}
+.m-nav-pill--active:hover {
+  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.18);
+}
+.m-nav-pill__icon { font-size: 16px; }
 
 /* ══ CONTENT ══ */
 .m-main__content {
