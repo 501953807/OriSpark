@@ -5,11 +5,11 @@
    ============================================ */
 
 :root {
-  /* ── Primary Colors ── */
-  --m-primary-rgb: 85, 133, 255;
-  --m-primary: #5585FF;
-  --m-primary-darken-1: #3D6DD6;
-  --m-primary-darken-2: #2A52B0;
+  /* ── Primary Colors (Materio Purple) ── */
+  --m-primary-rgb: 140, 87, 255;
+  --m-primary: #8C57FF;
+  --m-primary-darken-1: #7E44F0;
+  --m-primary-darken-2: #6C3DD9;
   --m-on-primary: #FFFFFF;
 
   /* ── Semantic Colors ── */
@@ -45,6 +45,13 @@
   --m-on-surface: #2E263D;
   --m-on-surface-variant: #EEEEEE;
   --m-on-background: #2E263D;
+
+  /* ── Sidebar Nav (Materio style) ── */
+  --m-sidebar-nav-indent: 23px;
+  --m-sidebar-nav-item-height: 38px;
+  --m-sidebar-nav-group-height: 38px;
+  --m-sidebar-nav-section-font: 13px;
+  --m-sidebar-nav-section-opacity: 0.4;
 
   /* ── Border ── */
   --m-border: rgba(46, 38, 61, 0.12);
@@ -111,7 +118,7 @@
   /* ── Layout Dimensions ── */
   --m-sidebar-width: 256px;
   --m-sidebar-collapsed: 80px;
-  --m-sidebar-bg: #FFFFFF;
+  --m-sidebar-bg: #F4F5FA;
   --m-sidebar-fg: #2E263D;
   --m-sidebar-fg-dim: #8A8D93;
   --m-sidebar-active-bg: linear-gradient(135deg, #5585FF, #2A52B0);
@@ -127,6 +134,9 @@
   --m-search-bg: #F4F5FA;
   --m-search-border: rgba(46, 38, 61, 0.12);
   --m-topbar-height-expanded: 72px;
+
+  /* ── Layout Spacing (Materio) ── */
+  --m-content-padding: 24px;
 
   /* ── Z-index ── */
   --m-z-dropdown: 100;

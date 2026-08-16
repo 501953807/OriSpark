@@ -72,7 +72,7 @@
   --z-tooltip: 600;
 
   /* ── 补充业务色（组件/视图内使用）── */
-  --primary: var(--m-primary, #5585FF);
+  --primary: var(--m-primary, #8C57FF);
   --blue: var(--m-info, #16B1FF);
   --green: #1AE053;
   --orange: #F59E0B;
