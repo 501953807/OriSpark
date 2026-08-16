@@ -81,6 +81,17 @@ README*.md
 .playwright-mcp/
 .archive/
 
+# Test results & reports (generated, not for git)
+frontend-web/test-results/
+frontend-web/playwright-report/
+frontend-nuxt/test-results/
+frontend-nuxt/playwright-report/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+
 # Environment files (DO NOT commit real env)
 .env
 .env.local
