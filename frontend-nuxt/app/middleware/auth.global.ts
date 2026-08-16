@@ -1,24 +1,26 @@
-/** Global auth middleware for OriSpark */
+/** Global auth middleware for OriSpark — SSR-safe cookie-based auth */
 import { useAuthStore } from '~/stores/auth'
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const auth = useAuthStore()
-  
+
   // Public pages that don't require auth
   const publicPages = ['/', '/gallery', '/auth/login', '/auth/register']
   if (publicPages.includes(to.path)) return
 
-  // Check if user is logged in (only on client side)
-  if (!auth.isLoggedIn && process.client) {
-    try {
-      const savedToken = localStorage.getItem('orispark-token')
-      const savedUser = localStorage.getItem('orispark-user')
-      if (savedToken && savedUser) {
-        auth.token = savedToken
-        auth.user = JSON.parse(savedUser)
+  // Restore from cookie (works on both server and client)
+  if (!auth.isLoggedIn) {
+    const savedToken = useCookie('orispark-token').value
+    const savedUserStr = useCookie('orispark-user').value
+    if (savedToken) {
+      auth.token = savedToken
+    }
+    if (savedUserStr) {
+      try {
+        auth.user = JSON.parse(savedUserStr)
+      } catch {
+        /* ignore */
       }
-    } catch (e) {
-      console.warn('Failed to restore auth from localStorage', e)
     }
   }
 

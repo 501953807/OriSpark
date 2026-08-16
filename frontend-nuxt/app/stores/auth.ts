@@ -29,6 +29,34 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
   const participantRoles = computed(() => user.value?.participant_roles || [])
   const isOperator = computed(() => participantRoles.value.some(r => r !== 'creator'))
 
+  // SSR-safe cookie helpers
+  function getCookie(name: string): string | null {
+    if (import.meta.server) {
+      const cookies = useCookie(name)
+      return cookies.value || null
+    }
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+    return match ? decodeURIComponent(match[2]) : null
+  }
+
+  function setCookie(name: string, value: string, days = 7): void {
+    if (import.meta.server) {
+      const cookies = useCookie(name, { maxAge: 60 * 60 * 24 * days })
+      cookies.value = value
+      return
+    }
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${60 * 60 * 24 * days}`
+  }
+
+  function deleteCookie(name: string): void {
+    if (import.meta.server) {
+      const cookies = useCookie(name)
+      cookies.value = null
+      return
+    }
+    document.cookie = `${name}=; path=/; max-age=0`
+  }
+
   async function login(email: string, password: string): Promise<boolean> {
     loading.value = true
     error.value = ''
@@ -41,8 +69,8 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
       const data = resp.data as AuthResponse
       token.value = data.token
       user.value = data.user
-      localStorage.setItem('orispark-token', data.token)
-      localStorage.setItem('orispark-user', JSON.stringify(data.user))
+      setCookie('orispark-token', data.token)
+      setCookie('orispark-user', JSON.stringify(data.user))
       return true
     } catch (e: unknown) {
       error.value = e instanceof Error ? e.message : '登录失败'
@@ -55,8 +83,8 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
   async function logout(): Promise<void> {
     token.value = null
     user.value = null
-    localStorage.removeItem('orispark-token')
-    localStorage.removeItem('orispark-user')
+    deleteCookie('orispark-token')
+    deleteCookie('orispark-user')
   }
 
   return { token, user, loading, error, isLoggedIn, displayName, participantRoles, isOperator, login, logout }
