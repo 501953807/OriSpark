@@ -12,7 +12,7 @@ OriSpark/
 │   ├── modules-v5/           # 16 个模块详细功能设计
 │   └── test-reports/         # 审计自测报告、测试日志
 │
-├── backend/                  # FastAPI 后端服务
+├── backend/                  # FastAPI 后端服务 (端口 :8001)
 │   ├── app/                  # 应用源代码
 │   │   ├── models/           # SQLAlchemy ORM 模型 (40+ 文件, 130+ 类)
 │   │   ├── schemas/          # Pydantic 请求/响应模型
@@ -22,9 +22,18 @@ OriSpark/
 │   │   ├── tasks/            # BackgroundTasks + Cron 任务
 │   │   └── utils/            # 工具函数
 │   ├── alembic/              # 数据库迁移脚本
+│   ├── data/                 # 运行时数据
+│   │   ├── oristudio.db      # 主 SQLite 数据库
+│   │   ├── backups/          # 加密备份 + 原始备份
+│   │   ├── certificates/     # 存证证书
+│   │   ├── c2pa/             # C2PA 内容凭证
+│   │   ├── avatars/          # 用户头像缓存
+│   │   ├── thumbnails/       # 缩略图缓存
+│   │   ├── vc/               # 可验证凭证
+│   │   └── enforcement/      # 维权证据包
 │   └── tests/                # 单元测试 + 集成测试
 │
-├── frontend-web/             # Vue 3 Web App (Vite + TS, :5174)
+├── frontend-web/             # OriStudio 创作者工作台 (Vue 3 + TS, :5174)
 │   ├── src/
 │   │   ├── components/       # 通用组件库 (Layout/Table/Form/Modal)
 │   │   ├── views/            # 页面视图 (20+ 页面)
@@ -35,14 +44,20 @@ OriSpark/
 │   │   └── router/           # Vue Router 配置
 │
 ├── frontend-electron/        # Electron 桌面端 (复用 frontend-web)
-├── frontend-nuxt/            # Nuxt 3 交易后台（Phase 2）— 清透极简商务风 + Hero Page
+├── frontend-nuxt/            # OriSpark 交易后台 (Nuxt 3 SSR, :3000) — 清透极简商务风 + Hero Page
 ├── frontend-miniprogram/     # 微信小程序（Phase 3 远期）— frontend-nuxt 微信端映射
-├── design/                   # HTML 高保真原型
+├── design/                   # UI 高保真原型 (HTML)
+├── docs/                     # 设计文档（不纳入 Git）
 ├── .archive/                 # 过期文档归档 (历史参考)
-├── data/                     # SQLite 数据库开发文件 (.db, .shm, .wal)
+├── scripts/                  # 辅助脚本
+├── test_media/               # 测试媒体资源
 ├── docker-compose.yml        # Docker 编排配置
+├── Makefile                  # 常用命令快捷入口
+├── CLAUDE.md                 # 本文件：Claude Code 项目交互规范
 └── README.md                 # 项目概览 + 快速启动指引
 ```
+
+> **注意**：根目录下的 `*.png` / `*.jpg` 截图、`.playwright-mcp/`、`.scratch/`、`test-results/` 等为开发过程中的临时文件，已被 `.gitignore` 排除。`docs/` 目录不纳入 Git 版本控制。
 
 ## 🔑 交互规范（Claude 必须遵守）
 
