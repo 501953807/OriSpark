@@ -7,12 +7,16 @@ import { useAuthStore } from '~/stores/auth'
 definePageMeta({ layout: 'default' })
 
 const auth = useAuthStore()
-const email = ref('')
-const password = ref('')
+
+// 演示账号（MVP 阶段使用）
+const DEMO_EMAIL = 'demo@orispark'
+const DEMO_PASSWORD = 'orispark2026'
+
+const email = ref(DEMO_EMAIL)
+const password = ref(DEMO_PASSWORD)
 const submitting = ref(false)
 const errorMsg = ref('')
 const showPassword = ref(false)
-const remember = ref(false)
 
 async function handleLogin() {
   if (!email.value || !password.value) {
@@ -30,15 +34,18 @@ async function handleLogin() {
   }
 }
 
-async function handleLocalLogin() {
-  submitting.value = true
+/** 一键演示登录 — 自动填入超级管理员账号并登录 */
+async function handleDemoLogin() {
+  email.value = DEMO_EMAIL
+  password.value = DEMO_PASSWORD
   errorMsg.value = ''
-  const success = await auth.localLogin()
+  submitting.value = true
+  const success = await auth.login(DEMO_EMAIL, DEMO_PASSWORD)
   submitting.value = false
   if (success) {
     navigateTo('/market')
   } else {
-    errorMsg.value = auth.error || '演示登录失败，请稍后重试'
+    errorMsg.value = auth.error || '登录失败，请检查账号密码'
   }
 }
 </script>
@@ -251,9 +258,9 @@ async function handleLocalLogin() {
           </button>
 
           <!-- Demo quick login -->
-          <button type="button" class="btn-demo" :disabled="submitting" @click="handleLocalLogin">
+          <button type="button" class="btn-demo" :disabled="submitting" @click="handleDemoLogin">
             <i class="material-icons">bolt</i>
-            演示登录（无需注册）
+            快速演示登录（超级管理员）
           </button>
         </form>
 

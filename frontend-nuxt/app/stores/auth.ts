@@ -52,27 +52,6 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
     }
   }
 
-  /** 演示模式登录 — 跳过注册，直接使用预设的 local 账号 */
-  async function localLogin(): Promise<boolean> {
-    loading.value = true
-    error.value = ''
-    try {
-      const apiBase = useRuntimeConfig().public.apiBase
-      const resp = await $fetch(`${apiBase}/auth/local-login`, { method: 'POST' })
-      const data = resp.data as AuthResponse
-      token.value = data.token
-      user.value = data.user
-      localStorage.setItem('orispark-token', data.token)
-      localStorage.setItem('orispark-user', JSON.stringify(data.user))
-      return true
-    } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : '演示登录失败'
-      return false
-    } finally {
-      loading.value = false
-    }
-  }
-
   async function logout(): Promise<void> {
     token.value = null
     user.value = null
@@ -80,5 +59,5 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
     localStorage.removeItem('orispark-user')
   }
 
-  return { token, user, loading, error, isLoggedIn, displayName, participantRoles, isOperator, login, localLogin, logout }
+  return { token, user, loading, error, isLoggedIn, displayName, participantRoles, isOperator, login, logout }
 })
