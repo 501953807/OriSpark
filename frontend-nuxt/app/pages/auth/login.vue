@@ -21,12 +21,24 @@ async function handleLogin() {
   }
   submitting.value = true
   errorMsg.value = ''
-  const success = await auth.login(email.value, password.value, remember.value)
+  const success = await auth.login(email.value, password.value)
   submitting.value = false
   if (success) {
     navigateTo('/market')
   } else {
     errorMsg.value = auth.error || '登录失败，请检查账号密码'
+  }
+}
+
+async function handleLocalLogin() {
+  submitting.value = true
+  errorMsg.value = ''
+  const success = await auth.localLogin()
+  submitting.value = false
+  if (success) {
+    navigateTo('/market')
+  } else {
+    errorMsg.value = auth.error || '演示登录失败，请稍后重试'
   }
 }
 </script>
@@ -236,6 +248,12 @@ async function handleLogin() {
               <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="31.4 31.4" stroke-linecap="round"/>
             </svg>
             {{ submitting ? '登录中...' : '登录' }}
+          </button>
+
+          <!-- Demo quick login -->
+          <button type="button" class="btn-demo" :disabled="submitting" @click="handleLocalLogin">
+            <i class="material-icons">bolt</i>
+            演示登录（无需注册）
           </button>
         </form>
 
@@ -606,6 +624,32 @@ async function handleLogin() {
 .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 .btn-submit__spinner { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Demo button */
+.btn-demo {
+  width: 100%;
+  height: 42px;
+  background: transparent;
+  border: 1.5px dashed rgba(124, 58, 237, 0.35);
+  border-radius: 10px;
+  color: #7C3AED;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  margin-top: -4px;
+}
+.btn-demo:hover:not(:disabled) {
+  background: rgba(124, 58, 237, 0.06);
+  border-color: #7C3AED;
+}
+.btn-demo:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-demo .material-icons { font-size: 16px; }
 
 /* Footer text */
 .auth-footer-text {
