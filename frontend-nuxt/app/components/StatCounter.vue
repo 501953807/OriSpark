@@ -72,7 +72,7 @@ watch(() => props.value, (newVal) => {
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
+  box-shadow: 0 8px 24px rgba(140, 87, 255, 0.15);
 }
 
 .stat-label {

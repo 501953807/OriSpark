@@ -313,7 +313,7 @@ onUnmounted(() => {
 /* Bulk action bar */
 .bulk-bar {
   display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-  background: oklch(56% 0.12 170 / 0.06); border: 1px solid rgb(85, 133, 255);
+  background: oklch(56% 0.12 170 / 0.06); border: 1px solid var(--m-primary);
   border-radius: var(--m-radius-sm); font-size: 0.85rem;
 }
 
@@ -329,7 +329,7 @@ onUnmounted(() => {
   position: relative;
 }
 .thumb-card:hover { box-shadow: 0 4px 16px oklch(0 0 0 / 0.08); }
-.thumb-card.selected { border-color: rgb(85, 133, 255); }
+.thumb-card.selected { border-color: var(--m-primary); }
 .thumb-card.kb-active { border-color: var(--accent2); box-shadow: 0 0 0 3px oklch(62% 0.16 280 / 0.15); }
 .thumb-card.cull-keep { border-left: 4px solid #16a34a; }
 .thumb-card.cull-reject { border-left: 4px solid #ef4444; }
@@ -395,7 +395,7 @@ onUnmounted(() => {
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 0.7rem;
 }
-.thumb-checkbox.checked { background: rgb(85, 133, 255); border-color: rgb(85, 133, 255); }
+.thumb-checkbox.checked { background: var(--m-primary); border-color: var(--m-primary); }
 
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-xs { padding: 4px 10px; font-size: 0.75rem; }

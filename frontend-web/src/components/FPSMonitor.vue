@@ -159,13 +159,13 @@ function setLevel(level: ImmersionLevel) {
 }
 
 .level-btn:hover {
-  border-color: rgba(14, 165, 233, 0.5);
-  color: #0ea5e9;
+  border-color: rgba(140, 87, 255, 0.5);
+  color: var(--m-primary, #8C57FF);
 }
 
 .level-btn.active {
-  background: rgba(14, 165, 233, 0.2);
-  border-color: rgba(14, 165, 233, 0.6);
-  color: #0ea5e9;
+  background: rgba(140, 87, 255, 0.2);
+  border-color: rgba(140, 87, 255, 0.6);
+  color: var(--m-primary, #8C57FF);
 }
 </style>

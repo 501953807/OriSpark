@@ -201,7 +201,7 @@ onMounted(loadListings)
 .header-actions { display: flex; gap: 12px; align-items: center; }
 
 .btn-create {
-  background: rgb(85, 133, 255); color: #fff; border: none;
+  background: var(--m-primary); color: #fff; border: none;
   padding: 8px 18px; border-radius: var(--m-radius-sm);
   font-size: .88rem; font-weight: 600; cursor: pointer;
 }
@@ -211,7 +211,7 @@ onMounted(loadListings)
   background: none; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 4px 8px; cursor: pointer; font-size: 1rem;
 }
-.toggle-btn.active { border-color: rgb(85, 133, 255); background: oklch(56% 0.12 170 / .08); }
+.toggle-btn.active { border-color: var(--m-primary); background: oklch(56% 0.12 170 / .08); }
 
 /* Filters */
 .filters-bar {

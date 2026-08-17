@@ -240,7 +240,7 @@ onMounted(() => {
 }
 
 .tab-btn.active {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
 }
 
@@ -317,7 +317,7 @@ onMounted(() => {
   padding: 8px 14px;
   border-top: 1px solid var(--m-border);
   font-size: 0.82rem;
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   text-align: center;
   text-decoration: none;
 }
@@ -428,9 +428,9 @@ onMounted(() => {
 .btn:hover { background: var(--m-bg-subtle); }
 
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
 }
 
 .btn-primary:hover {

@@ -778,7 +778,7 @@ onUnmounted(() => {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   margin: 0 0 10px 0;
 }
 
@@ -804,7 +804,7 @@ onUnmounted(() => {
   word-break: break-word;
 }
 .project-link {
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -823,7 +823,7 @@ onUnmounted(() => {
   border-radius: 100px;
   font-size: 0.75rem;
   background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   font-weight: 600;
 }
 
@@ -1007,7 +1007,7 @@ onUnmounted(() => {
   line-height: 1.6;
 }
 .notes-textarea:focus {
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
   box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
 }
 .btn-edit-note, .btn-save-note, .btn-cancel-note {
@@ -1019,7 +1019,7 @@ onUnmounted(() => {
   cursor: pointer;
   font-weight: 600;
 }
-.btn-edit-note { color: rgb(85, 133, 255); }
+.btn-edit-note { color: var(--m-primary); }
 .btn-save-note { color: #2ECC71; border-color: #2ECC71; }
 .btn-cancel-note { color: var(--m-grey-500); }
 
@@ -1040,13 +1040,13 @@ onUnmounted(() => {
   font-size: 0.74rem;
 }
 .version-item:hover { background: var(--m-bg-subtle); }
-.v-num { font-weight: 700; color: rgb(85, 133, 255); min-width: 28px; }
+.v-num { font-weight: 700; color: var(--m-primary); min-width: 28px; }
 .v-date { color: var(--m-grey-500); flex: 1; }
 .v-hash { font-size: 0.65rem; color: var(--m-grey-500); }
 .v-current {
   font-size: 0.65rem;
   background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   padding: 2px 6px;
   border-radius: 100px;
   font-weight: 600;
@@ -1066,7 +1066,7 @@ onUnmounted(() => {
 }
 .view-link {
   font-size: 0.78rem;
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   margin-left: auto;
 }
 
@@ -1091,7 +1091,7 @@ onUnmounted(() => {
   font-family: Inter;
 }
 .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
-.btn-primary { background: rgb(85, 133, 255); color: #fff; }
+.btn-primary { background: var(--m-primary); color: #fff; }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
 .btn-ghost { background: none; border: none; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; color: var(--m-grey-500); }
 .btn-ghost:hover { background: rgba(0,0,0,0.04); }

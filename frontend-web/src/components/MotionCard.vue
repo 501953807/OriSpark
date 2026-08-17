@@ -89,7 +89,7 @@ function tickParticles() {
     p.life -= 0.012
     canvasCtx!.beginPath()
     canvasCtx!.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2)
-    canvasCtx!.fillStyle = `rgba(14, 165, 233, ${p.life * 0.5})`
+    canvasCtx!.fillStyle = `rgba(140, 87, 255, ${p.life * 0.5})`
     canvasCtx!.fill()
   }
 
@@ -166,8 +166,8 @@ onUnmounted(() => {
 
 /* Level 2+: brand border glow */
 .card-level-2:not(.reduced-motion):hover {
-  border: 1px solid rgba(14, 165, 233, 0.45);
-  box-shadow: 0 0 16px rgba(14, 165, 233, 0.2), 0 8px 24px oklch(0 0 0 / 0.1);
+  border: 1px solid rgba(140, 87, 255, 0.45);
+  box-shadow: 0 0 16px rgba(140, 87, 255, 0.2), 0 8px 24px oklch(0 0 0 / 0.1);
 }
 
 /* Reduced motion: no transforms */

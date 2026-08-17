@@ -143,7 +143,7 @@ onMounted(loadSuggestions)
 .score-value {
   font-size: 2rem;
   font-weight: 700;
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
 }
 .score-label {
   font-size: 0.75rem;
@@ -244,7 +244,7 @@ onMounted(loadSuggestions)
   color: var(--m-grey-500);
 }
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
   border: none;
   padding: 10px 24px;

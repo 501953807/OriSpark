@@ -659,7 +659,7 @@ onMounted(async () => {
 }
 
 .tab-btn.active {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
 }
 

@@ -285,7 +285,7 @@ onMounted(loadDetail)
   background: none; cursor: pointer; font-size: .82rem;
 }
 
-.btn-edit:hover { border-color: rgb(85, 133, 255); }
+.btn-edit:hover { border-color: var(--m-primary); }
 .btn-duplicate:hover { border-color: oklch(65% 0.1 270); }
 .btn-delete:hover { border-color: oklch(56% 0.18 20); }
 
@@ -316,7 +316,7 @@ onMounted(loadDetail)
 .info-card dt { color: var(--m-grey-500); }
 .info-card dd { font-weight: 600; }
 
-.profit { color: rgb(85, 133, 255); }
+.profit { color: var(--m-primary); }
 
 .status-dot {
   display: inline-block; width: 8px; height: 8px;
@@ -365,7 +365,7 @@ onMounted(loadDetail)
 }
 .btn-save {
   padding: 6px 16px; border: none; border-radius: var(--m-radius-sm);
-  background: rgb(85, 133, 255); color: #fff; cursor: pointer; font-size: .82rem;
+  background: var(--m-primary); color: #fff; cursor: pointer; font-size: .82rem;
 }
 
 .detail-empty {

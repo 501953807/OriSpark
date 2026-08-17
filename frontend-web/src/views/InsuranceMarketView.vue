@@ -197,7 +197,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   cursor: pointer;
   font-size: 0.9rem;
 }
-.tab.active { background: rgb(85, 133, 255); color: white; border-color: rgb(85, 133, 255); }
+.tab.active { background: var(--m-primary); color: white; border-color: var(--m-primary); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
@@ -239,7 +239,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .max-coverage { font-size: 0.8rem; color: var(--m-grey-500); margin-bottom: 12px; }
 
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -249,8 +249,8 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .btn-small {
   background: transparent;
-  color: rgb(85, 133, 255);
-  border: 1px solid rgb(85, 133, 255);
+  color: var(--m-primary);
+  border: 1px solid var(--m-primary);
   padding: 4px 12px;
   border-radius: var(--m-radius-sm);
   cursor: pointer;
@@ -271,7 +271,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   padding: 16px;
   text-align: center;
 }
-.result-card.best { border-color: rgb(85, 133, 255); box-shadow: 0 0 0 2px rgb(85, 133, 255); }
+.result-card.best { border-color: var(--m-primary); box-shadow: 0 0 0 2px var(--m-primary); }
 .result-tier { font-weight: 700; margin-bottom: 8px; }
 .result-premium { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
 .result-products { font-size: 0.75rem; color: var(--m-grey-500); text-align: left; }

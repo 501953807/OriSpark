@@ -270,7 +270,7 @@
           <input type="file" accept=".csv" @change="onFileSelected" class="form-input" />
         </div>
         <div v-if="importResult" class="card" style="margin-top:12px;padding:12px">
-          <div style="color:rgb(85, 133, 255);font-weight:600">导入完成</div>
+          <div style="color:var(--m-primary);font-weight:600">导入完成</div>
           <div>记录数: {{ importResult.imported }}</div>
           <div>总金额: ¥{{ importResult.total_amount }}</div>
           <div>格式: {{ importResult.detected_format }}</div>
@@ -749,7 +749,7 @@ async function addAnalytics() {
 .publish-view { display:flex; flex-direction:column; gap:20px; }
 .cat-tabs { display:flex; gap:8px; flex-wrap:wrap; }
 .cat-tab { padding:8px 18px; border-radius:100px; font-size:.84rem; font-weight:600; cursor:pointer; border:1px solid var(--m-border); background:var(--m-surface); color:var(--m-grey-500); font-family:Inter; transition:all .2s; }
-.cat-tab.active { background:rgb(85, 133, 255); color:#fff; border-color:rgb(85, 133, 255); }
+.cat-tab.active { background:var(--m-primary); color:#fff; border-color:var(--m-primary); }
 .actions-bar { display:flex; justify-content:flex-end; gap:8px; align-items:center; }
 .panel-header { margin-bottom:16px; }
 .panel-header h3 { margin:0; font-size:1.1rem; }
@@ -760,7 +760,7 @@ async function addAnalytics() {
 .product-card { padding:20px; display:flex; flex-direction:column; gap:10px; }
 .product-header { display:flex; justify-content:space-between; align-items:center; }
 .product-header h3 { margin:0; font-size:1rem; }
-.product-price { font-weight:700; color:rgb(85, 133, 255); font-size:1.1rem; }
+.product-price { font-weight:700; color:var(--m-primary); font-size:1.1rem; }
 .product-desc { font-size:.82rem; color:var(--m-grey-500); line-height:1.5; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
 .product-meta { display:flex; gap:12px; font-size:.75rem; color:var(--m-grey-500); }
 .product-actions { display:flex; gap:8px; flex-wrap:wrap; }
@@ -770,7 +770,7 @@ async function addAnalytics() {
 .style-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin-bottom:16px; }
 .style-card { padding:16px; cursor:pointer; transition:all .2s; text-align:center; }
 .style-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px oklch(0 0 0 / .08); }
-.style-card.selected { border-color:rgb(85, 133, 255); box-shadow:0 0 0 2px oklch(56% 0.12 170 / .2); }
+.style-card.selected { border-color:var(--m-primary); box-shadow:0 0 0 2px oklch(56% 0.12 170 / .2); }
 .style-icon { font-size:2rem; margin-bottom:8px; }
 .style-name { font-weight:700; font-size:.9rem; margin-bottom:4px; }
 .style-desc { font-size:.75rem; color:var(--m-grey-500); line-height:1.4; }
@@ -827,7 +827,7 @@ async function addAnalytics() {
 .platform-name { width:80px; font-size:.82rem; font-weight:600; text-align:right; }
 .platform-bar-track { flex:1; height:20px; background:var(--m-surface); border-radius:10px; overflow:hidden; }
 .platform-bar { height:100%; background:linear-gradient(90deg, oklch(56% 0.12 170), oklch(62% 0.16 260)); border-radius:10px; min-width:4px; transition:width .3s; }
-.platform-amount { width:80px; font-size:.82rem; font-weight:600; color:rgb(85, 133, 255); }
+.platform-amount { width:80px; font-size:.82rem; font-weight:600; color:var(--m-primary); }
 
 /* Modal */
 .modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
@@ -839,7 +839,7 @@ async function addAnalytics() {
 .form-group { display:flex; flex-direction:column; gap:6px; }
 .form-group label { font-size:.82rem; font-weight:600; color:var(--m-grey-500); }
 .form-input { padding:10px 14px; border:1px solid var(--m-border); border-radius:var(--m-radius-sm); font-size:.88rem; font-family:Inter; color:var(--m-on-surface); background:var(--m-surface); outline:none; }
-.form-input:focus { border-color:rgb(85, 133, 255); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
+.form-input:focus { border-color:var(--m-primary); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
 .platform-list { display:flex; flex-direction:column; gap:4px; }
 
 /* Schedule (P2) */

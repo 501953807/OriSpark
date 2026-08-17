@@ -363,7 +363,7 @@ onMounted(() => {
   transition: all 0.2s; margin-bottom: -2px;
 }
 .tab-btn:hover { color: var(--m-on-surface); }
-.tab-btn.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); }
+.tab-btn.active { color: var(--m-primary); border-bottom-color: var(--m-primary); }
 
 .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
@@ -378,12 +378,12 @@ onMounted(() => {
 .tier-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .tier-name { font-weight: 700; font-size: 1.1rem; }
 .tier-desc { font-size: 0.84rem; color: var(--m-grey-500); margin-top: 2px; }
-.tier-price { font-weight: 700; font-size: 1.1rem; color: rgb(85, 133, 255); white-space: nowrap; }
+.tier-price { font-weight: 700; font-size: 1.1rem; color: var(--m-primary); white-space: nowrap; }
 .tier-meta { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 .tier-features { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .feature-tag {
   font-size: 0.75rem; padding: 3px 10px; border-radius: 12px;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: rgb(85, 133, 255); font-weight: 500;
+  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: var(--m-primary); font-weight: 500;
 }
 .tier-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--m-border); }
 

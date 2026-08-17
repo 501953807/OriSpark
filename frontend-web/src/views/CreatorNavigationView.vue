@@ -123,9 +123,9 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-size: 0.9rem;
 }
 .tab.active {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
 }
 
 .progress-section {
@@ -218,7 +218,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .done .task-title { color: var(--m-grey-500); text-decoration: line-through; }
 
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
   border: none;
   padding: 8px 20px;
@@ -228,14 +228,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 }
 .btn-small {
   background: transparent;
-  color: rgb(85, 133, 255);
-  border: 1px solid rgb(85, 133, 255);
+  color: var(--m-primary);
+  border: 1px solid var(--m-primary);
   padding: 4px 12px;
   border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.8rem;
 }
-.btn-small:hover { background: rgb(85, 133, 255); color: white; }
+.btn-small:hover { background: var(--m-primary); color: white; }
 
 .all-done {
   text-align: center;

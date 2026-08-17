@@ -223,7 +223,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   cursor: pointer;
   font-size: 0.85rem;
 }
-.tab.active { background: rgb(85, 133, 255); color: white; border-color: rgb(85, 133, 255); }
+.tab.active { background: var(--m-primary); color: white; border-color: var(--m-primary); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
@@ -238,7 +238,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-size: 0.9rem;
 }
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
   border: none;
   padding: 8px 20px;

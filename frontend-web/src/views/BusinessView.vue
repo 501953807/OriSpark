@@ -283,23 +283,23 @@ async function handleCsvImport(e: Event) {
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: var(--m-surface); border-radius: var(--m-radius-sm); padding: 20px; text-align: center; border: 1px solid var(--m-border); }
 .stat-icon { font-size: 1.8rem; margin-bottom: 8px; }
-.stat-value { font-size: 1.5rem; font-weight: 700; color: rgb(85, 133, 255); }
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--m-primary); }
 .stat-label { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--m-border); margin-bottom: 20px; padding-bottom: 0; }
 .tab-btn { padding: 10px 20px; border: none; background: none; cursor: pointer; font-size: 0.9rem; color: var(--m-grey-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
 .tab-btn:hover { color: var(--m-on-surface); }
-.tab-btn.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); font-weight: 600; }
+.tab-btn.active { color: var(--m-primary); border-bottom-color: var(--m-primary); font-weight: 600; }
 .tab-badge { background: var(--orange); color: #fff; border-radius: 100px; padding: 1px 7px; font-size: 0.7rem; }
 .toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
 .filter-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-surface); font-size: 0.85rem; }
 .btn { padding: 8px 16px; border-radius: var(--m-radius-sm); border: 1px solid var(--m-border); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-.btn-primary { background: rgb(85, 133, 255); color: #fff; border-color: rgb(85, 133, 255); }
+.btn-primary { background: var(--m-primary); color: #fff; border-color: var(--m-primary); }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); }
 .tab-content { animation: fadeIn 0.2s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 .revenue-list, .order-list, .notif-list { display: flex; flex-direction: column; gap: 8px; }
 .revenue-card, .order-card, .partner-card, .notif-item { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 14px; }
-.rev-amount { font-size: 1.2rem; font-weight: 700; color: rgb(85, 133, 255); }
+.rev-amount { font-size: 1.2rem; font-weight: 700; color: var(--m-primary); }
 .rev-meta { display: flex; gap: 12px; font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 .partner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 .partner-name { font-weight: 600; font-size: 1rem; }
@@ -313,7 +313,7 @@ async function handleCsvImport(e: Event) {
 .status-badge.cancelled { background: #fde8e8; color: #c62828; }
 .notif-item { cursor: pointer; transition: background 0.15s; }
 .notif-item:hover { background: oklch(56% 0.12 170 / 0.04); }
-.notif-item.unread { border-left: 3px solid rgb(85, 133, 255); }
+.notif-item.unread { border-left: 3px solid var(--m-primary); }
 .notif-title { font-weight: 600; font-size: 0.9rem; }
 .notif-content { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 .notif-time { font-size: 0.72rem; color: var(--m-grey-500); margin-top: 6px; }
@@ -328,7 +328,7 @@ async function handleCsvImport(e: Event) {
 .form-select-sm { padding: 6px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); background: var(--m-surface); font-size: 0.82rem; }
 .analytics-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
 .a-stat { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; text-align: center; }
-.a-stat-value { font-size: 1.3rem; font-weight: 700; color: rgb(85, 133, 255); }
+.a-stat-value { font-size: 1.3rem; font-weight: 700; color: var(--m-primary); }
 .a-stat-label { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 4px; }
 .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .chart-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; }

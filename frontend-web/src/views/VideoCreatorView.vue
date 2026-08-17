@@ -552,7 +552,7 @@ onMounted(async () => {
 }
 
 .tab-btn.active {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
 }
 
@@ -727,9 +727,9 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
 }
 
 .btn-primary:hover {
@@ -737,9 +737,9 @@ onMounted(async () => {
 }
 
 .btn-accent {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
 }
 
 .btn-danger {
@@ -862,7 +862,7 @@ onMounted(async () => {
 .match-link {
   margin-left: auto;
   font-size: 0.84rem;
-  color: rgb(85, 133, 255);
+  color: var(--m-primary);
   text-decoration: none;
 }
 

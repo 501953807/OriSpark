@@ -125,7 +125,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
 .stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 16px; text-align: center; }
-.stat-value { font-size: 1.4rem; font-weight: 800; color: rgb(85, 133, 255); }
+.stat-value { font-size: 1.4rem; font-weight: 800; color: var(--m-primary); }
 .stat-label { font-size: 0.8rem; color: var(--m-grey-500); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 16px; }
@@ -137,16 +137,16 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .guide-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .guide-header strong { font-size: 0.95rem; }
 .guide-time { font-size: 0.8rem; color: var(--m-grey-500); }
-.guide-fee { font-size: 0.8rem; color: rgb(85, 133, 255); margin: 0 0 8px; }
+.guide-fee { font-size: 0.8rem; color: var(--m-primary); margin: 0 0 8px; }
 .guide-steps { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--m-border); }
 .guide-steps ol { padding-left: 20px; font-size: 0.85rem; }
 .guide-steps li { margin-bottom: 4px; }
 
-.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: rgb(85, 133, 255); }
+.btn-add { background: none; border: 1px dashed var(--m-border); padding: 6px 16px; border-radius: var(--m-radius-sm); cursor: pointer; font-size: 0.8rem; color: var(--m-primary); }
 
 .new-reg-form { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
 .form-input, .form-select { padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; flex: 1; }
-.btn-confirm { background: rgb(85, 133, 255); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; }
+.btn-confirm { background: var(--m-primary); color: white; border: none; padding: 8px 16px; border-radius: var(--m-radius-sm); cursor: pointer; }
 
 .reg-list { margin-top: 12px; display: grid; gap: 8px; }
 .reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
@@ -157,7 +157,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .status-submitted .reg-status { background: #dbeafe; color: #2563eb; }
 .status-approved .reg-status { background: #dcfce7; color: #16a34a; }
 .status-rejected .reg-status { background: #fef2f2; color: #dc2626; }
-.reg-fee { font-size: 0.85rem; font-weight: 700; color: rgb(85, 133, 255); }
+.reg-fee { font-size: 0.85rem; font-weight: 700; color: var(--m-primary); }
 
 .empty-state { text-align: center; color: var(--m-grey-500); padding: 16px; font-size: 0.85rem; }
 </style>

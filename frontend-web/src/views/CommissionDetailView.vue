@@ -496,7 +496,7 @@ fetchData()
 .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .header-actions { display: flex; align-items: center; gap: 8px; }
-.btn-link { background: none; border: none; color: rgb(85, 133, 255); cursor: pointer; font-size: 0.85rem; text-decoration: underline; padding: 0; }
+.btn-link { background: none; border: none; color: var(--m-primary); cursor: pointer; font-size: 0.85rem; text-decoration: underline; padding: 0; }
 .btn-link:hover { opacity: 0.8; }
 
 /* Dashboard Bar */
@@ -506,7 +506,7 @@ fetchData()
   border-radius: var(--m-radius-sm); padding: 16px 20px;
 }
 .dash-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.dash-num { font-size: 1.3rem; font-weight: 700; color: rgb(85, 133, 255); }
+.dash-num { font-size: 1.3rem; font-weight: 700; color: var(--m-primary); }
 .dash-label { font-size: 0.75rem; color: var(--m-grey-500); }
 
 /* Tabs */
@@ -517,7 +517,7 @@ fetchData()
   border-bottom: 2px solid transparent; transition: all 0.15s;
 }
 .tab:hover { color: var(--m-on-surface); }
-.tab.active { color: rgb(85, 133, 255); border-bottom-color: rgb(85, 133, 255); }
+.tab.active { color: var(--m-primary); border-bottom-color: var(--m-primary); }
 
 .tab-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .tab-header h3 { margin: 0; }
@@ -573,7 +573,7 @@ fetchData()
   background: var(--m-bg-subtle); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 12px 16px;
 }
-.payment-amount { font-weight: 700; font-size: 1.1rem; color: rgb(85, 133, 255); }
+.payment-amount { font-weight: 700; font-size: 1.1rem; color: var(--m-primary); }
 .payment-info-left { display: flex; align-items: center; gap: 12px; }
 .payment-meta { display: flex; gap: 8px; align-items: center; }
 .payment-actions { display: flex; gap: 8px; }

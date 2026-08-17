@@ -27,7 +27,7 @@ const getPulseColor = computed(() => {
   const colors = {
     success: '#10b981',
     error: '#ef4444',
-    info: '#0ea5e9',
+    info: 'var(--m-primary, #8C57FF)',
     warning: '#f59e0b'
   }
   return colors[type.value] || colors.info
@@ -117,7 +117,7 @@ const getClassNames = () => {
   position: absolute;
   inset: -25px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--pulse-color, #0ea5e9), transparent 70%);
+  background: radial-gradient(circle, var(--pulse-color, var(--m-primary, #8C57FF)), transparent 70%);
   opacity: 0;
   animation: pulseRing 1.5s ease-out;
   pointer-events: none;
@@ -162,7 +162,7 @@ const getClassNames = () => {
 }
 
 .toast.info {
-  border-left: 4px solid #0ea5e9;
+  border-left: 4px solid var(--m-primary, #8C57FF);
 }
 
 .toast.warning {

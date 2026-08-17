@@ -317,7 +317,7 @@ onMounted(async () => {
   border-radius: var(--m-radius-sm); padding: 16px 20px;
 }
 .dash-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.dash-num { font-size: 1.3rem; font-weight: 700; color: rgb(85, 133, 255); }
+.dash-num { font-size: 1.3rem; font-weight: 700; color: var(--m-primary); }
 .dash-label { font-size: 0.75rem; color: var(--m-grey-500); }
 
 /* Forms */
@@ -346,7 +346,7 @@ onMounted(async () => {
 .detail-item.full-width { flex-direction: column; align-items: flex-start; }
 .detail-label { font-size: 0.82rem; color: var(--m-grey-500); font-weight: 600; min-width: 80px; }
 .detail-value { font-size: 0.9rem; }
-.detail-amount { font-weight: 700; font-size: 1.1rem; color: rgb(85, 133, 255); }
+.detail-amount { font-weight: 700; font-size: 1.1rem; color: var(--m-primary); }
 .detail-desc { font-size: 0.88rem; line-height: 1.6; }
 .badge-status {
   font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; font-weight: 600;

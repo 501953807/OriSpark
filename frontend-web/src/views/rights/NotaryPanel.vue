@@ -55,16 +55,16 @@ onMounted(async () => { await Promise.all([notary.fetchRecords(), notary.fetchPl
 <style scoped>
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; text-align: center; }
-.stat-val { font-size: 1.5rem; font-weight: 700; color: rgb(85, 133, 255); }
+.stat-val { font-size: 1.5rem; font-weight: 700; color: var(--m-primary); }
 .stat-lbl { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }
 .section-title { font-size: 1rem; font-weight: 700; margin: 20px 0 12px; }
 .platforms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .platform-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
-.platform-card:hover { border-color: rgb(85, 133, 255); box-shadow: 0 2px 8px oklch(0 0 0 / 0.06); }
+.platform-card:hover { border-color: var(--m-primary); box-shadow: 0 2px 8px oklch(0 0 0 / 0.06); }
 .p-icon { font-size: 2rem; margin-bottom: 8px; }
 .p-name { font-weight: 600; font-size: 0.95rem; }
-.p-fee { color: rgb(85, 133, 255); font-weight: 700; margin: 6px 0; }
-.p-action { font-size: 0.8rem; color: rgb(85, 133, 255); }
+.p-fee { color: var(--m-primary); font-weight: 700; margin: 6px 0; }
+.p-action { font-size: 0.8rem; color: var(--m-primary); }
 .empty { padding: 48px; text-align: center; color: var(--m-grey-500); }
 .record-list { display: flex; flex-direction: column; gap: 4px; }
 .record-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 0.8fr; gap: 8px; align-items: center; padding: 10px 14px; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.85rem; }

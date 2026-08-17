@@ -162,7 +162,7 @@ onMounted(load)
   cursor: pointer; transition: background 0.15s, border-color 0.15s;
 }
 .neg-item:hover { background: var(--m-surface); }
-.neg-item.selected { border-color: rgb(85, 133, 255); background: var(--m-surface); }
+.neg-item.selected { border-color: var(--m-primary); background: var(--m-surface); }
 
 .neg-title { font-size: 0.88rem; font-weight: 600; color: var(--m-on-surface); margin-bottom: 4px; }
 

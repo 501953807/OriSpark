@@ -369,7 +369,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   cursor: pointer;
   font-size: 0.9rem;
 }
-.tab.active { background: rgb(85, 133, 255); color: white; border-color: rgb(85, 133, 255); }
+.tab.active { background: var(--m-primary); color: white; border-color: var(--m-primary); }
 
 .section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; }
 
@@ -448,7 +448,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 
 .form-actions { display: flex; gap: 12px; margin-top: 16px; }
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: white;
   border: none;
   padding: 8px 20px;
@@ -495,15 +495,15 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .action-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 .btn-action {
   padding: 6px 14px;
-  border: 1px solid rgb(85, 133, 255);
-  color: rgb(85, 133, 255);
+  border: 1px solid var(--m-primary);
+  color: var(--m-primary);
   background: transparent;
   border-radius: var(--m-radius-sm);
   cursor: pointer;
   font-size: 0.85rem;
   transition: all 0.15s;
 }
-.btn-action:hover { background: rgb(85, 133, 255); color: white; }
+.btn-action:hover { background: var(--m-primary); color: white; }
 
 /* Timeline */
 .timeline-section { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--m-border); }
@@ -514,7 +514,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   margin-top: 4px;
   flex-shrink: 0;
 }

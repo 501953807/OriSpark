@@ -26,7 +26,7 @@ export const useMotionStore = defineStore('motion', () => {
   })
 
   // Brand colors
-  const brandRippleColor = 'rgba(14, 165, 233, 0.3)'
+  const brandRippleColor = 'rgba(140, 87, 255, 0.3)'
   const brandRippleDuration = 600
 
   // Frame rate monitoring

@@ -192,7 +192,7 @@ onMounted(async () => {
 .platform-level { font-size: 0.68rem; color: var(--m-grey-500); }
 .platform-desc { font-size: 0.82rem; color: var(--m-grey-500); line-height: 1.5; }
 .platform-meta { display: flex; align-items: center; justify-content: space-between; }
-.platform-fee { font-weight: 700; color: rgb(85, 133, 255); font-size: 0.9rem; }
+.platform-fee { font-weight: 700; color: var(--m-primary); font-size: 0.9rem; }
 .records-table { overflow-x: auto; padding: 0; }
 .table-header, .table-row {
   display: grid;

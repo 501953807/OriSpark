@@ -5,7 +5,7 @@
    ==================== */
 :root {
   /* 主色 */
-  --brand-primary: #0ea5e9;
+  --brand-primary: #8C57FF;
   --brand-primary-dark: var(--m-primary-dark);
 
   /* 辅助色 */
@@ -20,7 +20,7 @@
   /* 动效专用变量 */
   --motion-brand-radial-gradient: radial-gradient(
     circle at center,
-    rgba(14, 165, 233, 0.25),
+    rgba(140, 87, 255, 0.25),
     transparent 60%
   );
 
@@ -30,7 +30,7 @@
     var(--brand-primary-dark)
   );
 
-  --motion-brand-pulse: 0 6px 20px rgba(14, 165, 233, 0.3);
+  --motion-brand-pulse: 0 6px 20px rgba(140, 87, 255, 0.3);
 
   /* 动效缓动函数（通过 JS cubic-bezier 表示） */
   --ease-micro: cubic-bezier(0.4, 0, 0.2, 1);
@@ -47,7 +47,7 @@
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --motion-brand-pulse: 0 6px 20px rgba(59, 130, 246, 0.4);
+    --motion-brand-pulse: 0 6px 20px rgba(140, 87, 255, 0.4);
   }
 }
 

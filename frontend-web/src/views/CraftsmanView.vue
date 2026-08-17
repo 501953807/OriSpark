@@ -591,7 +591,7 @@ onMounted(async () => {
   background: var(--m-bg-subtle);
 }
 .tab-btn.active {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
 }
 .tab-panel {
@@ -659,13 +659,13 @@ onMounted(async () => {
 .btn:hover { background: var(--m-bg-subtle); }
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 .btn-primary {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
   color: #fff;
-  border-color: rgb(85, 133, 255);
+  border-color: var(--m-primary);
 }
 .btn-primary:hover {
   opacity: 0.9;
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
 }
 .btn-outline {
   background: transparent;
@@ -844,8 +844,8 @@ onMounted(async () => {
   transition: background 0.2s, border-color 0.2s;
 }
 .step-dot.done::before {
-  background: rgb(85, 133, 255);
-  border-color: rgb(85, 133, 255);
+  background: var(--m-primary);
+  border-color: var(--m-primary);
 }
 .step-group {
   display: flex;
@@ -866,7 +866,7 @@ onMounted(async () => {
   transition: background 0.2s;
 }
 .step-line.done {
-  background: rgb(85, 133, 255);
+  background: var(--m-primary);
 }
 .empty-state {
   display: flex;
