@@ -21,6 +21,8 @@
         <div class="ic-meta">
           <span class="ic-tag" :class="item.pricing === 'free' ? 'free' : 'paid'">{{ item.pricing === 'free' ? '免费' : '付费' }}</span>
           <span class="ic-tag" :class="item.connected ? 'active' : 'inactive'">{{ item.connected ? '已连接' : '未连接' }}</span>
+          <span v-if="item.status === 'implemented'" class="ic-tag status-implemented">已实现</span>
+          <span v-else-if="item.status === 'planned'" class="ic-tag status-planned">规划中</span>
         </div>
         <div class="ic-actions">
           <button v-if="item.connected" class="btn btn-secondary btn-sm" style="width:100%">断开</button>
@@ -83,35 +85,35 @@ const categories = [
 const integrations = [
   {
     key: 'banquanjia', name: '版权家', icon: '🏛️', category: 'notary', categoryLabel: '存证平台',
-    description: '国家版权局 DCI 体系，法律效力最高的数字版权登记平台', pricing: 'paid', connected: false,
+    description: '国家版权局 DCI 体系，法律效力最高的数字版权登记平台', pricing: 'paid', connected: false, status: 'planned',
   },
   {
     key: 'antchain', name: '蚂蚁链', icon: '🐜', category: 'notary', categoryLabel: '存证平台',
-    description: '支付宝蚂蚁区块链存证服务，商用级区块链存证', pricing: 'paid', connected: false,
+    description: '支付宝蚂蚁区块链存证服务，商用级区块链存证', pricing: 'paid', connected: false, status: 'planned',
   },
   {
     key: 'zhixinchain', name: '至信链', icon: '⚖️', category: 'notary', categoryLabel: '存证平台',
-    description: '腾讯/互联网法院司法链，司法级证据效力', pricing: 'paid', connected: false,
+    description: '腾讯/互联网法院司法链，司法级证据效力', pricing: 'paid', connected: false, status: 'planned',
   },
   {
     key: 'baidu', name: '百度识图', icon: '🔍', category: 'monitor', categoryLabel: '侵权监测',
-    description: '百度以图搜图 API，每日 100 次免费查询', pricing: 'free', connected: false,
+    description: '百度以图搜图 API，已在侵权监测模块中使用，无需额外配置', pricing: 'free', connected: false, status: 'implemented',
   },
   {
     key: 'google', name: 'Google Vision', icon: '🤖', category: 'monitor', categoryLabel: '侵权监测',
-    description: 'Google Cloud Vision API，每月 1000 次免费', pricing: 'free', connected: false,
+    description: 'Google Cloud Vision API，已在侵权监测模块中使用，无需额外配置', pricing: 'free', connected: false, status: 'implemented',
   },
   {
     key: 'taobao', name: '淘宝', icon: '🛒', category: 'publish', categoryLabel: '电商发布',
-    description: '淘宝/天猫店铺商品发布', pricing: 'free', connected: false,
+    description: '淘宝/天猫店铺商品发布', pricing: 'free', connected: false, status: 'planned',
   },
   {
     key: 'xiaohongshu', name: '小红书', icon: '📕', category: 'publish', categoryLabel: '电商发布',
-    description: '小红书笔记/商品发布 (Playwright 自动化)', pricing: 'free', connected: false,
+    description: '小红书笔记/商品发布 (Playwright 自动化)', pricing: 'free', connected: false, status: 'planned',
   },
   {
     key: 'ollama', name: 'Ollama', icon: '🧠', category: 'ai', categoryLabel: 'AI 模型',
-    description: '本地 LLM 运行环境，用于生成商品描述', pricing: 'free', connected: false,
+    description: '本地 LLM 运行环境，请在偏好设置 → AI 模型中配置', pricing: 'free', connected: false, status: 'implemented',
   },
 ]
 
@@ -214,6 +216,8 @@ function connectItem(item: any) {
 .ic-tag.inactive { background: rgba(0,0,0,0.04); color: var(--m-grey-500); }
 .ic-tag.free { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: var(--green); }
 .ic-tag.paid { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
+.ic-tag.status-implemented { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.12); color: #10b981; }
+.ic-tag.status-planned { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.1); color: var(--m-primary); }
 .ic-actions { display: flex; gap: 10px; margin-top: auto; }
 .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
 

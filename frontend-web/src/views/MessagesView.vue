@@ -40,12 +40,7 @@
           <span class="material-icons" style="font-size:48px;color:var(--m-grey-300)">mail_outline</span>
           <p style="color:var(--m-muted);margin:12px 0 4px;font-size:.95rem">暂无消息</p>
           <p style="color:var(--m-muted);font-size:.8rem;margin:0">消息将在此处显示</p>
-        </div>
-
-        <div class="messages-demo">
-          <p style="font-size:.78rem;color:var(--m-muted);text-align:center;margin-top:24px">
-            消息中心功能开发中，敬请期待
-          </p>
+          <span class="status-badge planned">规划中 — 后续对接消息 API</span>
         </div>
       </div>
     </div>
@@ -152,9 +147,12 @@ function markAllRead() {
   padding: 60px 20px;
   text-align: center;
 }
-.messages-demo {
-  padding: 16px 20px;
-  border-top: 1px solid var(--m-border, rgba(46,38,61,0.12));
+.status-badge {
+  display: inline-block; margin-top: 12px; padding: 4px 14px; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.status-badge.planned {
+  background: rgba(var(--m-primary-rgb, 140,87,255), 0.1); color: var(--m-primary);
 }
 
 @media (max-width: 767px) {
