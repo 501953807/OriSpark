@@ -4,7 +4,8 @@ import { useAuthStore } from '~/stores/auth'
 export default defineNuxtRouteMiddleware(async (to) => {
   const auth = useAuthStore()
 
-  // Public pages that don't require auth
+  // Skip auth for API routes and public pages
+  if (to.path.startsWith('/api/')) return
   const publicPages = ['/', '/gallery', '/auth/login', '/auth/register']
   if (publicPages.includes(to.path)) return
 

@@ -18,6 +18,10 @@ export default {
     },
   },
 
+  nitro: {
+    serveStatic: true,
+  },
+
   routeRules: {
     '/': { ssr: false },
     '/gallery': { ssr: false },
