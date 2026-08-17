@@ -806,6 +806,7 @@ onUnmounted(() => {
 /* ── Materio Layout Global Overrides ── */
 /* 内容区卡片使用浅紫底，与页面背景色统一 */
 .m-main__content .m-card,
+.m-main__content .card,
 .m-main__content .stat-card {
   background: var(--m-bg-subtle, #F4F5FA) !important;
   border-color: var(--m-border, rgba(46, 38, 61, 0.12));
