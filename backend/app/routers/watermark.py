@@ -23,6 +23,8 @@ from app.schemas.watermark_preset import (
     WatermarkPresetListResponse,
     ApplyWatermarkPayload,
     ApplyWatermarkResult,
+    FrequencyWatermarkPayload,
+    FrequencyWatermarkResult,
 )
 from app.services import watermark_service
 from app.deps import require_auth
@@ -191,3 +193,58 @@ def apply_watermark_to_work(
         raise HTTPException(status_code=400, detail="水印操作失败，请稍后重试")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"水印应用失败: {str(e)}")
+
+
+# ============================================================================
+# Frequency Domain Watermark Endpoints
+# ============================================================================
+
+
+@router.post(
+    "/watermarks/frequency/embed",
+    response_model=ApiResponse[FrequencyWatermarkResult],
+    dependencies=[Depends(require_auth)],
+)
+def embed_frequency_watermark(
+    payload: FrequencyWatermarkPayload,
+    db: Session = Depends(get_db),
+) -> ApiResponse[FrequencyWatermarkResult]:
+    """在图像频域嵌入隐形水印（DCT算法）."""
+    try:
+        result = watermark_service.apply_frequency_watermark(
+            image_path=payload.image_path,
+            creator_id=payload.creator_id,
+            timestamp=int(datetime.now(timezone.utc).timestamp()),
+            contract_id=payload.contract_id,
+        )
+        return ApiResponse(
+            data=FrequencyWatermarkResult(
+                success=result["success"],
+                psnr=result["psnr"],
+                output_path=result["output_path"],
+                bits_embedded=result["bits_embedded"],
+            ),
+            message="频域水印嵌入成功"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"频域水印嵌入失败: {str(e)}")
+
+
+@router.post(
+    "/watermarks/frequency/extract",
+    response_model=ApiResponse[dict],
+    dependencies=[Depends(require_auth)],
+)
+def extract_frequency_watermark(
+    image_path: str,
+    db: Session = Depends(get_db),
+) -> ApiResponse[dict]:
+    """从图像频域提取隐形水印."""
+    try:
+        result = watermark_service.extract_watermark(image_path)
+        return ApiResponse(
+            data=result,
+            message="频域水印提取成功"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"频域水印提取失败: {str(e)}")

@@ -89,3 +89,20 @@ class ApplyWatermarkResult(BaseModel):
     work_id: str
     preset_id: str
     message: str
+
+
+class FrequencyWatermarkPayload(BaseModel):
+    """频域水印嵌入请求体."""
+
+    image_path: str = Field(..., description="输入图像路径")
+    creator_id: str = Field(..., min_length=1, max_length=64, description="创作者ID")
+    contract_id: str = Field("", description="合约ID（可选）")
+
+
+class FrequencyWatermarkResult(BaseModel):
+    """频域水印嵌入结果."""
+
+    success: bool
+    psnr: float
+    output_path: str
+    bits_embedded: int
