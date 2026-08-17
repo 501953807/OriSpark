@@ -7,6 +7,7 @@ from decimal import Decimal
 from sqlalchemy.orm import Session
 
 from app.models.negotiation import TradeNegotiation
+from app.utils.errors import BusinessException
 
 # 状态流转规则
 _STATUS_TRANSITIONS = {
@@ -68,12 +69,18 @@ def submit_offer(db: Session, nego_id: str, buyer_id: str, amount_yuan: float, m
     """提交出价/还价."""
     nego = db.query(TradeNegotiation).filter(TradeNegotiation.id == nego_id).first()
     if not nego:
-        raise ValueError(f"Negotiation {nego_id} not found")
+        raise BusinessException(f"议价 {nego_id} 不存在", status_code=404)
+
+    if amount_yuan <= 0:
+        raise BusinessException("报价金额必须大于零")
+
+    if buyer_id != nego.buyer_id:
+        raise BusinessException("只有买家可以提交出价")
 
     if nego.status == "pending":
         nego.status = "negotiating"
     elif nego.status != "negotiating":
-        raise ValueError(f"Cannot submit offer in status: {nego.status}")
+        raise BusinessException(f"当前状态 {nego.status} 不允许提交出价")
 
     nego.current_offer_yuan = Decimal(str(amount_yuan))
     _append_message(nego, buyer_id, "offer", f"{message or 'Out bid'} ¥{amount_yuan}")
@@ -86,11 +93,14 @@ def accept_offer(db: Session, nego_id: str, user_id: str) -> TradeNegotiation:
     """接受当前报价."""
     nego = db.query(TradeNegotiation).filter(TradeNegotiation.id == nego_id).first()
     if not nego:
-        raise ValueError(f"Negotiation {nego_id} not found")
+        raise BusinessException(f"议价 {nego_id} 不存在", status_code=404)
+
+    if user_id not in (nego.buyer_id, nego.seller_id):
+        raise BusinessException("只有议价参与方可以接受报价")
 
     allowed = _STATUS_TRANSITIONS.get(nego.status, [])
     if "agreed" not in allowed:
-        raise ValueError(f"Cannot accept in status: {nego.status}")
+        raise BusinessException(f"当前状态 {nego.status} 不允许接受报价")
 
     nego.final_price_yuan = nego.current_offer_yuan
     nego.status = "agreed"
@@ -104,11 +114,14 @@ def complete_negotiation(db: Session, nego_id: str, user_id: str) -> TradeNegoti
     """确认成交."""
     nego = db.query(TradeNegotiation).filter(TradeNegotiation.id == nego_id).first()
     if not nego:
-        raise ValueError(f"Negotiation {nego_id} not found")
+        raise BusinessException(f"议价 {nego_id} 不存在", status_code=404)
+
+    if user_id not in (nego.buyer_id, nego.seller_id):
+        raise BusinessException("只有议价参与方可以确认成交")
 
     allowed = _STATUS_TRANSITIONS.get(nego.status, [])
     if "completed" not in allowed:
-        raise ValueError(f"Cannot complete in status: {nego.status}")
+        raise BusinessException(f"当前状态 {nego.status} 不允许确认成交")
 
     nego.status = "completed"
     _append_message(nego, user_id, "system", "Transaction completed")
@@ -121,11 +134,14 @@ def cancel_negotiation(db: Session, nego_id: str, user_id: str, reason: str = No
     """取消议价."""
     nego = db.query(TradeNegotiation).filter(TradeNegotiation.id == nego_id).first()
     if not nego:
-        raise ValueError(f"Negotiation {nego_id} not found")
+        raise BusinessException(f"议价 {nego_id} 不存在", status_code=404)
+
+    if user_id not in (nego.buyer_id, nego.seller_id):
+        raise BusinessException("只有议价参与方可以取消")
 
     allowed = _STATUS_TRANSITIONS.get(nego.status, [])
     if "cancelled" not in allowed:
-        raise ValueError(f"Cannot cancel in status: {nego.status}")
+        raise BusinessException(f"当前状态 {nego.status} 不允许取消")
 
     nego.status = "cancelled"
     _append_message(nego, user_id, "system", f"Cancelled: {reason or 'No reason provided'}")

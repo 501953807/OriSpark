@@ -7,8 +7,23 @@ import io
 import uuid
 
 
-def test_full_creator_workflow(client):
+def _create_user(db_session, email="e2e_test@example.com"):
+    from app.models.system import User
+    from app.services.auth_service import _hash_password
+    u = User(
+        id=email,
+        email=email,
+        username=email.split("@")[0],
+        password_hash=_hash_password("testpass123"),
+    )
+    db_session.add(u)
+    db_session.flush()
+    return u
+
+
+def test_full_creator_workflow(client, db_session):
     """端到端测试: 导入->存证->监测->IP登记->变现 完整流程"""
+    _create_user(db_session, email="current_user")
     base = "/api"
 
     # ──────────────────────────────────────────────────────────

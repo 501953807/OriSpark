@@ -7,9 +7,8 @@ from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
-
 from app.models.contract import SplitRule, ContractInstance, SplitExecutionLog
+from app.utils.errors import BusinessException
 
 
 class SplitRuleService:
@@ -44,11 +43,11 @@ class SplitRuleService:
         """参与方提交分润报价."""
         cls._validate_role(role)
         if not 0 < percentage <= 1.0:
-            raise HTTPException(status_code=400, detail="分润比例必须在 0-100% 之间")
+            raise BusinessException("分润比例必须在 0-100% 之间")
 
         contract = cls._get_contract(db, contract_id)
         if contract.status != "listed":
-            raise HTTPException(status_code=400, detail="仅挂牌合约可接受报价")
+            raise BusinessException("仅挂牌合约可接受报价")
 
         existing = (
             db.query(SplitRule)
@@ -91,7 +90,7 @@ class SplitRuleService:
         """锁定各角色最优报价."""
         contract = cls._get_contract(db, contract_id)
         if contract.status != "listed":
-            raise HTTPException(status_code=400, detail="仅挂牌合约可锁定报价")
+            raise BusinessException("仅挂牌合约可锁定报价")
 
         roles = ["operator", "legal_rep", "tax_agent", "logistics", "insurer"]
         locked: list[dict] = []
@@ -123,17 +122,12 @@ class SplitRuleService:
         """将锁定的分润规则写入合约 split_rules_json."""
         contract = cls._get_contract(db, contract_id)
         if contract.status not in ("subscribed", "escrowed"):
-            raise HTTPException(
-                status_code=400, detail="仅认购/托管合约可写入分润规则"
-            )
+            raise BusinessException("仅认购/托管合约可写入分润规则")
 
         total_pct = sum(r.get("percentage", 0) for r in rules)
         platform_fee = round(total_pct * cls.PLATFORM_FEE_RATE, 2)
         if platform_fee > contract.total_amount:
-            raise HTTPException(
-                status_code=400,
-                detail=f"分润总额超出合约金额（平台费 {platform_fee}）",
-            )
+            raise BusinessException(f"分润总额超出合约金额（平台费 {platform_fee}）")
 
         contract.split_rules_json = json.dumps(rules, ensure_ascii=False)
         db.commit()
@@ -159,14 +153,11 @@ class SplitRuleService:
         """
         contract = cls._get_contract(db, contract_id)
         if not contract.split_rules_json or contract.split_rules_json == "[]":
-            raise HTTPException(
-                status_code=400,
-                detail="合约暂无分润规则，请先锁定报价",
-            )
+            raise BusinessException("合约暂无分润规则，请先锁定报价")
 
         rules = json.loads(contract.split_rules_json)
         if not rules:
-            raise HTTPException(status_code=400, detail="分润规则为空")
+            raise BusinessException("分润规则为空")
 
         amount = Decimal(str(total_amount or contract.total_amount))
         platform_fee = float((amount * Decimal(str(cls.PLATFORM_FEE_RATE))).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
@@ -205,10 +196,7 @@ class SplitRuleService:
         """
         contract = cls._get_contract(db, contract_id)
         if contract.status not in ("completed", "resolved", "executing"):
-            raise HTTPException(
-                status_code=400,
-                detail=f"当前状态 {contract.status} 不允许执行分润",
-            )
+            raise BusinessException(f"当前状态 {contract.status} 不允许执行分润")
 
         # 1. 计算分润
         calc = cls.calculate_split(db, contract_id, total_amount)
@@ -287,10 +275,7 @@ class SplitRuleService:
         )
 
         if not latest_exec:
-            raise HTTPException(
-                status_code=400,
-                detail="没有找到可退款的有效分润执行记录",
-            )
+            raise BusinessException("没有找到可退款的有效分润执行记录")
 
         # 调用支付网关退款
         refund_executor = "manual"
@@ -330,10 +315,7 @@ class SplitRuleService:
             "logistics", "insurer", "trader", "payment_provider", "platform",
         }
         if role not in valid_roles:
-            raise HTTPException(
-                status_code=400,
-                detail=f"无效角色类型: {role}",
-            )
+            raise BusinessException(f"无效角色类型: {role}")
         return True
 
     @staticmethod
@@ -349,7 +331,7 @@ class SplitRuleService:
             .first()
         )
         if not contract:
-            raise HTTPException(status_code=404, detail="合约不存在")
+            raise BusinessException("合约不存在", status_code=404)
         return contract
 
     @staticmethod

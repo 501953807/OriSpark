@@ -6,11 +6,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
-from fastapi import HTTPException
 import sys
 import uuid as _uuid
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
+
+from app.utils.errors import BusinessException
 
 
 def _uid(prefix: str = "") -> str:
@@ -214,9 +215,9 @@ class TestCalculateSplit:
 
     def test_raises_when_no_rules(self, db_session, no_split_rules_contract):
         from app.services.split_rule_service import SplitRuleService
-        with pytest.raises(HTTPException) as exc_info:
+        with pytest.raises(BusinessException) as exc_info:
             SplitRuleService.calculate_split(db_session, no_split_rules_contract.id)
-        assert "暂无分润规则" in str(exc_info.value.detail) or "分润规则为空" in str(exc_info.value.detail)
+        assert "暂无分润规则" in str(exc_info.value) or "分润规则为空" in str(exc_info.value)
 
     def test_decimal_rounding(self, db_session, escrowed_contract):
         """测试金额小数四舍五入精度."""
@@ -262,9 +263,9 @@ class TestExecuteSplit:
         from app.services.split_rule_service import SplitRuleService
         no_split_rules_contract.status = "draft"
         db_session.commit()
-        with pytest.raises(HTTPException) as exc_info:
+        with pytest.raises(BusinessException) as exc_info:
             SplitRuleService.execute_split(db_session, no_split_rules_contract.id)
-        assert "不允许执行分润" in str(exc_info.value.detail)
+        assert "不允许执行分润" in str(exc_info.value)
 
     def test_execute_with_custom_batch_id(self, db_session, completed_contract):
         from app.services.split_rule_service import SplitRuleService
@@ -315,9 +316,9 @@ class TestRefundSplit:
     def test_refund_no_execution_record(self, db_session, completed_contract):
         """没有执行记录时应抛出异常."""
         from app.services.split_rule_service import SplitRuleService
-        with pytest.raises(HTTPException) as exc_info:
+        with pytest.raises(BusinessException) as exc_info:
             SplitRuleService.refund_split(db_session, completed_contract.id, reason="no-op")
-        assert "可退款的有效分润执行记录" in str(exc_info.value.detail)
+        assert "可退款的有效分润执行记录" in str(exc_info.value)
 
     def test_refund_marks_as_refunded(self, db_session, completed_contract):
         from app.services.split_rule_service import SplitRuleService
@@ -351,9 +352,9 @@ class TestRefundSplit:
         db_session.add(failed_log)
         db_session.commit()
 
-        with pytest.raises(HTTPException) as exc_info:
+        with pytest.raises(BusinessException) as exc_info:
             SplitRuleService.refund_split(db_session, escrowed_contract.id, reason="should fail")
-        assert "可退款的有效分润执行记录" in str(exc_info.value.detail)
+        assert "可退款的有效分润执行记录" in str(exc_info.value)
 
 
 # ── Integration Tests ──────────────────────────────────────────────

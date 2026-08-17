@@ -162,6 +162,8 @@ const router = createRouter({
         { path: 'negotiation', name: 'negotiation', component: () => import('@/views/NegotiationView.vue') },
         { path: 'scr', name: 'scr-dash', component: () => import('@/views/SCRDashView.vue') },
         { path: 'tax', name: 'tax-settlement', component: () => import('@/views/TaxSettlementView.vue') },
+        { path: 'split-rules', name: 'split-rules', component: () => import('@/views/SplitRuleView.vue') },
+        { path: 'pod-profit', name: 'pod-profit', component: () => import('@/views/PodProfitView.vue') },
         { path: 'distribution', name: 'distribution-hub', component: () => import('@/views/DistributionHubView.vue') },
         { path: 'attribution', name: 'attribution', component: () => import('@/views/AttributionView.vue') },
       ],

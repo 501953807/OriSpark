@@ -3,13 +3,15 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import engine, Base
+from app.utils.errors import BusinessException
 from app.routers import works, notary, monitor, dashboard, ipr, supply, publish, system, versions, batch_works, auth, subscription, commission, factory, subtitle, video_fingerprint, metadata_templates, watermark, work_variants, logistics, photographer, craftsman, musician, writer, certification, ai_training, ip_commercialization, trading_fee, listing, matching_engine, matchmaking, etsy, fork_merge, contract_matching, innocence_proof
 from app.routers.websocket_router import router as ws_router
 from app import mcp_server
@@ -226,6 +228,26 @@ app.include_router(factory_order_router, prefix="/api")
 app.include_router(data_analytics_router, prefix="/api")
 app.include_router(operation_works_creator_router, prefix="/api")
 app.include_router(operation_works_operator_router, prefix="/api")
+
+
+@app.exception_handler(BusinessException)
+async def business_exception_handler(request: Request, exc: BusinessException):
+    """业务异常处理器：返回统一 JSON 错误响应."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=exc.to_dict(),
+    )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """全局异常处理器：统一错误响应格式."""
+    status_code = getattr(exc, "status_code", 500)
+    message = str(exc) if status_code != 500 else "内部服务器错误"
+    return JSONResponse(
+        status_code=status_code,
+        content={"success": False, "message": message},
+    )
 
 
 @app.get("/api/health")

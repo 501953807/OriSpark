@@ -192,9 +192,9 @@ async function handleConvert() {
       target_currency: convertForm.target,
       amount: convertForm.amount || 0,
     })
-    convertResult.value = res.data
-  } catch {
-    // ignore
+    convertResult.value = res.data?.data
+  } catch (e: any) {
+    console.error('货币转换失败:', e.response?.data?.message || e.message)
   }
 }
 
@@ -206,10 +206,10 @@ async function handleCalculate() {
       product_type: calcForm.product_type,
       amount: calcForm.amount || 0,
     })
-    calcHistory.value.unshift(res.data)
+    calcHistory.value.unshift(res.data?.data)
     showCalcModal.value = false
-  } catch {
-    // ignore
+  } catch (e: any) {
+    console.error('税务计算失败:', e.response?.data?.message || e.message)
   }
 }
 </script>

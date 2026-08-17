@@ -66,12 +66,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { taxApi } from '@/api/tax'
 
 const loading = ref(false)
 const agents = ref<any[]>([])
 const showCreate = ref(false)
+const errorMsg = ref('')
 
 const newAgent = reactive({
   participant_id: '',
@@ -85,25 +86,28 @@ async function fetchAgents() {
   loading.value = true
   try {
     const res = await taxApi.taxAgentApi.list()
-    agents.value = res.data || []
-  } catch {
-    // ignore
+    agents.value = (res.data?.data ?? []) as any[]
+  } catch (e: any) {
+    errorMsg.value = e.response?.data?.message || '加载失败'
   } finally {
     loading.value = false
   }
 }
 
 async function handleCreate() {
+  if (!newAgent.name || !newAgent.participant_id) return
   try {
     await taxApi.taxAgentApi.create({
       ...newAgent,
       service_areas: newAgent.service_areas_str.split(',').map((s: string) => s.trim()).filter(Boolean),
     })
     showCreate.value = false
-    fetchAgents()
-  } catch {
+    Object.assign(newAgent, { participant_id: '', name: '', license_no: '', service_areas_str: '', fee_rate: 5 })
+    await fetchAgents()
+  } catch (e: any) {
+    errorMsg.value = e.response?.data?.message || '创建失败'
   }
 }
 
-fetchAgents()
+onMounted(fetchAgents)
 </script>

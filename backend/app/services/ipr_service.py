@@ -9,8 +9,6 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -23,6 +21,7 @@ from app.models.notary import NotaryRecord
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
 from sqlalchemy.exc import SQLAlchemyError
+from app.utils.errors import BusinessException
 
 
 
@@ -2265,9 +2264,28 @@ class IprService:
     def list_ip_registrations(self,
         ip_type: Optional[str] = None,
         jurisdiction: Optional[str] = None,
-        status: Optional[str] = None):
-        """获取 IP 登记列表 (支持 ip_type/jurisdiction/status 过滤)."""
+        status: Optional[str] = None,
+        user_id: Optional[str] = None,
+        work_id: Optional[str] = None):
+        """获取 IP 登记列表 (支持 ip_type/jurisdiction/status/work_id 过滤)."""
         query = self.db.query(IPRegistration)
+        if work_id:
+            query = query.filter(IPRegistration.work_id == work_id)
+        elif user_id:
+            from app.models.work import Work
+            registered_work_ids = [
+                r[0] for r in self.db.query(Work.id).filter(
+                    Work.creator_id == user_id, Work.creator_id.isnot(None)
+                ).all()
+            ]
+            if registered_work_ids:
+                query = query.filter(
+                    IPRegistration.work_id.in_(registered_work_ids)
+                    | IPRegistration.work_id.is_(None)
+                )
+            else:
+                # 无 creator_id 关联的作品时，返回所有记录（含关联作品的）
+                pass
         if ip_type:
             query = query.filter(IPRegistration.ip_type == ip_type)
         if jurisdiction:
@@ -2336,7 +2354,7 @@ class IprService:
         """获取 IP 登记记录详情."""
         record = self.db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
         if not record:
-            raise HTTPException(status_code=404, detail="记录不存在")
+            raise BusinessException("记录不存在", status_code=404)
 
         # 获取时间线
         timeline = _build_timeline(record)
@@ -2363,11 +2381,11 @@ class IprService:
 
 
 
-    def update_ip_registration(self,record_id: str, data: UpdateIPRegistrationPayload):
+    def update_ip_registration(self, record_id: str, data: UpdateIPRegistrationPayload, user_id: Optional[str] = None):
         """更新 IP 登记进度 (P1.7.14: 状态变更时推送通知)."""
         record = self.db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
         if not record:
-            raise HTTPException(status_code=404, detail="记录不存在")
+            raise BusinessException("记录不存在", status_code=404)
 
         old_status = record.status
 
@@ -2406,7 +2424,7 @@ class IprService:
                 }
                 ip_label = ip_type_labels.get(record.ip_type, record.ip_type)
                 push_notification(
-                    db, user_id="default",
+                    self.db, user_id=user_id or "default",
                     type="ipr_update",
                     title=f"{ip_label}登记状态更新",
                     content=f"{ip_label}登记「{record.application_no or record.id[:8]}」状态从「{old_label}」变更为「{new_label}」。",
@@ -2424,7 +2442,7 @@ class IprService:
         """删除 IP 登记记录."""
         record = self.db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
         if not record:
-            raise HTTPException(status_code=404, detail="记录不存在")
+            raise BusinessException("记录不存在", status_code=404)
         self.db.delete(record)
         try:
             self.db.commit()
@@ -2536,7 +2554,7 @@ class IprService:
         result = guidelines_map.get((ip_type, jurisdiction))
         if result:
             return ApiResponse(data=result)
-        raise HTTPException(status_code=404, detail=f"暂不支持 {ip_type}/{jurisdiction} 的详细指引")
+        raise BusinessException(f"暂不支持 {ip_type}/{jurisdiction} 的详细指引", status_code=404)
 
 
     # ─── 类别推荐 ──────────────────────────────────────────────────
@@ -2572,7 +2590,7 @@ class IprService:
         _seed_nice_classes(self.db)
         cls = self.db.query(NiceClassification).filter(NiceClassification.class_no == class_no).first()
         if not cls:
-            raise HTTPException(status_code=404, detail=f"第{class_no}类不存在")
+            raise BusinessException(f"第{class_no}类不存在", status_code=404)
         return ApiResponse(data={
             "class_no": cls.class_no,
             "class_name_zh": cls.class_name_zh,
@@ -2729,7 +2747,7 @@ class IprService:
         _seed_application_templates(self.db)
         t = self.db.query(ApplicationTemplate).filter(ApplicationTemplate.id == template_id).first()
         if not t:
-            raise HTTPException(status_code=404, detail="模板不存在")
+            raise BusinessException("模板不存在", status_code=404)
         return ApiResponse(data={
             "id": t.id,
             "ip_type": t.ip_type,
@@ -2760,11 +2778,11 @@ class IprService:
         jurisdiction = data.jurisdiction
 
         if not work_id:
-            raise HTTPException(status_code=400, detail="work_id 是必填项")
+            raise BusinessException("work_id 是必填项", status_code=400)
 
         work = self.db.query(Work).filter(Work.id == work_id).first()
         if not work:
-            raise HTTPException(status_code=404, detail="作品不存在")
+            raise BusinessException("作品不存在", status_code=404)
 
         # 获取作品标签
         tags = [t.tag for t in self.db.query(WorkTag).filter(WorkTag.work_id == work_id).all()]
@@ -2915,9 +2933,7 @@ class IprService:
 
         # Mandatory: lawyer consultation confirmation required before export
         if not lawyer_consulted or lawyer_consulted not in ("A", "B"):
-            raise HTTPException(
-                status_code=403,
-                detail="必须先完成律师审核确认才能导出申请材料")
+            raise BusinessException("必须先完成律师审核确认才能导出申请材料", status_code=403)
 
         if ip_type == "copyright":
             materials = COPYRIGHT_GUIDELINES_CN["materials"]
@@ -2958,7 +2974,7 @@ class IprService:
         """
         record = self.db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
         if not record:
-            raise HTTPException(status_code=404, detail="记录不存在")
+            raise BusinessException("记录不存在", status_code=404)
 
         ip_type = record.ip_type
         jurisdiction = record.jurisdiction
@@ -3438,7 +3454,7 @@ class IprService:
         is_color = data.is_color
 
         if not jurisdictions:
-            raise HTTPException(status_code=400, detail="jurisdictions 是必填项, 至少指定一个辖区")
+            raise BusinessException("jurisdictions 是必填项, 至少指定一个辖区", status_code=400)
 
         disclaimer = "本工具仅提供信息指引，不构成法律建议。费用为官方参考价，实际以各官方机构最新公告为准。汇率以实时汇率为准。所有费用须由申请人直接支付给官方机构。本工具不代收任何费用。"
 
@@ -3778,14 +3794,14 @@ def _advance_registration_status(
     """推进IP登记状态，包含状态转换校验和材料清单生成."""
     record = db.query(IPRegistration).filter(IPRegistration.id == record_id).first()
     if not record:
-        raise HTTPException(status_code=404, detail="记录不存在")
+        raise BusinessException("记录不存在", status_code=404)
 
     current_status = record.status
     allowed = _VALID_TRANSITIONS.get(current_status, [])
     if new_status not in allowed:
-        raise HTTPException(
+        raise BusinessException(
+            f"不允许从「{current_status}」跳转到「{new_status}」，允许状态: {allowed}",
             status_code=400,
-            detail=f"不允许从「{current_status}」跳转到「{new_status}」，允许状态: {allowed}",
         )
 
     old_status = record.status

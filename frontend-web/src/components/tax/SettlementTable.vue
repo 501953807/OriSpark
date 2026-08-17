@@ -62,38 +62,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { taxApi } from '@/api/tax'
 
 const loading = ref(false)
 const reports = ref<any[]>([])
 const showGenerate = ref(false)
+const errorMsg = ref('')
+const participantId = ref('')
 
 const reportForm = reactive({
   participant_id: '',
-  period: '',
+  period: new Date().toISOString().slice(0, 7),
   currency: 'CNY',
 })
 
 async function fetchReports() {
-  if (!reportForm.participant_id) return
+  if (!participantId.value) return
   loading.value = true
   try {
-    const res = await taxApi.taxAgentApi.listReports(reportForm.participant_id)
-    reports.value = res.data || []
-  } catch {
-    // ignore
+    const res = await taxApi.taxAgentApi.listReports(participantId.value)
+    reports.value = (res.data?.data ?? []) as any[]
+  } catch (e: any) {
+    errorMsg.value = e.response?.data?.message || '加载失败'
   } finally {
     loading.value = false
   }
 }
 
 async function handleGenerate() {
+  if (!reportForm.period) return
   try {
     await taxApi.taxAgentApi.createReport(reportForm)
     showGenerate.value = false
-    fetchReports()
-  } catch {
+    reportForm.period = new Date().toISOString().slice(0, 7)
+    await fetchReports()
+  } catch (e: any) {
+    errorMsg.value = e.response?.data?.message || '生成失败'
   }
 }
+
+onMounted(fetchReports)
 </script>

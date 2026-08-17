@@ -103,3 +103,24 @@ export function submitQuote(body: QuoteInput) {
     quote_amount: body.quote_amount,
   }).then(res => res.data)
 }
+
+export function lockSplitQuotes(contractId: string) {
+  return client.post(`/contracts/${contractId}/split-rules/lock`).then(res => res.data)
+}
+
+export function calculateSplit(contractId: string, totalAmount?: number) {
+  const params = totalAmount ? { total_amount: totalAmount } : {}
+  return client.get(`/contracts/${contractId}/split-rules/calculate`, { params }).then(res => res.data)
+}
+
+export function executeSplit(contractId: string, body?: { total_amount?: number; batch_id?: string }) {
+  return client.post(`/contracts/${contractId}/split-rules/execute`, body ?? {}).then(res => res.data)
+}
+
+export function refundSplit(contractId: string, reason: string) {
+  return client.post(`/contracts/${contractId}/split-rules/refund`, { reason }).then(res => res.data)
+}
+
+export function getPlatformFee(totalAmount: number) {
+  return client.get('/contracts/platform-fee', { params: { total_amount: totalAmount } }).then(res => res.data)
+}

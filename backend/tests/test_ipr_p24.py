@@ -4,6 +4,20 @@ import io
 from sqlalchemy.orm import Session
 
 
+def _create_user(db_session, email="ipr_test@example.com"):
+    from app.models.system import User
+    from app.services.auth_service import _hash_password
+    u = User(
+        id=email,
+        email=email,
+        username=email.split("@")[0],
+        password_hash=_hash_password("testpass123"),
+    )
+    db_session.add(u)
+    db_session.flush()
+    return u
+
+
 def test_get_guidelines_all(client):
     """测试获取全局指引 (不指定辖区)."""
     resp = client.get("/api/ipr/guidelines")
@@ -382,8 +396,9 @@ def test_template_not_found(client):
     assert resp.status_code == 404
 
 
-def test_registration_crud(client):
+def test_registration_crud(client, db_session):
     """测试IP登记记录CRUD."""
+    _create_user(db_session, email="current_user")
     from PIL import Image
     import random
 

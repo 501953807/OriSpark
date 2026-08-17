@@ -45,7 +45,7 @@ async def calculate_tax(
     return calc
 
 
-async def convert_currency(
+def convert_currency(
     db: Session,
     source_currency: str,
     target_currency: str,

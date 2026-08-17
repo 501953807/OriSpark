@@ -80,7 +80,7 @@ def list_calculations(product_type: Optional[str] = None, db: Session = Depends(
 
 @router.post("/settlement/convert-currency", response_model=ApiResponse)
 async def do_convert(body: CurrencyConvertRequest):
-    source_amt, target_amt = await convert_currency(
+    source_amt, target_amt = convert_currency(
         None, body.source_currency, body.target_currency, body.amount,
     )
     return ApiResponse(data={

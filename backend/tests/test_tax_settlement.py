@@ -116,24 +116,20 @@ class TestMultiCurrencySettlement:
 
 
 class TestConvertCurrency:
-    @pytest.mark.asyncio
-    async def test_cny_to_usd(self):
-        source, target = await convert_currency(None, "CNY", "USD", 100.0)
+    def test_cny_to_usd(self):
+        source, target = convert_currency(None, "CNY", "USD", 100.0)
         assert target == 14.0
 
-    @pytest.mark.asyncio
-    async def test_usd_to_cny(self):
-        source, target = await convert_currency(None, "USD", "CNY", 100.0)
+    def test_usd_to_cny(self):
+        source, target = convert_currency(None, "USD", "CNY", 100.0)
         assert target == 714.0
 
-    @pytest.mark.asyncio
-    async def test_same_currency(self):
-        source, target = await convert_currency(None, "CNY", "CNY", 100.0)
+    def test_same_currency(self):
+        source, target = convert_currency(None, "CNY", "CNY", 100.0)
         assert target == 100.0
 
-    @pytest.mark.asyncio
-    async def test_unknown_currency_fallback(self):
-        source, target = await convert_currency(None, "CNY", "XYZ", 100.0)
+    def test_unknown_currency_fallback(self):
+        source, target = convert_currency(None, "CNY", "XYZ", 100.0)
         assert target == 100.0  # rate = 1.0 fallback
 
 

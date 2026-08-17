@@ -27,7 +27,18 @@ PLATFORM_FEES = {
     "printify": 0.0,   # no extra fee, just base cost
 }
 
-EXCHANGE_RATE = 7.2
+EXCHANGE_RATE = 7.2  # USD to CNY default rate
+
+
+def get_exchange_rate(currency: str = "USD") -> float:
+    """返回指定货币对人民币的汇率（可扩展接入实时汇率 API）."""
+    rates: dict[str, float] = {
+        "USD": 7.2,
+        "EUR": 7.85,
+        "GBP": 9.1,
+        "JPY": 0.048,
+    }
+    return rates.get(currency.upper(), EXCHANGE_RATE)
 
 
 def get_or_create_product(

@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -48,27 +48,17 @@ def post_submit_quote(
     db: Session = Depends(get_db),
 ):
     """参与方提交分润报价."""
-    try:
-        rule = SplitRuleService.submit_quote(
-            db, contract_id, participant_id, role, percentage, quote_amount,
-        )
-        return {"id": rule.id, "role": rule.role, "percentage": rule.percentage}
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Submit quote failed: {e}")
+    rule = SplitRuleService.submit_quote(
+        db, contract_id, participant_id, role, percentage, quote_amount,
+    )
+    return {"id": rule.id, "role": rule.role, "percentage": rule.percentage}
 
 
 @router.post("/lock")
 def post_lock_quotes(contract_id: str, db: Session = Depends(get_db)):
     """锁定各角色最优报价."""
-    try:
-        locked = SplitRuleService.lock_best_quotes(db, contract_id)
-        return {"contract_id": contract_id, "locked_rules": locked}
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Lock quotes failed: {e}")
+    locked = SplitRuleService.lock_best_quotes(db, contract_id)
+    return {"contract_id": contract_id, "locked_rules": locked}
 
 
 @router.put("/rules")
@@ -78,13 +68,8 @@ def put_update_split_rules(
     db: Session = Depends(get_db),
 ):
     """将锁定的分润规则写入合约 split_rules_json."""
-    try:
-        contract = SplitRuleService.update_split_rules_json(db, contract_id, rules)
-        return {"id": contract.id, "status": contract.status}
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Update split rules failed: {e}")
+    contract = SplitRuleService.update_split_rules_json(db, contract_id, rules)
+    return {"id": contract.id, "status": contract.status}
 
 
 @router.get("/calculate")
@@ -94,13 +79,8 @@ def get_calculate_split(
     db: Session = Depends(get_db),
 ):
     """计算分润方案 — 按 split_rules_json 分配金额."""
-    try:
-        result = SplitRuleService.calculate_split(db, contract_id, total_amount)
-        return result
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Calculate split failed: {e}")
+    result = SplitRuleService.calculate_split(db, contract_id, total_amount)
+    return result
 
 
 @router.post("/execute")
@@ -110,18 +90,13 @@ def post_execute_split(
     db: Session = Depends(get_db),
 ):
     """执行分润 — 创建执行日志，调用支付网关释放资金."""
-    try:
-        result = SplitRuleService.execute_split(
-            db,
-            contract_id,
-            total_amount=body.total_amount,
-            batch_id=body.batch_id,
-        )
-        return result
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Execute split failed: {e}")
+    result = SplitRuleService.execute_split(
+        db,
+        contract_id,
+        total_amount=body.total_amount,
+        batch_id=body.batch_id,
+    )
+    return result
 
 
 @router.post("/refund")
@@ -131,12 +106,7 @@ def post_refund_split(
     db: Session = Depends(get_db),
 ):
     """退款分润 — 将最近的成功执行记录标记为 refunded."""
-    try:
-        result = SplitRuleService.refund_split(
-            db, contract_id, reason=body.reason,
-        )
-        return result
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(500, detail=f"Refund split failed: {e}")
+    result = SplitRuleService.refund_split(
+        db, contract_id, reason=body.reason,
+    )
+    return result

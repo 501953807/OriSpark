@@ -7,7 +7,7 @@ import logging
 from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -22,6 +22,7 @@ from app.models.notary import NotaryRecord
 from app.schemas.common import ApiResponse
 from app.deps import require_auth
 from sqlalchemy.exc import SQLAlchemyError
+from app.utils.errors import BusinessException
 
 router = APIRouter()
 
@@ -35,11 +36,13 @@ def list_ip_registrations(
     ip_type: Optional[str] = None,
     jurisdiction: Optional[str] = None,
     status: Optional[str] = None,
+    work_id: Optional[str] = Query(None),
     db: Session = Depends(get_db),
+    user_id: str = Depends(require_auth),
 ):
-    """获取 IP 登记列表 (支持 ip_type/jurisdiction/status 过滤)."""
+    """获取 IP 登记列表 (支持 ip_type/jurisdiction/status/work_id 过滤)."""
     svc = IprService(db)
-    return svc.list_ip_registrations(ip_type, jurisdiction, status)
+    return svc.list_ip_registrations(ip_type, jurisdiction, status, user_id=user_id, work_id=work_id)
 
 
 @router.post("/ipr/registrations", response_model=ApiResponse, dependencies=[Depends(require_auth)])
@@ -67,10 +70,11 @@ def update_ip_registration(
     record_id: str,
     data: UpdateIPRegistrationPayload,
     db: Session = Depends(get_db),
+    user_id: str = Depends(require_auth),
 ):
     """更新 IP 登记记录."""
     svc = IprService(db)
-    return svc.update_ip_registration(record_id, data)
+    return svc.update_ip_registration(record_id, data, user_id=user_id)
 
 
 @router.delete("/ipr/registrations/{record_id}", response_model=ApiResponse, dependencies=[Depends(require_auth)])
@@ -290,7 +294,7 @@ def get_material_list(
     """获取当前状态的材料清单."""
     record = db.query(IPRegistration).filter(IPRegistration.id == id).first()
     if not record:
-        raise HTTPException(status_code=404, detail="记录不存在")
+        raise BusinessException("记录不存在", status_code=404)
     from app.services.ipr_service import _get_material_list_for_status
     return ApiResponse(data=_get_material_list_for_status(record.status, record.ip_type))
 

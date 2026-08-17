@@ -3,11 +3,12 @@
 import json
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import require_auth
+from app.utils.errors import BusinessException
 from app.models.negotiation import TradeNegotiation
 from app.schemas.negotiation import (
     NegotiationCreate,
@@ -75,7 +76,7 @@ def get_detail(negotiation_id: str, db: Session = Depends(get_db)):
     """议价详情."""
     nego = db.query(TradeNegotiation).filter(TradeNegotiation.id == negotiation_id).first()
     if not nego:
-        raise HTTPException(status_code=404, detail="Negotiation not found")
+        raise BusinessException("议价不存在", status_code=404)
     return {"data": _nego_to_dict(nego)}
 
 
