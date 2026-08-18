@@ -32,12 +32,11 @@ class WatermarkPreset(Base):
     __tablename__ = "watermark_presets"
 
     id = Column(String(32), primary_key=True, default=generate_uuid)
-    name = Column(String(100), nullable=False, index=True)
+    name = Column(String(100), nullable=False)
     position = Column(
-        SAEnum(PositionEnum),
+        SAEnum(PositionEnum, values_callable=lambda x: [e.value for e in x]),
         nullable=False,
         default=PositionEnum.TOP_RIGHT,
-        index=True,
     )
     opacity = Column(Integer, nullable=False, default=100)  # 0-100
     text = Column(Text, nullable=True)  # 可选水印文本

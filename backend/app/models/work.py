@@ -51,7 +51,7 @@ class Work(Base):
     # P1.1.1-P1.1.3: 导入模式 (full/hash_only/lowres)
     import_mode = Column(String(20), nullable=False, default="full")
     # P1.1.6: Fork 支持
-    parent_work_id = Column(String(32), ForeignKey("works.id"), nullable=True)
+    parent_work_id = Column(String(32), ForeignKey("works.id", ondelete="CASCADE"), nullable=True)
     # P1.1.8-P1.1.9: 版权管理
     rights = Column(JSON, nullable=True)
     license_type = Column(String(50), nullable=True)

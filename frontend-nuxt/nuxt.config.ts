@@ -9,17 +9,12 @@ export default {
     },
   },
 
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8001',
-        changeOrigin: true,
-      },
-    },
-  },
-
   nitro: {
     serveStatic: true,
+    // API 代理到后端
+    routeRules: {
+      '/api/**': { proxy: 'http://localhost:8001/api/**' },
+    },
   },
 
   routeRules: {
@@ -74,6 +69,10 @@ export default {
 
   modules: [
     '@pinia/nuxt',
+  ],
+
+  plugins: [
+    '~/plugins/ofetch-fix.ts',
   ],
 
   eslint: {

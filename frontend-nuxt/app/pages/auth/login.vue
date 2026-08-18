@@ -17,6 +17,7 @@ const password = ref(DEMO_PASSWORD)
 const submitting = ref(false)
 const errorMsg = ref('')
 const showPassword = ref(false)
+const remember = ref(false)
 
 async function handleLogin() {
   if (!email.value || !password.value) {

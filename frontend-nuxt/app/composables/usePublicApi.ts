@@ -39,9 +39,9 @@ export function fetchGalleryCategories(): Promise<string[]> {
 }
 
 export function subscribeContract(contractId: string): Promise<{ id: string; status: string }> {
-  const token = import.meta.client ? localStorage.getItem('orispark-token') : useCookie('orispark-token').value
+  const token = useCookie('orispark-token').value
   if (!token) throw new Error('未登录')
-  const userStr = import.meta.client ? localStorage.getItem('orispark-user') : useCookie('orispark-user').value
+  const userStr = useCookie('orispark-user').value
   const user = userStr ? JSON.parse(userStr) : {}
   return $fetch(`${getApiBase()}/contracts/${contractId}/subscribe?subscriber_id=${user.id || ''}`, {
     method: 'POST',
