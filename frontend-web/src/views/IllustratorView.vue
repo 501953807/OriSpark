@@ -208,7 +208,7 @@ onMounted(() => {
 .stat-verified .stat-value { color: #16a34a; }
 .stat-pending .stat-value { color: #ea580c; }
 .stat-images .stat-value { color: #8b5cf6; }
-.stat-designs .stat-value { color: #6366f1; }
+.stat-designs .stat-value { color: var(--m-primary, #4F46E5); }
 
 /* ── Tab bar ───────────────────────────────────────────────── */
 .tab-bar {
@@ -266,7 +266,7 @@ onMounted(() => {
 }
 
 .work-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
 }
 
 .work-thumb {

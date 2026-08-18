@@ -117,7 +117,7 @@ function handlePublish() { emit('publish', props.listing.id) }
 
 .listing-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 4px 12px oklch(56% 0.12 170 / .1);
+  box-shadow: 0 4px 12px rgba(124, 124, 129, 0.1);
 }
 
 .listing-card.list-mode {
@@ -162,18 +162,18 @@ function handlePublish() { emit('publish', props.listing.id) }
 }
 
 .status-badge.active {
-  background: oklch(56% 0.12 140 / .2);
-  color: oklch(56% 0.12 140);
+  background: rgba(124, 124, 129, 0.2);
+  color: rgba(22,163,74, 0.06);
 }
 
 .status-badge.draft {
-  background: oklch(75% 0.08 80 / .2);
-  color: oklch(65% 0.1 80);
+  background: rgba(222, 222, 225, 0.2);
+  color: rgba(22,163,74, 0.06);
 }
 
 .status-badge.discontinued {
-  background: oklch(56% 0.12 20 / .15);
-  color: oklch(56% 0.12 20);
+  background: rgba(124, 124, 129, 0.15);
+  color: rgba(220,38,38, 0.06);
 }
 
 /* Content */
@@ -235,13 +235,13 @@ function handlePublish() { emit('publish', props.listing.id) }
 }
 
 .tag-path {
-  background: oklch(65% 0.1 270 / .12);
-  color: oklch(55% 0.15 270);
+  background: rgba(132, 132, 135, 0.12);
+  color: rgba(2,132,199, 0.06);
 }
 
 .tag-status {
-  background: oklch(75% 0.05 80 / .12);
-  color: oklch(65% 0.08 80);
+  background: rgba(222, 222, 225, 0.12);
+  color: rgba(22,163,74, 0.06);
 }
 
 /* Actions */
@@ -269,7 +269,7 @@ function handlePublish() { emit('publish', props.listing.id) }
 
 .action-btn:hover {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / .04);
+  background: rgba(124, 124, 129, 0.04);
 }
 
 .action-btn:disabled {

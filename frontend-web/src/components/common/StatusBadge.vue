@@ -29,22 +29,23 @@ const variant = computed(() => {
   align-items: center;
   gap: 6px;
   padding: 3px 12px;
-  border-radius: 100px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.75rem;
   font-weight: 600;
+  font-family: var(--m-font-family);
 }
 .status-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
 }
-.default { background: rgba(0,0,0,0.04); color: var(--muted); }
-.default .status-dot { background: var(--muted); }
-.success, .confirmed, .active { background: rgba(86,202,0,0.1); color: var(--m-success, #56CA00); }
-.success .status-dot, .confirmed .status-dot, .active .status-dot { background: var(--m-success, #56CA00); }
-.warning, .pending, .pending_review { background: rgba(255,180,0,0.1); color: var(--m-warning, #FFB400); }
-.warning .status-dot, .pending .status-dot, .pending_review .status-dot { background: var(--m-warning, #FFB400); }
-.error, .failed { background: rgba(255,76,81,0.1); color: var(--m-error, #FF4C51); }
-.error .status-dot, .failed .status-dot { background: var(--m-error, #FF4C51); }
-.info, .draft { background: rgba(140,87,255,0.1); color: var(--m-primary, #8C57FF); }
-.info .status-dot, .draft .status-dot { background: var(--m-primary, #8C57FF); }
+.default { background: rgba(100, 116, 139, 0.1); color: var(--m-grey-500, #64748B); }
+.default .status-dot { background: var(--m-grey-500, #64748B); }
+.success, .confirmed, .active { background: rgba(22,163,74,0.1); color: #16A34A; }
+.success .status-dot, .confirmed .status-dot, .active .status-dot { background: #16A34A; }
+.warning, .pending, .pending_review { background: rgba(217,119,6,0.1); color: #D97706; }
+.warning .status-dot, .pending .status-dot, .pending_review .status-dot { background: #D97706; }
+.error, .failed { background: rgba(220,38,38,0.1); color: #DC2626; }
+.error .status-dot, .failed .status-dot { background: #DC2626; }
+.info, .draft { background: rgba(79,70,229,0.1); color: #4F46E5; }
+.info .status-dot, .draft .status-dot { background: #4F46E5; }
 </style>

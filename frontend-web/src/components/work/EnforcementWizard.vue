@@ -376,7 +376,7 @@ watch(() => props.visible, (val) => {
 .wizard-backdrop {
   position: absolute;
   inset: 0;
-  background: oklch(15% 0.005 240 / 0.6);
+  background: rgba(80, 80, 90, 0.6);
   backdrop-filter: blur(4px);
 }
 
@@ -449,7 +449,7 @@ watch(() => props.visible, (val) => {
   right: 10%;
   height: 3px;
   background: var(--border);
-  border-radius: 2px;
+  border-radius: var(--m-radius-xs, 6px);
 }
 .progress-step.active::after { background: var(--accent); }
 .progress-step.done::after { background: #22c55e; }
@@ -519,7 +519,7 @@ watch(() => props.visible, (val) => {
 .action-list li {
   padding: 6px 10px;
   background: #fff;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   margin-bottom: 4px;
 }
 
@@ -557,7 +557,7 @@ watch(() => props.visible, (val) => {
   transition: border-color 0.15s;
 }
 .template-card:hover { border-color: var(--accent); }
-.template-card.selected { border-color: var(--accent); background: oklch(56% 0.12 170 / 0.05); }
+.template-card.selected { border-color: var(--accent); background: rgba(124, 124, 129, 0.05); }
 .template-header {
   display: flex;
   align-items: center;
@@ -612,7 +612,7 @@ watch(() => props.visible, (val) => {
   overflow-y: auto;
   background: #fff;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   width: 100%;
   text-align: left;
   margin: 0;

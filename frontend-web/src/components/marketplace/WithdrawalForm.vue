@@ -141,7 +141,7 @@ function statusLabel(s: string): string {
 
 <style scoped>
 .balance-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-.balance-card { padding: 16px; border-radius: 8px; text-align: center; }
+.balance-card { padding: 16px; border-radius: var(--m-radius-md, 12px); text-align: center; }
 .balance-card.available { background: #d1fae5; }
 .balance-card.frozen { background: #fef3c7; }
 .balance-card.total { background: #dbeafe; }
@@ -149,7 +149,7 @@ function statusLabel(s: string): string {
 .value { font-size: 1.3rem; font-weight: 600; }
 .withdraw-section { margin-bottom: 20px; }
 .withdraw-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.withdraw-fields select, .withdraw-fields input { padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+.withdraw-fields select, .withdraw-fields input { padding: 8px; border: 1px solid var(--border); border-radius: var(--m-radius-sm, 8px); }
 .fee-preview { display: flex; gap: 16px; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
 .error-msg { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }

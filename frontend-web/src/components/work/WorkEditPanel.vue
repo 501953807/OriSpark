@@ -364,7 +364,7 @@ function handleSave() {
 .edit-panel {
   position: fixed; top: 0; right: 0; bottom: 0;
   width: 420px; max-width: 92vw;
-  background: var(--surface); box-shadow: -4px 0 32px oklch(0 0 0 / 0.1);
+  background: var(--surface); box-shadow: -4px 0 32px rgba(0,0,0,1);
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
@@ -405,7 +405,7 @@ function handleSave() {
 .btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); }
-.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger { background: var(--m-error, #DC2626); color: #fff; }
 .animate-slide-right { animation: slideRight 0.2s ease; }
 @keyframes slideRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
 .checkbox-group { gap: 8px; }

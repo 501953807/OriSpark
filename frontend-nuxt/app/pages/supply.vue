@@ -479,7 +479,7 @@ onMounted(() => {
 .tag {
   font-size: 12px;
   padding: 2px 8px;
-  background: rgba(140, 87, 255, 0.1);
+  background: rgba(79, 70, 229, 0.1);
   color: var(--m-primary);
   border-radius: 100px;
   font-weight: 500;

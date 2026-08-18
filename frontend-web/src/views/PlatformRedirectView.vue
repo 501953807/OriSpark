@@ -48,7 +48,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   border-radius: var(--m-radius-sm);
   background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: inline-flex; align-items: center; justify-content: center;
-  color: #FFFFFF;
+  color: var(--m-surface, #fff);
   font-size: 1.8rem; font-weight: 700;
   margin-bottom: 20px;
 }
@@ -82,7 +82,7 @@ const nuxtUrl = computed(() => `${window.location.origin.replace('5174', '3000')
   border: none;
   cursor: pointer;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--m-surface, #fff);
   background: linear-gradient(135deg, #5585FF, #2A52B0);
   text-decoration: none;
   transition: opacity 0.2s;

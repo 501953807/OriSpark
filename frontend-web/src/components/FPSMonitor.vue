@@ -71,7 +71,7 @@ function setLevel(level: ImmersionLevel) {
   background: rgba(15,23,42,0.85);
   color: #e2e8f0;
   border: 1px solid #334155;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   padding: 10px 12px;
   font-size: 0.78rem;
   font-family: 'SF Mono', 'Fira Code', monospace;
@@ -149,9 +149,9 @@ function setLevel(level: ImmersionLevel) {
   flex: 1;
   padding: 4px 0;
   border: 1px solid #334155;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   background: transparent;
-  color: oklch(70% 0.01 260);
+  color: rgba(99,102,241, 0.06);
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 600;
@@ -159,13 +159,13 @@ function setLevel(level: ImmersionLevel) {
 }
 
 .level-btn:hover {
-  border-color: rgba(140, 87, 255, 0.5);
-  color: var(--m-primary, #8C57FF);
+  border-color: rgba(var(--m-primary-rgb, 79, 70, 229), 0.5);
+  color: var(--m-primary, #4F46E5);
 }
 
 .level-btn.active {
-  background: rgba(140, 87, 255, 0.2);
-  border-color: rgba(140, 87, 255, 0.6);
-  color: var(--m-primary, #8C57FF);
+  background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.2);
+  border-color: rgba(var(--m-primary-rgb, 79, 70, 229), 0.6);
+  color: var(--m-primary, #4F46E5);
 }
 </style>

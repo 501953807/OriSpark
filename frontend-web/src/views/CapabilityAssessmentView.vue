@@ -132,7 +132,7 @@ function drawRadar(dimScores: Record<string, number>) {
     // Label
     const lx = cx + (maxR + 20) * Math.cos(angle)
     const ly = cy + (maxR + 20) * Math.sin(angle)
-    ctx.fillStyle = '#374151'
+    ctx.fillStyle = 'var(--m-grey-600, #475569)'
     ctx.font = '11px sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
@@ -251,7 +251,7 @@ h3 { margin-top: 0; font-size: 1rem; }
 .risk-badge {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--m-radius-lg, 16px);
   font-size: 0.85rem;
   font-weight: 700;
   margin: 8px 0;

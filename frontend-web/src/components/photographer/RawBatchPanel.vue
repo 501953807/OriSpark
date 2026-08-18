@@ -69,7 +69,7 @@ function exportCSV() {
 </template>
 
 <style scoped>
-.raw-batch-panel { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.raw-batch-panel { border: 1px solid #e5e7eb; border-radius: var(--m-radius-md, 12px); overflow: hidden; }
 .toolbar { display: flex; gap: 8px; padding: 12px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
 .meta-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .meta-table th, .meta-table td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; text-align: left; }

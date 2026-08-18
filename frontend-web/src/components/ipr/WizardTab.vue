@@ -288,7 +288,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .ip-type-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .ip-type-card { padding:16px; border:2px solid var(--border); border-radius:var(--m-radius-lg); cursor:pointer; transition:all .15s; }
 .ip-type-card:hover { border-color:var(--accent); }
-.ip-type-card.selected { border-color:var(--accent); background:oklch(56% 0.12 170 / 0.05); }
+.ip-type-card.selected { border-color:var(--accent); background:rgba(124, 124, 129, 0.05); }
 .ip-type-icon { font-size:1.5rem; display:block; margin-bottom:6px; }
 .ip-type-card strong { font-size:.9rem; display:block; }
 .ip-type-card p { font-size:.78rem; color:var(--muted); margin:4px 0 0; }
@@ -296,7 +296,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .jurisdiction-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .jur-card { padding:12px 16px; border:2px solid var(--border); border-radius:var(--m-radius-lg); cursor:pointer; transition:all .15s; display:flex; flex-direction:column; gap:4px; }
 .jur-card:hover { border-color:var(--accent); }
-.jur-card.selected { border-color:var(--accent); background:oklch(56% 0.12 170 / 0.05); }
+.jur-card.selected { border-color:var(--accent); background:rgba(124, 124, 129, 0.05); }
 .jur-card strong { font-size:.9rem; }
 .jur-card span { font-size:.8rem; }
 .jur-card small { font-size:.72rem; color:var(--muted); }
@@ -308,8 +308,8 @@ const canProceedWithLawyerConfirm = computed(() => {
 .prefill-result { margin-top:12px; }
 .completeness-bar { display:flex; align-items:center; gap:10px; margin:12px 0; }
 .comp-label { font-size:.82rem; font-weight:600; min-width:50px; }
-.comp-track { flex:1; height:8px; background:var(--border); border-radius:10px; overflow:hidden; }
-.comp-fill { height:100%; background:var(--accent); border-radius:10px; transition:width .3s; }
+.comp-track { flex:1; height:8px; background:var(--border); border-radius:var(--m-radius-md, 12px); overflow:hidden; }
+.comp-fill { height:100%; background:var(--accent); border-radius:var(--m-radius-md, 12px); transition:width .3s; }
 .comp-fill.fill-green { background:var(--green); }
 .comp-fill.fill-red { background:var(--red); }
 .comp-pct { font-size:.82rem; font-weight:700; min-width:40px; }
@@ -320,29 +320,29 @@ const canProceedWithLawyerConfirm = computed(() => {
 .req-mark { color:var(--red); }
 .source-tag { font-size:.65rem; padding:0 4px; border-radius:3px; font-weight:400; }
 .src-work { background:rgba(86,202,0,0.1); color:var(--accent); }
-.src-notary { background:oklch(56% 0.12 260 / 0.1); color:var(--blue); }
-.src-manual { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
-.src-user { background:oklch(62% 0.15 320 / 0.1); color:var(--purple); }
+.src-notary { background:rgba(124, 124, 129, 0.1); color:var(--blue); }
+.src-manual { background:rgba(129, 129, 133, 0.1); color:var(--orange); }
+.src-user { background:rgba(129, 129, 133, 0.1); color:var(--purple); }
 .readonly-val { font-size:.84rem; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--m-radius-sm); color:var(--muted); }
 
 .validate-result { margin-top:16px; }
 .valid-ok { padding:12px; background:rgba(86,202,0,0.08); border-radius:var(--m-radius-sm); font-weight:600; color:var(--accent); }
 .issues-list { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
 .issue-item { padding:8px 12px; border-radius:var(--m-radius-sm); font-size:.82rem; }
-.issue-error { background:oklch(62% 0.18 20 / 0.06); color:var(--red); }
-.issue-warning { background:oklch(62% 0.18 55 / 0.06); color:var(--orange); }
+.issue-error { background:rgba(129, 129, 133, 0.06); color:var(--red); }
+.issue-warning { background:rgba(129, 129, 133, 0.06); color:var(--orange); }
 .issue-item strong { margin:0 4px; }
 
 .export-actions { display:flex; gap:10px; margin-bottom:16px; }
 .export-result { margin-top:16px; }
-.export-disclaimer { padding:8px 12px; background:oklch(62% 0.18 55 / 0.06); border-radius:var(--m-radius-sm); font-size:.8rem; color:var(--orange); margin:10px 0; }
+.export-disclaimer { padding:8px 12px; background:rgba(129, 129, 133, 0.06); border-radius:var(--m-radius-sm); font-size:.8rem; color:var(--orange); margin:10px 0; }
 .preview-table { width:100%; border-collapse:collapse; font-size:.82rem; margin:10px 0; }
 .preview-table td { padding:6px 10px; border-bottom:1px solid var(--border); }
 .preview-table td:first-child { font-weight:600; color:var(--muted); width:30%; }
 .checklist-item { display:flex; flex-wrap:wrap; gap:6px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--border); font-size:.84rem; }
-.item-status { font-size:.72rem; padding:1px 6px; border-radius:4px; }
+.item-status { font-size:.72rem; padding:1px 6px; border-radius:var(--m-radius-xs, 6px); }
 .status-prepared { background:rgba(86,202,0,0.1); color:var(--accent); }
-.status-requires_manual { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
+.status-requires_manual { background:rgba(129, 129, 133, 0.1); color:var(--orange); }
 .item-desc { font-size:.76rem; color:var(--muted); width:100%; margin:0; }
 
 .wizard-nav { display:flex; gap:10px; align-items:center; margin-top:8px; }
@@ -354,11 +354,11 @@ const canProceedWithLawyerConfirm = computed(() => {
 .recommend-input .form-input { flex:1; min-width:120px; }
 .recommend-result { margin-top:12px; }
 .rec-class-item { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--border); font-size:.84rem; }
-.rec-stars { color:oklch(62% 0.18 55); font-size:.82rem; min-width:70px; }
+.rec-stars { color:rgba(22,163,74, 0.06); font-size:.82rem; min-width:70px; }
 .rec-class-item strong { min-width:60px; }
 .rec-reason { color:var(--muted); font-size:.78rem; flex:1; }
 .rec-fee { font-weight:600; color:var(--accent); }
-.rec-summary { margin-top:12px; padding:12px; background:oklch(56% 0.12 170 / 0.05); border-radius:var(--m-radius-sm); }
+.rec-summary { margin-top:12px; padding:12px; background:rgba(124, 124, 129, 0.05); border-radius:var(--m-radius-sm); }
 .rec-summary strong { font-size:.9rem; color:var(--accent); }
 .rec-summary p { font-size:.78rem; color:var(--muted); margin:4px 0 0; }
 
@@ -372,7 +372,7 @@ const canProceedWithLawyerConfirm = computed(() => {
   transition: all .15s; background: var(--surface);
 }
 .audit-option:hover { border-color: var(--accent); }
-.audit-option.selected { border-color: var(--accent); background: oklch(56% .12 170 / .05); }
+.audit-option.selected { border-color: var(--accent); background: rgba(124, 124, 129, 0.05); }
 .audit-option input[type="radio"] { display: none; }
 .audit-radio-circle {
   width: 20px; height: 20px; border-radius: 50%;
@@ -389,7 +389,7 @@ const canProceedWithLawyerConfirm = computed(() => {
 .audit-option-content strong { font-size: .9rem; }
 .audit-option-content span { font-size: .8rem; color: var(--muted); }
 .risk-confirmations {
-  padding: 16px; background: oklch(62% .18 55 / .06);
+  padding: 16px; background: rgba(129, 129, 133, 0.06);
   border-radius: var(--m-radius-sm); margin-bottom: 12px;
 }
 .risk-confirm-item {

@@ -137,7 +137,7 @@ function niceStep(maxVal: number, target: number): number {
 }
 .bar:hover {
   opacity: 0.85;
-  box-shadow: 0 0 12px oklch(56% 0.12 170 / 0.3);
+  box-shadow: 0 0 12px rgba(124, 124, 129, 0.3);
 }
 .chart-x-axis {
   display: flex;

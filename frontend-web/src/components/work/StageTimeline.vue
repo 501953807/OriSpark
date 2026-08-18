@@ -325,7 +325,7 @@ function removeAsset(stageValue: string, index: number) {
   top: 16px;
   bottom: 24px;
   width: 2px;
-  background: oklch(88% 0.008 240);
+  background: rgba(2,132,199, 0.06);
   z-index: 0;
 }
 
@@ -387,14 +387,14 @@ function removeAsset(stageValue: string, index: number) {
 }
 
 .step-node.future {
-  border: 2px solid oklch(78% 0.01 240);
+  border: 2px solid rgba(2,132,199, 0.06);
   background: var(--m-surface-2);
 }
 .node-future {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: oklch(82% 0.008 240);
+  background: rgba(2,132,199, 0.06);
 }
 
 /* Connector line */
@@ -402,7 +402,7 @@ function removeAsset(stageValue: string, index: number) {
   width: 2px;
   flex-grow: 1;
   min-height: 24px;
-  background: oklch(88% 0.008 240);
+  background: rgba(2,132,199, 0.06);
   transition: background 0.3s;
 }
 .step-connector.completed {
@@ -418,7 +418,7 @@ function removeAsset(stageValue: string, index: number) {
   transition: background 0.15s;
 }
 .step-card:hover {
-  background: oklch(97% 0.003 240);
+  background: rgba(2,132,199, 0.06);
 }
 
 .step-header {
@@ -434,12 +434,12 @@ function removeAsset(stageValue: string, index: number) {
 }
 .step-label.completed { color: var(--accent); }
 .step-label.current { color: var(--accent); font-weight: 700; }
-.step-label.future { color: oklch(55% 0.01 240); }
+.step-label.future { color: rgba(2,132,199, 0.06); }
 
 .step-count {
   font-size: 0.7rem;
   color: var(--muted);
-  background: oklch(93% 0.005 240);
+  background: rgba(2,132,199, 0.06);
   padding: 1px 8px;
   border-radius: 100px;
 }
@@ -450,9 +450,9 @@ function removeAsset(stageValue: string, index: number) {
   transition: color 0.2s;
   line-height: 1.4;
 }
-.step-desc.completed { color: oklch(50% 0.01 240); }
+.step-desc.completed { color: rgba(2,132,199, 0.06); }
 .step-desc.current { color: var(--fg); }
-.step-desc.future { color: oklch(70% 0.008 240); }
+.step-desc.future { color: rgba(2,132,199, 0.06); }
 
 /* ===== Expanded content ===== */
 .expanded-assets {
@@ -501,7 +501,7 @@ function removeAsset(stageValue: string, index: number) {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: oklch(0 0 0 / 0.5);
+  background: rgba(0,0,0,5);
   color: #fff;
   border: none;
   font-size: 0.75rem;
@@ -537,7 +537,7 @@ function removeAsset(stageValue: string, index: number) {
 .expanded-notes strong { color: var(--accent); }
 .expanded-notes-empty {
   font-size: 0.75rem;
-  color: oklch(65% 0.008 240);
+  color: rgba(2,132,199, 0.06);
   margin-top: 10px;
   font-style: italic;
 }

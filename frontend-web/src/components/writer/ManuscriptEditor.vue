@@ -271,17 +271,17 @@ function formatDate(dateStr: string): string {
 }
 
 .status-draft {
-  background: oklch(90% 0.04 260 / 0.15);
+  background: rgba(227, 227, 228, 0.15);
   color: #7c3aed;
 }
 
 .status-revising {
-  background: oklch(88% 0.1 35 / 0.15);
+  background: rgba(226, 226, 227, 0.15);
   color: #d97706;
 }
 
 .status-final {
-  background: oklch(85% 0.12 145 / 0.15);
+  background: rgba(225, 225, 227, 0.15);
   color: #16a34a;
 }
 

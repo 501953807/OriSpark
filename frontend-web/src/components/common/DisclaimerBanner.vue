@@ -101,7 +101,7 @@ function onDismiss() {
 .disclaimer-modal {
   max-width: 560px; width: 100%; max-height: 80vh; overflow-y: auto;
   background: var(--bg-card, #fff);
-  border-radius: 12px; padding: 32px;
+  border-radius: var(--m-radius-lg, 16px); padding: 32px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
 .disclaimer-modal-header {
@@ -124,7 +124,7 @@ function onDismiss() {
 .disclaimer-banner {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 14px 16px; margin-bottom: 16px;
-  background: #fff8e1; border: 1px solid #f0c040; border-radius: 8px;
+  background: #fff8e1; border: 1px solid #f0c040; border-radius: var(--m-radius-md, 12px);
   color: #6d4c00; font-size: 0.88rem; line-height: 1.5;
 }
 .disclaimer-banner-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
@@ -144,7 +144,7 @@ function onDismiss() {
 }
 .disclaimer-footer p { margin: 0; }
 
-.btn { padding: 8px 24px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; border: none; }
+.btn { padding: 8px 24px; border-radius: var(--m-radius-md, 12px); font-size: 0.9rem; cursor: pointer; border: none; }
 .btn-primary { background: var(--primary, #5b5fe3); color: #fff; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>

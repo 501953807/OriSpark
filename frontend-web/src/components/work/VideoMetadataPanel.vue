@@ -193,15 +193,15 @@ const hasAnyData = computed(() => {
 .badge-status {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   font-size: 0.78rem;
   font-weight: 600;
 }
 
-.status-pending { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
-.status-processing { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
-.status-completed { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
-.status-failed { background: oklch(56% 0.16 0 / 0.1); color: #ef4444; }
+.status-pending { background: rgba(129, 129, 133, 0.12); color: #b45309; }
+.status-processing { background: rgba(126, 126, 130, 0.1); color: var(--blue); }
+.status-completed { background: rgba(124, 124, 129, 0.12); color: #16a34a; }
+.status-failed { background: rgba(124, 124, 129, 0.1); color: #ef4444; }
 
 .platform-chip {
   display: inline-flex;
@@ -209,7 +209,7 @@ const hasAnyData = computed(() => {
   gap: 4px;
   padding: 2px 10px;
   margin: 2px 4px 2px 0;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   font-size: 0.78rem;
   font-weight: 500;
   border: 1px solid var(--border);

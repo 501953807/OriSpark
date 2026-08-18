@@ -140,9 +140,9 @@ const onSort = (accessor: string) => {
 .m-table-wrapper {
   width: 100%;
   background: var(--m-surface);
-  border-radius: var(--m-radius-lg);
+  border-radius: var(--m-radius-lg, 12px);
   overflow: hidden;
-  border: 1px solid var(--m-border);
+  border: 1px solid var(--m-border, rgba(15,23,42,0.08));
 }
 
 .m-table {
@@ -153,7 +153,7 @@ const onSort = (accessor: string) => {
 
 /* ── Header ── */
 .m-table__header {
-  background: #f6f7fb;
+  background: var(--m-bg-subtle, #F1F5F9);
   padding: 0.75rem 1rem;
   font-weight: var(--m-font-weight-semibold);
   font-size: var(--m-font-size-sm);
@@ -165,10 +165,10 @@ const onSort = (accessor: string) => {
   user-select: none;
 }
 .m-table__header--sorted {
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  color: #4F46E5;
 }
 .m-table__header:hover {
-  background: #eef0f4;
+  background: var(--m-surface-2, #E2E8F0);
 }
 .m-table__header-text {
   display: inline;
@@ -183,10 +183,10 @@ const onSort = (accessor: string) => {
   display: inline-block;
 }
 .m-table__row--striped {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.02);
+  background: rgba(79, 70, 229, 0.02);
 }
 .m-table__row--striped:hover {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.05);
+  background: rgba(79, 70, 229, 0.05);
 }
 
 /* ── Body ── */
@@ -198,7 +198,7 @@ const onSort = (accessor: string) => {
   border-bottom: none;
 }
 .m-table__row--hover:hover {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.04);
+  background: rgba(79, 70, 229, 0.04);
 }
 .m-table__cell {
   padding: 0.75rem 1rem;
@@ -245,12 +245,12 @@ const onSort = (accessor: string) => {
   transition: all var(--m-transition-fast);
 }
 .m-table__page-btn:hover:not(:disabled) {
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border-color: #4F46E5;
+  color: #4F46E5;
 }
 .m-table__page-btn--active {
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: #4F46E5;
+  border-color: #4F46E5;
   color: var(--m-on-primary);
 }
 .m-table__page-btn:disabled {

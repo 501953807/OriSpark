@@ -165,7 +165,7 @@ function selectLicense(opt: LicenseOption) {
 }
 .license-option:hover {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / 0.05);
+  background: rgba(124, 124, 129, 0.05);
 }
 .license-option.selected {
   border-color: var(--accent);

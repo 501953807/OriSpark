@@ -442,11 +442,11 @@ onMounted(() => {
 }
 
 .table-row:hover {
-  background: rgba(140, 87, 255, 0.04);
+  background: rgba(79, 70, 229, 0.04);
 }
 
 .table-row.top-ranker {
-  background: rgba(140, 87, 255, 0.06);
+  background: rgba(79, 70, 229, 0.06);
 }
 
 .table-row:last-child {

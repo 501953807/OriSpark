@@ -56,7 +56,7 @@ function formatFileSize(bytes: number): string {
 .file-info-card { padding: 16px 20px; }
 .file-info-card h3 { margin: 0 0 12px; font-size: 0.88rem; }
 .info-list { display: flex; flex-direction: column; gap: 6px; }
-.info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; font-size: 0.78rem; padding: 4px 0; border-bottom: 1px solid oklch(94% 0.003 240); }
+.info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; font-size: 0.78rem; padding: 4px 0; border-bottom: 1px solid rgba(2,132,199, 0.06); }
 .info-row:last-child { border-bottom: none; }
 .il { color: var(--muted); font-weight: 600; flex-shrink: 0; }
 .iv { text-align: right; word-break: break-all; }

@@ -202,9 +202,9 @@ onMounted(fetchBrands)
 .brand-card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .brand-name { font-weight: 700; font-size: 1rem; }
 .brand-actions { display: flex; align-items: center; gap: 8px; }
-.brand-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
-.brand-status.active { background: oklch(96% 0.05 145); color: oklch(40% 0.08 145); }
-.brand-status.paused { background: oklch(96% 0.01 90); color: var(--muted); }
+.brand-status { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
+.brand-status.active { background: rgba(22,163,74, 0.06); color: rgba(22,163,74, 0.06); }
+.brand-status.paused { background: rgba(217,119,6, 0.06); color: var(--muted); }
 .brand-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
 .brand-stats { display: flex; gap: 16px; font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 .brand-results { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }

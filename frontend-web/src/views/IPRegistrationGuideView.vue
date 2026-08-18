@@ -280,10 +280,10 @@ function confidenceLabel(c: number): string {
 .recommend-sub { font-size: 0.78rem; color: var(--m-grey-500); }
 .recommend-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 2px; }
 .recommend-confidence { text-align: right; }
-.conf-badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; }
-.conf-badge.high { background: oklch(60% 0.2 150 / .15); color: oklch(50% 0.18 150); }
-.conf-badge.medium { background: oklch(80% 0.15 80 / .15); color: oklch(55% 0.2 80); }
-.conf-badge.low { background: oklch(80% 0.1 30 / .15); color: oklch(55% 0.22 30); }
+.conf-badge { display: inline-block; padding: 2px 8px; border-radius: var(--m-radius-full, 9999px); font-size: 0.72rem; font-weight: 600; }
+.conf-badge.high { background: rgba(128, 128, 132, 0.15); color: rgba(22,163,74, 0.06); }
+.conf-badge.medium { background: rgba(224, 224, 226, 0.15); color: rgba(22,163,74, 0.06); }
+.conf-badge.low { background: rgba(224, 224, 226, 0.15); color: rgba(234,88,12, 0.06); }
 .conf-pct { display: block; font-size: 0.82rem; font-weight: 600; margin-top: 2px; }
 
 /* Step bar */
@@ -304,7 +304,7 @@ function confidenceLabel(c: number): string {
 .step-item.active .step-label { color: var(--m-on-surface); font-weight: 600; }
 .step-desc { font-size: 0.85rem; color: var(--m-grey-500); padding: 8px 0; border-top: 1px solid var(--m-border); }
 .step-actions { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
-.step-complete { font-size: 0.9rem; color: oklch(50% 0.18 150); font-weight: 600; }
+.step-complete { font-size: 0.9rem; color: rgba(22,163,74, 0.06); font-weight: 600; }
 
 /* Material list */
 .material-section { margin-bottom: 12px; }

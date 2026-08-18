@@ -136,18 +136,18 @@ function formatSize(bytes: number): string {
 .mode-toggle {
   display: flex;
   gap: 4px;
-  background: oklch(90% 0.005 240);
+  background: rgba(2,132,199, 0.06);
   border-radius: var(--m-radius-sm);
   padding: 3px;
 }
 .dark .mode-toggle {
-  background: oklch(28% 0.01 240);
+  background: rgba(2,132,199, 0.06);
 }
 .mode-btn {
   flex: 1;
   padding: 6px 14px;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   background: transparent;
   font-size: 0.8rem;
   font-weight: 500;
@@ -159,7 +159,7 @@ function formatSize(bytes: number): string {
 .mode-btn.active {
   background: var(--surface);
   color: var(--fg);
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,08);
   font-weight: 600;
 }
 .mode-btn:hover:not(.active) {
@@ -177,11 +177,11 @@ function formatSize(bytes: number): string {
   background: var(--bg-subtle);
 }
 .dark .drop-zone {
-  background: var(--sidebar-bg, oklch(99% 0.002 260));
+  background: var(--sidebar-bg, rgba(99,102,241, 0.06));
 }
 .drop-zone:hover, .drop-zone.drag-over {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / 0.05);
+  background: rgba(124, 124, 129, 0.05);
 }
 .dz-input {
   position: absolute;

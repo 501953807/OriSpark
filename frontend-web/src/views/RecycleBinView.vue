@@ -259,7 +259,7 @@ onUnmounted(() => {
   border-top: 1px solid var(--m-border);
 }
 .btn-sm { padding: 4px 10px; font-size: 0.75rem; }
-.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger { background: var(--m-error, #DC2626); color: #fff; }
 .btn-danger:hover { background: #c53030; }
 
 /* List view */

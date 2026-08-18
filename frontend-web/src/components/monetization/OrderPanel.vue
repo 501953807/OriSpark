@@ -190,11 +190,11 @@ onMounted(loadOrders)
   padding: 1px 8px; border-radius: 100px; font-size: .65rem; font-weight: 600;
 }
 
-.order-status.status-draft { background: oklch(75% 0.08 80 / .15); color: oklch(65% 0.1 80); }
-.order-status.status-confirmed { background: oklch(56% 0.12 140 / .15); color: oklch(56% 0.12 140); }
-.order-status.status-shipped { background: oklch(65% 0.1 270 / .15); color: oklch(55% 0.15 270); }
-.order-status.status-delivered { background: oklch(56% 0.12 140 / .2); color: oklch(46% 0.14 140); }
-.order-status.status-cancelled { background: oklch(56% 0.12 20 / .15); color: oklch(56% 0.12 20); }
+.order-status.status-draft { background: rgba(222, 222, 225, 0.15); color: rgba(22,163,74, 0.06); }
+.order-status.status-confirmed { background: rgba(124, 124, 129, 0.15); color: rgba(22,163,74, 0.06); }
+.order-status.status-shipped { background: rgba(132, 132, 135, 0.15); color: rgba(2,132,199, 0.06); }
+.order-status.status-delivered { background: rgba(124, 124, 129, 0.2); color: rgba(22,163,74, 0.06); }
+.order-status.status-cancelled { background: rgba(124, 124, 129, 0.15); color: rgba(220,38,38, 0.06); }
 
 .order-actions { display: flex; gap: 4px; }
 .ext-btn {
@@ -205,7 +205,7 @@ onMounted(loadOrders)
 /* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: oklch(20% 0.02 180 / .5);
+  background: rgba(80, 80, 90, 0.5);
   display: flex; align-items: center; justify-content: center; z-index: 100;
 }
 

@@ -84,7 +84,7 @@ const currentIndex = computed(() => {
 .node-connector {
   width: 24px;
   height: 2px;
-  background: oklch(85% 0.01 240);
+  background: rgba(2,132,199, 0.06);
   flex-shrink: 0;
   transition: background 0.2s;
 }
@@ -101,7 +101,7 @@ const currentIndex = computed(() => {
 .progress-node.current .node-dot {
   background: var(--stage-color, #6B7280);
   border-color: var(--stage-color, #6B7280);
-  box-shadow: 0 0 0 4px oklch(60% 0.15 var(--hue, 200) / 0.2);
+  box-shadow: 0 0 0 4px rgba(var(--m-primary-rgb, 79,70,229), 0.2);
   animation: pulse 2s infinite;
 }
 
@@ -124,7 +124,7 @@ const currentIndex = computed(() => {
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 4px oklch(60% 0.15 var(--hue, 200) / 0.2); }
-  50% { box-shadow: 0 0 0 8px oklch(60% 0.15 var(--hue, 200) / 0.1); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(var(--m-primary-rgb, 79,70,229), 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(var(--m-primary-rgb, 79,70,229), 0.1); }
 }
 </style>

@@ -321,7 +321,7 @@ const STATUS_MAP: Record<string, string> = {
 
 .platform-card.distributing {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px oklch(var(--accent) / 0.15);
+  box-shadow: 0 0 0 2px rgba(var(--m-primary-rgb, 79,70,229), 0.15);
 }
 
 .card-header {
@@ -347,11 +347,11 @@ const STATUS_MAP: Record<string, string> = {
   font-size: 0.7rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
 }
 
 .status-idle {
-  background: oklch(50% 0.02 240 / 0.12);
+  background: rgba(80, 80, 90, 0.12);
   color: var(--fg);
 }
 

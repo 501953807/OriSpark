@@ -109,33 +109,33 @@ const isFocused = ref(false)
   gap: 0.125rem;
   padding-inline-start: 0.75rem;
   font-size: 0.9375rem;
-  color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.6);
+  color: rgba(15, 23, 42, 0.6);
   pointer-events: none;
   transform-origin: left top;
   transition: all var(--m-transition-fast);
   z-index: 1;
 }
 .m-field__required {
-  color: var(--m-error);
+  color: var(--m-error, #DC2626);
   font-size: 0.75rem;
 }
 
 /* ── Variant: Filled ── */
 .m-field--variant-filled .m-field__wrapper {
-  background: var(--m-bg-subtle, #F4F5FA);
+  background: var(--m-bg-subtle, #F1F5F9);
   border-color: transparent;
   border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
 }
 .m-field--variant-filled.m-field--focused .m-field__wrapper {
-  background: var(--m-bg-subtle, #F4F5FA);
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: var(--m-bg-subtle, #F1F5F9);
+  border-color: #4F46E5;
   border-width: 2px;
   border-bottom-color: transparent;
   border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
 }
 .m-field--variant-filled.m-field--error .m-field__wrapper {
-  background: var(--m-bg-subtle, #F4F5FA);
-  border-color: var(--m-error);
+  background: var(--m-bg-subtle, #F1F5F9);
+  border-color: var(--m-error, #DC2626);
   border-width: 2px;
   border-bottom-color: transparent;
   border-radius: var(--m-radius-sm) var(--m-radius-sm) 0 0;
@@ -147,19 +147,19 @@ const isFocused = ref(false)
   display: flex;
   align-items: center;
   min-height: 56px;
-  border: 1px solid rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.23);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: var(--m-radius-sm);
   background: transparent;
   transition: border-color var(--m-transition-fast);
   overflow: hidden;
 }
 .m-field--focused .m-field__wrapper {
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border-color: #4F46E5;
   border-width: 2px;
   padding: 0 0 0 0;
 }
 .m-field--error .m-field__wrapper {
-  border-color: var(--m-error);
+  border-color: var(--m-error, #DC2626);
   border-width: 2px;
 }
 .m-field__wrapper--with-prefix {
@@ -174,7 +174,7 @@ const isFocused = ref(false)
 .m-field__suffix {
   display: flex;
   align-items: center;
-  color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.6);
+  color: rgba(15, 23, 42, 0.6);
   font-size: 0.875rem;
 }
 
@@ -186,7 +186,7 @@ const isFocused = ref(false)
   padding: 1.25rem 0.75rem 0.375rem;
   font-size: 0.9375rem;
   font-family: var(--m-font-family);
-  color: var(--m-on-surface);
+  color: var(--m-on-surface, #0F172A);
   background: transparent;
   border: none;
   outline: none;
@@ -196,7 +196,7 @@ const isFocused = ref(false)
   color: transparent;
 }
 .m-field__input--error {
-  color: var(--m-error);
+  color: var(--m-error, #DC2626);
 }
 .m-field--disabled .m-field__input {
   opacity: var(--m-disabled-opacity);
@@ -210,13 +210,13 @@ const isFocused = ref(false)
 }
 .m-field--focused .m-field__label,
 .m-field__label--floating {
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  color: #4F46E5;
 }
 .m-field--error .m-field__label {
-  color: var(--m-error);
+  color: var(--m-error, #DC2626);
 }
 .m-field--disabled .m-field__label {
-  color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.38);
+  color: rgba(15, 23, 42, 0.38);
 }
 
 /* ── Underline ── */
@@ -226,7 +226,7 @@ const isFocused = ref(false)
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.23);
+  background: rgba(15, 23, 42, 0.12);
   transform: scaleX(0);
   transform-origin: bottom;
   transition: all var(--m-transition-fast);
@@ -234,28 +234,28 @@ const isFocused = ref(false)
 }
 .m-field--focused .m-field__underline {
   transform: scaleX(1);
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: #4F46E5;
 }
 .m-field--error .m-field__underline {
-  background: var(--m-error);
+  background: var(--m-error, #DC2626);
   transform: scaleX(1);
 }
 .m-field__underline--error {
-  background: var(--m-error) !important;
+  background: var(--m-error, #DC2626) !important;
 }
 .m-field--disabled .m-field__underline {
-  background: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.12);
+  background: rgba(15, 23, 42, 0.08);
 }
 
 /* ── Hint/Error ── */
 .m-field__hint {
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
-  color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.6);
+  color: rgba(15, 23, 42, 0.6);
 }
 .m-field__error {
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
-  color: var(--m-error);
+  color: var(--m-error, #DC2626);
 }
 </style>

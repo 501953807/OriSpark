@@ -72,7 +72,7 @@ function formatSize(bytes: number): string {
 .card-badge {
   position: absolute; top: 8px; left: 8px;
   padding: 2px 8px; border-radius: 100px;
-  background: oklch(0 0 0 / 0.55); color: #fff;
+  background: rgba(0,0,0,55); color: #fff;
   font-size: 0.62rem; font-weight: 700;
 }
 .card-verified {

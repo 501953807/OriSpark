@@ -42,7 +42,7 @@ function buildPlatformChart() {
       radius: ['45%', '75%'],
       itemStyle: {
         borderRadius: 8,
-        borderColor: 'oklch(100% 0 0)',
+        borderColor: 'rgba(220,38,38, 0.06)',
         borderWidth: 2,
       },
       data: Object.entries(byPlatform).map(([name, value]) => ({ name, value })),
@@ -78,8 +78,8 @@ function buildMonthChart() {
       itemStyle: {
         borderRadius: [6, 6, 0, 0],
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: 'oklch(56% 0.12 170)' },
-          { offset: 1, color: 'oklch(62% 0.16 260)' },
+          { offset: 0, color: 'rgba(79,70,229, 0.06)' },
+          { offset: 1, color: 'rgba(99,102,241, 0.06)' },
         ]),
       },
     }],

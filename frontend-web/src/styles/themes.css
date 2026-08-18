@@ -1,98 +1,97 @@
 /* ============================================
    OriStudio Theme Presets
-   三套主题预设，通过 data-theme 属性切换
-   ── Note: These override --accent etc. for legacy components
-              while materio-tokens.css provides --m-* variables
+   四套主题预设，通过 data-theme 属性切换
+   ── 与 materio-tokens.css 的 --m-* 变量联动
    ============================================ */
 
 /* ── 主题 1：冷白（默认商务）── */
 [data-theme="cold-white"] {
-  --bg:            var(--m-bg, #FFFFFF);
-  --bg-subtle:     var(--m-bg-subtle, #F4F5FA);
-  --surface:       var(--m-surface, #FFFFFF);
-  --surface-2:     var(--m-surface-2, #EEF0F4);
-  --surface-hover: #F0F2F5;
-  --fg:            var(--m-on-surface, #2E263D);
-  --fg-subtle:     #6C757D;
-  --muted:         var(--m-grey-500, #9E9E9E);
-  --muted-dim:     var(--m-grey-300, #E0E0E0);
-  --border:        var(--m-border, rgba(46, 38, 61, 0.12));
-  --border-strong: var(--m-border-strong, rgba(46, 38, 61, 0.2));
-  --accent:        rgb(var(--m-primary-rgb, 140, 87, 255));
-  --accent-dim:    rgba(var(--m-primary-rgb, 140, 87, 255), 0.08);
-  --accent-fg:     var(--m-on-primary, #FFFFFF);
-  --accent-hover:  var(--m-primary-darken-1, #7E44F0);
-  --sidebar-bg:    var(--m-sidebar-bg, #FFFFFF);
-  --sidebar-fg:    var(--m-sidebar-fg, #2E263D);
-  --sidebar-fg-dim:var(--m-sidebar-fg-dim, #8A8D93);
-  --sidebar-active: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08);
-  --success:       var(--m-success, #56CA00);
-  --warning:       var(--m-warning, #FFB400);
-  --danger:        var(--m-error, #FF4C51);
-  --info:          var(--m-info, #16B1FF);
-  --shadow-color:  rgba(var(--m-shadow-key-umbra-color, 46, 38, 61), 0.08);
-  --grad1:         rgb(var(--m-primary-rgb, 140, 87, 255));
-  --grad2:         var(--m-info, #16B1FF);
-  --grad3:         var(--m-success, #56CA00);
+  --bg:            var(--m-bg, var(--m-surface, #fff));
+  --bg-subtle:     var(--m-bg-subtle, #F1F5F9);
+  --surface:       var(--m-surface, var(--m-surface, #fff));
+  --surface-2:     var(--m-surface-2, #E2E8F0);
+  --surface-hover: #F8FAFC;
+  --fg:            var(--m-on-surface, #0F172A);
+  --fg-subtle:     #64748B;
+  --muted:         var(--m-grey-500, #64748B);
+  --muted-dim:     var(--m-grey-300, #CBD5E1);
+  --border:        var(--m-border, rgba(15, 23, 42, 0.08));
+  --border-strong: var(--m-border-strong, rgba(15, 23, 42, 0.15));
+  --accent:        rgb(var(--m-primary-rgb, 79, 70, 229));
+  --accent-dim:    rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
+  --accent-fg:     var(--m-on-primary, var(--m-surface, #fff));
+  --accent-hover:  var(--m-primary-darken-1, #4338CA);
+  --sidebar-bg:    var(--m-sidebar-bg, var(--m-surface, #fff));
+  --sidebar-fg:    var(--m-sidebar-fg, #0F172A);
+  --sidebar-fg-dim:var(--m-sidebar-fg-dim, #64748B);
+  --sidebar-active: rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
+  --success:       var(--m-success, #16A34A);
+  --warning:       var(--m-warning, #D97706);
+  --danger:        var(--m-error, #DC2626);
+  --info:          var(--m-info, #0284C7);
+  --shadow-color:  rgba(15, 23, 42, 0.06);
+  --grad1:         rgb(var(--m-primary-rgb, 79, 70, 229));
+  --grad2:         #3730A3;
+  --grad3:         #0284C7;
 }
 
 /* ── 主题 2：暖灰 ── */
 [data-theme="warm-gray"] {
   --bg:            #FAFAF8;
-  --bg-subtle:     var(--m-bg-subtle, #F4F5FA);
-  --surface:       var(--m-surface, #FFFFFF);
-  --surface-2:     #F8F7F5;
+  --bg-subtle:     var(--m-bg-subtle, #F1F5F9);
+  --surface:       var(--m-surface, var(--m-surface, #fff));
+  --surface-2:     #F5F5F4;
   --surface-hover: #F0EDE9;
-  --fg:            #2C2A28;
-  --fg-subtle:     #6E6B67;
-  --muted:         #9A9590;
-  --muted-dim:     #B8B3AD;
-  --border:        #E8E4DF;
-  --border-strong: #D4CFC9;
-  --accent:        rgb(var(--m-primary-rgb, 140, 87, 255));
-  --accent-dim:    rgba(var(--m-primary-rgb, 140, 87, 255), 0.08);
-  --accent-fg:     var(--m-on-primary, #FFFFFF);
-  --accent-hover:  var(--m-primary-darken-1, #7E44F0);
-  --sidebar-bg:    var(--m-sidebar-bg, #FFFFFF);
-  --sidebar-fg:    #2C2A28;
-  --sidebar-fg-dim:#9A9590;
-  --sidebar-active: rgba(var(--m-primary-rgb, 140, 87, 255), 0.08);
-  --success:       #10B981;
-  --warning:       var(--m-warning, #FFB400);
-  --danger:        var(--m-error, #FF4C51);
-  --info:          var(--m-info, #16B1FF);
-  --shadow-color:  rgba(44, 42, 40, 0.08);
-  --grad1:         rgb(var(--m-primary-rgb, 140, 87, 255));
-  --grad2:         #2D4A9E;
-  --grad3:         #1AE053;
+  --fg:            #1C1917;
+  --fg-subtle:     #57534E;
+  --muted:         #78716C;
+  --muted-dim:     #A8A29E;
+  --border:        #E7E5E4;
+  --border-strong: #D6D3D1;
+  --accent:        rgb(var(--m-primary-rgb, 79, 70, 229));
+  --accent-dim:    rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
+  --accent-fg:     var(--m-on-primary, var(--m-surface, #fff));
+  --accent-hover:  var(--m-primary-darken-1, #4338CA);
+  --sidebar-bg:    var(--m-sidebar-bg, var(--m-surface, #fff));
+  --sidebar-fg:    #1C1917;
+  --sidebar-fg-dim:#78716C;
+  --sidebar-active: rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
+  --success:       #16A34A;
+  --warning:       var(--m-warning, #D97706);
+  --danger:        var(--m-error, #DC2626);
+  --info:          var(--m-info, #0284C7);
+  --shadow-color:  rgba(28, 25, 23, 0.08);
+  --grad1:         rgb(var(--m-primary-rgb, 79, 70, 229));
+  --grad2:         #1E3A5F;
+  --grad3:         #16A34A;
 }
 
 /* ── 主题 3：深蓝（深色模式）── */
 [data-theme="deep-blue"] {
-  --bg:            #0F1421;
-  --bg-subtle:     #161D2F;
-  --surface:       #1A2236;
-  --surface-2:     #1E2740;
-  --surface-hover: #242E48;
-  --fg:            #E8ECF4;
+  --bg:            #0F172A;
+  --bg-subtle:     #1E293B;
+  --surface:       #1E293B;
+  --surface-2:     #334155;
+  --surface-hover: #334155;
+  --fg:            #F1F5F9;
   --fg-subtle:     #94A3B8;
   --muted:         #64748B;
   --muted-dim:     #475569;
-  --border:        #2A3550;
-  --border-strong: #374361;
+  --border:        #334155;
+  --border-strong: #475569;
   --accent:        #6366F1;
   --accent-dim:    rgba(99, 102, 241, 0.15);
-  --accent-fg:     #FFFFFF;
+  --accent-fg:     var(--m-surface, #fff);
   --accent-hover:  #818CF8;
-  --sidebar-bg:    #131927;
-  --sidebar-fg:    #E8ECF4;
+  --sidebar-bg:    #0F172A;
+  --sidebar-fg:    #F1F5F9;
   --sidebar-fg-dim:#64748B;
   --sidebar-active: rgba(99, 102, 241, 0.15);
-  --success:       #1AE053;
+  --success:       #22C55E;
   --warning:       #F59E0B;
   --danger:        #EF4444;
   --info:          #0EA5E9;
-  --shadow-color:  rgba(0, 0, 0, 0.3);
+  --shadow-color:  rgba(0, 0, 0, 0.4);
   --grad1:         #6366F1;
   --grad2:         #8B5CF6;
   --grad3:         #EC4899;
@@ -111,20 +110,20 @@
   --muted-dim:     #475569;
   --border:        #334155;
   --border-strong: #475569;
-  --accent:        rgb(var(--m-primary-rgb, 140, 87, 255));
-  --accent-dim:    rgba(var(--m-primary-rgb, 140, 87, 255), 0.15);
-  --accent-fg:     var(--m-on-primary, #FFFFFF);
-  --accent-hover:  var(--m-primary-darken-1, #7E44F0);
+  --accent:        rgb(var(--m-primary-rgb, 79, 70, 229));
+  --accent-dim:    rgba(var(--m-primary-rgb, 79, 70, 229), 0.15);
+  --accent-fg:     var(--m-on-primary, var(--m-surface, #fff));
+  --accent-hover:  var(--m-primary-darken-1, #4338CA);
   --sidebar-bg:    #0f172a;
   --sidebar-fg:    #E2E8F0;
   --sidebar-fg-dim:#64748B;
-  --sidebar-active: rgba(var(--m-primary-rgb, 140, 87, 255), 0.12);
-  --success:       #1AE053;
+  --sidebar-active: rgba(var(--m-primary-rgb, 79, 70, 229), 0.12);
+  --success:       #22C55E;
   --warning:       #F59E0B;
   --danger:        #EF4444;
   --info:          #0EA5E9;
   --shadow-color:  rgba(0, 0, 0, 0.4);
-  --grad1:         rgb(var(--m-primary-rgb, 140, 87, 255));
+  --grad1:         rgb(var(--m-primary-rgb, 79, 70, 229));
   --grad2:         #0EA5E9;
-  --grad3:         #1AE053;
+  --grad3:         #22C55E;
 }

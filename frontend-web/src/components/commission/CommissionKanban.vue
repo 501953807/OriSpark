@@ -352,7 +352,7 @@ export default defineComponent({
 
 .kanban-column.drag-over {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / 0.04);
+  background: rgba(124, 124, 129, 0.04);
 }
 
 .column-header {
@@ -373,7 +373,7 @@ export default defineComponent({
   background: var(--border);
   color: var(--muted);
   padding: 1px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   font-weight: 600;
 }
 
@@ -408,7 +408,7 @@ export default defineComponent({
 }
 
 .kanban-card:hover {
-  box-shadow: 0 2px 10px oklch(0 0 0 / 0.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,06);
   transform: translateY(-1px);
 }
 
@@ -441,16 +441,16 @@ export default defineComponent({
 .card-status-badge {
   font-size: 0.68rem;
   padding: 2px 8px;
-  border-radius: 8px;
+  border-radius: var(--m-radius-md, 12px);
   font-weight: 600;
   flex-shrink: 0;
   white-space: nowrap;
 }
 
-.status-brief { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
-.status-proposal { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
-.status-production { background: oklch(58% 0.16 280 / 0.1); color: var(--purple); }
-.status-delivery { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
+.status-brief { background: rgba(129, 129, 133, 0.12); color: #b45309; }
+.status-proposal { background: rgba(126, 126, 130, 0.1); color: var(--blue); }
+.status-production { background: rgba(126, 126, 130, 0.1); color: var(--purple); }
+.status-delivery { background: rgba(124, 124, 129, 0.12); color: #16a34a; }
 .status-settlement { background: var(--border); color: var(--muted); }
 
 .card-title {
@@ -496,14 +496,14 @@ export default defineComponent({
   flex: 1;
   height: 6px;
   background: var(--border);
-  border-radius: 3px;
+  border-radius: var(--m-radius-xs, 6px);
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, #5585FF, #2A52B0);
-  border-radius: 3px;
+  border-radius: var(--m-radius-xs, 6px);
   transition: width 0.3s ease;
 }
 

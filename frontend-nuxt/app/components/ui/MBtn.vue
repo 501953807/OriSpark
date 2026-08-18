@@ -101,7 +101,7 @@ defineEmits<{ (e: 'click', event: MouseEvent): void }>()
   color: var(--m-primary);
 }
 .m-btn--variant-tonal:hover:not(:disabled) {
-  background: rgba(140, 87, 255, 0.2);
+  background: rgba(79, 70, 229, 0.2);
 }
 
 /* Sizes */

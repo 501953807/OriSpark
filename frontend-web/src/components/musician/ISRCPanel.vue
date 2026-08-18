@@ -352,17 +352,17 @@ async function handleApply() {
 }
 
 .status-not-applied {
-  background: oklch(50% 0.02 240 / 0.1);
+  background: rgba(80, 80, 90, 0.1);
   color: var(--muted);
 }
 
 .status-applied {
-  background: oklch(60% 0.12 85 / 0.15);
+  background: rgba(128, 128, 132, 0.15);
   color: #d97706;
 }
 
 .status-assigned {
-  background: oklch(60% 0.12 150 / 0.15);
+  background: rgba(128, 128, 132, 0.15);
   color: #16a34a;
 }
 

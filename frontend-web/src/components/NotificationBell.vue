@@ -128,10 +128,10 @@ onMounted(() => {
 .notif-btn { position: relative; }
 .notif-badge {
   position: absolute; top: 2px; right: 2px;
-  background: #e53e3e; color: #fff;
+  background: var(--m-error, #DC2626); color: #fff;
   font-size: 0.6rem; font-weight: 700;
   min-width: 16px; height: 16px;
-  border-radius: 8px;
+  border-radius: var(--m-radius-md, 12px);
   display: flex; align-items: center; justify-content: center; padding: 0 3px;
 }
 .notif-panel {
@@ -165,7 +165,7 @@ onMounted(() => {
 .notif-item-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
 .notif-item-content { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .notif-item-meta { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--muted); }
-.notif-type { padding: 1px 6px; border-radius: 4px; background: var(--m-surface-2); }
+.notif-type { padding: 1px 6px; border-radius: var(--m-radius-xs, 6px); background: var(--m-surface-2); }
 .notif-empty { padding: 40px 16px; text-align: center; color: var(--muted); font-size: 0.88rem; }
 .bell-icon { display: inline-flex; align-items: center; }
 .bell-icon.shake { animation: bell-shake 2s ease-in-out infinite; }

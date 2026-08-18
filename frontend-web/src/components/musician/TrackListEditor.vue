@@ -91,18 +91,18 @@ function onCancel() {
 .track-list-editor { display: flex; flex-direction: column; gap: 4px; }
 .track-row {
   display: flex; align-items: center; gap: 8px; padding: 8px;
-  border: 1px solid #e5e7eb; border-radius: 6px; background: #fff;
+  border: 1px solid #e5e7eb; border-radius: var(--m-radius-sm, 8px); background: #fff;
 }
 .track-row:hover { border-color: #93c5fd; }
 .drag-handle { cursor: grab; color: #9ca3af; font-size: 14px; user-select: none; }
 .track-num { width: 24px; text-align: center; color: #6b7280; font-weight: 600; }
-.track-title { flex: 1; padding: 4px 8px; border: 1px solid transparent; border-radius: 4px; }
+.track-title { flex: 1; padding: 4px 8px; border: 1px solid transparent; border-radius: var(--m-radius-xs, 6px); }
 .track-title:focus { border-color: #3b82f6; outline: none; }
-.track-isrc { width: 120px; padding: 4px 8px; border: 1px solid #e5e7eb; border-radius: 4px; font-family: monospace; }
-.track-duration { width: 80px; padding: 4px 8px; border: 1px solid #e5e7eb; border-radius: 4px; }
+.track-isrc { width: 120px; padding: 4px 8px; border: 1px solid #e5e7eb; border-radius: var(--m-radius-xs, 6px); font-family: monospace; }
+.track-duration { width: 80px; padding: 4px 8px; border: 1px solid #e5e7eb; border-radius: var(--m-radius-xs, 6px); }
 .btn-icon { background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 16px; }
 .btn-delete:hover { color: #ef4444; }
-.btn-add-track { align-self: flex-start; margin-top: 8px; padding: 6px 12px; border: 1px dashed #d1d5db; border-radius: 6px; background: none; cursor: pointer; color: #6b7280; }
+.btn-add-track { align-self: flex-start; margin-top: 8px; padding: 6px 12px; border: 1px dashed #d1d5db; border-radius: var(--m-radius-sm, 8px); background: none; cursor: pointer; color: #6b7280; }
 .btn-add-track:hover { border-color: #3b82f6; color: #3b82f6; }
 .track-actions { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
 </style>

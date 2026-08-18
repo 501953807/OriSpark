@@ -90,7 +90,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-weight: 800;
   background: rgba(255,255,255,0.2);
   padding: 4px 16px;
-  border-radius: 20px;
+  border-radius: var(--m-radius-2xl, 24px);
 }
 .stage-progress-text { font-size: 1.5rem; font-weight: 800; }
 .stage-desc { opacity: 0.9; font-size: 0.9rem; margin-bottom: 16px; }
@@ -98,14 +98,14 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .progress-bar-container {
   height: 8px;
   background: rgba(255,255,255,0.3);
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   overflow: hidden;
   margin-bottom: 16px;
 }
 .progress-bar {
   height: 100%;
   background: #22c55e;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   transition: width 0.5s;
 }
 
@@ -115,7 +115,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   display: inline-block;
   background: rgba(255,255,255,0.2);
   padding: 2px 10px;
-  border-radius: 12px;
+  border-radius: var(--m-radius-lg, 16px);
   font-size: 0.8rem;
   margin: 2px 4px 2px 0;
 }

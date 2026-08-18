@@ -282,13 +282,13 @@ function thumbnailUrl(shot: PhotographerShot): string {
 }
 
 .shot-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
   transform: translateY(-2px);
 }
 
 .shot-card.selected {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px oklch(var(--accent) / 0.2);
+  box-shadow: 0 0 0 2px rgba(var(--m-primary-rgb, 79,70,229), 0.2);
 }
 
 .shot-card.status-pass { border-left: 4px solid #16a34a; }
@@ -326,7 +326,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
   justify-content: center;
   font-size: 0.75rem;
   z-index: 2;
-  box-shadow: 0 2px 8px oklch(0 0 0 / 0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,2);
 }
 
 .check {
@@ -341,12 +341,12 @@ function thumbnailUrl(shot: PhotographerShot): string {
   font-size: 0.68rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   z-index: 2;
-  text-shadow: 0 1px 2px oklch(0 0 0 / 0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,4);
 }
 
-.badge-unreviewed { background: oklch(50% 0.02 240); color: #fff; }
+.badge-unreviewed { background: rgba(2,132,199, 0.06); color: #fff; }
 .badge-pass { background: #16a34a; color: #fff; }
 .badge-hold { background: #ea580c; color: #fff; }
 .badge-reject { background: #ef4444; color: #fff; }
@@ -356,7 +356,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
 .exif-hover {
   position: absolute;
   inset: 0;
-  background: oklch(0 0 0 / 0.65);
+  background: rgba(0,0,0,65);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
@@ -377,7 +377,7 @@ function thumbnailUrl(shot: PhotographerShot): string {
 }
 
 .exif-mini td:first-child {
-  color: oklch(75% 0.02 240);
+  color: rgba(2,132,199, 0.06);
   font-weight: 500;
   white-space: nowrap;
 }

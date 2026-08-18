@@ -189,7 +189,7 @@ loadWorks()
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;

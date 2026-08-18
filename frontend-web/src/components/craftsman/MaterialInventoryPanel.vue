@@ -45,7 +45,7 @@ const onIssue = (name: string) => window.alert(`出库: ${name}`)
 <style scoped>
 .material-inventory-panel { padding: 16px; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.warning-banner { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 13px; }
+.warning-banner { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: var(--m-radius-sm, 8px); margin-bottom: 12px; font-size: 13px; }
 .inventory-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .inventory-table th, .inventory-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; text-align: left; }
 .inventory-table th { background: #f9fafb; font-weight: 600; }

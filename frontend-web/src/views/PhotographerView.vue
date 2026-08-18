@@ -574,7 +574,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
@@ -781,7 +781,7 @@ onMounted(async () => {
 }
 
 .shot-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
 }
 
 .shot-card.status-pass { border-left: 4px solid #16a34a; }
@@ -817,12 +817,12 @@ onMounted(async () => {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   z-index: 2;
   text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
-.badge-unreviewed { background: oklch(50% 0.02 240); color: #fff; }
+.badge-unreviewed { background: rgba(2,132,199, 0.06); color: #fff; }
 .badge-pass { background: #16a34a; color: #fff; }
 .badge-hold { background: #ea580c; color: #fff; }
 .badge-reject { background: #ef4444; color: #fff; }
@@ -1033,7 +1033,7 @@ onMounted(async () => {
 .exif-overlay {
   position: fixed;
   inset: 0;
-  background: oklch(0 0 0 / 0.65);
+  background: rgba(0,0,0,65);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -1162,11 +1162,11 @@ onMounted(async () => {
 .channel-status {
   font-size: 0.72rem;
   padding: 2px 8px;
-  border-radius: 8px;
+  border-radius: var(--m-radius-md, 12px);
   font-weight: 600;
 }
 
-.channel-status.status-submitted { background: oklch(50% 0.02 240 / 0.2); color: var(--m-on-surface); }
+.channel-status.status-submitted { background: rgba(80, 80, 90, 0.2); color: var(--m-on-surface); }
 .channel-status.status-active { background: #16a34a; color: #fff; }
 .channel-status.status-rejected { background: #ef4444; color: #fff; }
 

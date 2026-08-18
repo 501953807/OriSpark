@@ -145,12 +145,12 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .progress-bar-track {
   height: 8px;
   background: var(--bg-secondary);
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   overflow: hidden;
 }
 .progress-bar-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   transition: width 0.3s ease;
 }
 .progress-green { background: #22c55e; }

@@ -93,7 +93,7 @@ onBeforeUnmount(() => { isHovering.value = false })
 .m-tabs__bar {
   position: relative;
   display: flex;
-  border-bottom: 1px solid var(--m-border, rgba(46, 38, 61, 0.12));
+  border-bottom: 1px solid var(--m-border, rgba(15, 23, 42, 0.08));
   gap: 0;
 }
 .m-tabs__item {
@@ -101,9 +101,9 @@ onBeforeUnmount(() => { isHovering.value = false })
   align-items: center;
   gap: 0.375rem;
   padding: 0.75rem 1.25rem;
-  font-size: var(--m-font-size-base, 0.9375rem);
+  font-size: var(--m-font-size-base, 15px);
   font-weight: var(--m-font-weight-medium, 500);
-  color: var(--m-grey-600, #757575);
+  color: var(--m-grey-500, #64748B);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -112,12 +112,12 @@ onBeforeUnmount(() => { isHovering.value = false })
   position: relative;
   z-index: 1;
 }
-.m-tabs__item:hover { color: var(--m-on-surface, #2E263D); }
-.m-tabs__item--active { color: rgb(var(--m-primary-rgb, 85, 133, 255)); }
+.m-tabs__item:hover { color: var(--m-on-surface, #0F172A); }
+.m-tabs__item--active { color: #4F46E5; }
 .m-tabs__item-icon { font-size: 18px; }
 .m-tabs__item-badge {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgba(79, 70, 229, 0.1);
+  color: #4F46E5;
   font-size: 0.6875rem;
   font-weight: 600;
   padding: 0.1rem 0.375rem;
@@ -128,7 +128,7 @@ onBeforeUnmount(() => { isHovering.value = false })
   bottom: -1px;
   left: 0;
   height: 2px;
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: #4F46E5;
   border-radius: 2px 2px 0 0;
   transition: left 250ms cubic-bezier(0.4, 0, 0.2, 1),
               width 250ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -385,7 +385,7 @@ onMounted(loadHistory)
 .tab-btn.active {
   background: var(--m-surface);
   color: var(--m-on-surface);
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,08);
   font-weight: 600;
 }
 .tab-btn:hover:not(.active) {
@@ -441,7 +441,7 @@ onMounted(loadHistory)
 .contract-textarea:focus {
   outline: none;
   border-color: var(--m-primary);
-  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 22, 163, 74), 0.1);
 }
 .contract-textarea::placeholder {
   color: var(--m-grey-500);
@@ -522,20 +522,20 @@ onMounted(loadHistory)
   border-radius: 100px;
 }
 .risk-safe {
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1);
   color: var(--green);
 }
 .risk-low {
-  background: oklch(70% 0.15 100 / 0.1);
+  background: rgba(136, 136, 139, 0.1);
   color: #84cc16;
 }
 .risk-medium {
-  background: oklch(62% 0.18 55 / 0.1);
+  background: rgba(129, 129, 133, 0.1);
   color: var(--orange);
 }
 .risk-high,
 .risk-critical {
-  background: oklch(58% 0.18 30 / 0.1);
+  background: rgba(126, 126, 130, 0.1);
   color: #e53e3e;
 }
 
@@ -633,7 +633,7 @@ onMounted(loadHistory)
   font-size: 0.68rem;
   padding: 1px 8px;
   border-radius: 100px;
-  background: oklch(58% 0.18 30 / 0.1);
+  background: rgba(126, 126, 130, 0.1);
   color: #e53e3e;
   font-weight: 600;
 }
@@ -758,7 +758,7 @@ onMounted(loadHistory)
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid oklch(1 1 1 / 0.3);
+  border: 2px solid rgba(220,38,38, 0.06);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;

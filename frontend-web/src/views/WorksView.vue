@@ -517,7 +517,7 @@ onUnmounted(() => {
 .works-stats-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .filter-chip {
   padding: 2px 10px; border-radius: 100px; font-size: 0.75rem;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: var(--m-primary);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1); color: var(--m-primary);
   display: flex; align-items: center; gap: 4px;
 }
 .filter-chip button { background: none; border: none; cursor: pointer; color: var(--m-primary); font-size: 1rem; }
@@ -538,9 +538,9 @@ onUnmounted(() => {
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
+  border-radius: var(--m-radius-xl, 20px);
   color: #fff; font-size: 0.85rem;
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,25);
   white-space: nowrap;
 }
 .batch-select-all {
@@ -551,26 +551,26 @@ onUnmounted(() => {
 .batch-count { font-weight: 700; flex-shrink: 0; }
 .batch-actions { display: flex; gap: 6px; align-items: center; }
 .batch-project-select {
-  padding: 5px 10px; border: 1px solid oklch(100% 0 0 / 0.15);
-  border-radius: 8px; background: rgba(255,255,255,0.1);
+  padding: 5px 10px; border: 1px solid rgba(1740, 1740, 1245, 0.15);
+  border-radius: var(--m-radius-md, 12px); background: rgba(255,255,255,0.1);
   color: #fff; font-size: 0.8rem; font-family: Inter;
   cursor: pointer; outline: none;
 }
-.batch-project-select option { background: #1a1a2e; color: #fff; }
+.batch-project-select option { background: var(--m-bg-subtle, #1E293B); color: #fff; }
 .batch-dismiss {
   background: none; border: none; color: #fff; font-size: 1.2rem;
   cursor: pointer; opacity: 0.5; padding: 0 4px; line-height: 1;
 }
 .batch-dismiss:hover { opacity: 1; }
-.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger { background: var(--m-error, #DC2626); color: #fff; }
 .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Batch toolbar */
 .batch-toolbar {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 14px;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08);
-  border: 1px solid rgba(var(--m-success-rgb, 86, 202, 0), 0.2);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.08);
+  border: 1px solid rgba(var(--m-success-rgb, 22, 163, 74), 0.2);
   border-radius: var(--m-radius-sm);
   font-size: 0.85rem;
 }
@@ -615,13 +615,13 @@ onUnmounted(() => {
 .card-verified {
   position: absolute; bottom: 8px; left: 8px;
   padding: 2px 8px; border-radius: 100px;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.85); color: #fff;
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.85); color: #fff;
   font-size: 0.68rem; font-weight: 600;
 }
 .card-hash-ready {
   position: absolute; bottom: 8px; left: 8px;
   padding: 2px 8px; border-radius: 100px;
-  background: rgba(var(--m-info-rgb, 22, 177, 255), 0.85); color: #fff;
+  background: rgba(var(--m-info-rgb, 2, 132, 199), 0.85); color: #fff;
   font-size: 0.68rem; font-weight: 600;
 }
 .card-info { padding: 14px 16px; }
@@ -736,12 +736,12 @@ onUnmounted(() => {
   font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface);
   background: var(--m-surface); outline: none;
 }
-.form-input:focus, .form-textarea:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
+.form-input:focus, .form-textarea:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 22, 163, 74), 0.1); }
 .form-textarea { resize: vertical; }
 .btn { padding: 9px 18px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; }
 .btn-primary { background: var(--m-primary); color: #fff; }
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
-.btn-danger { background: #e53e3e; color: #fff; }
+.btn-danger { background: var(--m-error, #DC2626); color: #fff; }
 .btn-sm { padding: 4px 10px; font-size: 0.75rem; }
 .animate-slide-right { animation: slideRight 0.2s ease; }
 @keyframes slideRight { from { transform: translateX(100%); } to { transform: translateX(0); } }

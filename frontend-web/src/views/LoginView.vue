@@ -2,40 +2,73 @@
   <div class="auth-layout">
     <!-- Left Panel -->
     <div class="auth-left">
-      <div class="auth-left-bg">
-        <div class="auth-left-shapes">
-          <div class="auth-shape auth-shape-1" />
-          <div class="auth-shape auth-shape-2" />
-          <div class="auth-shape auth-shape-3" />
-        </div>
+      <div class="auth-left-bg"></div>
+      <div class="auth-left-shapes">
+        <div class="auth-shape auth-shape-1" />
+        <div class="auth-shape auth-shape-2" />
+        <div class="auth-shape auth-shape-3" />
+        <div class="auth-shape auth-shape-4" />
       </div>
       <div class="auth-left-content">
+        <!-- Brand identity -->
+        <div class="auth-brand">
+          <span class="auth-brand-icon">🎨</span>
+          <span class="auth-brand-name">OriStudio</span>
+        </div>
+
+        <!-- Hero illustration -->
         <div class="auth-illustration">
           <svg viewBox="0 0 400 400" class="auth-svg">
-            <circle cx="200" cy="200" r="160" fill="rgba(255,255,255,0.1)" />
-            <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.9)" />
-            <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.9)" stroke-width="20" fill="none" stroke-linecap="round" />
-            <circle cx="100" cy="120" r="20" fill="#8C57FF" opacity="0.8" />
-            <circle cx="300" cy="160" r="15" fill="#56CA00" opacity="0.8" />
+            <circle cx="200" cy="200" r="160" fill="rgba(255,255,255,0.06)" />
+            <circle cx="200" cy="140" r="45" fill="rgba(255,255,255,0.85)" />
+            <path d="M120 300 Q200 200 280 300" stroke="rgba(255,255,255,0.85)" stroke-width="20" fill="none" stroke-linecap="round" />
+            <circle cx="100" cy="120" r="20" fill="var(--m-primary, #4F46E5)" opacity="0.7" />
+            <circle cx="300" cy="160" r="15" fill="#16A34A" opacity="0.7" />
+            <circle cx="140" cy="260" r="10" fill="#F59E0B" opacity="0.6" />
           </svg>
         </div>
-        <h2 class="auth-left-title">欢迎回来</h2>
-        <p class="auth-left-desc">登录您的创作者工作台</p>
+
+        <!-- Headline -->
+        <h2 class="auth-left-title">创作的价值，从这里被看见</h2>
+        <p class="auth-left-desc">作品存证 · 权益保护 · 合约交易 · AI增长</p>
+
+        <!-- Floating benefit cards -->
+        <div class="auth-benefits">
+          <div class="auth-benefit-card">
+            <span class="auth-benefit-icon">🛡️</span>
+            <span class="auth-benefit-text">作品存证</span>
+          </div>
+          <div class="auth-benefit-card">
+            <span class="auth-benefit-icon">📋</span>
+            <span class="auth-benefit-text">IP 登记</span>
+          </div>
+          <div class="auth-benefit-card">
+            <span class="auth-benefit-icon">🤝</span>
+            <span class="auth-benefit-text">合约挂牌</span>
+          </div>
+        </div>
+
+        <!-- Stats row -->
         <div class="auth-stats">
           <div class="auth-stat">
             <div class="auth-stat-value">13k+</div>
-            <div class="auth-stat-label">创作者</div>
+            <div class="auth-stat-label">活跃创作者</div>
           </div>
           <div class="auth-stat-divider" />
           <div class="auth-stat">
             <div class="auth-stat-value">50k+</div>
             <div class="auth-stat-label">作品存证</div>
           </div>
+          <div class="auth-stat-divider" />
+          <div class="auth-stat">
+            <div class="auth-stat-value">2k+</div>
+            <div class="auth-stat-label">IP 登记</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Right Panel -->
+        <!-- Right Panel -->
     <div class="auth-right">
       <div class="auth-right-inner">
         <div class="auth-header">
@@ -88,8 +121,17 @@
             <MInput v-model="form.email" label="邮箱" variant="filled" type="email" placeholder="creator@example.com" required />
           </div>
 
-          <div class="form-field">
-            <MInput v-model="form.password" label="密码" variant="filled" type="password" placeholder="••••••" required />
+          <div class="form-field form-field--password">
+            <MInput :model-value="form.password" @update:model-value="form.password = $event" label="密码" variant="filled" :type="showPassword ? 'text' : 'password'" placeholder="••••••" required />
+            <button type="button" class="password-toggle" @click="togglePassword" aria-label="显示密码">
+              <svg v-if="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
           </div>
 
           <div v-if="errorMsg" class="form-error">{{ errorMsg }}</div>
@@ -121,6 +163,7 @@ const auth = useAuthStore()
 const mode = ref<'login' | 'register'>('login')
 const loading = ref(false)
 const errorMsg = ref('')
+const showPassword = ref(false)
 const form = ref({ username: '', email: '', password: '' })
 
 async function handleSubmit() {
@@ -172,6 +215,10 @@ function oauthLogin(provider: string) {
     toast.show(msg, 'info')
   }
 }
+
+function togglePassword() {
+  showPassword.value = !showPassword.value
+}
 </script>
 
 <style scoped>
@@ -181,29 +228,75 @@ function oauthLogin(provider: string) {
 .auth-left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #8C57FF 0%, #6C3DD9 100%);
+  background: linear-gradient(145deg, #312E81 0%, #4F46E5 45%, #6366F1 75%, #818CF8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   min-height: 100dvh;
 }
-.auth-left-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(140,87,255,0.95) 0%, rgba(108,61,217,0.95) 100%); }
+.auth-left-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 70% 30%, rgba(255,255,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 20% 80%, rgba(99,102,241,0.3) 0%, transparent 50%);
+}
 .auth-left-shapes { position: absolute; inset: 0; }
-.auth-shape { position: absolute; border-radius: 50%; opacity: 0.15; background: white; }
-.auth-shape-1 { width: 300px; height: 300px; top: -50px; right: -50px; }
-.auth-shape-2 { width: 200px; height: 200px; bottom: 50px; left: -30px; }
-.auth-shape-3 { width: 150px; height: 150px; bottom: -30px; right: 100px; }
-.auth-left-content { position: relative; z-index: 1; text-align: center; padding: 2rem; color: white; }
-.auth-illustration { margin-bottom: 1.5rem; }
-.auth-svg { width: 180px; height: 180px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2)); }
-.auth-left-title { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.5rem; }
-.auth-left-desc { font-size: 0.9375rem; opacity: 0.8; margin: 0 0 2rem; }
-.auth-stats { display: flex; align-items: center; gap: 2rem; justify-content: center; }
+.auth-shape {
+  position: absolute; border-radius: 50%; background: white; opacity: 0.07;
+}
+.auth-shape-1 { width: 320px; height: 320px; top: -60px; right: -60px; }
+.auth-shape-2 { width: 220px; height: 220px; bottom: 40px; left: -40px; }
+.auth-shape-3 { width: 140px; height: 140px; bottom: -20px; right: 80px; }
+.auth-shape-4 { width: 80px; height: 80px; top: 30%; left: 10%; opacity: 0.05; }
+
+.auth-left-content {
+  position: relative; z-index: 1; text-align: center; padding: 2.5rem 2rem; color: white; max-width: 420px;
+}
+
+/* Brand */
+.auth-brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 1.125rem; font-weight: 700; color: white; margin-bottom: 1.75rem;
+  letter-spacing: -0.02em;
+}
+.auth-brand-icon { font-size: 1.5rem; }
+
+/* Illustration */
+.auth-illustration { margin-bottom: 1.75rem; }
+.auth-svg { width: 160px; height: 160px; filter: drop-shadow(0 12px 32px rgba(0,0,0,0.2)); }
+
+/* Headline */
+.auth-left-title {
+  font-size: 1.625rem; font-weight: 800; margin: 0 0 0.5rem;
+  letter-spacing: -0.02em; line-height: 1.25; color: white;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.auth-left-desc {
+  font-size: 0.875rem; opacity: 0.75; margin: 0 0 2rem;
+  letter-spacing: 0.02em; font-weight: 500;
+}
+
+/* Floating benefit cards */
+.auth-benefits {
+  display: flex; gap: 0.625rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;
+}
+.auth-benefit-card {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 6px 14px; border-radius: 9999px;
+  background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(8px); font-size: 0.8125rem; font-weight: 500; color: white;
+  transition: background 0.15s;
+}
+.auth-benefit-card:hover { background: rgba(255,255,255,0.22); }
+.auth-benefit-icon { font-size: 1rem; }
+
+/* Stats */
+.auth-stats { display: flex; align-items: center; gap: 1.5rem; justify-content: center; }
 .auth-stat { text-align: center; }
-.auth-stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
-.auth-stat-label { font-size: 0.8125rem; opacity: 0.8; }
-.auth-stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.3); }
+.auth-stat-value { font-size: 1.625rem; font-weight: 800; line-height: 1.2; }
+.auth-stat-label { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+.auth-stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.25); }
 
 /* ── Right Panel ── */
 .auth-right {
@@ -211,110 +304,88 @@ function oauthLogin(provider: string) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
+  background: var(--m-surface, #fff);
   padding: 2rem;
 }
-.auth-right-inner { width: 100%; max-width: 480px; }
+.auth-right-inner { width: 100%; max-width: 440px; }
 .auth-header { margin-bottom: 1.5rem; }
 .auth-logo { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
 .auth-logo-icon { font-size: 2rem; }
 .auth-logo-text {
-  font-size: 1.5rem; font-weight: 700;
-  background: linear-gradient(135deg, #8C57FF, #6C3DD9);
+  font-size: 1.5rem; font-weight: 800;
+  background: linear-gradient(135deg, #4F46E5, #6366F1);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
 }
-.auth-welcome { font-size: 1.25rem; font-weight: 600; color: #1F2937; margin: 0 0 0.25rem; }
+.auth-welcome { font-size: 1.375rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; letter-spacing: -0.01em; }
 .auth-desc { font-size: 0.875rem; color: #64748B; margin: 0 0 1.5rem; }
 
 /* ── Tabs ── */
 .auth-tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 1.5rem;
-  background: #F4F5FA;
-  border-radius: 8px;
-  padding: 4px;
+  display: flex; gap: 4px; margin-bottom: 1.5rem;
+  background: #F1F5F9; border-radius: var(--m-radius-md, 12px); padding: 4px;
 }
 .auth-tab {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  background: transparent;
-  color: #9CA3AF;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
+  flex: 1; padding: 8px; border: none; border-radius: var(--m-radius-sm, 8px);
+  font-size: 0.9375rem; font-weight: 600;
+  background: transparent; color: #94A3B8; cursor: pointer; transition: all 0.15s; font-family: inherit;
 }
 .auth-tab.active {
-  background: #FFFFFF;
-  color: #1F2937;
+  background: #fff; color: #0F172A;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 /* ── OAuth ── */
 .oauth-section { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; }
 .oauth-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 10px 16px;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background: #FFFFFF;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 10px 16px; border: 1.5px solid #E2E8F0; border-radius: var(--m-radius-md, 12px);
+  font-size: 0.875rem; font-weight: 600; background: #fff; color: #0F172A;
+  cursor: pointer; transition: all 0.15s; font-family: inherit;
 }
-.oauth-btn:hover { border-color: var(--m-primary, #8C57FF); background: rgba(140, 87, 255, 0.04); }
+.oauth-btn:hover { border-color: #4F46E5; background: rgba(79,70,229,0.04); color: #4F46E5; }
 
 /* ── Divider ── */
 .auth-divider {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 1.5rem 0;
-  color: #9CA3AF;
-  font-size: 0.8125rem;
+  display: flex; align-items: center; gap: 0.75rem; margin: 1.5rem 0;
+  color: #94A3B8; font-size: 0.8125rem;
 }
-.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: #E5E7EB; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
 
 /* ── Form ── */
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
 .form-field { display: flex; flex-direction: column; gap: 0.375rem; }
-.form-error { color: #EF4444; font-size: 0.8125rem; }
+.form-error { color: #DC2626; font-size: 0.8125rem; }
+
+/* Password field with toggle */
+.form-field--password { position: relative; }
+.password-toggle {
+  position: absolute; right: 12px; top: 36px;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border: none; background: transparent; color: #94A3B8; cursor: pointer;
+  border-radius: 8px; transition: all 0.15s; z-index: 1;
+}
+.password-toggle:hover { background: #F1F5F9; color: #4F46E5; }
+.password-toggle svg { width: 18px; height: 18px; }
 
 /* ── Primary Button ── */
 .btn-primary {
-  height: 44px;
-  padding: 0 1.5rem;
-  background: linear-gradient(135deg, #8C57FF 0%, #6C3DD9 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
+  height: 48px; padding: 0 1.5rem;
+  background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
+  color: white; border: none; border-radius: var(--m-radius-md, 12px);
+  font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit;
+  box-shadow: 0 4px 16px rgba(79,70,229,0.28);
 }
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7E44F0 0%, #5A2DC0 100%);
-  box-shadow: 0 4px 12px rgba(140, 87, 255, 0.4);
+  background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%);
+  box-shadow: 0 6px 24px rgba(79,70,229,0.38); transform: translateY(-1px);
 }
-.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
 /* ── Footer ── */
 .auth-footer { margin-top: 1.5rem; text-align: center; }
-.auth-footer p { font-size: 0.8125rem; color: #9CA3AF; margin: 0.25rem 0; }
-.auth-footer a { color: var(--m-primary, #8C57FF); text-decoration: none; font-weight: 500; }
+.auth-footer p { font-size: 0.8125rem; color: #94A3B8; margin: 0.25rem 0; }
+.auth-footer a { color: #4F46E5; text-decoration: none; font-weight: 500; }
 .auth-footer a:hover { text-decoration: underline; }
 
 /* ── Responsive ── */

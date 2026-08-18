@@ -1,0 +1,220 @@
+/* ============================================
+   OriSpark Brand Enhancement Layer
+   品牌视觉增强 — 覆盖 m-* 组件类名
+   Indigo 主色 · Noto SC 字体 · 大圆角 · 多层柔光阴影
+   ============================================ */
+
+/* ── MCard：大圆角 + 多层浮游阴影 + 渐变顶线 ── */
+.m-card,
+.m-dialog {
+  border-radius: var(--m-radius-xl) !important;
+  box-shadow: var(--m-shadow-sm) !important;
+  transition: box-shadow var(--m-transition-fast), transform var(--m-transition-fast);
+  overflow: hidden;
+  position: relative;
+}
+.m-card::before,
+.m-dialog::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4F46E5, #3730A3);
+  opacity: 0;
+  transition: opacity var(--m-transition-fast);
+  z-index: 1;
+}
+.m-card:hover,
+.m-dialog:hover {
+  box-shadow: var(--m-shadow-lg) !important;
+  transform: translateY(-2px);
+}
+.m-card:hover::before,
+.m-dialog:hover::before { opacity: 1; }
+
+.m-card__title,
+.m-dialog__title {
+  font-family: var(--m-font-family-display, 'Noto Serif SC', Georgia, serif);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ── MBtn：大圆角 + 彩色阴影 + 悬停位移 ── */
+.m-btn {
+  border-radius: var(--m-radius-md) !important;
+  font-family: var(--m-font-family);
+  transition: all var(--m-transition-fast);
+}
+.m-btn--variant-elevated,
+.m-btn--variant-flat {
+  background: #4F46E5 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+}
+.m-btn--variant-elevated:hover:not(:disabled),
+.m-btn--variant-flat:hover:not(:disabled) {
+  background: #4338CA !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.32) !important;
+}
+.m-btn--variant-outlined {
+  border-color: rgba(79, 70, 229, 0.5) !important;
+  color: #4F46E5 !important;
+}
+.m-btn--variant-outlined:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.08) !important;
+  border-color: #4F46E5 !important;
+}
+.m-btn--variant-tonal {
+  background: rgba(79, 70, 229, 0.12) !important;
+  color: #4F46E5 !important;
+}
+
+/* ── MAlert：大圆角 + 软色背景 ── */
+.m-alert {
+  border-radius: var(--m-radius-lg) !important;
+}
+.m-alert--variant-filled {
+  background: rgba(79, 70, 229, 0.08) !important;
+  color: #4338CA !important;
+  border-color: rgba(79, 70, 229, 0.2) !important;
+}
+.m-alert--color-success.m-alert--variant-filled {
+  background: #F0FDF4 !important; color: #15803D !important; border-color: #BBF7D0 !important;
+}
+.m-alert--color-warning.m-alert--variant-filled {
+  background: #FFFBEB !important; color: #92400E !important; border-color: #FDE68A !important;
+}
+.m-alert--color-error.m-alert--variant-filled {
+  background: #FEF2F2 !important; color: #991B1B !important; border-color: #FECACA !important;
+}
+.m-alert--color-info.m-alert--variant-filled {
+  background: #F0F9FF !important; color: #075985 !important; border-color: #BAE6FD !important;
+}
+
+/* ── MChip：药丸风格（全圆角） ── */
+.m-chip {
+  border-radius: 9999px !important;
+}
+.m-chip--filled, .m-chip--tonal {
+  background: rgba(79, 70, 229, 0.12) !important;
+  color: #4F46E5 !important;
+}
+.m-chip--color-success.m-chip--filled,
+.m-chip--color-success.m-chip--tonal {
+  background: #F0FDF4 !important; color: #16A34A !important;
+}
+.m-chip--color-warning.m-chip--filled,
+.m-chip--color-warning.m-chip--tonal {
+  background: #FFFBEB !important; color: #D97706 !important;
+}
+.m-chip--color-error.m-chip--filled,
+.m-chip--color-error.m-chip--tonal {
+  background: #FEF2F2 !important; color: #DC2626 !important;
+}
+
+/* ── MField / Input：大圆角 + 双层 focus ring ── */
+.m-field__wrapper {
+  border-radius: var(--m-radius-lg) !important;
+  border-width: 1.5px !important;
+  transition: border-color var(--m-transition-fast), box-shadow var(--m-transition-fast);
+}
+.m-field--focused .m-field__wrapper,
+.m-field:focus-within .m-field__wrapper {
+  border-color: #4F46E5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.10), 0 1px 4px rgba(79, 70, 229, 0.06) !important;
+}
+.m-field--error .m-field__wrapper {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10) !important;
+}
+.m-field__input {
+  border-radius: var(--m-radius-lg) !important;
+}
+.m-field__label--floating {
+  color: #4F46E5 !important;
+}
+.m-field--focused .m-field__label {
+  color: #4F46E5 !important;
+}
+
+/* ── MTable：大圆角包装 + 精致表头 ── */
+.m-table-wrapper,
+.m-table-wrap {
+  border-radius: var(--m-radius-xl) !important;
+  overflow: hidden;
+}
+.m-table thead th,
+.m-table__header {
+  background: #F1F5F9 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+.m-table tbody tr:hover td {
+  background: #F8FAFC !important;
+}
+.m-table__page-btn {
+  border-radius: var(--m-radius-md) !important;
+}
+.m-table__page-btn--active {
+  background: #4F46E5 !important;
+  border-color: #4F46E5 !important;
+}
+.m-table__page-btn:hover:not(:disabled) {
+  border-color: #4F46E5 !important;
+  color: #4F46E5 !important;
+}
+
+/* ── MTabs：大圆角指示器 ── */
+.m-tabs__item {
+  border-radius: var(--m-radius-md) !important;
+}
+.m-tabs__item--active {
+  color: #4F46E5 !important;
+  font-weight: 600 !important;
+}
+.m-tabs__indicator {
+  background: #4F46E5 !important;
+  border-radius: 2px 2px 0 0 !important;
+}
+
+/* ── MDialog：超大圆角 + 毛玻璃遮罩 ── */
+.m-dialog__overlay {
+  backdrop-filter: blur(4px);
+}
+.m-dialog {
+  border-radius: var(--m-radius-2xl) !important;
+  box-shadow: var(--m-shadow-xl) !important;
+}
+.m-dialog__close:hover {
+  background: #F1F5F9 !important;
+}
+
+/* ── MSelect：大圆角 ── */
+.m-select,
+.m-select__wrapper,
+.m-select__selection {
+  border-radius: var(--m-radius-lg) !important;
+}
+
+/* ── 全局链接 & 标题（品牌排版）── */
+h1, h2, h3, h4 {
+  font-family: var(--m-font-family-display, 'Noto Serif SC', Georgia, serif);
+  color: var(--m-on-surface);
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: #4F46E5;
+}
+a:hover {
+  color: #4338CA;
+}
+
+/* ── Page sections ── */
+.brand-section {
+  position: relative;
+  padding-left: 16px;
+  border-left: 3px solid #4F46E5;
+}

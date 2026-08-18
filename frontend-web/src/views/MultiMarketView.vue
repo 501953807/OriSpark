@@ -263,7 +263,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   color: var(--m-grey-500);
   background: var(--m-bg-subtle);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
 }
 .phase-actions { margin: 0 0 12px; padding-left: 20px; }
 .phase-actions li { margin-bottom: 4px; font-size: 0.85rem; }

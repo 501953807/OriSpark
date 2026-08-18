@@ -17,7 +17,7 @@
   animation: shimmer 1.5s infinite;
 }
 .sk-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-.sk-line { height: 14px; border-radius: 4px; background: oklch(93% 0.003 240); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+.sk-line { height: 14px; border-radius: var(--m-radius-xs, 6px); background: rgba(2,132,199, 0.06); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
 .sk-title { width: 70%; }
 .sk-meta { width: 45%; height: 10px; }
 @keyframes shimmer {

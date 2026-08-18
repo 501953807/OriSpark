@@ -51,7 +51,7 @@ onErrorCaptured((err, instance, info) => {
   cursor: pointer;
 }
 .error-boundary-fallback button:hover {
-  background: #e53e3e;
+  background: var(--m-error, #DC2626);
   color: white;
 }
 </style>

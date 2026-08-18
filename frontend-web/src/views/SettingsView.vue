@@ -1345,7 +1345,7 @@ onMounted(() => {
   font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface);
   background: var(--m-surface); outline: none; max-width: 400px;
 }
-.form-input:focus, .form-textarea:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
+.form-input:focus, .form-textarea:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 22, 163, 74), 0.1); }
 .form-textarea { resize: vertical; }
 .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.88rem; background: var(--m-surface); color: var(--m-on-surface); }
 
@@ -1359,15 +1359,15 @@ onMounted(() => {
 .toggle-slider::before {
   content: ''; position: absolute; top: 3px; left: 3px;
   width: 20px; height: 20px; border-radius: 50%;
-  background: #fff; transition: 0.3s; box-shadow: 0 1px 3px oklch(0 0 0 / 0.15);
+  background: #fff; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,15);
 }
 .toggle input:checked + .toggle-slider { background: var(--m-primary); }
 .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
 
 /* Storage */
 .storage-info { margin-top: 8px; }
-.storage-bar { height: 8px; background: var(--m-border); border-radius: 4px; overflow: hidden; }
-.storage-fill { height: 100%; background: var(--m-primary); border-radius: 4px; transition: width 0.5s; }
+.storage-bar { height: 8px; background: var(--m-border); border-radius: var(--m-radius-xs, 6px); overflow: hidden; }
+.storage-fill { height: 100%; background: var(--m-primary); border-radius: var(--m-radius-xs, 6px); transition: width 0.5s; }
 .storage-text { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 6px; }
 
 /* Linked accounts */
@@ -1400,10 +1400,10 @@ onMounted(() => {
 .dict-key { font-family: monospace; font-size: 0.82rem; }
 .dict-en { color: var(--m-grey-500); font-size: 0.82rem; }
 .dict-status {
-  font-size: 0.78rem; padding: 2px 8px; border-radius: 10px;
+  font-size: 0.78rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px);
   background: var(--m-surface-2); color: var(--m-grey-500);
 }
-.dict-status.active { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
+.dict-status.active { background: rgba(124, 124, 129, 0.12); color: #16a34a; }
 .dict-empty { text-align: center; padding: 32px; color: var(--m-grey-500); font-size: 0.9rem; }
 
 /* Health Dashboard (P2.7.1) */
@@ -1418,8 +1418,8 @@ onMounted(() => {
 .health-label { font-size: 0.78rem; color: var(--m-grey-500); font-weight: 600; margin-bottom: 4px; }
 .health-value { font-size: 1.8rem; font-weight: 700; font-family: Inter; }
 .health-sub { font-size: 0.72rem; color: var(--m-grey-500); margin-top: 2px; }
-.health-bar { height: 6px; background: var(--m-border); border-radius: 3px; margin-top: 8px; overflow: hidden; }
-.health-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+.health-bar { height: 6px; background: var(--m-border); border-radius: var(--m-radius-xs, 6px); margin-top: 8px; overflow: hidden; }
+.health-fill { height: 100%; border-radius: var(--m-radius-xs, 6px); transition: width 0.5s; }
 .service-status-row { margin-top: 16px; }
 .service-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 0.84rem; }
 .service-name { flex: 0 0 100px; font-weight: 600; }
@@ -1466,8 +1466,8 @@ onMounted(() => {
 .plugin-desc { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 2px; }
 .plugin-hooks { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
 .plugin-hook-tag {
-  font-size: 0.68rem; padding: 1px 6px; border-radius: 10px;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: oklch(56% 0.12 170);
+  font-size: 0.68rem; padding: 1px 6px; border-radius: var(--m-radius-md, 12px);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1); color: rgba(79,70,229, 0.06);
   font-family: monospace;
 }
 .plugin-actions { display: flex; align-items: center; gap: 8px; }
@@ -1475,8 +1475,8 @@ onMounted(() => {
 
 /* Password Strength (P2.7.13) */
 .strength-bar-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-.strength-bar { flex: 1; height: 6px; background: var(--m-border); border-radius: 3px; overflow: hidden; }
-.strength-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.strength-bar { flex: 1; height: 6px; background: var(--m-border); border-radius: var(--m-radius-xs, 6px); overflow: hidden; }
+.strength-fill { height: 100%; border-radius: var(--m-radius-xs, 6px); transition: width 0.3s; }
 .strength-text { font-size: 0.78rem; font-weight: 600; }
 
 /* MCP Config (P2.6.7) */
@@ -1491,7 +1491,7 @@ onMounted(() => {
 .tool-name { font-family: monospace; font-weight: 600; color: var(--m-primary); min-width: 200px; }
 .tool-desc { color: var(--m-grey-500); }
 .api-key-row { display: flex; align-items: baseline; gap: 12px; padding: 4px 0; font-size: 0.82rem; }
-.api-key-row code { background: var(--m-surface); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; }
+.api-key-row code { background: var(--m-surface); padding: 2px 8px; border-radius: var(--m-radius-xs, 6px); font-size: 0.78rem; }
 .key-rate { color: var(--m-grey-500); font-size: 0.75rem; }
 
 /* Email verification */
@@ -1514,8 +1514,8 @@ onMounted(() => {
 .btn-danger:hover { background: #dc2626; }
 
 /* Modal */
-.modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
+.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px rgba(0,0,0,.16); display:flex; flex-direction:column; gap:14px; max-height:90vh; overflow-y:auto; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
 .modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }

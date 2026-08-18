@@ -440,7 +440,7 @@ onMounted(() => {
 .form-row .form-group { flex: 1; min-width: 160px; }
 
 .fee-result {
-  padding: 8px 14px; background: oklch(96% .003 240); border-radius: var(--m-radius-sm);
+  padding: 8px 14px; background: rgba(2,132,199, 0.06); border-radius: var(--m-radius-sm);
   font-size: 0.88rem; align-self: center;
 }
 
@@ -463,13 +463,13 @@ onMounted(() => {
   display: inline-block; padding: 2px 10px; border-radius: 100px;
   font-size: 0.78rem; font-weight: 600;
 }
-.role-creator { background: oklch(60% 0.18 30); color: #fff; }
-.role-operator { background: oklch(55% 0.15 260); color: #fff; }
-.role-legal_rep { background: oklch(50% 0.12 300); color: #fff; }
-.role-tax_agent { background: oklch(55% 0.14 90); color: #fff; }
-.role-logistics { background: oklch(55% 0.12 200); color: #fff; }
-.role-insurer { background: oklch(50% 0.10 160); color: #fff; }
-.role-platform { background: oklch(45% 0.10 280); color: #fff; }
+.role-creator { background: rgba(234,88,12, 0.06); color: #fff; }
+.role-operator { background: rgba(99,102,241, 0.06); color: #fff; }
+.role-legal_rep { background: rgba(79,70,229, 0.06); color: #fff; }
+.role-tax_agent { background: rgba(217,119,6, 0.06); color: #fff; }
+.role-logistics { background: rgba(22,163,74, 0.06); color: #fff; }
+.role-insurer { background: rgba(22,163,74, 0.06); color: #fff; }
+.role-platform { background: rgba(79,70,229, 0.06); color: #fff; }
 
 .id-cell { font-family: monospace; font-size: 0.78rem; color: var(--m-grey-500); }
 .amount { font-weight: 700; color: #ea580c; }
@@ -479,13 +479,13 @@ onMounted(() => {
   position: fixed; top: 20px; right: 20px; z-index: 9999;
   padding: 12px 20px; background: var(--red); color: #fff;
   border-radius: var(--m-radius-sm); font-size: 0.85rem; cursor: pointer;
-  box-shadow: 0 4px 12px oklch(0 0 0 / .15); animation: slideIn .2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15); animation: slideIn .2s ease;
 }
 .success-toast {
   position: fixed; top: 20px; right: 20px; z-index: 9999;
-  padding: 12px 20px; background: oklch(55% 0.12 150); color: #fff;
+  padding: 12px 20px; background: rgba(22,163,74, 0.06); color: #fff;
   border-radius: var(--m-radius-sm); font-size: 0.85rem;
-  box-shadow: 0 4px 12px oklch(0 0 0 / .15); animation: slideIn .2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15); animation: slideIn .2s ease;
 }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 

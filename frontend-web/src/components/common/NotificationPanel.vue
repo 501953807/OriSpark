@@ -143,13 +143,13 @@ onUnmounted(() => {
   position: absolute;
   top: 2px;
   right: 2px;
-  background: #e53e3e;
+  background: var(--m-error, #DC2626);
   color: #fff;
   font-size: 0.6rem;
   font-weight: 700;
   min-width: 16px;
   height: 16px;
-  border-radius: 8px;
+  border-radius: var(--m-radius-md, 12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,7 +244,7 @@ onUnmounted(() => {
 }
 .notif-type {
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   background: var(--m-surface-2);
 }
 

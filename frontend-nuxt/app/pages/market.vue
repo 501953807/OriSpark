@@ -283,11 +283,11 @@
         <!-- 买盘 -->
         <div class="orderbook-section">
           <div class="ob-label">买入挂单 (Bid)</div>
-          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(140, 87, 255);">{{ bidPrice(1) }}</span><span class="ob-qty data-mono">8</span></div>
-          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(140, 87, 255);">{{ bidPrice(2) }}</span><span class="ob-qty data-mono">4</span></div>
-          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(140, 87, 255);">{{ bidPrice(3) }}</span><span class="ob-qty data-mono">6</span></div>
-          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(140, 87, 255);">{{ bidPrice(4) }}</span><span class="ob-qty data-mono">2</span></div>
-          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(140, 87, 255);">{{ bidPrice(5) }}</span><span class="ob-qty data-mono">1</span></div>
+          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(79, 70, 229);">{{ bidPrice(1) }}</span><span class="ob-qty data-mono">8</span></div>
+          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(79, 70, 229);">{{ bidPrice(2) }}</span><span class="ob-qty data-mono">4</span></div>
+          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(79, 70, 229);">{{ bidPrice(3) }}</span><span class="ob-qty data-mono">6</span></div>
+          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(79, 70, 229);">{{ bidPrice(4) }}</span><span class="ob-qty data-mono">2</span></div>
+          <div class="ob-row"><span class="ob-price data-mono" style="color:rgb(79, 70, 229);">{{ bidPrice(5) }}</span><span class="ob-qty data-mono">1</span></div>
         </div>
 
         <!-- 快速认购 -->
@@ -625,7 +625,7 @@ watch(trendPeriod, () => {
 .filter-label { font-size: 15px; font-weight: 600; color: var(--m-on-surface); }
 .filter-count {
   font-size: 12px; color: var(--m-grey-500);
-  background: rgba(140, 87, 255, 0.1); color: var(--m-primary);
+  background: rgba(79, 70, 229, 0.1); color: var(--m-primary);
   padding: 2px 10px; border-radius: 100px; font-weight: 600;
 }
 .filter-right { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -634,7 +634,7 @@ watch(trendPeriod, () => {
   font-size: 13px; background: #fff; color: var(--m-on-surface); cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-.filter-select:focus { outline: none; border-color: var(--m-primary); box-shadow: 0 0 0 2px rgba(140, 87, 255, 0.15); }
+.filter-select:focus { outline: none; border-color: var(--m-primary); box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15); }
 
 /* --- TICKER --- */
 .market-ticker {
@@ -709,9 +709,9 @@ watch(trendPeriod, () => {
   padding: 12px 16px; border-bottom: 1px solid rgba(46, 38, 61, 0.06);
   cursor: pointer; transition: background 0.12s; align-items: center;
 }
-.table-row:hover { background: rgba(140, 87, 255, 0.04); }
+.table-row:hover { background: rgba(79, 70, 229, 0.04); }
 .row-active {
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   border-left: 3px solid var(--m-primary);
 }
 .row-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
@@ -806,7 +806,7 @@ watch(trendPeriod, () => {
   padding: 8px 12px; border: 1px solid rgba(46, 38, 61, 0.15); border-radius: 6px;
   font-size: 14px; font-family: 'JetBrains Mono', monospace;
 }
-.ob-input:focus { outline: none; border-color: var(--m-primary); box-shadow: 0 0 0 2px rgba(140, 87, 255, 0.15); }
+.ob-input:focus { outline: none; border-color: var(--m-primary); box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15); }
 .ob-total { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; color: var(--m-on-surface); }
 .ob-total-val { font-weight: 700; color: var(--m-on-surface); }
 .btn-order {
@@ -873,7 +873,7 @@ watch(trendPeriod, () => {
 .step-done .step-label { color: rgb(40, 120, 0); }
 .step-current .step-dot {
   background: var(--m-primary); color: #fff;
-  box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
   animation: progress-pulse 1.5s ease-in-out infinite;
 }
 .step-current .step-label { color: var(--m-primary); font-weight: 600; }
@@ -897,7 +897,7 @@ watch(trendPeriod, () => {
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: 700; color: #fff; transition: width 0.4s ease;
 }
-.profit-bar-seg.creator { background: linear-gradient(135deg, var(--m-primary) 0%, rgb(140, 87, 255) 100%); }
+.profit-bar-seg.creator { background: linear-gradient(135deg, var(--m-primary) 0%, rgb(79, 70, 229) 100%); }
 .profit-bar-seg.platform { background: linear-gradient(135deg, rgba(46,38,61,0.35) 0%, rgba(46,38,61,0.2) 100%); flex: 1; }
 .profit-bar-seg .seg-label { text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 .profit-bar-legend { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }

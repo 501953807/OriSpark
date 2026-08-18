@@ -401,11 +401,11 @@ function typeLabel(type: string): string {
   border-left: 3px solid transparent;
 }
 .evt-milestone {
-  background: oklch(58% 0.14 245 / 0.07);
+  background: rgba(126, 126, 130, 0.07);
   border-left-color: #3b82f6;
 }
 .evt-payment {
-  background: oklch(56% 0.12 170 / 0.07);
+  background: rgba(124, 124, 129, 0.07);
   border-left-color: #16a34a;
 }
 .cal-event-type-label {

@@ -717,7 +717,7 @@ onUnmounted(() => {
 
 /* Preview */
 .detail-preview {
-  background: oklch(15% 0.005 240);
+  background: rgba(2,132,199, 0.06);
   border-radius: var(--m-radius-sm);
   display: flex;
   align-items: center;
@@ -762,7 +762,7 @@ onUnmounted(() => {
   padding-right: 4px;
 }
 .detail-info::-webkit-scrollbar { width: 4px; }
-.detail-info::-webkit-scrollbar-thumb { background: var(--m-border); border-radius: 4px; }
+.detail-info::-webkit-scrollbar-thumb { background: var(--m-border); border-radius: var(--m-radius-xs, 6px); }
 
 /* Info Groups */
 .info-group {
@@ -822,7 +822,7 @@ onUnmounted(() => {
   padding: 2px 10px;
   border-radius: 100px;
   font-size: 0.75rem;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1);
   color: var(--m-primary);
   font-weight: 600;
 }
@@ -1008,7 +1008,7 @@ onUnmounted(() => {
 }
 .notes-textarea:focus {
   border-color: var(--m-primary);
-  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 22, 163, 74), 0.1);
 }
 .btn-edit-note, .btn-save-note, .btn-cancel-note {
   background: none;
@@ -1045,7 +1045,7 @@ onUnmounted(() => {
 .v-hash { font-size: 0.65rem; color: var(--m-grey-500); }
 .v-current {
   font-size: 0.65rem;
-  background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1);
+  background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1);
   color: var(--m-primary);
   padding: 2px 6px;
   border-radius: 100px;
@@ -1077,7 +1077,7 @@ onUnmounted(() => {
 .c2pa-actions .btn { font-size: 0.78rem; padding: 4px 12px; }
 .c2pa-result { margin-top: 10px; padding: 10px 14px; border-radius: var(--m-radius-sm); font-size: 0.8rem; background: var(--m-surface); border: 1px solid var(--m-border); }
 .c2pa-success { color: var(--m-on-surface); line-height: 1.6; }
-.c2pa-success code { background: rgba(0,0,0,0.04); padding: 1px 6px; border-radius: 3px; font-size: 0.75rem; font-family: monospace; }
+.c2pa-success code { background: rgba(0,0,0,0.04); padding: 1px 6px; border-radius: var(--m-radius-xs, 6px); font-size: 0.75rem; font-family: monospace; }
 .c2pa-error { color: var(--m-error); }
 
 /* ===== Buttons ===== */

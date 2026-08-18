@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
 }
 
 .gallery-card:hover {
-  box-shadow: 0 20px 50px rgba(140, 87, 255, 0.25);
+  box-shadow: 0 20px 50px rgba(79, 70, 229, 0.25);
   transform: translateY(-8px) !important; /* hover覆盖tilt */
 }
 

@@ -281,7 +281,7 @@ onMounted(() => {
 /* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: oklch(20% 0.02 180 / .5);
+  background: rgba(80, 80, 90, 0.5);
   display: flex; align-items: center; justify-content: center; z-index: 100;
 }
 

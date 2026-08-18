@@ -156,7 +156,7 @@ onMounted(() => {
 }
 .error-banner {
   padding: 10px 14px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;

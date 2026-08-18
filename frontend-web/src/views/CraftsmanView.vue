@@ -518,7 +518,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
@@ -675,12 +675,12 @@ onMounted(async () => {
   display: inline-block;
   font-size: 0.72rem;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   font-weight: 600;
 }
 .badge-type {
-  background: oklch(85% 0.05 150);
-  color: oklch(35% 0.05 150);
+  background: rgba(22,163,74, 0.06);
+  color: rgba(22,163,74, 0.06);
 }
 .badge-open { background: #dbeafe; color: #1d4ed8; }
 .badge-quoted { background: #fef3c7; color: #92400e; }
@@ -716,7 +716,7 @@ onMounted(async () => {
   transition: box-shadow 0.2s;
 }
 .product-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
 }
 .product-meta {
   display: flex;
@@ -777,7 +777,7 @@ onMounted(async () => {
 .tag {
   font-size: 0.72rem;
   padding: 2px 8px;
-  border-radius: 8px;
+  border-radius: var(--m-radius-md, 12px);
   background: var(--m-bg-subtle);
   color: var(--m-grey-500);
   border: 1px solid var(--m-border);

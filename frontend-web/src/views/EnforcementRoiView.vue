@@ -302,7 +302,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .risk-badge {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--m-radius-lg, 16px);
   font-size: 0.8rem;
   margin-top: 8px;
 }
@@ -342,7 +342,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-size: 0.9rem;
   margin-bottom: 8px;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   display: inline-block;
 }
 .tier-badge.zero { background: #f3f4f6; color: #6b7280; }
@@ -378,7 +378,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .case-roi {
   display: inline-block;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   font-size: 0.75rem;
   font-weight: 600;
 }

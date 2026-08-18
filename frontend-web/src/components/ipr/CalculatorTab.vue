@@ -95,7 +95,7 @@
         <h4>📊 费用计算结果</h4>
 
         <!-- Summary -->
-        <div class="calc-summary card" style="padding:20px;background:oklch(56% 0.12 170 / 0.05);margin-bottom:16px">
+        <div class="calc-summary card" style="padding:20px;background:rgba(124, 124, 129, 0.05);margin-bottom:16px">
           <div class="calc-summary-row">
             <div class="calc-summary-item">
               <span class="calc-summary-label">IP 类型</span>
@@ -178,7 +178,7 @@ defineEmits<{
 .calc-type-row { display:flex; gap:8px; flex-wrap:wrap; }
 .calc-jur-grid { display:flex; gap:8px; flex-wrap:wrap; }
 .calc-class-grid { display:flex; gap:6px; flex-wrap:wrap; }
-.class-chip { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:2px solid var(--border); background:var(--surface); font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; font-family:Inter; color:var(--muted); }
+.class-chip { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:var(--m-radius-md, 12px); border:2px solid var(--border); background:var(--surface); font-size:.78rem; font-weight:700; cursor:pointer; transition:all .15s; font-family:Inter; color:var(--muted); }
 .class-chip:hover { border-color:var(--accent); }
 .class-chip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .calc-selected-classes { margin-top:8px; font-size:.82rem; color:var(--muted); display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
@@ -200,10 +200,10 @@ defineEmits<{
 .calc-bd-fee { font-size:.9rem; color:var(--accent); }
 .calc-bd-detail { font-size:.78rem; color:var(--muted); display:flex; gap:12px; }
 .calc-bd-breakdown { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:6px; }
-.calc-bd-sub { font-size:.74rem; color:var(--muted); padding:1px 6px; background:var(--m-bg-subtle); border-radius:4px; }
+.calc-bd-sub { font-size:.74rem; color:var(--muted); padding:1px 6px; background:var(--m-bg-subtle); border-radius:var(--m-radius-xs, 6px); }
 .calc-bd-notes { font-size:.76rem; color:var(--muted); margin-top:6px; font-style:italic; }
 .calc-bd-error { font-size:.78rem; color:var(--orange); margin-top:4px; }
-.calc-fx-note { margin-top:10px; padding:10px 14px; background:oklch(62% 0.18 55 / 0.06); border-radius:var(--m-radius-sm); }
+.calc-fx-note { margin-top:10px; padding:10px 14px; background:rgba(129, 129, 133, 0.06); border-radius:var(--m-radius-sm); }
 .calc-fx-note p { font-size:.78rem; color:var(--muted); margin:0; }
 .calc-fx-disclaimer { font-size:.72rem !important; color:var(--orange) !important; margin-top:4px !important; }
 </style>

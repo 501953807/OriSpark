@@ -137,26 +137,26 @@ async function runComparison() {
 .hint { color: var(--m-grey-500); font-size: 0.85rem; margin-bottom: 16px; }
 
 .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.input { flex: 1; min-width: 120px; padding: 8px 12px; border: 1px solid var(--m-border); border-radius: 6px; font-size: 0.9rem; }
-.btn-primary { padding: 8px 20px; background: var(--primary); color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+.input { flex: 1; min-width: 120px; padding: 8px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm, 8px); font-size: 0.9rem; }
+.btn-primary { padding: 8px 20px; background: var(--primary); color: #fff; border: none; border-radius: var(--m-radius-sm, 8px); cursor: pointer; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-small { padding: 4px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+.btn-small { padding: 4px 12px; background: var(--primary); color: #fff; border: none; border-radius: var(--m-radius-xs, 6px); cursor: pointer; font-size: 0.8rem; }
 
-.comparison-result { background: var(--m-surface); padding: 16px; border-radius: 8px; border: 1px solid var(--m-border); }
+.comparison-result { background: var(--m-surface); padding: 16px; border-radius: var(--m-radius-md, 12px); border: 1px solid var(--m-border); }
 .comparison-result pre { white-space: pre-wrap; font-size: 0.85rem; margin: 0; }
 
 .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-.badge-card { padding: 16px; text-align: center; border: 1px solid var(--m-border); border-radius: 8px; }
+.badge-card { padding: 16px; text-align: center; border: 1px solid var(--m-border); border-radius: var(--m-radius-md, 12px); }
 .badge-icon { width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 .badge-card h4 { margin: 4px 0; }
 .badge-card p { font-size: 0.8rem; color: var(--m-grey-500); margin: 4px 0; }
 .xp { display: inline-block; font-size: 0.85rem; font-weight: 600; color: #059669; }
 
 .invoice-list { display: flex; flex-direction: column; gap: 8px; }
-.invoice-card { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.invoice-card { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-md, 12px); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .inv-header { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
 .inv-id { font-size: 0.8rem; color: var(--m-grey-500); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.inv-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; }
+.inv-status { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-xs, 6px); }
 .inv-status.paid { background: #d1fae5; color: #065f46; }
 .inv-status.pending { background: #fef3c7; color: #92400e; }
 .inv-details { font-size: 0.8rem; color: var(--m-grey-500); }

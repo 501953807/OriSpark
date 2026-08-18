@@ -128,7 +128,7 @@ onMounted(() => loadProjects())
 .projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
 .project-card { padding:0; overflow:hidden; cursor:pointer; }
 .proj-cover {
-  height:120px; background:rgba(var(--m-success-rgb, 86, 202, 0), 0.08);
+  height:120px; background:rgba(var(--m-success-rgb, 22, 163, 74), 0.08);
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
 }
 .proj-icon { font-size:3rem; }
@@ -139,8 +139,8 @@ onMounted(() => loadProjects())
 .proj-date { font-size:.7rem; color:var(--m-grey-500); margin-top:8px; }
 .proj-actions { padding:0 16px 12px; display:flex; justify-content:flex-end; gap:4px; }
 .btn-sm { padding:5px 10px; font-size:.75rem; }
-.modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
+.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:560px; width:90%; box-shadow:0 16px 64px rgba(0,0,0,.16); display:flex; flex-direction:column; gap:14px; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
 .modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }
@@ -148,6 +148,6 @@ onMounted(() => loadProjects())
 .form-group { display:flex; flex-direction:column; gap:6px; }
 .form-group label { font-size:.82rem; font-weight:600; color:var(--m-grey-500); }
 .form-input,.form-textarea { padding:10px 14px; border:1px solid var(--m-border); border-radius:var(--m-radius-sm); font-size:.88rem; font-family:Inter; color:var(--m-on-surface); background:var(--m-surface); outline:none; }
-.form-input:focus,.form-textarea:focus { border-color:var(--m-primary); box-shadow:0 0 0 3px oklch(56% 0.12 170 / .1); }
+.form-input:focus,.form-textarea:focus { border-color:var(--m-primary); box-shadow:0 0 0 3px rgba(124, 124, 129, 0.1); }
 .form-textarea { resize:vertical; }
 </style>

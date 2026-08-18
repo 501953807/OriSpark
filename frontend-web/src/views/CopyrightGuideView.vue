@@ -152,7 +152,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .reg-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .reg-info { display: flex; gap: 8px; align-items: center; font-size: 0.85rem; }
 .reg-type { font-size: 0.75rem; color: var(--m-grey-500); }
-.reg-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
+.reg-status { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
 .status-draft .reg-status { background: #f3f4f6; color: #6b7280; }
 .status-submitted .reg-status { background: #dbeafe; color: #2563eb; }
 .status-approved .reg-status { background: #dcfce7; color: #16a34a; }

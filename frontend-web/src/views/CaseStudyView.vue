@@ -160,13 +160,13 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .case-card.lesson { border-left: 4px solid #f59e0b; }
 .case-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .case-header strong { font-size: 1rem; }
-.case-badge { font-size: 0.75rem; padding: 2px 10px; border-radius: 10px; font-weight: 600; }
+.case-badge { font-size: 0.75rem; padding: 2px 10px; border-radius: var(--m-radius-md, 12px); font-weight: 600; }
 .case-badge.success { background: #dcfce7; color: #16a34a; }
 .case-badge.lesson { background: #fef3c7; color: #d97706; }
 .case-desc { font-size: 0.85rem; color: var(--m-grey-500); margin: 0 0 8px; }
 .case-meta { display: flex; gap: 8px; align-items: center; font-size: 0.8rem; flex-wrap: wrap; }
-.case-category { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 10px; }
-.case-tag { background: #f3f4f6; padding: 2px 8px; border-radius: 10px; }
+.case-category { background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
+.case-tag { background: #f3f4f6; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
 .case-takeaways { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--m-border); }
 .case-takeaways strong { font-size: 0.85rem; }
 .case-takeaways ul { margin: 4px 0 0; padding-left: 20px; font-size: 0.85rem; }

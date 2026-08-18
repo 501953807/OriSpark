@@ -53,7 +53,7 @@ watch(() => props.locked, (newVal) => {
 }
 
 .secure-toggle-container:focus-visible {
-  box-shadow: 0 0 0 3px rgba(140, 87, 255, 0.3);
+  box-shadow: 0 0 0 3px rgba(var(--m-primary-rgb, 79, 70, 229), 0.3);
   border-radius: 22px;
 }
 

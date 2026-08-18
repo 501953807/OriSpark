@@ -290,7 +290,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .schedule-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .schedule-info { display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
 .schedule-time { color: var(--m-grey-500); font-size: 0.8rem; }
-.schedule-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
+.schedule-status { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
 .schedule-status.scheduled { background: #dbeafe; color: #2563eb; }
 .schedule-status.published { background: #dcfce7; color: #16a34a; }
 .schedule-status.failed { background: #fef2f2; color: #dc2626; }
@@ -300,7 +300,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .simulate-card { padding: 12px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); }
 .simulate-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .simulate-header strong { font-size: 0.9rem; }
-.tags-badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
+.tags-badge { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
 .tags-badge.ok { background: #dcfce7; color: #16a34a; }
 .tags-badge.fail { background: #fef2f2; color: #dc2626; }
 .title-hint { font-size: 0.85rem; color: var(--m-grey-500); margin: 4px 0; }

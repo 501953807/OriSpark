@@ -47,7 +47,7 @@ defineEmits<{
 .v-num { font-weight: 700; color: var(--accent); min-width: 28px; }
 .v-date { color: var(--muted); flex: 1; }
 .v-hash { font-size: 0.65rem; color: var(--muted); }
-.v-current { font-size: 0.65rem; background: oklch(56% 0.12 170 / .1); color: var(--accent); padding: 2px 6px; border-radius: 100px; font-weight: 600; }
+.v-current { font-size: 0.65rem; background: rgba(124, 124, 129, 0.1); color: var(--accent); padding: 2px 6px; border-radius: 100px; font-weight: 600; }
 .mono { font-family: monospace; }
 .btn-sm { padding: 3px 8px; font-size: 0.7rem; }
 </style>

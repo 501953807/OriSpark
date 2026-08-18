@@ -53,13 +53,13 @@ function exportReport() {
 .plagiarism-check-panel { padding: 16px; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .empty-state { padding: 24px; text-align: center; color: #9ca3af; font-size: 14px; }
-.match-rate { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 6px; margin-bottom: 12px; font-size: 14px; }
+.match-rate { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: var(--m-radius-sm, 8px); margin-bottom: 12px; font-size: 14px; }
 .sources { margin-bottom: 12px; }
 .sources h4 { font-size: 14px; margin: 0 0 8px; }
-.source-item { padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px; }
+.source-item { padding: 10px; border: 1px solid #e5e7eb; border-radius: var(--m-radius-sm, 8px); margin-bottom: 8px; }
 .source-item a { color: #3b82f6; text-decoration: none; font-size: 13px; }
 .similarity { float: right; font-size: 12px; color: #f59e0b; font-weight: 600; }
-.excerpt { background: #f9fafb; padding: 8px; border-radius: 4px; font-size: 12px; margin: 8px 0 0; white-space: pre-wrap; max-height: 60px; overflow: auto; }
+.excerpt { background: #f9fafb; padding: 8px; border-radius: var(--m-radius-xs, 6px); font-size: 12px; margin: 8px 0 0; white-space: pre-wrap; max-height: 60px; overflow: auto; }
 .actions { display: flex; gap: 8px; }
 .btn-sm { padding: 4px 12px; font-size: 13px; }
 </style>

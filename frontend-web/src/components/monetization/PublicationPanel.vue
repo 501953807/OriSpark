@@ -241,9 +241,9 @@ onMounted(loadPublications)
   font-weight: 600;
 }
 
-.pub-status.published { background: oklch(56% 0.12 140 / .15); color: oklch(56% 0.12 140); }
-.pub-status.draft { background: oklch(75% 0.08 80 / .15); color: oklch(65% 0.1 80); }
-.pub-status.paused { background: oklch(56% 0.12 20 / .15); color: oklch(56% 0.12 20); }
+.pub-status.published { background: rgba(124, 124, 129, 0.15); color: rgba(22,163,74, 0.06); }
+.pub-status.draft { background: rgba(222, 222, 225, 0.15); color: rgba(22,163,74, 0.06); }
+.pub-status.paused { background: rgba(124, 124, 129, 0.15); color: rgba(220,38,38, 0.06); }
 
 .pub-date { font-size: .68rem; color: var(--muted); }
 
@@ -257,7 +257,7 @@ onMounted(loadPublications)
 /* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: oklch(20% 0.02 180 / .5);
+  background: rgba(80, 80, 90, 0.5);
   display: flex; align-items: center; justify-content: center;
   z-index: 100;
 }

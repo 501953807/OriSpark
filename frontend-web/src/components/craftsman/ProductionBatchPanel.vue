@@ -53,7 +53,7 @@ const onQualityCheck = (batchNumber: string) => window.alert(`质检: ${batchNum
 .batch-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .batch-table th, .batch-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; text-align: left; }
 .batch-table th { background: #f9fafb; font-weight: 600; }
-.status-badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 500; }
+.status-badge { padding: 2px 8px; border-radius: var(--m-radius-md, 12px); font-size: 12px; font-weight: 500; }
 .actions { display: flex; gap: 8px; }
 .empty-state { padding: 32px; text-align: center; color: #9ca3af; }
 .btn-sm { padding: 4px 12px; font-size: 13px; }

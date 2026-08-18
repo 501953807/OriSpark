@@ -1,87 +1,106 @@
 /* ============================================
-   Materio Vuetify Design Tokens
-   Materio Vuetify Admin Template 风格令牌
-   https://demos.themeselection.com/materio-vuetify-vuejs-admin-template/demo-5/
+   OriSpark Design Tokens — Brand Redesign
+   Indigo 主色 · Noto SC 字体 · 大圆角 · 多层柔光阴影
    ============================================ */
 
 :root {
-  /* ── Primary Colors ── */
-  --m-primary-rgb: 140, 87, 255;
-  --m-primary: #8C57FF;
-  --m-primary-darken-1: #7E4EE6;
-  --m-primary-darken-2: #6A3FCC;
+  /* ── Primary Palette (Indigo Enterprise) ── */
+  --m-primary-rgb: 79, 70, 229;
+  --m-primary: #4F46E5;
+  --m-primary-darken-1: #4338CA;
+  --m-primary-darken-2: #3730A3;
+  --m-primary-lighten: #818CF8;
+  --m-primary-light: rgba(79, 70, 229, 0.12);
   --m-on-primary: #FFFFFF;
 
   /* ── Semantic Colors ── */
-  --m-error: #FF4C51;
+  --m-error: #DC2626;
   --m-on-error: #FFFFFF;
-  --m-warning: #FFB400;
-  --m-on-warning: #000000;
-  --m-success: #56CA00;
+  --m-warning: #D97706;
+  --m-on-warning: #FFFFFF;
+  --m-success: #16A34A;
   --m-on-success: #FFFFFF;
-  --m-info: #16B1FF;
+  --m-info: #0284C7;
   --m-on-info: #FFFFFF;
-  --m-secondary: #8A8D93;
+  --m-secondary: #64748B;
   --m-on-secondary: #FFFFFF;
 
-  /* ── Greyscale ── */
-  --m-grey-50: #FAFAFA;
-  --m-grey-100: #F5F5F5;
-  --m-grey-200: #EEEEEE;
-  --m-grey-300: #E0E0E0;
-  --m-grey-400: #BDBDBD;
-  --m-grey-500: #9E9E9E;
-  --m-grey-600: #757575;
-  --m-grey-700: #616161;
-  --m-grey-800: #424242;
-  --m-grey-900: #212121;
+  /* ── Greyscale (professional Slate scale) ── */
+  --m-grey-50: #F8FAFC;
+  --m-grey-100: #F1F5F9;
+  --m-grey-200: #E2E8F0;
+  --m-grey-300: #CBD5E1;
+  --m-grey-400: #94A3B8;
+  --m-grey-500: #64748B;
+  --m-grey-600: #475569;
+  --m-grey-700: #334155;
+  --m-grey-800: #1E293B;
+  --m-grey-900: #0F172A;
 
   /* ── Background & Surface ── */
   --m-bg: #FFFFFF;
-  --m-bg-subtle: #F4F5FA;
+  --m-bg-subtle: #F1F5F9;
   --m-surface: #FFFFFF;
-  --m-surface-2: #EEF0F4;
+  --m-surface-2: #E2E8F0;
   --m-surface-bright: #FFFFFF;
-  --m-on-surface: #2E263D;
-  --m-on-surface-variant: #EEEEEE;
-  --m-on-background: #2E263D;
+  --m-on-surface: #0F172A;
+  --m-on-surface-variant: #1E293B;
+  --m-on-background: #0F172A;
 
   /* ── Border ── */
-  --m-border: rgba(46, 38, 61, 0.12);
-  --m-border-strong: rgba(46, 38, 61, 0.2);
+  --m-border: rgba(15, 23, 42, 0.08);
+  --m-border-strong: rgba(15, 23, 42, 0.15);
 
   /* ── Opacity Values ── */
   --m-hover-opacity: 0.04;
-  --m-activated-opacity: 0.16;
+  --m-activated-opacity: 0.12;
   --m-focus-opacity: 0.1;
   --m-disabled-opacity: 0.4;
   --m-medium-emphasis-opacity: 0.7;
   --m-high-emphasis-opacity: 0.9;
 
-  /* ── Shadows (Vuetify style RGB values) ── */
-  --m-shadow-key-umbra-color: 46, 38, 61;
-  --m-shadow-xs: 0 0.125rem 0.25rem rgba(var(--m-shadow-key-umbra-color), 0.16);
-  --m-shadow-sm: 0 0.25rem 0.5rem rgba(var(--m-shadow-key-umbra-color), 0.18);
-  --m-shadow-md: 0 0.5rem 1rem rgba(var(--m-shadow-key-umbra-color), 0.20);
-  --m-shadow-lg: 0 1rem 2rem rgba(var(--m-shadow-key-umbra-color), 0.22);
-  --m-shadow-xl: 0 1.5rem 3rem rgba(var(--m-shadow-key-umbra-color), 0.24);
+  /* ── Shadows (soft multi-layer) ── */
+  --m-shadow-key-umbra-color: 15, 23, 42;
+  --m-shadow-key-ambient-color: 79, 70, 229;
+  --m-shadow-xs:
+    0 1px 3px rgba(15, 23, 42, 0.06),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+  --m-shadow-sm:
+    0 2px 8px rgba(15, 23, 42, 0.06),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+  --m-shadow-md:
+    0 4px 16px rgba(15, 23, 42, 0.06),
+    0 2px 6px rgba(15, 23, 42, 0.04),
+    0 0 0 1px rgba(79, 70, 229, 0.03);
+  --m-shadow-lg:
+    0 8px 24px rgba(15, 23, 42, 0.07),
+    0 4px 10px rgba(15, 23, 42, 0.05),
+    0 0 0 1px rgba(79, 70, 229, 0.04);
+  --m-shadow-xl:
+    0 16px 48px rgba(15, 23, 42, 0.08),
+    0 8px 16px rgba(15, 23, 42, 0.05),
+    0 0 0 1px rgba(79, 70, 229, 0.05);
 
-  /* ── Border Radius ── */
-  --m-radius-xs: 4px;
-  --m-radius-sm: 6px;
-  --m-radius-md: 10px;
-  --m-radius-lg: 12px;
-  --m-radius-xl: 16px;
+  /* ── Border Radius (brand-level soft geometry) ── */
+  --m-radius-xs: 6px;
+  --m-radius-sm: 8px;
+  --m-radius-md: 12px;
+  --m-radius-lg: 16px;
+  --m-radius-xl: 20px;
+  --m-radius-2xl: 24px;
+  --m-radius-3xl: 28px;
   --m-radius-full: 9999px;
 
-  /* ── Typography ── */
-  --m-font-family: 'Inter', 'Source Han Sans SC', 'PingFang SC', sans-serif;
-  --m-font-size-xs: 0.6875rem;    /* 11px */
-  --m-font-size-sm: 0.8125rem;    /* 13px */
-  --m-font-size-base: 0.9375rem;  /* 15px */
-  --m-font-size-md: 1.0625rem;    /* 17px */
-  --m-font-size-lg: 1.1875rem;    /* 19px */
-  --m-font-size-xl: 1.5rem;       /* 24px */
+  /* ── Typography (Noto SC: Serif display + Sans body) ── */
+  --m-font-family: 'Noto Sans SC', 'Inter', 'PingFang SC', sans-serif;
+  --m-font-family-display: 'Noto Serif SC', 'Georgia', serif;
+  --m-font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --m-font-size-xs: 0.6875rem;
+  --m-font-size-sm: 0.8125rem;
+  --m-font-size-base: 0.9375rem;
+  --m-font-size-md: 1.0625rem;
+  --m-font-size-lg: 1.1875rem;
+  --m-font-size-xl: 1.5rem;
   --m-font-weight-regular: 400;
   --m-font-weight-medium: 500;
   --m-font-weight-semibold: 600;
@@ -92,16 +111,16 @@
   --m-line-height-lg: 1.75;
 
   /* ── Spacing ── */
-  --m-space-1: 0.25rem;   /* 4px */
-  --m-space-2: 0.5rem;    /* 8px */
-  --m-space-3: 0.75rem;   /* 12px */
-  --m-space-4: 1rem;      /* 16px */
-  --m-space-5: 1.25rem;   /* 20px */
-  --m-space-6: 1.5rem;    /* 24px */
-  --m-space-8: 2rem;      /* 32px */
-  --m-space-10: 2.5rem;   /* 40px */
-  --m-space-12: 3rem;     /* 48px */
-  --m-space-16: 4rem;     /* 64px */
+  --m-space-1: 4px;
+  --m-space-2: 8px;
+  --m-space-3: 12px;
+  --m-space-4: 16px;
+  --m-space-5: 20px;
+  --m-space-6: 24px;
+  --m-space-8: 32px;
+  --m-space-10: 40px;
+  --m-space-12: 48px;
+  --m-space-16: 64px;
 
   /* ── Transitions ── */
   --m-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -113,6 +132,12 @@
   --m-topbar-height-expanded: 72px;
   --m-sidebar-width: 256px;
   --m-sidebar-collapsed: 80px;
+  --m-sidebar-bg: #FFFFFF;
+  --m-sidebar-fg: #0F172A;
+  --m-sidebar-fg-dim: #64748B;
+  --m-sidebar-active: rgba(79, 70, 229, 0.08);
+  --m-sidebar-shadow: 4px 0 24px rgba(15, 23, 42, 0.06);
+  --m-topbar-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
 
   /* ── Z-index ── */
   --m-z-dropdown: 100;
@@ -122,53 +147,35 @@
   --m-z-toast: 500;
   --m-z-tooltip: 600;
 
-  /* ── Spark Brand Aliases ── */
-  --spark-blue: #3b82f6;
-  --spark-green: #56CA00;
-  --spark-red: #FF4C51;
-  --spark-gold: #D4AF37;
-  --spark-silver: #C0C0C0;
-  --spark-dark: #1e293b;
-  --spark-surface: var(--m-surface);
-  --spark-border: var(--m-border);
-  --spark-text: var(--m-on-surface);
-  --spark-muted: var(--m-grey-500);
-  --spark-bg: var(--m-bg-subtle);
-
   /* ── Vuetify Theme Tokens ── */
   --v-theme-primary: var(--m-primary);
   --v-theme-on-primary: var(--m-on-primary);
   --v-theme-surface: var(--m-surface);
   --v-theme-on-surface: var(--m-on-surface);
   --v-theme-background: var(--m-bg-subtle);
-  --v-theme-on-background: var(--m-on-background);
-  --v-theme-error: var(--m-error);
-  --v-theme-warning: var(--m-warning);
-  --v-theme-success: var(--m-success);
-  --v-theme-info: var(--m-info);
-  --v-theme-secondary: var(--m-secondary);
   --v-border-color: var(--m-on-surface);
   --v-border-opacity: 0.12;
 }
 
 /* ── Dark Theme ── */
 [data-theme="dark"] {
-  --m-bg: #121212;
-  --m-bg-subtle: #1E1E1E;
-  --m-surface: #1E1E1E;
-  --m-surface-2: #2C2C2C;
-  --m-on-surface: #E8E6E7;
-  --m-on-background: #E8E6E7;
-  --m-border: rgba(232, 230, 231, 0.12);
-  --m-border-strong: rgba(232, 230, 231, 0.2);
-  --m-grey-50: #2C2C2C;
-  --m-grey-100: #333333;
-  --m-grey-200: #444444;
-  --m-grey-300: #666666;
-  --m-grey-400: #888888;
-  --m-grey-500: #999999;
-  --m-grey-600: #AAAAAA;
-  --m-grey-700: #BBBBBB;
-  --m-grey-800: #CCCCCC;
-  --m-grey-900: #DDDDDD;
+  --m-bg: #0F172A;
+  --m-bg-subtle: #1E293B;
+  --m-surface: #1E293B;
+  --m-surface-2: #334155;
+  --m-on-surface: #F1F5F9;
+  --m-on-background: #F1F5F9;
+  --m-border: rgba(241, 245, 249, 0.1);
+  --m-border-strong: rgba(241, 245, 249, 0.18);
+  --m-grey-50: #334155;
+  --m-grey-100: #475569;
+  --m-grey-200: #64748B;
+  --m-grey-300: #94A3B8;
+  --m-grey-400: #CBD5E1;
+  --m-grey-500: #E2E8F0;
+  --m-grey-600: #F1F5F9;
+  --m-grey-700: #F8FAFC;
+  --m-sidebar-bg: #1E293B;
+  --m-sidebar-fg: #F1F5F9;
+  --m-sidebar-fg-dim: #64748B;
 }

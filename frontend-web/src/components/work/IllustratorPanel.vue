@@ -243,11 +243,11 @@ const hasAnyInfo = computed(() => {
 .stage-badge {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 9999px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.78rem;
   font-weight: 600;
-  background: oklch(65% 0.18 35 / 0.12);
-  color: oklch(45% 0.15 35);
+  background: rgba(132, 132, 135, 0.12);
+  color: rgba(234,88,12, 0.06);
 }
 
 .count-badge {
@@ -257,11 +257,11 @@ const hasAnyInfo = computed(() => {
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
-  border-radius: 9999px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.7rem;
   font-weight: 700;
-  background: oklch(45% 0.15 35 / 0.15);
-  color: oklch(45% 0.15 35);
+  background: rgba(80, 80, 90, 0.15);
+  color: rgba(234,88,12, 0.06);
 }
 
 .tags-wrap {
@@ -273,10 +273,10 @@ const hasAnyInfo = computed(() => {
 .tag-pill {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 9999px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.75rem;
-  background: oklch(95% 0.02 35);
-  color: oklch(40% 0.05 35);
-  border: 1px solid oklch(85% 0.04 35 / 0.3);
+  background: rgba(234,88,12, 0.06);
+  color: rgba(234,88,12, 0.06);
+  border: 1px solid rgba(225, 225, 227, 0.3);
 }
 </style>

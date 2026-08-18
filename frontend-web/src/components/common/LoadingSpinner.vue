@@ -26,11 +26,11 @@ defineProps<{ text?: string; fullScreen?: boolean }>()
   position: absolute;
   inset: 0;
   z-index: 100;
-  background: var(--bg, oklch(98% 0.002 240));
+  background: var(--m-bg-subtle, #F1F5F9);
 }
 
 .dark .loading-spinner--full {
-  background: var(--bg, oklch(13% 0.01 240));
+  background: var(--m-bg-subtle, #1E293B);
 }
 
 .spinner-ring {
@@ -43,7 +43,7 @@ defineProps<{ text?: string; fullScreen?: boolean }>()
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 3px solid var(--border, oklch(90% 0.005 240));
+  border: 3px solid var(--m-border, rgba(15,23,42,0.08));
 }
 
 .spinner-arc {
@@ -51,7 +51,7 @@ defineProps<{ text?: string; fullScreen?: boolean }>()
   inset: 0;
   border-radius: 50%;
   border: 3px solid transparent;
-  border-top-color: var(--accent, oklch(56% 0.12 170));
+  border-top-color: #4F46E5;
   animation: spin 0.75s linear infinite;
 }
 
@@ -61,7 +61,7 @@ defineProps<{ text?: string; fullScreen?: boolean }>()
 
 .loading-text {
   font-size: 0.9rem;
-  color: var(--muted, oklch(55% 0.01 240));
+  color: var(--m-grey-500, #64748B);
   margin: 0;
   font-weight: 500;
   letter-spacing: 0.02em;

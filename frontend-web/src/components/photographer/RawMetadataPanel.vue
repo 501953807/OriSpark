@@ -380,7 +380,7 @@ function getRawFormat(filePath: string): string {
 }
 
 .btn-primary:hover {
-  background: oklch(minus(var(--grad1-luminance), 0.05) var(--grad1-chroma) var(--grad1-angle));
+  background: var(--m-primary-darken-1, #4338CA);
 }
 
 .btn-ghost {

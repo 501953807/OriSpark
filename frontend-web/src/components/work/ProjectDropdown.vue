@@ -116,7 +116,7 @@ select:focus {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: oklch(0 0 0 / 0.4);
+  background: rgba(0,0,0,4);
   backdrop-filter: blur(4px);
   z-index: 9998;
   display: flex;
@@ -130,7 +130,7 @@ select:focus {
   padding: 28px;
   max-width: 440px;
   width: 90%;
-  box-shadow: 0 16px 64px oklch(0 0 0 / 0.16);
+  box-shadow: 0 16px 64px rgba(0,0,0,16);
   display: flex;
   flex-direction: column;
   gap: 14px;

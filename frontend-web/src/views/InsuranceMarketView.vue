@@ -225,7 +225,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   top: 8px;
   right: 8px;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -289,7 +289,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   top: 8px;
   right: 8px;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   font-size: 0.7rem;
   font-weight: 700;
 }

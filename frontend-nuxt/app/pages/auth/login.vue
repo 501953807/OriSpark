@@ -117,8 +117,8 @@ async function handleDemoLogin() {
             <rect x="80" y="145" width="35" height="14" rx="7" fill="rgba(255,255,255,0.85)" transform="rotate(-15 97 152)"/>
             <rect x="185" y="145" width="35" height="14" rx="7" fill="rgba(255,255,255,0.85)" transform="rotate(15 202 152)"/>
             <!-- Laptop -->
-            <rect x="100" y="160" width="55" height="35" rx="4" fill="#7C3AED" opacity="0.9"/>
-            <rect x="103" y="163" width="49" height="26" rx="2" fill="#A78BFA" opacity="0.6"/>
+            <rect x="100" y="160" width="55" height="35" rx="4" fill="#4F46E5" opacity="0.9"/>
+            <rect x="103" y="163" width="49" height="26" rx="2" fill="#A5B4FC" opacity="0.6"/>
             <!-- Legs -->
             <rect x="125" y="225" width="18" height="40" rx="9" fill="rgba(255,255,255,0.7)"/>
             <rect x="157" y="225" width="18" height="40" rx="9" fill="rgba(255,255,255,0.7)"/>
@@ -317,7 +317,7 @@ async function handleDemoLogin() {
   justify-content: center;
   overflow: hidden;
   min-height: 100dvh;
-  background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 30%, #C4B5FD 60%, #A78BFA 100%);
+  background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 30%, #C7D2FE 60%, #A5B4FC 100%);
 }
 .auth-left__bg {
   position: absolute;
@@ -462,12 +462,12 @@ async function handleDemoLogin() {
   margin-bottom: 2rem;
   color: #1F2937;
 }
-.auth-right__logo-icon { color: #7C3AED; }
+.auth-right__logo-icon { color: #4F46E5; }
 .auth-right__logo-text {
   font-size: 1.375rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #7C3AED, #3B82F6);
+  background: linear-gradient(135deg, #4F46E5, #3B82F6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -508,8 +508,8 @@ async function handleDemoLogin() {
   background: #F9FAFB;
 }
 .form-input:focus-within {
-  border-color: #7C3AED;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
   background: #FFFFFF;
 }
 .form-input--error {
@@ -589,8 +589,8 @@ async function handleDemoLogin() {
   flex-shrink: 0;
 }
 .form-checkbox input:checked + .form-checkbox__box {
-  background: #7C3AED;
-  border-color: #7C3AED;
+  background: #4F46E5;
+  border-color: #4F46E5;
 }
 .form-checkbox input:checked + .form-checkbox__box::after {
   content: '✓';
@@ -600,7 +600,7 @@ async function handleDemoLogin() {
 }
 .form-link {
   font-size: 0.8125rem;
-  color: #7C3AED;
+  color: #4F46E5;
   text-decoration: none;
   font-weight: 500;
 }
@@ -610,7 +610,7 @@ async function handleDemoLogin() {
 .btn-submit {
   width: 100%;
   height: 48px;
-  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -625,8 +625,8 @@ async function handleDemoLogin() {
   font-family: inherit;
 }
 .btn-submit:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6D28D9 0%, #5B21B6 100%);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+  background: linear-gradient(135deg, #4338CA 0%, #3730A3 100%);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
   transform: translateY(-1px);
 }
 .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
@@ -638,9 +638,9 @@ async function handleDemoLogin() {
   width: 100%;
   height: 42px;
   background: transparent;
-  border: 1.5px dashed rgba(124, 58, 237, 0.35);
+  border: 1.5px dashed rgba(79, 70, 229, 0.35);
   border-radius: 10px;
-  color: #7C3AED;
+  color: #4F46E5;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
@@ -653,8 +653,8 @@ async function handleDemoLogin() {
   margin-top: -4px;
 }
 .btn-demo:hover:not(:disabled) {
-  background: rgba(124, 58, 237, 0.06);
-  border-color: #7C3AED;
+  background: rgba(79, 70, 229, 0.06);
+  border-color: #4F46E5;
 }
 .btn-demo:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-demo .material-icons { font-size: 16px; }
@@ -667,7 +667,7 @@ async function handleDemoLogin() {
   margin: 1.5rem 0 0;
 }
 .auth-footer-link {
-  color: #7C3AED;
+  color: #4F46E5;
   text-decoration: none;
   font-weight: 600;
 }
@@ -712,9 +712,9 @@ async function handleDemoLogin() {
   font-family: inherit;
 }
 .btn-oauth:hover {
-  border-color: #7C3AED;
-  background: rgba(124, 58, 237, 0.04);
-  color: #7C3AED;
+  border-color: #4F46E5;
+  background: rgba(79, 70, 229, 0.04);
+  color: #4F46E5;
 }
 .oauth-icon { font-size: 18px; }
 
@@ -726,7 +726,7 @@ async function handleDemoLogin() {
   margin: 1rem 0 0;
 }
 .auth-redirect-text a {
-  color: #7C3AED;
+  color: #4F46E5;
   text-decoration: none;
 }
 .auth-redirect-text a:hover { text-decoration: underline; }

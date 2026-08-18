@@ -112,11 +112,11 @@ defineEmits<{
 .stat-num { font-size:2rem; font-weight:800; color:var(--accent); }
 .stat-label { font-size:.82rem; color:var(--muted); }
 .stat-detail { display:flex; gap:4px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
-.mini-badge { font-size:.65rem; padding:1px 5px; border-radius:4px; }
-.badge-info { background:oklch(56% 0.12 260 / 0.1); color:var(--blue); }
+.mini-badge { font-size:.65rem; padding:1px 5px; border-radius:var(--m-radius-xs, 6px); }
+.badge-info { background:rgba(124, 124, 129, 0.1); color:var(--blue); }
 .badge-success { background:rgba(86,202,0,0.1); color:var(--accent); }
-.badge-warning { background:oklch(62% 0.18 55 / 0.1); color:var(--orange); }
-.badge-error { background:oklch(62% 0.18 20 / 0.1); color:var(--red); }
+.badge-warning { background:rgba(129, 129, 133, 0.1); color:var(--orange); }
+.badge-error { background:rgba(129, 129, 133, 0.1); color:var(--red); }
 
 .summary-row { padding:20px; display:flex; gap:32px; }
 .summary-item { display:flex; flex-direction:column; align-items:center; gap:4px; }
@@ -132,8 +132,8 @@ defineEmits<{
 .renewals-section h4 { margin:0 0 12px; font-size:.95rem; }
 .renewal-list { display:flex; flex-direction:column; gap:8px; }
 .renewal-item { display:flex; align-items:center; gap:12px; padding:12px; border-radius:var(--m-radius-sm); border:1px solid var(--border); }
-.urgency-red { border-left:4px solid var(--red); background:oklch(62% 0.18 20 / 0.03); }
-.urgency-orange { border-left:4px solid var(--orange); background:oklch(62% 0.18 55 / 0.03); }
+.urgency-red { border-left:4px solid var(--red); background:rgba(129, 129, 133, 0.03); }
+.urgency-orange { border-left:4px solid var(--orange); background:rgba(129, 129, 133, 0.03); }
 .urgency-dot { font-size:1rem; }
 .renewal-info { flex:1; display:flex; flex-direction:column; }
 .renewal-info strong { font-size:.85rem; }

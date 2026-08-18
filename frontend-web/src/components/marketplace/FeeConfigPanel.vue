@@ -58,6 +58,6 @@ async function save() {
 <style scoped>
 .config-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 .config-fields label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; }
-.config-fields input { padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+.config-fields input { padding: 8px; border: 1px solid var(--border); border-radius: var(--m-radius-sm, 8px); }
 .rate-summary { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
 </style>

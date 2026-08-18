@@ -1,101 +1,121 @@
 /* ============================================
-   Materio Vuetify Design Tokens
-   Materio Vuetify Admin Template — Exact Colors & Shadows
-   Reference: https://demos.themeselection.com/materio-vuetify-vuejs-admin-template/demo-1/
+   OriStudio Enterprise Design Tokens
+   专业企业级配色系统 — Inter 字体 · Indigo 主色 · 完整灰度
    ============================================ */
 
 :root {
-  /* ── Primary Palette (Materio Purple) ── */
-  --m-primary-rgb: 140, 87, 255;
-  --m-primary: #8C57FF;
-  --m-primary-darken-1: #7E44F0;
-  --m-primary-darken-2: #6C3DD9;
-  --m-primary-lighten: #A78BFF;
-  --m-on-primary: #FFFFFF;
-  --m-primary-tint: rgba(140, 87, 255, 0.08);
-  --m-primary-tint-2: rgba(140, 87, 255, 0.16);
+  /* ── Primary Palette (Indigo Enterprise) ── */
+  --m-primary-rgb: 79, 70, 229;       /* #4F46E5 Indigo 600 */
+  --m-primary: #4F46E5;
+  --m-primary-darken-1: #4338CA;      /* Indigo 700 hover */
+  --m-primary-darken-2: #3730A3;      /* Indigo 800 pressed */
+  --m-primary-lighten: #818CF8;       /* Indigo 400 tint */
+  --m-on-primary: var(--m-surface, #fff);
+  --m-primary-tint: rgba(79, 70, 229, 0.08);
+  --m-primary-tint-2: rgba(79, 70, 229, 0.14);
 
   /* ── Semantic Colors ── */
-  --m-error: #FF4C51;
-  --m-on-error: #FFFFFF;
-  --m-error-rgb: 255, 76, 81;
-  --m-warning: #FFB400;
-  --m-on-warning: #000000;
-  --m-warning-rgb: 255, 180, 0;
-  --m-success: #56CA00;
-  --m-on-success: #FFFFFF;
-  --m-success-rgb: 86, 202, 0;
-  --m-info: #16B1FF;
-  --m-on-info: #FFFFFF;
-  --m-info-rgb: 22, 177, 255;
-  --m-secondary: #8A8D93;
-  --m-on-secondary: #FFFFFF;
+  --m-error: #DC2626;                 /* Red 600 */
+  --m-on-error: var(--m-surface, #fff);
+  --m-error-rgb: 220, 38, 38;
+  --m-warning: #D97706;               /* Amber 600 */
+  --m-on-warning: var(--m-surface, #fff);
+  --m-warning-rgb: 217, 119, 6;
+  --m-success: #16A34A;               /* Green 600 */
+  --m-on-success: var(--m-surface, #fff);
+  --m-success-rgb: 22, 163, 74;
+  --m-info: #0284C7;                  /* Sky 600 */
+  --m-on-info: var(--m-surface, #fff);
+  --m-info-rgb: 2, 132, 199;
+  --m-secondary: #64748B;             /* Slate 500 */
+  --m-on-secondary: var(--m-surface, #fff);
 
-  /* ── Greyscale ── */
-  --m-grey-50: #FAFAFA;
-  --m-grey-100: #F5F5F5;
-  --m-grey-200: #EEEEEE;
-  --m-grey-300: #E0E0E0;
-  --m-grey-400: #BDBDBD;
-  --m-grey-500: #9E9E9E;
-  --m-grey-600: #757575;
-  --m-grey-700: #616161;
-  --m-grey-800: #424242;
-  --m-grey-900: #212121;
+  /* ── Greyscale (11-level professional scale) ── */
+  --m-grey-50:  #F8FAFC;
+  --m-grey-100: #F1F5F9;
+  --m-grey-200: #E2E8F0;
+  --m-grey-300: #CBD5E1;
+  --m-grey-400: #94A3B8;
+  --m-grey-500: #64748B;
+  --m-grey-600: #475569;
+  --m-grey-700: #334155;
+  --m-grey-800: #1E293B;
+  --m-grey-900: #0F172A;
 
   /* ── Background & Surface ── */
-  --m-bg: #FFFFFF;
-  --m-bg-subtle: #F4F5FA;       /* Materio page background — light purple tint */
-  --m-surface: #FFFFFF;
-  --m-surface-2: #EEF0F4;
-  --m-surface-bright: #FFFFFF;
-  --m-on-surface: #2E263D;      /* Materio dark text */
-  --m-on-surface-variant: #EEEEEE;
-  --m-on-background: #2E263D;
+  --m-bg: var(--m-surface, #fff);
+  --m-bg-subtle: #F1F5F9;            /* Slate 100 — 干净中性质感底 */
+  --m-surface: var(--m-surface, #fff);
+  --m-surface-2: #E2E8F0;            /* Slate 200 */
+  --m-surface-bright: var(--m-surface, #fff);
+  --m-on-surface: #0F172A;           /* Slate 900 — 高对比深色文字 */
+  --m-on-surface-variant: #1E293B;
+  --m-on-background: #0F172A;
 
-  /* ── Sidebar Nav (Materio style) ── */
+  /* ── Sidebar Nav ── */
   --m-sidebar-nav-indent: 23px;
-  --m-sidebar-nav-item-height: 38px;
-  --m-sidebar-nav-group-height: 38px;
-  --m-sidebar-nav-section-font: 13px;
+  --m-sidebar-nav-item-height: 40px;
+  --m-sidebar-nav-group-height: 40px;
+  --m-sidebar-nav-section-font: 11px;
   --m-sidebar-nav-section-opacity: 0.4;
 
   /* ── Border ── */
-  --m-border: rgba(46, 38, 61, 0.12);
-  --m-border-strong: rgba(46, 38, 61, 0.2);
+  --m-border: rgba(15, 23, 42, 0.08);      /* Slate 900 @8% — 更细腻的边框 */
+  --m-border-strong: rgba(15, 23, 42, 0.15);
 
   /* ── Opacity Values ── */
   --m-hover-opacity: 0.04;
-  --m-activated-opacity: 0.16;
+  --m-activated-opacity: 0.12;
   --m-focus-opacity: 0.1;
   --m-disabled-opacity: 0.4;
   --m-medium-emphasis-opacity: 0.7;
   --m-high-emphasis-opacity: 0.9;
 
-  /* ── Shadows (Materio elevated cards — no border, pure shadow) ── */
-  --m-shadow-key-umbra-color: 46, 38, 61;
-  --m-shadow-xs: 0 0.125rem 0.25rem rgba(var(--m-shadow-key-umbra-color), 0.16);
-  --m-shadow-sm: 0 0.25rem 0.5rem rgba(var(--m-shadow-key-umbra-color), 0.18);
-  --m-shadow-md: 0 0.5rem 1rem rgba(var(--m-shadow-key-umbra-color), 0.20);
-  --m-shadow-lg: 0 1rem 2rem rgba(var(--m-shadow-key-umbra-color), 0.22);
-  --m-shadow-xl: 0 1.5rem 3rem rgba(var(--m-shadow-key-umbra-color), 0.24);
+  /* ── Shadows (soft multi-layer for floating card effect) ── */
+  --m-shadow-key-umbra-color: 15, 23, 42;  /* Slate 900 */
+  --m-shadow-key-ambient-color: 79, 70, 229; /* Indigo — brand tint */
+  --m-shadow-xs:
+    0 1px 3px rgba(var(--m-shadow-key-umbra-color), 0.06),
+    0 1px 2px rgba(var(--m-shadow-key-umbra-color), 0.04);
+  --m-shadow-sm:
+    0 2px 8px rgba(var(--m-shadow-key-umbra-color), 0.06),
+    0 1px 2px rgba(var(--m-shadow-key-umbra-color), 0.04);
+  --m-shadow-md:
+    0 4px 16px rgba(var(--m-shadow-key-umbra-color), 0.06),
+    0 2px 6px rgba(var(--m-shadow-key-umbra-color), 0.04),
+    0 0 0 1px rgba(var(--m-shadow-key-ambient-color), 0.03);
+  --m-shadow-lg:
+    0 8px 24px rgba(var(--m-shadow-key-umbra-color), 0.07),
+    0 4px 10px rgba(var(--m-shadow-key-umbra-color), 0.05),
+    0 0 0 1px rgba(var(--m-shadow-key-ambient-color), 0.04);
+  --m-shadow-xl:
+    0 16px 48px rgba(var(--m-shadow-key-umbra-color), 0.08),
+    0 8px 16px rgba(var(--m-shadow-key-umbra-color), 0.05),
+    0 0 0 1px rgba(var(--m-shadow-key-ambient-color), 0.05);
+  --m-shadow-brand:
+    0 8px 32px rgba(var(--m-shadow-key-ambient-color), 0.10),
+    0 4px 12px rgba(var(--m-shadow-key-umbra-color), 0.06);
 
-  /* ── Border Radius ── */
-  --m-radius-xs: 4px;
-  --m-radius-sm: 6px;
-  --m-radius-md: 10px;
-  --m-radius-lg: 12px;
-  --m-radius-xl: 16px;
+  /* ── Border Radius (brand-level soft geometry) ── */
+  --m-radius-xs: 6px;
+  --m-radius-sm: 8px;
+  --m-radius-md: 12px;
+  --m-radius-lg: 16px;
+  --m-radius-xl: 20px;
+  --m-radius-2xl: 24px;
+  --m-radius-3xl: 28px;
   --m-radius-full: 9999px;
 
-  /* ── Typography ── */
-  --m-font-family: 'Inter', 'Source Han Sans SC', 'PingFang SC', sans-serif;
-  --m-font-size-xs: 0.6875rem;
-  --m-font-size-sm: 0.8125rem;
-  --m-font-size-base: 0.9375rem;
-  --m-font-size-md: 1.0625rem;
-  --m-font-size-lg: 1.1875rem;
-  --m-font-size-xl: 1.5rem;
+  /* ── Typography (brand personality: Serif display + Sans body + Mono data) ── */
+  --m-font-family: 'Noto Sans SC', 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --m-font-family-display: 'Noto Serif SC', 'Georgia', 'Source Han Serif SC', serif;
+  --m-font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --m-font-size-xs: 0.6875rem;   /* 11px */
+  --m-font-size-sm: 0.8125rem;   /* 13px */
+  --m-font-size-base: 0.9375rem; /* 15px */
+  --m-font-size-md: 1.0625rem;   /* 17px */
+  --m-font-size-lg: 1.1875rem;   /* 19px */
+  --m-font-size-xl: 1.5rem;      /* 24px */
   --m-font-weight-regular: 400;
   --m-font-weight-medium: 500;
   --m-font-weight-semibold: 600;
@@ -105,17 +125,22 @@
   --m-line-height-base: 1.625;
   --m-line-height-lg: 1.75;
 
-  /* ── Spacing ── */
-  --m-space-1: 0.25rem;
-  --m-space-2: 0.5rem;
-  --m-space-3: 0.75rem;
-  --m-space-4: 1rem;
-  --m-space-5: 1.25rem;
-  --m-space-6: 1.5rem;
-  --m-space-8: 2rem;
-  --m-space-10: 2.5rem;
-  --m-space-12: 3rem;
-  --m-space-16: 4rem;
+  /* ── Brand-specific token: --display points to serif, --body to sans ── */
+  --font-display: var(--m-font-family-display);
+  --font-body: var(--m-font-family);
+  --font-mono: var(--m-font-family-mono);
+
+  /* ── Spacing (4px grid) ── */
+  --m-space-1: 4px;
+  --m-space-2: 8px;
+  --m-space-3: 12px;
+  --m-space-4: 16px;
+  --m-space-5: 20px;
+  --m-space-6: 24px;
+  --m-space-8: 32px;
+  --m-space-10: 40px;
+  --m-space-12: 48px;
+  --m-space-16: 64px;
 
   /* ── Transitions ── */
   --m-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -125,24 +150,24 @@
   /* ── Layout Dimensions ── */
   --m-sidebar-width: 256px;
   --m-sidebar-collapsed: 80px;
-  --m-sidebar-bg: #F4F5FA;
-  --m-sidebar-fg: #2E263D;
-  --m-sidebar-fg-dim: #8A8D93;
-  --m-sidebar-active-bg: linear-gradient(135deg, #5585FF, #2A52B0);
-  --m-sidebar-active-fg: #FFFFFF;
-  --m-sidebar-hover-bg: #EDEDF9;
-  --m-sidebar-border: none;          /* Materio sidebar has no border */
-  --m-sidebar-shadow: none;
+  --m-sidebar-bg: var(--m-surface, #fff);
+  --m-sidebar-fg: #0F172A;
+  --m-sidebar-fg-dim: #64748B;
+  --m-sidebar-active-bg: linear-gradient(135deg, #4F46E5, #3730A3);
+  --m-sidebar-active-fg: var(--m-surface, #fff);
+  --m-sidebar-hover-bg: #F1F5F9;
+  --m-sidebar-border: none;
+  --m-sidebar-shadow: 4px 0 24px rgba(15, 23, 42, 0.06);
   --m-topbar-height: 64px;
-  --m-topbar-bg: transparent;        /* Transparent over page bg */
+  --m-topbar-bg: transparent;
   --m-topbar-border: none;
-  --m-topbar-shadow: none;
-  --m-bg-subtle-materio: #F4F5FA;
-  --m-search-bg: #F4F5FA;
+  --m-topbar-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+  --m-bg-subtle-materio: #F1F5F9;
+  --m-search-bg: #F1F5F9;
   --m-search-border: none;
   --m-topbar-height-expanded: 72px;
 
-  /* ── Layout Spacing (Materio) ── */
+  /* ── Layout Spacing ── */
   --m-content-padding: 24px;
 
   /* ── Z-index ── */
@@ -171,26 +196,26 @@
 
 /* ── Dark Theme ── */
 [data-theme="dark"] {
-  --m-bg: #121212;
-  --m-bg-subtle: #1E1E1E;
-  --m-surface: #1E1E1E;
-  --m-surface-2: #2C2C2C;
-  --m-on-surface: #E8E6E7;
-  --m-on-background: #E8E6E7;
-  --m-border: rgba(232, 230, 231, 0.12);
-  --m-border-strong: rgba(232, 230, 231, 0.2);
-  --m-grey-50: #2C2C2C;
-  --m-grey-100: #333333;
-  --m-grey-200: #444444;
-  --m-grey-300: #666666;
-  --m-grey-400: #888888;
-  --m-grey-500: #999999;
-  --m-grey-600: #AAAAAA;
-  --m-grey-700: #BBBBBB;
-  --m-grey-800: #CCCCCC;
-  --m-grey-900: #DDDDDD;
-  --m-sidebar-bg: #1E1E1E;
-  --m-sidebar-fg: #E8E6E7;
-  --m-sidebar-fg-dim: #6B6B7A;
+  --m-bg: #0F172A;
+  --m-bg-subtle: #1E293B;
+  --m-surface: #1E293B;
+  --m-surface-2: #334155;
+  --m-on-surface: #F1F5F9;
+  --m-on-background: #F1F5F9;
+  --m-border: rgba(241, 245, 249, 0.1);
+  --m-border-strong: rgba(241, 245, 249, 0.18);
+  --m-grey-50: #334155;
+  --m-grey-100: #475569;
+  --m-grey-200: #64748B;
+  --m-grey-300: #94A3B8;
+  --m-grey-400: #CBD5E1;
+  --m-grey-500: #E2E8F0;
+  --m-grey-600: #F1F5F9;
+  --m-grey-700: #F8FAFC;
+  --m-grey-800: var(--m-surface, #fff);
+  --m-grey-900: var(--m-surface, #fff);
+  --m-sidebar-bg: #1E293B;
+  --m-sidebar-fg: #F1F5F9;
+  --m-sidebar-fg-dim: #64748B;
   --m-topbar-bg: transparent;
 }

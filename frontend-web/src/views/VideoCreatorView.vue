@@ -467,7 +467,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
@@ -606,7 +606,7 @@ onMounted(async () => {
 }
 
 .video-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
 }
 
 .video-card.status-completed { border-top: 3px solid #16a34a; }
@@ -647,8 +647,8 @@ onMounted(async () => {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 4px;
-  background: oklch(0 0 0 / 0.7);
+  border-radius: var(--m-radius-xs, 6px);
+  background: rgba(0,0,0,7);
   color: #fff;
 }
 
@@ -659,7 +659,7 @@ onMounted(async () => {
   font-size: 0.68rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   color: #fff;
 }
 

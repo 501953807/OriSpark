@@ -63,9 +63,9 @@ onMounted(loadListings)
 
 <style scoped>
 .search-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.search-bar input, .search-bar select { padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+.search-bar input, .search-bar select { padding: 8px; border: 1px solid var(--border); border-radius: var(--m-radius-sm, 8px); }
 .listing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-.listing-card { padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+.listing-card { padding: 12px; border: 1px solid var(--border); border-radius: var(--m-radius-md, 12px); }
 .price { font-size: 1.2rem; font-weight: 600; color: #059669; margin: 4px 0; }
-.status-chip { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; }
+.status-chip { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--m-radius-md, 12px); }
 </style>

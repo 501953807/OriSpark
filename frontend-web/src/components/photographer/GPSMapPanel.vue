@@ -274,7 +274,7 @@ function thumbnailUrl(shot: PhotographerShot | null): string {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--m-radius-sm);
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,15);
   display: flex;
   gap: 12px;
   padding: 12px;

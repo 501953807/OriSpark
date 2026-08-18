@@ -177,15 +177,15 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .bar-label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 4px; }
 .bar-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .bar-pct { margin-left: auto; font-weight: 600; }
-.bar-track { height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+.bar-track { height: 8px; background: var(--bg-secondary); border-radius: var(--m-radius-xs, 6px); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: var(--m-radius-xs, 6px); transition: width 0.3s ease; }
 .bar-amount { font-size: 0.78rem; color: var(--m-grey-500); margin-top: 2px; }
 
 .trend-chart { display: flex; flex-direction: column; gap: 8px; }
 .trend-item { display: flex; align-items: center; gap: 12px; }
 .trend-month { width: 60px; font-size: 0.8rem; color: var(--m-grey-500); text-align: right; flex-shrink: 0; }
-.trend-bar-track { flex: 1; height: 20px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
-.trend-bar-fill { height: 100%; background: var(--m-primary); border-radius: 4px; transition: width 0.3s ease; }
+.trend-bar-track { flex: 1; height: 20px; background: var(--bg-secondary); border-radius: var(--m-radius-xs, 6px); overflow: hidden; }
+.trend-bar-fill { height: 100%; background: var(--m-primary); border-radius: var(--m-radius-xs, 6px); transition: width 0.3s ease; }
 .trend-amount { width: 80px; font-size: 0.82rem; font-weight: 600; flex-shrink: 0; }
 
 .warning-section { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; margin-bottom: 24px; }

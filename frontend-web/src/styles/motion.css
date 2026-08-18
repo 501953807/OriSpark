@@ -1,7 +1,8 @@
-/* OriStudio 品牌动效体系 — 沉浸式动效 v6.0 */
+/* OriStudio 品牌动效体系 — Indigo Enterprise Palette
+   专属动效：呼吸光晕 · 交错入场 · 品牌波纹变体
+   ============================================ */
 
 /* ── 蓝脉流动效应（Brand Ripple）── */
-/* 从点击位置向外扩散的径向波纹，品牌色 rgba(140, 87, 255, 0.3) */
 .brand-ripple {
   position: fixed;
   pointer-events: none;
@@ -9,42 +10,43 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(140, 87, 255, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.25) 0%, rgba(79, 70, 229, 0.08) 40%, transparent 70%);
   transform: translate(-50%, -50%);
   animation: brand-ripple-expand 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 @keyframes brand-ripple-expand {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
+  0% { width: 0; height: 0; opacity: 1; }
+  100% { width: 300px; height: 300px; opacity: 0; }
 }
 
-/* ── 卡片Hover动效 (Level 2+) ── */
+/* ── 品牌呼吸光晕（Brand Glow Pulse）── */
+.brand-glow {
+  animation: brand-glow-pulse 3s ease-in-out infinite;
+}
+@keyframes brand-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.10); }
+  50% { box-shadow: 0 0 20px 4px rgba(79, 70, 229, 0.15); }
+}
+
+/* ── 卡片 Hover 动效 (Level 2+) ── */
 .motion-card {
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--m-transition), box-shadow var(--m-transition);
 }
 .motion-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(140, 87, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(79, 70, 229, 0.10), 0 6px 12px rgba(15, 23, 42, 0.06);
 }
 
-/* ── 页面过渡动画 (Level 1+) ── */
+/* ── 页面过渡动画 (Level 1+) — 品牌缓动曲线 ── */
 .page-transition-enter-active,
 .page-transition-leave-active {
-  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .page-transition-enter-from,
 .page-transition-leave-to {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(12px) scale(0.99);
 }
 
 /* ── 按钮点击动效 (Level 2+) ── */
@@ -60,20 +62,44 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   transform: translate(-50%, -50%);
-  transition: width 0.4s, height 0.4s;
+  transition: width 0.5s ease-out, height 0.5s ease-out, opacity 0.5s ease-out;
+  opacity: 0;
 }
 .btn-ripple:active::after {
   width: 200px;
   height: 200px;
+  opacity: 1;
+  transition: width 0s, height 0s, opacity 0.3s;
+  opacity: 0;
+}
+
+/* ── 交错入场动画 (Stagger Reveal) ── */
+.reveal-list > * {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: stagger-reveal 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.reveal-list > *:nth-child(1) { animation-delay: 0ms; }
+.reveal-list > *:nth-child(2) { animation-delay: 60ms; }
+.reveal-list > *:nth-child(3) { animation-delay: 120ms; }
+.reveal-list > *:nth-child(4) { animation-delay: 180ms; }
+.reveal-list > *:nth-child(5) { animation-delay: 240ms; }
+.reveal-list > *:nth-child(6) { animation-delay: 300ms; }
+.reveal-list > *:nth-child(7) { animation-delay: 360ms; }
+.reveal-list > *:nth-child(8) { animation-delay: 420ms; }
+
+@keyframes stagger-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ── 滚动触发动画 (Level 2+) ── */
 .motion-reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .motion-reveal.revealed {
   opacity: 1;
@@ -89,12 +115,30 @@
   transform: translateY(-2px);
 }
 
+/* ── Sidebar item hover wave ── */
+.sb-link { position: relative; overflow: hidden; }
+.sb-link::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--grad1, #4F46E5), var(--grad2, #3730A3));
+  border-radius: 0 2px 2px 0;
+  transform: scaleY(0);
+  transition: transform var(--m-transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sb-link:hover::before { transform: scaleY(1); }
+
 /* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
   .brand-ripple { animation: none; opacity: 0; }
+  .brand-glow { animation: none; }
   .motion-card { transition: none; }
   .motion-reveal { opacity: 1; transform: none; }
   .page-transition-enter-active,
   .page-transition-leave-active { transition: none; }
   .btn-ripple::after { transition: none; }
+  .reveal-list > * { animation: none; opacity: 1; transform: none; }
+  .sb-link::before { transition: none; transform: scaleY(0); }
+  .progress-bar::after { animation: none; }
 }

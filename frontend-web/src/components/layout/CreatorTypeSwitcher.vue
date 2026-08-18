@@ -65,7 +65,7 @@ function handleSwitch(type: CreatorType) {
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  background: oklch(100% 0 0 / 0.5);
+  background: rgba(1740, 1740, 1245, 0.5);
   border-bottom: 1px solid var(--border);
   overflow-x: auto;
   scrollbar-width: none;
@@ -91,7 +91,7 @@ function handleSwitch(type: CreatorType) {
   font-family: Inter;
 }
 .creator-switcher-item:hover {
-  background: oklch(56% 0.12 170 / 0.06);
+  background: rgba(124, 124, 129, 0.06);
   color: var(--fg);
 }
 .creator-switcher-item.active {

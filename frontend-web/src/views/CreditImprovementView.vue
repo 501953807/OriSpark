@@ -151,7 +151,7 @@ onMounted(loadSuggestions)
 }
 .tier-badge {
   padding: 8px 20px;
-  border-radius: 20px;
+  border-radius: var(--m-radius-2xl, 24px);
   color: white;
   font-weight: 600;
   font-size: 0.9rem;
@@ -164,7 +164,7 @@ onMounted(loadSuggestions)
 .stat-item {
   text-align: center;
   padding: 16px;
-  background: oklch(98% 0.002 240);
+  background: rgba(2,132,199, 0.06);
   border-radius: var(--m-radius-sm);
 }
 .stat-val {
@@ -205,7 +205,7 @@ onMounted(loadSuggestions)
 }
 .priority-badge {
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--m-radius-lg, 16px);
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
@@ -235,7 +235,7 @@ onMounted(loadSuggestions)
   font-size: 0.85rem;
   color: var(--m-on-surface);
   padding: 8px 12px;
-  background: oklch(98% 0.002 240);
+  background: rgba(2,132,199, 0.06);
   border-radius: var(--m-radius-sm);
 }
 .empty-state {

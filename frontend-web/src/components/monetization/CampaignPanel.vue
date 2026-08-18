@@ -248,11 +248,11 @@ onMounted(loadCampaigns)
 .campaign-progress { margin-top: 8px; }
 
 .progress-bar {
-  height: 6px; background: var(--muted-bg); border-radius: 3px; overflow: hidden;
+  height: 6px; background: var(--muted-bg); border-radius: var(--m-radius-xs, 6px); overflow: hidden;
 }
 
 .progress-fill {
-  height: 100%; background: var(--accent); border-radius: 3px;
+  height: 100%; background: var(--accent); border-radius: var(--m-radius-xs, 6px);
   transition: width 0.3s;
 }
 
@@ -280,7 +280,7 @@ onMounted(loadCampaigns)
 /* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: oklch(20% 0.02 180 / .5);
+  background: rgba(80, 80, 90, 0.5);
   display: flex; align-items: center; justify-content: center; z-index: 100;
 }
 
@@ -304,7 +304,7 @@ onMounted(loadCampaigns)
   padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--m-radius-sm);
   background: var(--surface); cursor: pointer; font-size: .75rem;
 }
-.tpl-btn.active { border-color: var(--accent); background: oklch(56% 0.12 170 / .08); }
+.tpl-btn.active { border-color: var(--accent); background: rgba(124, 124, 129, 0.08); }
 
 .tiers-editor { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
 

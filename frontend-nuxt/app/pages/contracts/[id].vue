@@ -372,7 +372,7 @@ onMounted(loadContract)
 .preview-tags { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
   padding: 3px 10px;
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   border: none; border-radius: 100px; font-size: 11px;
   color: var(--m-primary); font-weight: 500;
 }

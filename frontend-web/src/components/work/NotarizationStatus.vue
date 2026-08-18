@@ -77,12 +77,12 @@ function toggleExpand() {
 }
 
 .status-verified {
-  background: oklch(56% 0.12 170 / 0.12);
-  color: oklch(50% 0.14 150);
+  background: rgba(124, 124, 129, 0.12);
+  color: rgba(22,163,74, 0.06);
 }
 
 .status-unverified {
-  background: oklch(85% 0.04 80 / 0.15);
+  background: rgba(225, 225, 227, 0.15);
   color: #d97706;
 }
 
@@ -94,7 +94,7 @@ function toggleExpand() {
   border: 1px solid var(--border);
   border-radius: var(--m-radius-sm);
   padding: 12px 16px;
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,1);
   z-index: 100;
   min-width: 280px;
 }
@@ -130,9 +130,9 @@ function toggleExpand() {
   left: 50%;
   transform: translateX(-50%);
   padding: 4px 8px;
-  background: oklch(20% 0.01 240);
+  background: rgba(2,132,199, 0.06);
   color: #fff;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   font-size: 0.7rem;
   white-space: nowrap;
   pointer-events: none;

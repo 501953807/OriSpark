@@ -253,13 +253,13 @@ function countdownText(deliveryDate?: string): string {
 
 .step-rejected .step-circle {
   border-color: #ef4444;
-  background: oklch(56% 0.16 0 / 0.1);
+  background: rgba(124, 124, 129, 0.1);
   color: #ef4444;
 }
 
 .step-pending .step-circle {
   border-color: var(--orange);
-  background: oklch(62% 0.18 55 / 0.1);
+  background: rgba(129, 129, 133, 0.1);
   color: var(--orange);
 }
 
@@ -286,24 +286,24 @@ function countdownText(deliveryDate?: string): string {
 .step-badge {
   font-size: 0.65rem;
   padding: 1px 6px;
-  border-radius: 6px;
+  border-radius: var(--m-radius-sm, 8px);
   font-weight: 600;
 }
 
 .badge-pending {
-  background: oklch(62% 0.18 55 / 0.1);
+  background: rgba(129, 129, 133, 0.1);
   color: var(--orange);
 }
 
 .badge-approved,
 .badge-pass {
-  background: oklch(56% 0.12 170 / 0.12);
+  background: rgba(124, 124, 129, 0.12);
   color: var(--green);
 }
 
 .badge-rejected,
 .badge-fail {
-  background: oklch(56% 0.16 0 / 0.1);
+  background: rgba(124, 124, 129, 0.1);
   color: #ef4444;
 }
 

@@ -219,11 +219,11 @@ function statusIcon(status: string): string {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
 }
 
 .badge-submitted {
-  background: oklch(50% 0.02 240 / 0.15);
+  background: rgba(80, 80, 90, 0.15);
   color: var(--fg);
 }
 

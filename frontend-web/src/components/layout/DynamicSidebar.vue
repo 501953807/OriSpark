@@ -463,11 +463,11 @@ function hasSharedSection(sectionRoute: string): boolean {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: var(--m-surface, #fff);
   font-weight: 800;
   font-size: 1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(85, 133, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
 }
 .sb-brand-text {
   font-family: Inter;
@@ -595,11 +595,11 @@ function hasSharedSection(sectionRoute: string): boolean {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: var(--m-surface, #fff);
   font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(85, 133, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.1);
 }
 .sb-user-info {
   flex: 1;

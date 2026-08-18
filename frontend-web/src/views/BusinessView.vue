@@ -190,7 +190,7 @@ function renderCharts() {
       series: [{
         type: 'pie',
         radius: ['45%', '75%'],
-        itemStyle: { borderRadius: 8, borderColor: 'oklch(100% 0 0)', borderWidth: 2 },
+        itemStyle: { borderRadius: 8, borderColor: 'rgba(220,38,38, 0.06)', borderWidth: 2 },
         data: Object.entries(analyticsSummary.value.by_source || {}).map(([name, value]) => ({
           name: sourceLabels[name] || name, value,
         })),
@@ -218,8 +218,8 @@ function renderCharts() {
         itemStyle: {
           borderRadius: [6, 6, 0, 0],
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'oklch(56% 0.12 170)' },
-            { offset: 1, color: 'oklch(62% 0.16 260)' },
+            { offset: 0, color: 'rgba(79,70,229, 0.06)' },
+            { offset: 1, color: 'rgba(99,102,241, 0.06)' },
           ]),
         },
       }],
@@ -312,7 +312,7 @@ async function handleCsvImport(e: Event) {
 .status-badge.pending, .status-badge.confirmed { background: #fff8e1; color: #b8860b; }
 .status-badge.cancelled { background: #fde8e8; color: #c62828; }
 .notif-item { cursor: pointer; transition: background 0.15s; }
-.notif-item:hover { background: oklch(56% 0.12 170 / 0.04); }
+.notif-item:hover { background: rgba(124, 124, 129, 0.04); }
 .notif-item.unread { border-left: 3px solid var(--m-primary); }
 .notif-title { font-weight: 600; font-size: 0.9rem; }
 .notif-content { font-size: 0.82rem; color: var(--m-grey-500); margin-top: 4px; }

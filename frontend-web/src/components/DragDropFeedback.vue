@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const defaultProps = {
   drop: { color: '#10b981', scale: 1.1 },
-  drag: { color: 'var(--m-primary, #8C57FF)', scale: 1.05 },
+  drag: { color: 'var(--m-primary, #4F46E5)', scale: 1.05 },
   hover: { color: '#3b82f6', scale: 1.02 }
 }
 
@@ -21,7 +21,7 @@ const style = computed(() => ({
 
 const styleMap = {
   drop: { color: '#10b981', scale: 1.1 },
-  drag: { color: 'var(--m-primary, #8C57FF)', scale: 1.05 },
+  drag: { color: 'var(--m-primary, #4F46E5)', scale: 1.05 },
   hover: { color: '#3b82f6', scale: 1.02 }
 }
 </script>
@@ -68,8 +68,8 @@ const styleMap = {
 
 /* Different colors for different states */
 .drop .feedback-indicator { background: #10b981; }
-.drag .feedback-indicator { background: var(--m-primary, #8C57FF); }
-.hover .feedback-indicator { background: rgba(140, 87, 255, 0.3); }
+.drag .feedback-indicator { background: var(--m-primary, #4F46E5); }
+.hover .feedback-indicator { background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.3); }
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {

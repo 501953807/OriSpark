@@ -176,7 +176,7 @@ function removeTag(index: number) {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--m-radius-sm);
-  box-shadow: 0 4px 12px oklch(0 0 0 / 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,1);
   z-index: 10;
   max-height: 160px;
   overflow-y: auto;

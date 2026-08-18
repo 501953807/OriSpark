@@ -482,7 +482,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: oklch(65% 0.18 20);
+  background: rgba(220,38,38, 0.06);
   color: #fff;
   border-radius: var(--m-radius-sm);
   font-size: 0.88rem;
@@ -635,7 +635,7 @@ onMounted(async () => {
   display: inline-block;
   font-size: 0.72rem;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--m-radius-md, 12px);
   font-weight: 600;
 }
 .badge-status {
@@ -646,8 +646,8 @@ onMounted(async () => {
 .badge-distributing { background: #dbeafe; color: #1d4ed8; }
 .badge-distributed { background: #dcfce7; color: #166534; }
 .badge-album-type {
-  background: oklch(85% 0.08 280);
-  color: oklch(35% 0.08 280);
+  background: rgba(79,70,229, 0.06);
+  color: rgba(79,70,229, 0.06);
 }
 .badge-album-type.single { background: #ede9fe; color: #5b21b6; }
 .badge-album-type.ep { background: #fce7f3; color: #9d174d; }
@@ -673,7 +673,7 @@ onMounted(async () => {
 }
 .release-card:hover,
 .album-card:hover {
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,08);
 }
 .release-card-top,
 .split-header {

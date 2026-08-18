@@ -51,7 +51,7 @@ const steps = computed(() => {
   transition: all 0.2s; white-space: nowrap;
   border: 1px solid transparent;
 }
-.chain-step:hover { background: oklch(56% 0.12 170 / 0.05); color: var(--fg); }
+.chain-step:hover { background: rgba(124, 124, 129, 0.05); color: var(--fg); }
 .chain-step.active { background: var(--accent); color: #fff; font-weight: 600; }
 .chain-step.done { color: var(--fg); }
 .step-icon { font-size: 0.85rem; }

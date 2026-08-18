@@ -187,7 +187,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .comm-platform { font-size: 0.75rem; color: var(--m-grey-500); }
 .comm-members { font-size: 0.8rem; color: var(--m-grey-500); margin-top: 4px; }
 .comm-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
-.tag { font-size: 0.7rem; padding: 2px 8px; background: var(--m-bg-subtle); border-radius: 10px; }
+.tag { font-size: 0.7rem; padding: 2px 8px; background: var(--m-bg-subtle); border-radius: var(--m-radius-md, 12px); }
 .join-link { font-size: 0.8rem; color: var(--m-primary); text-decoration: none; margin-top: 4px; display: inline-block; }
 
 /* Funnel */

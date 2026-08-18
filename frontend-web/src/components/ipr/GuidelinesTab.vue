@@ -97,17 +97,17 @@
         </div>
         <div class="gl-body">
           <div class="gl-warning">⚠️ {{ currentGuidelines.trademark.disclaimer }}</div>
-          <div v-if="currentGuidelines.trademark?.note_personal" class="gl-warning" style="background:oklch(62% 0.18 30 / 0.08);color:var(--red);">
+          <div v-if="currentGuidelines.trademark?.note_personal" class="gl-warning" style="background:rgba(129, 129, 133, 0.08);color:var(--red);">
             {{ currentGuidelines.trademark.note_personal }}
           </div>
-          <div v-if="currentGuidelines.trademark?.note_agent" class="gl-warning" style="background:oklch(62% 0.18 30 / 0.08);color:var(--red);">
+          <div v-if="currentGuidelines.trademark?.note_agent" class="gl-warning" style="background:rgba(129, 129, 133, 0.08);color:var(--red);">
             {{ currentGuidelines.trademark.note_agent }}
           </div>
           <div v-if="currentGuidelines.trademark?.note_language" class="gl-section">
             <h4>🌐 语言要求</h4>
             <p style="font-size:.85rem;color:var(--muted);margin:0">{{ currentGuidelines.trademark.note_language }}</p>
           </div>
-          <div v-if="currentGuidelines.trademark?.central_attack_risk" class="gl-warning" style="background:oklch(62% 0.18 20 / 0.08);color:var(--red);">
+          <div v-if="currentGuidelines.trademark?.central_attack_risk" class="gl-warning" style="background:rgba(129, 129, 133, 0.08);color:var(--red);">
             {{ currentGuidelines.trademark.central_attack_risk }}
           </div>
           <div v-if="currentGuidelines.trademark?.prerequisites" class="gl-section">
@@ -296,7 +296,7 @@
       </div>
 
       <!-- EUIPO SME Fund card -->
-      <div v-if="currentGuidelines.sme_fund" class="guideline-card card" style="border-left:4px solid oklch(56% 0.12 260)">
+      <div v-if="currentGuidelines.sme_fund" class="guideline-card card" style="border-left:4px solid rgba(99,102,241, 0.06)">
         <div class="gl-header">
           <span class="gl-icon">💶</span>
           <div>
@@ -432,7 +432,7 @@ async function doTrademarkSearch() {
 .gl-section ul { padding-left:20px; font-size:.85rem; color:var(--muted); line-height:1.8; }
 .gl-meta { display:flex; gap:16px; font-size:.82rem; color:var(--muted); flex-wrap:wrap; align-items:center; }
 .gl-meta a { color:var(--accent); }
-.gl-warning { padding:12px; background:oklch(62% 0.18 55 / 0.08); border-radius:var(--m-radius-sm); font-size:.82rem; color:var(--orange); }
+.gl-warning { padding:12px; background:rgba(129, 129, 133, 0.08); border-radius:var(--m-radius-sm); font-size:.82rem; color:var(--orange); }
 .gl-fees { margin-top:4px; }
 .gl-fees h4 { font-size:.9rem; margin:0 0 8px; }
 .fee-grid { display:flex; gap:8px; flex-wrap:wrap; }
@@ -440,7 +440,7 @@ async function doTrademarkSearch() {
 .fee-chip strong { color:var(--accent); white-space:nowrap; }
 .category-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .category-chip { padding:8px 12px; background:var(--m-bg-subtle); border-radius:var(--m-radius-sm); font-size:.8rem; cursor:pointer; transition:all .15s; }
-.category-chip:hover { background:oklch(90% 0.01 240); }
+.category-chip:hover { background:rgba(2,132,199, 0.06); }
 .category-chip strong { color:var(--accent); }
 
 .materials-list { display:flex; flex-direction:column; gap:8px; }
@@ -449,7 +449,7 @@ async function doTrademarkSearch() {
 .material-check { font-size:.9rem; font-weight:700; color:var(--red); min-width:20px; }
 .material-name { font-weight:600; font-size:.84rem; display:block; }
 .material-desc { font-size:.78rem; color:var(--muted); display:block; margin-top:2px; }
-.material-tag { font-size:.72rem; background:rgba(86,202,0,0.1); color:var(--accent); padding:1px 6px; border-radius:4px; margin-left:6px; }
+.material-tag { font-size:.72rem; background:rgba(86,202,0,0.1); color:var(--accent); padding:1px 6px; border-radius:var(--m-radius-xs, 6px); margin-left:6px; }
 
 .process-flow { display:flex; flex-direction:column; gap:10px; }
 .process-step { display:flex; gap:12px; padding:10px; border-radius:var(--m-radius-sm); background:var(--surface); border:1px solid var(--border); }
@@ -468,7 +468,7 @@ async function doTrademarkSearch() {
 
 /* ── Country grid (EU) ──────────────────── */
 .country-grid { display:flex; flex-wrap:wrap; gap:6px; }
-.country-chip { padding:3px 10px; background:oklch(56% 0.12 260 / 0.08); border:1px solid oklch(56% 0.12 260 / 0.2); border-radius:100px; font-size:.75rem; color:var(--blue); }
+.country-chip { padding:3px 10px; background:rgba(124, 124, 129, 0.08); border:1px solid rgba(124, 124, 129, 0.2); border-radius:100px; font-size:.75rem; color:var(--blue); }
 
 /* ── Fee examples ──────────────────────── */
 .fee-example-list { display:flex; flex-direction:column; gap:8px; }
@@ -479,7 +479,7 @@ async function doTrademarkSearch() {
 
 /* ── SME Fund ──────────────────────────────── */
 .sme-coverage { display:flex; gap:10px; flex-direction:column; }
-.sme-cov-item { padding:10px 14px; background:oklch(56% 0.12 260 / 0.05); border:1px solid oklch(56% 0.12 260 / 0.15); border-radius:var(--m-radius-sm); display:flex; flex-direction:column; gap:2px; }
+.sme-cov-item { padding:10px 14px; background:rgba(124, 124, 129, 0.05); border:1px solid rgba(124, 124, 129, 0.15); border-radius:var(--m-radius-sm); display:flex; flex-direction:column; gap:2px; }
 .sme-cov-item strong { color:var(--blue); font-size:.9rem; }
 .sme-cov-item span { font-size:.8rem; color:var(--muted); }
 
@@ -489,9 +489,9 @@ async function doTrademarkSearch() {
 .similarity-summary { display:flex; gap:12px; align-items:center; margin-bottom:10px; }
 .sim-count { font-size:.85rem; color:var(--muted); }
 .sim-risk { font-size:.78rem; padding:2px 10px; border-radius:100px; font-weight:600; }
-.sim-risk.high { background:oklch(62% 0.18 20 / .1); color:var(--red); }
-.sim-risk.warning { background:oklch(62% 0.18 55 / .1); color:var(--orange); }
-.sim-risk.low { background:oklch(56% 0.12 170 / .1); color:var(--accent); }
+.sim-risk.high { background:rgba(129, 129, 133, 0.1); color:var(--red); }
+.sim-risk.warning { background:rgba(129, 129, 133, 0.1); color:var(--orange); }
+.sim-risk.low { background:rgba(124, 124, 129, 0.1); color:var(--accent); }
 .sim-list { display:flex; flex-direction:column; gap:6px; }
 .sim-item { display:flex; gap:12px; font-size:.82rem; align-items:center; padding:6px 10px; background:var(--surface); border-radius:var(--m-radius-sm); border:1px solid var(--border); }
 .sim-name { flex:1; font-weight:600; }

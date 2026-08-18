@@ -186,7 +186,7 @@ function handleFinish() {
 <style scoped>
 .onboarding-card {
   max-width: 700px; width: 100%; padding: 40px;
-  background: var(--bg-card, #fff); border-radius: 16px;
+  background: var(--bg-card, #fff); border-radius: var(--m-radius-xl, 20px);
   box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 .animate-fade-in {
@@ -203,12 +203,12 @@ function handleFinish() {
 
 .creator-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
 .creator-card {
-  position: relative; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
+  position: relative; padding: 16px; border: 2px solid var(--border); border-radius: var(--m-radius-lg, 16px);
   cursor: pointer; transition: all 0.2s; text-align: center; background: var(--surface);
 }
 .creator-card:hover { border-color: var(--accent); }
-.creator-card.selected { border-color: var(--accent); background: rgba(85, 133, 255, 0.04); }
-.creator-card.highlighted { border-color: var(--accent); border-width: 3px; box-shadow: 0 0 0 3px rgba(85, 133, 255, 0.1); }
+.creator-card.selected { border-color: var(--accent); background: rgba(79, 70, 229, 0.04); }
+.creator-card.highlighted { border-color: var(--accent); border-width: 3px; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
 .creator-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
 .creator-card strong { font-size: 0.9rem; display: block; color: var(--fg); }
 .creator-card p { font-size: 0.76rem; color: var(--muted); margin: 4px 0; }
@@ -216,7 +216,7 @@ function handleFinish() {
 .creator-recommend { position: absolute; top: -8px; right: -8px; padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; background: var(--accent); color: #fff; }
 
 .workflow-cards { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-.wf-card { padding: 16px; border: 1px solid var(--border); border-radius: 12px; text-align: center; min-width: 120px; background: var(--surface); }
+.wf-card { padding: 16px; border: 1px solid var(--border); border-radius: var(--m-radius-lg, 16px); text-align: center; min-width: 120px; background: var(--surface); }
 .wf-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
 .wf-card strong { font-size: 0.85rem; display: block; color: var(--fg); }
 .wf-card p { font-size: 0.74rem; color: var(--muted); margin: 2px 0 0; }

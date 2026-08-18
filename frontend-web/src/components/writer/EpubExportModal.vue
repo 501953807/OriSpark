@@ -72,18 +72,18 @@ function doExport() {
 
 <style scoped>
 .epub-export-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 200; }
-.epub-export-modal { background: #fff; border-radius: 12px; width: 480px; max-width: 90vw; max-height: 80vh; overflow-y: auto; }
+.epub-export-modal { background: #fff; border-radius: var(--m-radius-lg, 16px); width: 480px; max-width: 90vw; max-height: 80vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #e5e7eb; }
 .modal-header h3 { margin: 0; font-size: 18px; }
 .btn-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; }
 .modal-body { padding: 20px; }
 .form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #374151; }
-.form-group input[type="text"], .form-group input[type="file"] { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--m-grey-600, #475569); }
+.form-group input[type="text"], .form-group input[type="file"] { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: var(--m-radius-sm, 8px); font-size: 14px; }
 .cover-name { display: block; font-size: 12px; color: #6b7280; margin-top: 4px; }
-.toc-preview { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; margin-bottom: 16px; }
+.toc-preview { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: var(--m-radius-sm, 8px); padding: 12px; margin-bottom: 16px; }
 .toc-preview h4 { margin: 0 0 8px; font-size: 14px; }
 .toc-preview ul { list-style: none; padding: 0; margin: 0; }
-.toc-preview li { padding: 4px 0; font-size: 13px; color: #374151; }
+.toc-preview li { padding: 4px 0; font-size: 13px; color: var(--m-grey-600, #475569); }
 .modal-footer { display: flex; gap: 8px; justify-content: flex-end; padding-top: 12px; border-top: 1px solid #e5e7eb; }
 </style>

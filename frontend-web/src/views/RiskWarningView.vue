@@ -185,7 +185,7 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
 .warning-card.high { border-left-color: #dc2626; }
 .warning-card.medium { border-left-color: #f59e0b; }
 .warning-card.low { border-left-color: #22c55e; }
-.severity-badge { padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+.severity-badge { padding: 2px 10px; border-radius: var(--m-radius-lg, 16px); font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
 .severity-badge.high { background: #fef2f2; color: #dc2626; }
 .severity-badge.medium { background: #fffbeb; color: #d97706; }
 .severity-badge.low { background: #f0fdf4; color: #16a34a; }

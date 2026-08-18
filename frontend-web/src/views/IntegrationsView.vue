@@ -202,22 +202,22 @@ function connectItem(item: any) {
   display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem; flex-shrink: 0;
 }
-.ic-logo.notary { background: oklch(56% 0.12 170 / 0.12); }
-.ic-logo.monitor { background: oklch(62% 0.18 55 / 0.12); }
-.ic-logo.publish { background: oklch(58% 0.16 280 / 0.12); }
-.ic-logo.ai { background: oklch(58% 0.14 245 / 0.12); }
+.ic-logo.notary { background: rgba(124, 124, 129, 0.12); }
+.ic-logo.monitor { background: rgba(129, 129, 133, 0.12); }
+.ic-logo.publish { background: rgba(126, 126, 130, 0.12); }
+.ic-logo.ai { background: rgba(126, 126, 130, 0.12); }
 .ic-info { flex: 1; min-width: 0; }
 .ic-name { font-family: Inter; font-size: 1.05rem; font-weight: 700; }
 .ic-cat { font-size: 0.72rem; color: var(--m-grey-500); text-transform: uppercase; letter-spacing: 0.04em; }
 .ic-desc { font-size: 0.85rem; color: var(--m-grey-500); line-height: 1.6; }
 .ic-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.75rem; }
 .ic-tag { padding: 3px 10px; border-radius: 100px; font-weight: 600; }
-.ic-tag.active { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.1); color: var(--m-primary); }
+.ic-tag.active { background: rgba(var(--m-success-rgb, 22, 163, 74), 0.1); color: var(--m-primary); }
 .ic-tag.inactive { background: rgba(0,0,0,0.04); color: var(--m-grey-500); }
-.ic-tag.free { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.08); color: var(--green); }
-.ic-tag.paid { background: oklch(62% 0.18 55 / 0.1); color: var(--orange); }
-.ic-tag.status-implemented { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.12); color: #10b981; }
-.ic-tag.status-planned { background: rgba(var(--m-primary-rgb, 140, 87, 255), 0.1); color: var(--m-primary); }
+.ic-tag.free { background: rgba(var(--m-success-rgb, 22, 163, 74), 0.08); color: var(--green); }
+.ic-tag.paid { background: rgba(129, 129, 133, 0.1); color: var(--orange); }
+.ic-tag.status-implemented { background: rgba(var(--m-success-rgb, 22, 163, 74), 0.12); color: var(--m-success, #16A34A); }
+.ic-tag.status-planned { background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.1); color: var(--m-primary); }
 .ic-actions { display: flex; gap: 10px; margin-top: auto; }
 .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
 

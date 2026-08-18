@@ -36,7 +36,7 @@ defineEmits<{ close: [] }>()
 <style scoped>
 .work-preview {
   position: fixed; inset: 0; z-index: 9999;
-  background: oklch(0 0 0 / 0.7);
+  background: rgba(0,0,0,7);
   backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
 }
@@ -47,14 +47,14 @@ defineEmits<{ close: [] }>()
 }
 .preview-close {
   position: absolute; top: 12px; right: 12px; z-index: 10;
-  background: oklch(0 0 0 / 0.5); color: #fff; border: none;
+  background: rgba(0,0,0,5); color: #fff; border: none;
   width: 36px; height: 36px; border-radius: 50%; font-size: 1.3rem;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 .preview-media {
   min-width: 300px; min-height: 200px;
   display: flex; align-items: center; justify-content: center;
-  background: oklch(15% 0.005 240);
+  background: rgba(2,132,199, 0.06);
 }
 .preview-media img { max-width: 100%; max-height: 70vh; object-fit: contain; }
 .preview-media audio, .preview-media video { max-width: 100%; }

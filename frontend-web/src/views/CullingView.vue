@@ -313,7 +313,7 @@ onUnmounted(() => {
 /* Bulk action bar */
 .bulk-bar {
   display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-  background: oklch(56% 0.12 170 / 0.06); border: 1px solid var(--m-primary);
+  background: rgba(124, 124, 129, 0.06); border: 1px solid var(--m-primary);
   border-radius: var(--m-radius-sm); font-size: 0.85rem;
 }
 
@@ -328,9 +328,9 @@ onUnmounted(() => {
   cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
   position: relative;
 }
-.thumb-card:hover { box-shadow: 0 4px 16px oklch(0 0 0 / 0.08); }
+.thumb-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,08); }
 .thumb-card.selected { border-color: var(--m-primary); }
-.thumb-card.kb-active { border-color: var(--accent2); box-shadow: 0 0 0 3px oklch(62% 0.16 280 / 0.15); }
+.thumb-card.kb-active { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(129, 129, 133, 0.15); }
 .thumb-card.cull-keep { border-left: 4px solid #16a34a; }
 .thumb-card.cull-reject { border-left: 4px solid #ef4444; }
 
@@ -344,14 +344,14 @@ onUnmounted(() => {
 /* Hover overlay */
 .thumb-hover-overlay {
   position: absolute; inset: 0;
-  background: oklch(0 0 0 / 0.7); backdrop-filter: blur(2px);
+  background: rgba(0,0,0,7); backdrop-filter: blur(2px);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 10px; padding: 16px;
 }
 .hover-rating { display: flex; gap: 4px; }
 .star-btn {
   background: none; border: none; font-size: 1.5rem; cursor: pointer;
-  color: oklch(50% 0.15 55); transition: color 0.15s;
+  color: rgba(22,163,74, 0.06); transition: color 0.15s;
 }
 .star-btn.active { color: #eab308; }
 .hover-colors { display: flex; gap: 8px; }
@@ -368,14 +368,14 @@ onUnmounted(() => {
 .cull-badge {
   position: absolute; top: 8px; left: 8px;
   font-size: 0.72rem; font-weight: 700; padding: 2px 8px;
-  border-radius: 10px; z-index: 2;
+  border-radius: var(--m-radius-md, 12px); z-index: 2;
 }
 .keep-badge { background: #16a34a; color: #fff; }
 .reject-badge { background: #ef4444; color: #fff; }
 .rating-badge {
   position: absolute; top: 8px; right: 8px;
   font-size: 0.78rem; font-weight: 700; color: #eab308;
-  text-shadow: 0 1px 3px oklch(0 0 0 / 0.5); z-index: 2;
+  text-shadow: 0 1px 3px rgba(0,0,0,5); z-index: 2;
 }
 
 /* Thumb info footer */
@@ -389,7 +389,7 @@ onUnmounted(() => {
 /* Checkbox */
 .thumb-checkbox {
   position: absolute; top: 8px; left: 8px; z-index: 3;
-  width: 20px; height: 20px; border-radius: 4px;
+  width: 20px; height: 20px; border-radius: var(--m-radius-xs, 6px);
   border: 2px solid rgba(255,255,255,0.6);
   background: rgba(0,0,0,0.3);
   display: flex; align-items: center; justify-content: center;

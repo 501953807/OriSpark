@@ -49,7 +49,7 @@ function formatFileSize(bytes: number): string {
   gap: 8px;
   font-size: 0.75rem;
   padding: 5px 0;
-  border-bottom: 1px solid oklch(94% 0.003 240);
+  border-bottom: 1px solid rgba(2,132,199, 0.06);
 }
 .info-row:last-child { border-bottom: none; }
 .il { color: var(--muted); font-weight: 600; flex-shrink: 0; }

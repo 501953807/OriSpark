@@ -108,7 +108,7 @@ function createRipple(event: MouseEvent) {
 
 /* Elevated - default filled with shadow */
 .m-btn--variant-elevated {
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgb(var(--m-primary-rgb, 79, 70, 229));
   color: var(--m-on-primary);
   box-shadow: var(--m-shadow-xs);
 }
@@ -119,7 +119,7 @@ function createRipple(event: MouseEvent) {
 
 /* Flat - filled without shadow */
 .m-btn--variant-flat {
-  background: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgb(var(--m-primary-rgb, 79, 70, 229));
   color: var(--m-on-primary);
 }
 .m-btn--variant-flat:hover:not(:disabled) {
@@ -129,30 +129,30 @@ function createRipple(event: MouseEvent) {
 /* Outlined */
 .m-btn--variant-outlined {
   background: transparent;
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
-  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5);
+  color: rgb(var(--m-primary-rgb, 79, 70, 229));
+  border: 1px solid rgba(var(--m-primary-rgb, 79, 70, 229), 0.5);
 }
 .m-btn--variant-outlined:hover:not(:disabled) {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
-  border-color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
+  border-color: rgb(var(--m-primary-rgb, 79, 70, 229));
 }
 
 /* Text */
 .m-btn--variant-text {
   background: transparent;
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  color: rgb(var(--m-primary-rgb, 79, 70, 229));
 }
 .m-btn--variant-text:hover:not(:disabled) {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.08);
+  background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.08);
 }
 
 /* Tonal */
 .m-btn--variant-tonal {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.12);
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.12);
+  color: rgb(var(--m-primary-rgb, 79, 70, 229));
 }
 .m-btn--variant-tonal:hover:not(:disabled) {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.2);
+  background: rgba(var(--m-primary-rgb, 79, 70, 229), 0.2);
 }
 
 /* ── Sizes ── */

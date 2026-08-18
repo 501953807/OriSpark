@@ -529,7 +529,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   transition: opacity 150ms, transform 150ms;
-  box-shadow: 0 2px 8px rgba(140, 87, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
 }
 
 .m-avatar-btn:hover {
@@ -638,7 +638,7 @@ onUnmounted(() => {
 }
 
 .m-user-dropdown__item:hover {
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   color: var(--m-primary);
 }
 
@@ -692,7 +692,7 @@ onUnmounted(() => {
 }
 
 .m-menu__item--active > .m-menu__link {
-  background: rgba(140, 87, 255, 0.16);
+  background: rgba(79, 70, 229, 0.16);
   border-radius: 100px;
   color: var(--m-primary);
 }
@@ -717,12 +717,12 @@ onUnmounted(() => {
 }
 
 .m-menu__link:hover {
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   color: var(--m-primary);
 }
 
 .m-menu__link--open {
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   color: var(--m-primary);
 }
 
@@ -773,7 +773,7 @@ onUnmounted(() => {
 }
 
 .m-menu__dropdown-item:hover {
-  background: rgba(140, 87, 255, 0.08);
+  background: rgba(79, 70, 229, 0.08);
   color: var(--m-primary);
 }
 
@@ -854,7 +854,7 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
-.m-mobile-sidebar__close:hover { background: rgba(140, 87, 255, 0.08); }
+.m-mobile-sidebar__close:hover { background: rgba(79, 70, 229, 0.08); }
 
 .m-mobile-sidebar__nav {
   flex: 1;
@@ -880,7 +880,7 @@ onUnmounted(() => {
   font-family: inherit;
 }
 
-.m-mobile-sidebar__group-header:hover { background: rgba(140, 87, 255, 0.08); }
+.m-mobile-sidebar__group-header:hover { background: rgba(79, 70, 229, 0.08); }
 .m-mobile-sidebar__group-items { padding-left: 16px; }
 
 .m-mobile-sidebar__link {
@@ -896,7 +896,7 @@ onUnmounted(() => {
   transition: all 150ms;
 }
 
-.m-mobile-sidebar__link:hover { background: rgba(140, 87, 255, 0.08); color: var(--m-primary); }
+.m-mobile-sidebar__link:hover { background: rgba(79, 70, 229, 0.08); color: var(--m-primary); }
 .m-mobile-sidebar__link--active { background: var(--m-primary-light); color: var(--m-primary); }
 
 /* ═══════════════════════════════════════════════════════════
@@ -988,8 +988,8 @@ onUnmounted(() => {
    ═══════════════════════════════════════════════════════════ */
 :root {
   /* Materio Purple Theme */
-  --m-primary: rgb(140, 87, 255);
-  --m-primary-light: rgba(140, 87, 255, 0.12);
+  --m-primary: rgb(79, 70, 229);
+  --m-primary-light: rgba(79, 70, 229, 0.12);
   --m-primary-dark: rgb(110, 57, 220);
   --m-success: rgb(86, 202, 0);
   --m-success-light: rgba(86, 202, 0, 0.12);
@@ -1189,7 +1189,7 @@ onUnmounted(() => {
 }
 
 .m-table tr:last-child td { border-bottom: none; }
-.m-table tr:hover td { background: rgba(140, 87, 255, 0.04); }
+.m-table tr:hover td { background: rgba(79, 70, 229, 0.04); }
 
 /* ── Button ── */
 .m-btn {
@@ -1219,7 +1219,7 @@ onUnmounted(() => {
   color: var(--m-primary, var(--m-primary));
   border: 1px solid var(--m-primary, var(--m-primary));
 }
-.m-btn--outline:hover { background: var(--m-primary-light, rgba(140, 87, 255, 0.08)); }
+.m-btn--outline:hover { background: var(--m-primary-light, rgba(79, 70, 229, 0.08)); }
 
 .m-btn--ghost {
   background: transparent;

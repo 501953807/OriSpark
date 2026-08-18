@@ -56,7 +56,7 @@ const stageLabel = computed(() => {
 .info-list { display: flex; flex-direction: column; gap: 0; }
 .info-row {
   display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
-  font-size: 0.75rem; padding: 5px 0; border-bottom: 1px solid oklch(94% 0.003 240);
+  font-size: 0.75rem; padding: 5px 0; border-bottom: 1px solid rgba(2,132,199, 0.06);
 }
 .info-row:last-child { border-bottom: none; }
 .il { color: var(--muted); font-weight: 600; flex-shrink: 0; }

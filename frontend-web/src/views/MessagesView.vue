@@ -105,12 +105,12 @@ function markAllRead() {
   transition: all 0.15s;
 }
 .messages-tab:hover {
-  background: var(--m-sidebar-hover-bg, #F4F5FA);
+  background: var(--m-sidebar-hover-bg, var(--m-bg-subtle, #F1F5F9));
   color: var(--m-on-surface, #2E263D);
 }
 .messages-tab.active {
   background: linear-gradient(135deg, #5585FF, #2A52B0);
-  color: #FFFFFF;
+  color: var(--m-surface, #fff);
   font-weight: 600;
 }
 .messages-tab .material-icons { font-size: 1.15rem; }
@@ -119,7 +119,7 @@ function markAllRead() {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #FF4C51;
+  background: #DC2626;
 }
 
 .messages-main {

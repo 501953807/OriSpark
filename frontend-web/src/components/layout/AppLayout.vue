@@ -413,7 +413,7 @@ function retryUpload(index: number) {
   border: none;
   border-radius: var(--m-radius-sm);
   background: var(--surface);
-  box-shadow: 0 2px 8px oklch(0 0 0 / 0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,08);
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -425,7 +425,7 @@ function retryUpload(index: number) {
   width: 20px;
   height: 2px;
   background: var(--fg);
-  border-radius: 2px;
+  border-radius: var(--m-radius-xs, 6px);
   transition: transform 0.3s, opacity 0.3s;
 }
 .hamburger-line { position: relative; }
@@ -440,7 +440,7 @@ function retryUpload(index: number) {
   display: none;
   position: fixed;
   inset: 0;
-  background: oklch(0 0 0 / 0.4);
+  background: rgba(0,0,0,4);
   z-index: 95;
 }
 
@@ -459,7 +459,7 @@ function retryUpload(index: number) {
   border: 2px dashed var(--border); border-radius: var(--m-radius-sm); padding: 40px 20px;
   text-align: center; transition: all 0.2s; cursor: pointer;
 }
-.import-zone.dragging { border-color: var(--accent); background: oklch(56% 0.12 170 / 0.04); }
+.import-zone.dragging { border-color: var(--accent); background: rgba(124, 124, 129, 0.04); }
 .import-zone-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .import-icon { font-size: 2.5rem; }
 .import-hint { font-size: .9rem; color: var(--muted); margin: 0; }
@@ -474,14 +474,14 @@ function retryUpload(index: number) {
 /* Import panels */
 .import-panel { margin-bottom: 12px; }
 .format-specs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
-.fmt-chip { font-size: .72rem; padding: 2px 8px; background: oklch(96% .003 240); border-radius: 4px; color: var(--muted); }
+.fmt-chip { font-size: .72rem; padding: 2px 8px; background: rgba(2,132,199, 0.06); border-radius: var(--m-radius-xs, 6px); color: var(--muted); }
 
 /* Batch upload zone */
 .batch-upload-zone { border: 2px dashed var(--border); border-radius: var(--m-radius-sm); padding: 32px; text-align: center; transition: all .2s; }
-.batch-upload-zone.dragging { border-color: var(--accent); background: oklch(56% .12 170 / .03); }
+.batch-upload-zone.dragging { border-color: var(--accent); background: rgba(124, 124, 129, 0.03); }
 .batch-zone-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.batch-zone-active { background: oklch(56% .12 170 / .05) !important; }
-.batch-info { margin-top: 12px; padding: 12px; background: oklch(56% .12 170 / .05); border-radius: var(--m-radius-sm); }
+.batch-zone-active { background: rgba(124, 124, 129, 0.05) !important; }
+.batch-info { margin-top: 12px; padding: 12px; background: rgba(124, 124, 129, 0.05); border-radius: var(--m-radius-sm); }
 
 /* Sync options */
 .sync-options { display: flex; flex-direction: column; gap: 10px; }
@@ -495,8 +495,8 @@ function retryUpload(index: number) {
 .upload-item-header { display: flex; justify-content: space-between; font-size: .82rem; margin-bottom: 6px; }
 .upload-filename { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
 .upload-size { font-size: .75rem; color: var(--muted); }
-.upload-progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
-.upload-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
+.upload-progress-bar { height: 6px; background: var(--border); border-radius: var(--m-radius-xs, 6px); overflow: hidden; margin-bottom: 4px; }
+.upload-progress-fill { height: 100%; background: var(--accent); border-radius: var(--m-radius-xs, 6px); transition: width .3s; }
 .upload-status { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; }
 .upload-status-text.done { color: var(--accent); }
 .upload-status-text.error { color: var(--red); }
@@ -515,7 +515,7 @@ function retryUpload(index: number) {
   color: #fff;
   font-size: 1.4rem;
   cursor: pointer;
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,15);
   transition: transform 0.2s;
   display: flex;
   align-items: center;

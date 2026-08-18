@@ -400,13 +400,13 @@ h2 { font-size: 1.4rem; margin-bottom: 4px; }
   font-size: 0.8rem;
 }
 .contract-table tbody tr { cursor: pointer; }
-.contract-table tbody tr:hover { background: rgba(var(--m-success-rgb, 86, 202, 0), 0.04); }
+.contract-table tbody tr:hover { background: rgba(var(--m-success-rgb, 22, 163, 74), 0.04); }
 
 /* Status badge */
 .status-badge {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 4px;
+  border-radius: var(--m-radius-xs, 6px);
   font-size: 0.75rem;
   font-weight: 700;
 }

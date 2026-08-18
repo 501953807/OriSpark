@@ -247,7 +247,7 @@ onMounted(load)
   position: fixed; top: 20px; right: 20px; z-index: 9999;
   padding: 12px 20px; background: var(--red); color: #fff;
   border-radius: var(--m-radius-sm); font-size: 0.85rem; cursor: pointer;
-  box-shadow: 0 4px 12px oklch(0 0 0 / .15); animation: slideIn .2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15); animation: slideIn .2s ease;
 }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 

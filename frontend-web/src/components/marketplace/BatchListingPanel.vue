@@ -77,5 +77,5 @@ async function doExpire() {
 .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .batch-actions { display: flex; gap: 8px; margin-bottom: 12px; }
 .check-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 0.85rem; }
-.status-chip { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; }
+.status-chip { font-size: 0.75rem; padding: 2px 6px; border-radius: var(--m-radius-xs, 6px); }
 </style>

@@ -211,7 +211,7 @@ onMounted(loadListings)
   background: none; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm);
   padding: 4px 8px; cursor: pointer; font-size: 1rem;
 }
-.toggle-btn.active { border-color: var(--m-primary); background: oklch(56% 0.12 170 / .08); }
+.toggle-btn.active { border-color: var(--m-primary); background: rgba(124, 124, 129, 0.08); }
 
 /* Filters */
 .filters-bar {
@@ -260,7 +260,7 @@ onMounted(loadListings)
   font-size: .82rem; cursor: pointer; align-items: center;
 }
 
-.list-row:hover { background: oklch(56% 0.12 170 / .03); }
+.list-row:hover { background: rgba(124, 124, 129, 0.03); }
 
 .col-actions { display: flex; gap: 4px; }
 .list-action {

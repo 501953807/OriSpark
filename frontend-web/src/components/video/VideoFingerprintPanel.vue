@@ -389,7 +389,7 @@ async function handleScan() {
 
 .match-item.risk {
   border-color: var(--orange);
-  background: oklch(96% 0.01 55 / 0.3);
+  background: rgba(1680, 1680, 1205, 0.3);
 }
 
 .match-item:hover {
@@ -405,7 +405,7 @@ async function handleScan() {
 .similarity-bar {
   height: 6px;
   flex: 1;
-  border-radius: 3px;
+  border-radius: var(--m-radius-xs, 6px);
   background: var(--border);
   min-width: 30px;
   transition: width 0.3s ease;

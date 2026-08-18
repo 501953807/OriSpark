@@ -390,17 +390,17 @@ function formatDate(isoStr?: string): string {
 }
 
 .status-open {
-  background: oklch(56% 0.12 170 / 0.12);
+  background: rgba(124, 124, 129, 0.12);
   color: #059669;
 }
 
 .status-quoted {
-  background: oklch(62% 0.16 260 / 0.1);
+  background: rgba(129, 129, 133, 0.1);
   color: var(--accent2);
 }
 
 .status-awarded {
-  background: oklch(58% 0.14 245 / 0.12);
+  background: rgba(126, 126, 130, 0.12);
   color: var(--blue);
 }
 
@@ -464,7 +464,7 @@ function formatDate(isoStr?: string): string {
 }
 
 .btn-primary:hover {
-  background: oklch(50% 0.1 170);
+  background: rgba(22,163,74, 0.06);
 }
 
 .btn:disabled {

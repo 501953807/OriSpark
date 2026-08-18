@@ -63,7 +63,7 @@ defineEmits<{ (e: 'dismiss'): void }>()
 .m-alert--variant-filled {
   background: var(--m-primary-light);
   color: var(--m-primary);
-  border: 1px solid rgba(140, 87, 255, 0.2);
+  border: 1px solid rgba(79, 70, 229, 0.2);
 }
 .m-alert--variant-outlined {
   background: transparent;

@@ -27,7 +27,7 @@ export default {
     '/auth/**': { ssr: false },
   },
 
-  css: ['~/assets/styles/global.css'],
+  css: ['assets/styles/global.css', 'assets/styles/brand-enhance.css'],
 
   app: {
     head: {
@@ -47,7 +47,7 @@ export default {
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Satoshi:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap',
         },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
       ],

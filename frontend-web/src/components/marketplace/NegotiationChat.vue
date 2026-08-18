@@ -121,18 +121,18 @@ load()
 .chat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .chat-info { display: flex; gap: 16px; font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
 .chat-messages { max-height: 300px; overflow-y: auto; margin-bottom: 16px; }
-.message { padding: 8px 12px; margin-bottom: 8px; border-radius: 8px; font-size: 0.9rem; }
+.message { padding: 8px 12px; margin-bottom: 8px; border-radius: var(--m-radius-md, 12px); font-size: 0.9rem; }
 .message.seller { background: #fef3c7; margin-right: 20%; }
 .message.buyer { background: #dbeafe; margin-left: 20%; }
 .msg-time { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
 .offer-form { display: flex; flex-direction: column; gap: 8px; }
-.form-row input, .form-row textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+.form-row input, .form-row textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: var(--m-radius-sm, 8px); }
 .error-msg { color: #ef4444; font-size: 0.85rem; }
 .chat-actions { display: flex; gap: 8px; margin-top: 12px; }
-.status-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 500; }
+.status-badge { padding: 4px 10px; border-radius: var(--m-radius-lg, 16px); font-size: 0.8rem; font-weight: 500; }
 .status-negotiating { background: #fef3c7; color: #92400e; }
 .status-agreed { background: #d1fae5; color: #065f46; }
 .status-completed { background: #dbeafe; color: #1e40af; }
 .status-cancelled { background: #fee2e2; color: #991b1b; }
-.status-pending { background: #f3f4f6; color: #374151; }
+.status-pending { background: #f3f4f6; color: var(--m-grey-600, #475569); }
 </style>

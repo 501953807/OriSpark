@@ -28,21 +28,21 @@ const props = defineProps<{
 
 const bgColor = computed(() => {
   const map: Record<string, string> = {
-    green: 'oklch(56% 0.12 170 / 0.12)',
-    orange: 'oklch(62% 0.18 55 / 0.12)',
-    purple: 'oklch(58% 0.16 280 / 0.12)',
-    blue: 'oklch(58% 0.14 245 / 0.12)',
+    green: 'rgba(22, 163, 74, 0.12)',
+    orange: 'rgba(217, 119, 6, 0.12)',
+    purple: 'rgba(79, 70, 229, 0.12)',
+    blue: 'rgba(2, 132, 199, 0.12)',
   }
   return map[props.color || 'green']
 })
 
 const gradientStyle = computed(() => {
   const colors: Record<string, string> = {
-    green: 'var(--m-success, #56CA00)',
-    orange: 'var(--m-warning, #FFB400)',
-    purple: 'var(--m-primary, #8C57FF)',
-    blue: '#6366f1',
-    default: 'var(--m-primary, #8C57FF)',
+    green: '#16A34A',
+    orange: '#D97706',
+    purple: '#4F46E5',
+    blue: '#0284C7',
+    default: '#4F46E5',
   }
   return colors[props.color || 'default']
 })
@@ -64,7 +64,7 @@ const gradientStyle = computed(() => {
   cursor: pointer;
 }
 .stat-card.clickable:hover {
-  box-shadow: 0 8px 32px var(--shadow-lg);
+  box-shadow: var(--m-shadow-lg);
   transform: translateY(-2px);
 }
 .stat-icon-circle {
@@ -76,7 +76,7 @@ const gradientStyle = computed(() => {
   justify-content: center;
   font-size: 1.4rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px var(--shadow);
+  box-shadow: 0 4px 12px rgba(15,23,42,0.12);
 }
 .stat-label {
   font-size: 0.78rem;

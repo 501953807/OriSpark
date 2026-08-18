@@ -45,7 +45,7 @@ defineEmits<{
   gap: 0.375rem;
   height: 24px;
   padding: 0 12px;
-  border-radius: 100px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1;
@@ -55,39 +55,39 @@ defineEmits<{
 
 /* ── Variants ── */
 .m-chip--variant-filled {
-  background: rgba(var(--m-primary-rgb, 85, 133, 255), 0.16);
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  background: rgba(79, 70, 229, 0.12);
+  color: #4F46E5;
 }
 .m-chip--variant-outlined {
   background: transparent;
-  border: 1px solid rgba(var(--m-primary-rgb, 85, 133, 255), 0.5);
-  color: rgb(var(--m-primary-rgb, 85, 133, 255));
+  border: 1px solid rgba(79, 70, 229, 0.4);
+  color: #4F46E5;
 }
 .m-chip--variant-plain {
   background: transparent;
-  color: rgba(var(--m-on-surface-rgb, 46, 38, 61), 0.7);
+  color: rgba(15, 23, 42, 0.7);
 }
 
 /* ── Colors ── */
 .m-chip--color-success.m-chip--variant-filled {
-  background: rgba(86, 202, 0, 0.16);
-  color: #56CA00;
+  background: rgba(22, 163, 74, 0.12);
+  color: #16A34A;
 }
 .m-chip--color-warning.m-chip--variant-filled {
-  background: rgba(255, 180, 0, 0.16);
-  color: #B47800;
+  background: rgba(217, 119, 6, 0.12);
+  color: #D97706;
 }
 .m-chip--color-error.m-chip--variant-filled {
-  background: rgba(255, 76, 81, 0.16);
-  color: #FF4C51;
+  background: rgba(220, 38, 38, 0.12);
+  color: #DC2626;
 }
 .m-chip--color-info.m-chip--variant-filled {
-  background: rgba(22, 177, 255, 0.16);
-  color: #0E8DC9;
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284C7;
 }
 .m-chip--color-grey.m-chip--variant-filled {
-  background: rgba(158, 158, 158, 0.16);
-  color: #616161;
+  background: rgba(100, 116, 139, 0.12);
+  color: #64748B;
 }
 
 /* ── States ── */

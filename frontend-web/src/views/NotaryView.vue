@@ -185,9 +185,9 @@ onMounted(async () => {
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; flex-shrink: 0;
 }
-.icon-national { background: oklch(56% 0.12 170 / 0.12); }
-.icon-judicial { background: oklch(58% 0.16 280 / 0.12); }
-.icon-commercial { background: oklch(58% 0.14 245 / 0.12); }
+.icon-national { background: rgba(124, 124, 129, 0.12); }
+.icon-judicial { background: rgba(126, 126, 130, 0.12); }
+.icon-commercial { background: rgba(126, 126, 130, 0.12); }
 .platform-name { font-weight: 700; font-size: 0.95rem; }
 .platform-level { font-size: 0.68rem; color: var(--m-grey-500); }
 .platform-desc { font-size: 0.82rem; color: var(--m-grey-500); line-height: 1.5; }
@@ -203,9 +203,9 @@ onMounted(async () => {
   font-size: 0.82rem;
 }
 .table-header { font-weight: 700; color: var(--m-grey-500); border-bottom: 1px solid var(--m-border); }
-.table-row { border-bottom: 1px solid oklch(93% 0.003 240); }
+.table-row { border-bottom: 1px solid rgba(2,132,199, 0.06); }
 .table-row:last-child { border-bottom: none; }
-.table-row:hover { background: oklch(97% 0.002 240); }
+.table-row:hover { background: rgba(2,132,199, 0.06); }
 .mono { font-family: monospace; font-size: 0.75rem; }
 .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
 </style>

@@ -66,7 +66,7 @@ function formatYuan(v: number): string {
 
 <style scoped>
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.stat-card { background: var(--bg-secondary); padding: 16px; border-radius: 8px; text-align: center; }
+.stat-card { background: var(--bg-secondary); padding: 16px; border-radius: var(--m-radius-md, 12px); text-align: center; }
 .stat-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
 .stat-value { font-size: 1.4rem; font-weight: 600; }
 .success { color: #059669; }

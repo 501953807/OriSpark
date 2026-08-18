@@ -82,12 +82,12 @@
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(140, 87, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 .btn-hero:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(140, 87, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
 }
 
 .btn-hero:active {

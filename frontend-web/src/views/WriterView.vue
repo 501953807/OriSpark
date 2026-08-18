@@ -767,8 +767,8 @@ onMounted(() => {
 .card-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
 
 /* ── Tags & Pills ──────────────────────────────────────────────── */
-.tag { padding: 2px 10px; border-radius: 100px; font-size: 0.68rem; background: oklch(56% 0.12 170 / .1); color: var(--m-primary); }
-.stat-pill { font-size: 0.72rem; color: var(--m-grey-500); padding: 2px 8px; background: oklch(0 0 0 / .03); border-radius: 100px; }
+.tag { padding: 2px 10px; border-radius: 100px; font-size: 0.68rem; background: rgba(124, 124, 129, 0.1); color: var(--m-primary); }
+.stat-pill { font-size: 0.72rem; color: var(--m-grey-500); padding: 2px 8px; background: rgba(0,0,0,.03); border-radius: 100px; }
 
 /* ── Buttons ───────────────────────────────────────────────────── */
 .btn { padding: 10px 20px; border-radius: var(--m-radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; font-family: Inter; transition: all .2s; }
@@ -778,8 +778,8 @@ onMounted(() => {
 .btn-secondary { background: var(--m-surface); color: var(--m-on-surface); border: 1px solid var(--m-border); }
 .btn-secondary:hover { background: var(--m-border); }
 .btn-sm { padding: 4px 12px; font-size: 0.74rem; }
-.btn-danger { background: oklch(56% 0.18 20 / .1); color: oklch(56% 0.18 20); border: 1px solid oklch(56% 0.18 20 / .2); }
-.btn-danger:hover { background: oklch(56% 0.18 20 / .15); }
+.btn-danger { background: rgba(124, 124, 129, 0.1); color: rgba(220,38,38, 0.06); border: 1px solid rgba(124, 124, 129, 0.2); }
+.btn-danger:hover { background: rgba(124, 124, 129, 0.15); }
 
 /* ── Empty State ───────────────────────────────────────────────── */
 .empty-state-card { padding: 60px 20px; text-align: center; background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-lg); }
@@ -799,15 +799,15 @@ onMounted(() => {
 .book-genre { font-size: 0.78rem; color: var(--m-primary); font-weight: 600; }
 .book-detail { font-size: 0.74rem; color: var(--m-grey-500); }
 .book-progress { margin-top: 8px; }
-.progress-bar { width: 100%; height: 6px; background: var(--m-border); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
-.progress-fill { height: 100%; background: var(--m-primary); border-radius: 3px; transition: width .3s; }
+.progress-bar { width: 100%; height: 6px; background: var(--m-border); border-radius: var(--m-radius-xs, 6px); overflow: hidden; margin-bottom: 4px; }
+.progress-fill { height: 100%; background: var(--m-primary); border-radius: var(--m-radius-xs, 6px); transition: width .3s; }
 .progress-label { font-size: 0.72rem; color: var(--m-grey-500); }
 
 /* ── Manuscript Row ────────────────────────────────────────────── */
 .manuscript-list { display: flex; flex-direction: column; gap: 8px; }
 .manuscript-row { display: flex; flex-direction: column; gap: 8px; }
 .ms-header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.ms-chapter-badge { padding: 2px 10px; border-radius: var(--m-radius-sm); font-size: 0.74rem; font-weight: 700; background: oklch(56% 0.12 250 / .1); color: oklch(56% 0.12 250); }
+.ms-chapter-badge { padding: 2px 10px; border-radius: var(--m-radius-sm); font-size: 0.74rem; font-weight: 700; background: rgba(124, 124, 129, 0.1); color: rgba(124,58,237, 0.06); }
 .ms-title { font-size: 0.9rem; font-weight: 600; }
 .ms-version { font-size: 0.72rem; color: var(--m-grey-500); }
 .ms-body { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -815,8 +815,8 @@ onMounted(() => {
 .ms-date { font-size: 0.72rem; color: var(--m-grey-500); margin-left: auto; }
 
 /* ── Modal ─────────────────────────────────────────────────────── */
-.modal-overlay { position: fixed; inset: 0; background: oklch(0 0 0 / .4); backdrop-filter: blur(4px); z-index: 9998; display: flex; align-items: center; justify-content: center; }
-.modal-card { background: var(--m-surface); border-radius: var(--m-radius-xl); padding: 28px; max-width: 520px; width: 90%; box-shadow: 0 16px 64px oklch(0 0 0 / .16); display: flex; flex-direction: column; gap: 14px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 9998; display: flex; align-items: center; justify-content: center; }
+.modal-card { background: var(--m-surface); border-radius: var(--m-radius-xl); padding: 28px; max-width: 520px; width: 90%; box-shadow: 0 16px 64px rgba(0,0,0,.16); display: flex; flex-direction: column; gap: 14px; }
 .modal-header { display: flex; align-items: center; justify-content: space-between; }
 .modal-header h3 { margin: 0; font-size: 1rem; }
 .modal-close-btn { background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--m-grey-500); }
@@ -826,7 +826,7 @@ onMounted(() => {
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input { padding: 10px 14px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.88rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; }
-.form-input:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px oklch(56% 0.12 170 / .1); }
+.form-input:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(124, 124, 129, 0.1); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 textarea.form-input { resize: vertical; }
 

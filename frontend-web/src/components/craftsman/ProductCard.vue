@@ -115,7 +115,7 @@ function formatPrice(price: number): string {
 }
 
 .product-card:hover {
-  box-shadow: 0 4px 20px oklch(0 0 0 / 0.06);
+  box-shadow: 0 4px 20px rgba(0,0,0,06);
   transform: translateY(-1px);
 }
 
@@ -220,6 +220,6 @@ function formatPrice(price: number): string {
 
 .btn-danger:hover {
   color: #ef4444;
-  background: oklch(95% 0.02 0 / 0.5);
+  background: rgba(1665, 1665, 1195, 0.5);
 }
 </style>

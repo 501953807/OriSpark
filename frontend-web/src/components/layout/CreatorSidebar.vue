@@ -65,8 +65,8 @@ const menuItems = computed(() => typeMenuMap[currentType.value] || typeMenuMap.i
 
 <style scoped>
 .creator-sidebar { width: 200px; background: #1f2937; color: #fff; min-height: 100vh; padding: 16px 0; }
-.sidebar-header { padding: 0 16px 16px; font-size: 16px; font-weight: 600; border-bottom: 1px solid #374151; }
+.sidebar-header { padding: 0 16px 16px; font-size: 16px; font-weight: 600; border-bottom: 1px solid var(--m-grey-600, #475569); }
 .menu-list { list-style: none; padding: 0; margin: 0; }
 .menu-item a { display: block; padding: 10px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; }
-.menu-item a:hover, .menu-item a.router-link-active { background: #374151; color: #fff; }
+.menu-item a:hover, .menu-item a.router-link-active { background: var(--m-grey-600, #475569); color: #fff; }
 </style>

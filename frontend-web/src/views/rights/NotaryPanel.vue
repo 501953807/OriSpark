@@ -60,7 +60,7 @@ onMounted(async () => { await Promise.all([notary.fetchRecords(), notary.fetchPl
 .section-title { font-size: 1rem; font-weight: 700; margin: 20px 0 12px; }
 .platforms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .platform-card { background: var(--m-surface); border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); padding: 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
-.platform-card:hover { border-color: var(--m-primary); box-shadow: 0 2px 8px oklch(0 0 0 / 0.06); }
+.platform-card:hover { border-color: var(--m-primary); box-shadow: 0 2px 8px rgba(0,0,0,06); }
 .p-icon { font-size: 2rem; margin-bottom: 8px; }
 .p-name { font-weight: 600; font-size: 0.95rem; }
 .p-fee { color: var(--m-primary); font-weight: 700; margin: 6px 0; }

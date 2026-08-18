@@ -531,15 +531,15 @@ fetchData()
 .detail-desc { font-size: 0.88rem; line-height: 1.6; }
 
 .badge-status, .milestone-status {
-  font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; font-weight: 600;
+  font-size: 0.75rem; padding: 3px 10px; border-radius: var(--m-radius-md, 12px); font-weight: 600;
 }
-.status-pending { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
-.status-in_progress { background: oklch(58% 0.14 245 / 0.1); color: var(--blue); }
-.status-review { background: oklch(58% 0.16 280 / 0.1); color: var(--purple); }
-.status-completed { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
+.status-pending { background: rgba(129, 129, 133, 0.12); color: #b45309; }
+.status-in_progress { background: rgba(126, 126, 130, 0.1); color: var(--blue); }
+.status-review { background: rgba(126, 126, 130, 0.1); color: var(--purple); }
+.status-completed { background: rgba(124, 124, 129, 0.12); color: #16a34a; }
 .status-canceled { background: var(--m-border); color: var(--m-grey-500); }
-.status-partial { background: oklch(62% 0.18 55 / 0.12); color: #b45309; }
-.status-received { background: oklch(56% 0.12 170 / 0.12); color: #16a34a; }
+.status-partial { background: rgba(129, 129, 133, 0.12); color: #b45309; }
+.status-received { background: rgba(124, 124, 129, 0.12); color: #16a34a; }
 
 /* Revisions */
 .revision-list { display: flex; flex-direction: column; gap: 10px; }
@@ -602,8 +602,8 @@ fetchData()
 .form-textarea { resize: vertical; width: 100%; max-width: 100%; }
 
 /* Modal */
-.modal-overlay { position:fixed; inset:0; background:oklch(0 0 0 / .4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
-.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:420px; width:90%; box-shadow:0 16px 64px oklch(0 0 0 / .16); display:flex; flex-direction:column; gap:14px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:9998; display:flex; align-items:center; justify-content:center; }
+.modal-card { background:var(--m-surface); border-radius:var(--m-radius-xl); padding:28px; max-width:420px; width:90%; box-shadow:0 16px 64px rgba(0,0,0,.16); display:flex; flex-direction:column; gap:14px; }
 .modal-header { display:flex; align-items:center; justify-content:space-between; }
 .modal-header h3 { margin:0; }
 .modal-close-btn { background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--m-grey-500); }

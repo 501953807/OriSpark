@@ -124,8 +124,8 @@ function typeLabel(type: string): string {
   gap: 10px;
   padding: 12px 16px;
   border-radius: var(--m-radius-sm);
-  background: oklch(56% 0.18 20 / .1);
-  color: oklch(56% 0.18 20);
+  background: rgba(124, 124, 129, 0.1);
+  color: rgba(220,38,38, 0.06);
   font-size: .88rem;
   margin-bottom: 16px;
 }
@@ -165,12 +165,12 @@ function typeLabel(type: string): string {
 
 .compatible-item:hover {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / .04);
+  background: rgba(124, 124, 129, 0.04);
 }
 
 .compatible-item.selected {
   border-color: var(--accent);
-  background: oklch(56% 0.12 170 / .08);
+  background: rgba(124, 124, 129, 0.08);
 }
 
 .compatible-name {
@@ -223,7 +223,7 @@ function typeLabel(type: string): string {
 
 .rem-type {
   font-weight: 700;
-  color: oklch(56% 0.18 20);
+  color: rgba(220,38,38, 0.06);
   white-space: nowrap;
   min-width: 60px;
 }
@@ -239,7 +239,7 @@ function typeLabel(type: string): string {
 
 .rem-scale {
   font-weight: 700;
-  color: oklch(56% 0.18 20);
+  color: rgba(220,38,38, 0.06);
   font-size: .76rem;
 }
 
@@ -267,7 +267,7 @@ function typeLabel(type: string): string {
 }
 
 .btn-warning {
-  background: oklch(75% 0.18 80);
+  background: rgba(22,163,74, 0.06);
   color: #000;
   border: none;
   padding: 6px 14px;
@@ -291,12 +291,12 @@ function typeLabel(type: string): string {
 }
 
 .tag-pass {
-  background: oklch(56% 0.12 140 / .15);
-  color: oklch(56% 0.12 140);
+  background: rgba(124, 124, 129, 0.15);
+  color: rgba(22,163,74, 0.06);
 }
 
 .tag-warn {
-  background: oklch(75% 0.12 80 / .15);
-  color: oklch(56% 0.12 80);
+  background: rgba(222, 222, 225, 0.15);
+  color: rgba(22,163,74, 0.06);
 }
 </style>

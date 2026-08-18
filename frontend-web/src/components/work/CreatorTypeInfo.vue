@@ -190,7 +190,7 @@ function dismiss() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: oklch(0 0 0 / 0.25);
+  background: rgba(0,0,0,25);
   backdrop-filter: blur(4px);
 }
 
@@ -212,13 +212,13 @@ function dismiss() {
   display: inline-flex;
   align-items: center;
   padding: 2px 10px;
-  border-radius: 9999px;
+  border-radius: var(--m-radius-full, 9999px);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent, #06b6d4);
-  background: oklch(var(--accent, #06b6d4) / 0.1);
+  background: rgba(var(--m-primary-rgb, 79,70,229), 0.1);
 }
 
 .header-title {
@@ -321,27 +321,27 @@ function dismiss() {
 
 /* --- Badge colours --- */
 .type-badge.photo {
-  background: oklch(56% 0.12 250 / 0.12);
-  color: oklch(45% 0.1 250);
+  background: rgba(124, 124, 129, 0.12);
+  color: rgba(124,58,237, 0.06);
 }
 .type-badge.music {
-  background: oklch(56% 0.15 330 / 0.12);
-  color: oklch(45% 0.12 330);
+  background: rgba(124, 124, 129, 0.12);
+  color: rgba(79,70,229, 0.06);
 }
 .type-badge.writer {
-  background: oklch(60% 0.08 140 / 0.12);
-  color: oklch(40% 0.07 140);
+  background: rgba(128, 128, 132, 0.12);
+  color: rgba(22,163,74, 0.06);
 }
 .type-badge.video {
-  background: oklch(60% 0.12 280 / 0.12);
-  color: oklch(45% 0.1 280);
+  background: rgba(128, 128, 132, 0.12);
+  color: rgba(79,70,229, 0.06);
 }
 .type-badge.craftsman {
-  background: oklch(65% 0.12 85 / 0.12);
-  color: oklch(40% 0.1 85);
+  background: rgba(132, 132, 135, 0.12);
+  color: rgba(217,119,6, 0.06);
 }
 .type-badge.illustrator {
-  background: oklch(65% 0.18 35 / 0.12);
-  color: oklch(45% 0.15 35);
+  background: rgba(132, 132, 135, 0.12);
+  color: rgba(234,88,12, 0.06);
 }
 </style>

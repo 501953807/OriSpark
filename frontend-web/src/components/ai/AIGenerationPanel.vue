@@ -531,8 +531,8 @@ onMounted(() => {
   color: var(--green);
 }
 .ai-status-badge.unsafe {
-  background: oklch(56% 0.18 20 / 0.1);
-  color: oklch(56% 0.18 20);
+  background: rgba(124, 124, 129, 0.1);
+  color: rgba(220,38,38, 0.06);
 }
 .ai-moderate-reason {
   margin: 0;
@@ -552,8 +552,8 @@ onMounted(() => {
   font-weight: 600;
 }
 .ai-cat-pill.flagged {
-  background: oklch(56% 0.18 20 / 0.1);
-  color: oklch(56% 0.18 20);
+  background: rgba(124, 124, 129, 0.1);
+  color: rgba(220,38,38, 0.06);
 }
 .ai-cat-pill.ok {
   background: rgba(86,202,0,0.1);
@@ -563,10 +563,10 @@ onMounted(() => {
 /* Error display */
 .ai-error {
   padding: 8px 12px;
-  background: oklch(56% 0.18 20 / 0.06);
-  border: 1px solid oklch(56% 0.18 20 / 0.15);
+  background: rgba(124, 124, 129, 0.06);
+  border: 1px solid rgba(124, 124, 129, 0.15);
   border-radius: var(--m-radius-sm);
   font-size: 0.8rem;
-  color: oklch(56% 0.18 20);
+  color: rgba(220,38,38, 0.06);
 }
 </style>

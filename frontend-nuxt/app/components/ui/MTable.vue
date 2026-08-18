@@ -77,8 +77,8 @@ const visiblePages = computed(() => {
 .m-table th { padding: 12px 16px; text-align: left; font-size: 13px; font-weight: var(--m-font-weight-semibold); color: var(--m-grey-500); background: var(--m-bg); border-bottom: 1px solid var(--m-border); white-space: nowrap; }
 .m-table td { padding: 12px 16px; color: var(--m-on-surface); border-bottom: 1px solid var(--m-border); vertical-align: middle; }
 .m-table--striped tbody tr:nth-child(even) { background: var(--m-grey-100); }
-.m-table--hover tbody tr:hover td { background: rgba(140, 87, 255, 0.04); cursor: pointer; }
-.m-table--selected td { background: rgba(140, 87, 255, 0.08); }
+.m-table--hover tbody tr:hover td { background: rgba(79, 70, 229, 0.04); cursor: pointer; }
+.m-table--selected td { background: rgba(79, 70, 229, 0.08); }
 .m-table__empty { padding: 32px; text-align: center; color: var(--m-grey-500); font-size: var(--m-font-size-sm); }
 .m-table__footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--m-border); font-size: var(--m-font-size-sm); color: var(--m-grey-500); }
 .m-table__pager { display: flex; gap: 4px; align-items: center; }

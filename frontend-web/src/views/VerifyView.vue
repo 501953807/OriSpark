@@ -112,7 +112,7 @@ function reset() {
 .form-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--m-grey-500); }
 .form-input { padding: 12px 16px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); font-size: 0.9rem; font-family: Inter; color: var(--m-on-surface); background: var(--m-surface); outline: none; }
-.form-input:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 86, 202, 0), 0.1); }
+.form-input:focus { border-color: var(--m-primary); box-shadow: 0 0 0 3px rgba(var(--m-success-rgb, 22, 163, 74), 0.1); }
 .result-icon { font-size: 3rem; margin-bottom: 8px; }
 .result-details { text-align: left; margin-top: 16px; }
 .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--m-border); font-size: 0.85rem; }

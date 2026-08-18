@@ -286,8 +286,8 @@ onMounted(loadDetail)
 }
 
 .btn-edit:hover { border-color: var(--m-primary); }
-.btn-duplicate:hover { border-color: oklch(65% 0.1 270); }
-.btn-delete:hover { border-color: oklch(56% 0.18 20); }
+.btn-duplicate:hover { border-color: rgba(2,132,199, 0.06); }
+.btn-delete:hover { border-color: rgba(220,38,38, 0.06); }
 
 .detail-main { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-bottom: 24px; }
 
@@ -323,22 +323,22 @@ onMounted(loadDetail)
   border-radius: 50%; margin-right: 4px;
 }
 
-.status-dot.active { background: oklch(56% 0.12 140); }
-.status-dot.draft { background: oklch(65% 0.1 80); }
-.status-dot.discontinued { background: oklch(56% 0.12 20); }
+.status-dot.active { background: rgba(22,163,74, 0.06); }
+.status-dot.draft { background: rgba(22,163,74, 0.06); }
+.status-dot.discontinued { background: rgba(220,38,38, 0.06); }
 
 .spec-result {
   padding: 8px 12px; border-radius: var(--m-radius-sm); font-size: .82rem; font-weight: 600;
 }
 
-.spec-result.spec-pass { background: oklch(56% 0.12 140 / .1); color: oklch(56% 0.12 140); }
-.spec-result.spec-warn { background: oklch(75% 0.12 80 / .1); color: oklch(65% 0.12 80); }
-.spec-result.spec-error { background: oklch(56% 0.18 20 / .1); color: oklch(56% 0.18 20); }
+.spec-result.spec-pass { background: rgba(124, 124, 129, 0.1); color: rgba(22,163,74, 0.06); }
+.spec-result.spec-warn { background: rgba(222, 222, 225, 0.1); color: rgba(22,163,74, 0.06); }
+.spec-result.spec-error { background: rgba(124, 124, 129, 0.1); color: rgba(220,38,38, 0.06); }
 
 /* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: oklch(20% 0.02 180 / .5);
+  background: rgba(80, 80, 90, 0.5);
   display: flex; align-items: center; justify-content: center; z-index: 100;
 }
 

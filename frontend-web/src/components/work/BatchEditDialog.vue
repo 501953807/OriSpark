@@ -209,14 +209,14 @@ async function handleBatchEdit() {
 
 <style scoped>
 .modal-overlay {
-  position: fixed; inset: 0; background: oklch(0 0 0 / 0.4);
+  position: fixed; inset: 0; background: rgba(0,0,0,4);
   backdrop-filter: blur(4px); z-index: 9999;
   display: flex; align-items: center; justify-content: center;
 }
 .modal-card {
   background: var(--surface); border-radius: var(--m-radius-xl);
   padding: 0; width: 480px; max-width: 90vw; max-height: 85vh;
-  box-shadow: 0 16px 64px oklch(0 0 0 / 0.16);
+  box-shadow: 0 16px 64px rgba(0,0,0,16);
   display: flex; flex-direction: column; overflow: hidden;
 }
 .panel-header {

@@ -180,7 +180,7 @@ const avatarGradient = computed(() => {
 .sb-logo {
   width: 34px;
   height: 34px;
-  border-radius: 6px;
+  border-radius: var(--m-radius-sm, 8px);
   background: linear-gradient(135deg, #5585FF, #2A52B0);
   display: flex;
   align-items: center;
@@ -222,7 +222,7 @@ const avatarGradient = computed(() => {
   gap: 10px;
   padding: 9px 14px;
   margin: 1px 6px;
-  border-radius: 6px;
+  border-radius: var(--m-radius-sm, 8px);
   font-size: 0.85rem;
   font-weight: 500;
   color: #8a8d93;
