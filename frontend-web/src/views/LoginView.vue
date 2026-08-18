@@ -113,25 +113,43 @@
 
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="auth-form">
-          <div v-if="mode === 'register'" class="form-field">
-            <MInput v-model="form.username" label="用户名" variant="filled" placeholder="创作者名称" required />
+          <div v-if="mode === 'register'" class="form-group">
+            <label class="form-label" for="username">用户名</label>
+            <div class="form-input">
+              <svg class="form-input__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input id="username" :value="form.username" @input="form.username = ($event.target as HTMLInputElement).value" type="text" class="form-input__field" placeholder="创作者名称" autocomplete="username" required />
+            </div>
           </div>
 
-          <div class="form-field">
-            <MInput v-model="form.email" label="邮箱" variant="filled" type="email" placeholder="creator@example.com" required />
+          <div class="form-group">
+            <label class="form-label" for="email">邮箱</label>
+            <div class="form-input">
+              <svg class="form-input__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              <input id="email" :value="form.email" @input="form.email = ($event.target as HTMLInputElement).value" type="email" class="form-input__field" placeholder="your@email.com" autocomplete="email" required />
+            </div>
           </div>
 
-          <div class="form-field form-field--password">
-            <MInput :model-value="form.password" @update:model-value="form.password = $event" label="密码" variant="filled" :type="showPassword ? 'text' : 'password'" placeholder="••••••" required />
-            <button type="button" class="password-toggle" @click="togglePassword" aria-label="显示密码">
-              <svg v-if="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          <div class="form-group">
+            <label class="form-label" for="password">密码</label>
+            <div class="form-input" :class="{ 'form-input--error': errorMsg }">
+              <svg class="form-input__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
               </svg>
-              <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            </button>
+              <input id="password" :value="form.password" @input="form.password = ($event.target as HTMLInputElement).value" :type="showPassword ? 'text' : 'password'" class="form-input__field" placeholder="••••••" autocomplete="current-password" required />
+              <button type="button" class="form-input__toggle" @click="togglePassword" aria-label="显示密码">
+                <svg v-if="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg v-else width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div v-if="errorMsg" class="form-error">{{ errorMsg }}</div>
@@ -156,7 +174,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useGlobalState } from '@/stores/useGlobalState'
-import MInput from '@/components/ui/MInput.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -354,19 +371,71 @@ function togglePassword() {
 
 /* ── Form ── */
 .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
-.form-field { display: flex; flex-direction: column; gap: 0.375rem; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 0.8125rem; font-weight: 500; color: rgba(46, 38, 61, 0.9); }
 .form-error { color: #DC2626; font-size: 0.8125rem; }
 
-/* Password field with toggle */
-.form-field--password { position: relative; }
-.password-toggle {
-  position: absolute; right: 12px; top: 36px;
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-  border: none; background: transparent; color: #94A3B8; cursor: pointer;
-  border-radius: 8px; transition: all 0.15s; z-index: 1;
+/* ── Nuxt-style form-input ── */
+.form-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  background: #F9FAFB;
 }
-.password-toggle:hover { background: #F1F5F9; color: #4F46E5; }
-.password-toggle svg { width: 18px; height: 18px; }
+.form-input:focus-within {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  background: #FFFFFF;
+}
+.form-input--error {
+  border-color: #DC2626;
+}
+.form-input--error:focus-within {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+.form-input__icon {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: #9CA3AF;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.form-input__field {
+  flex: 1;
+  height: 46px;
+  padding: 0 44px 0 42px;
+  border: none;
+  outline: none;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: #1F2937;
+  background: transparent;
+}
+.form-input__field::placeholder { color: #9CA3AF; }
+
+/* Password toggle */
+.form-input__toggle {
+  position: absolute;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #9CA3AF;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+.form-input__toggle:hover { color: #4F46E5; }
+.form-input__toggle svg { width: 18px; height: 18px; }
 
 /* ── Primary Button ── */
 .btn-primary {
