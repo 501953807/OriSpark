@@ -1,0 +1,186 @@
+/* ============================================
+   OriStudio Brand Enhancement Layer
+   品牌视觉增强 — 直接覆盖 m-* 组件类名
+   （组件 scoped CSS 优先级较低，此文件以全局非 scoped 形式注入）
+   ── 大圆角 · 多层柔光阴影 · 渐变装饰线 · 品牌动效
+   ============================================ */
+
+/* ── MCard：大圆角 + 多层浮游阴影 + 渐变顶线 ── */
+.m-card {
+  border-radius: var(--m-radius-xl) !important;
+  box-shadow: var(--m-shadow-sm) !important;
+  transition: box-shadow var(--m-transition-fast), transform var(--m-transition-fast);
+  overflow: hidden;
+  position: relative;
+}
+.m-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--grad1, #4F46E5), var(--grad2, #3730A3));
+  opacity: 0;
+  transition: opacity var(--m-transition-fast);
+  z-index: 1;
+}
+.m-card:hover {
+  box-shadow: var(--m-shadow-lg) !important;
+  transform: translateY(-2px);
+}
+.m-card:hover::before { opacity: 1; }
+
+.m-card__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ── MBtn：大圆角 + 彩色阴影 + 悬停光晕 ── */
+.m-btn {
+  border-radius: var(--m-radius-md) !important;
+  font-family: var(--m-font-family);
+  transition: all var(--m-transition-fast);
+}
+.m-btn--variant-elevated,
+.m-btn--variant-flat {
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+}
+.m-btn--variant-elevated:hover:not(:disabled),
+.m-btn--variant-flat:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.32) !important;
+}
+
+/* ── MAlert：大圆角 + 软色背景 ── */
+.m-alert {
+  border-radius: var(--m-radius-lg) !important;
+}
+.m-alert--variant-filled {
+  background: rgba(79, 70, 229, 0.08) !important;
+  color: #4338CA !important;
+  border-color: rgba(79, 70, 229, 0.2) !important;
+}
+.m-alert--color-success.m-alert--variant-filled {
+  background: #F0FDF4 !important;
+  color: #15803D !important;
+  border-color: #BBF7D0 !important;
+}
+.m-alert--color-warning.m-alert--variant-filled {
+  background: #FFFBEB !important;
+  color: #92400E !important;
+  border-color: #FDE68A !important;
+}
+.m-alert--color-error.m-alert--variant-filled {
+  background: #FEF2F2 !important;
+  color: #991B1B !important;
+  border-color: #FECACA !important;
+}
+.m-alert--color-info.m-alert--variant-filled {
+  background: #F0F9FF !important;
+  color: #075985 !important;
+  border-color: #BAE6FD !important;
+}
+
+/* ── MChip：药丸风格（全圆角） ── */
+.m-chip {
+  border-radius: 9999px !important;
+}
+.m-chip--filled, .m-chip--tonal {
+  background: rgba(79, 70, 229, 0.12) !important;
+  color: #4F46E5 !important;
+}
+.m-chip--color-success.m-chip--filled,
+.m-chip--color-success.m-chip--tonal {
+  background: #F0FDF4 !important;
+  color: #16A34A !important;
+}
+.m-chip--color-warning.m-chip--filled,
+.m-chip--color-warning.m-chip--tonal {
+  background: #FFFBEB !important;
+  color: #D97706 !important;
+}
+.m-chip--color-error.m-chip--filled,
+.m-chip--color-error.m-chip--tonal {
+  background: #FEF2F2 !important;
+  color: #DC2626 !important;
+}
+
+/* ── MField / Input：对齐 Nuxt form-input 风格 ── */
+.m-field__wrapper {
+  border-radius: var(--m-radius-md) !important;
+  border-width: 1.5px !important;
+  border-color: #E5E7EB !important;
+  background: #F9FAFB !important;
+  transition: border-color var(--m-transition-fast), box-shadow var(--m-transition-fast), background var(--m-transition-fast);
+}
+.m-field--focused .m-field__wrapper {
+  border-color: #4F46E5 !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.10) !important;
+}
+.m-field--error .m-field__wrapper {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10) !important;
+}
+.m-field__input {
+  border-radius: var(--m-radius-md) !important;
+}
+
+/* ── MTable：大圆角包装 + 精致表头 ── */
+.m-table-wrapper,
+.m-table-wrap {
+  border-radius: var(--m-radius-xl) !important;
+  overflow: hidden;
+}
+.m-table thead th,
+.m-table__header,
+.m-table-wrap th {
+  border-radius: 0 !important;
+  background: var(--m-bg-subtle) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+}
+.m-table tbody tr:hover td,
+.m-table--hover tbody tr:hover td {
+  background: var(--m-bg-subtle) !important;
+}
+
+/* ── MTabs：药丸样式（可选） ── */
+.m-tabs__item {
+  border-radius: var(--m-radius-md) !important;
+  transition: all var(--m-transition-fast);
+}
+.m-tabs__item--active {
+  color: #4F46E5 !important;
+  font-weight: 600 !important;
+}
+
+/* ── MDialog：超大圆角 + 毛玻璃遮罩 ── */
+.m-dialog,
+.m-dialog__overlay {
+  border-radius: var(--m-radius-2xl) !important;
+}
+.m-dialog__overlay {
+  backdrop-filter: blur(4px);
+}
+
+/* ── MSelect：大圆角 ── */
+.m-select,
+.m-select__wrapper,
+.m-select__selection {
+  border-radius: var(--m-radius-lg) !important;
+}
+
+/* ── 全局按钮级联覆盖（非 M 前缀的通用按钮） ── */
+.btn {
+  border-radius: var(--m-radius-md) !important;
+}
+.btn-primary {
+  background: #4F46E5 !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #4338CA !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.32) !important;
+}
