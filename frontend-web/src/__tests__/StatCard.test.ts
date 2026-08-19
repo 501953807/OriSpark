@@ -49,7 +49,8 @@ describe('StatCard', () => {
     })
     const circle = wrapper.find('.stat-icon-circle')
     expect(circle.attributes('style')).toContain('background')
-    expect(circle.attributes('style')).toContain('--m-primary')
+    // After Materio redesign, default color is solid purple (#4F46E5)
+    expect(circle.attributes('style')).toContain('rgb(79, 70, 229)')
   })
 
   it('applies custom color background', () => {
@@ -58,7 +59,8 @@ describe('StatCard', () => {
     })
     const circle = wrapper.find('.stat-icon-circle')
     expect(circle.attributes('style')).toContain('background')
-    expect(circle.attributes('style')).toContain('--m-warning')
+    // After Materio redesign, orange color is solid (#D97706)
+    expect(circle.attributes('style')).toContain('rgb(217, 119, 6)')
   })
 })
 
