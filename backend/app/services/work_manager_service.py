@@ -45,6 +45,19 @@ DEFAULT_FIRST_STAGE: dict[str, str] = {
 }
 
 
+def _parse_ai_tools(raw: Optional[str]) -> Optional[list[dict]]:
+    """解析 AI 工具 JSON 字符串，失败时返回 None."""
+    if not raw:
+        return None
+    try:
+        data = json.loads(raw)
+        if isinstance(data, list) and data:
+            return [{"name": str(t.get("name", "")), "version": str(t.get("version", ""))} for t in data if t.get("name")]
+    except (json.JSONDecodeError, TypeError):
+        pass
+    return None
+
+
 class WorkManagerService:
     """作品管理核心业务逻辑 — 从 works.py 提取."""
 
@@ -62,6 +75,9 @@ class WorkManagerService:
         allow_duplicate: bool,
         file,
         user_id: str,
+        import_mode: str = "full",
+        ai_assisted: bool = False,
+        ai_tools_used: Optional[str] = None,
     ) -> ApiResponse:
         """上传单个作品文件 (含自动标签 + 尺寸检测 + 可选重复导入)."""
         ext = Path(file.filename).suffix.lower().lstrip(".") if "." in file.filename else ""
@@ -159,7 +175,8 @@ class WorkManagerService:
             width=width,
             height=height,
             duration=duration,
-            import_mode="full",
+            import_mode=import_mode,
+            ai_assisted=ai_assisted,
             is_raw_original=is_raw,
             rights=auto_rights,
             creator_type=_detect_creator_type(file_type, exif_data, full_meta),
@@ -171,6 +188,7 @@ class WorkManagerService:
                 "creation_location": auto_creation_location,
                 **full_meta,
             },
+            ai_tools_used=_parse_ai_tools(ai_tools_used),
         )
 
         for tag_name in all_tags:

@@ -5,6 +5,7 @@ export interface RiskWarning {
   warning_type: string
   severity: Severity
   title: string
+  description?: string
   matched_entity: string | null
   confidence: number | null
   dismissed: boolean

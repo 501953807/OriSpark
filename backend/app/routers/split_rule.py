@@ -21,13 +21,6 @@ class RefundSplitRequest(BaseModel):
     reason: str
 
 
-@router.get("/platform-fee")
-def get_platform_fee(total_amount: float):
-    """计算平台 3‰ 固定费用."""
-    fee = SplitRuleService.calculate_platform_fee(total_amount)
-    return {"total_amount": total_amount, "platform_fee": fee}
-
-
 @router.get("")
 def get_split_rules(
     contract_id: str,

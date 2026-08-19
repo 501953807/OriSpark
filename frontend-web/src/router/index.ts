@@ -30,79 +30,6 @@ const router = createRouter({
       name: 'verify',
       component: () => import('@/views/VerifyView.vue'),
     },
-    // 运营者专属路由 — 重定向到 OriSpark 交易后台
-    {
-      path: '/app/operator',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/`,
-    },
-    {
-      path: '/app/contract-risk',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/contract-risk`,
-    },
-    {
-      path: '/app/insurance',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/insurance`,
-    },
-    {
-      path: '/app/multimarket',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/multimarket`,
-    },
-    {
-      path: '/app/enforcement-roi',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/enforcement-roi`,
-    },
-    {
-      path: '/app/enforcement',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/enforcement`,
-    },
-    {
-      path: '/app/private-traffic',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/private-traffic`,
-    },
-    {
-      path: '/app/growth-stages',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/growth-stages`,
-    },
-    {
-      path: '/app/ai-growth',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/ai-growth`,
-    },
-    {
-      path: '/app/credit-improvement',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/credit-improvement`,
-    },
-    {
-      path: '/app/risk-center',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/risk-center`,
-    },
-    {
-      path: '/app/content-pipeline',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/content-pipeline`,
-    },
-    {
-      path: '/app/case-studies',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/case-studies`,
-    },
-    {
-      path: '/app/fork-merge',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/fork-merge`,
-    },
-    {
-      path: '/app/negotiation',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/negotiation`,
-    },
-    {
-      path: '/app/scr',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/scr`,
-    },
-    {
-      path: '/app/tax',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/tax`,
-    },
-    {
-      path: '/app/distribution',
-      redirect: () => `${window.location.origin.replace('5174', '3000')}/nuxt/distribution`,
-    },
     // 应用主体 (需要登录)
     {
       path: '/app',
@@ -123,6 +50,8 @@ const router = createRouter({
         { path: 'supply', name: 'supply', component: () => import('@/views/ContractMarketView.vue') },
         { path: 'contract-market', name: 'contract-market', component: () => import('@/views/ContractMarketView.vue') },
         { path: 'capability', name: 'capability', component: () => import('@/views/CapabilityAssessmentView.vue') },
+        { path: 'operator', name: 'operator', component: () => import('@/views/OperatorDashboardView.vue') },
+        { path: 'marketplace', name: 'marketplace', component: () => import('@/views/MarketplaceView.vue') },
         { path: 'multimarket', name: 'multimarket', component: () => import('@/views/MultiMarketView.vue') },
         { path: 'enforcement-roi', name: 'enforcement-roi', component: () => import('@/views/EnforcementRoiView.vue') },
         { path: 'enforcement', name: 'enforcement-dashboard', component: () => import('@/views/EnforcementDashboardView.vue') },
@@ -149,9 +78,9 @@ const router = createRouter({
         { path: 'works/:id/versions', name: 'work-versions', component: () => import('@/views/WorkVersionsView.vue') },
         { path: 'works/cull', name: 'culling', component: () => import('@/views/CullingView.vue') },
         { path: 'settings/subscriptions', name: 'subscriptions', component: () => import('@/views/SubscriptionView.vue') },
+        { path: 'business', name: 'business', component: () => import('@/views/BusinessView.vue') },
         { path: 'business/commissions', name: 'commissions', component: () => import('@/views/CommissionView.vue') },
         { path: 'business/commissions/:id', name: 'commission-detail', component: () => import('@/views/CommissionDetailView.vue') },
-        { path: 'business', redirect: '/app/business/commissions' },
         { path: 'illustrator', name: 'illustrator', component: () => import('@/views/IllustratorView.vue') },
         { path: 'photographer', name: 'photographer', component: () => import('@/views/PhotographerView.vue') },
         { path: 'video', name: 'video', component: () => import('@/views/VideoCreatorView.vue') },
@@ -178,20 +107,6 @@ const router = createRouter({
 
 // 路由守卫 — 集中 auth store 管理
 router.beforeEach(async (to) => {
-  // v6.0: 非创作者用户重定向到 OriSpark 交易后台
-  const savedUser = localStorage.getItem('oristudio-user')
-  if (savedUser) {
-    try {
-      const user = JSON.parse(savedUser) as User
-      const loginPlatform = user.login_platform || user.creator_type ? 'web' : 'nuxt'
-      if (loginPlatform === 'nuxt' && to.path.startsWith('/app')) {
-        // 非创作者访问创作者平台，重定向到 OriSpark
-        window.location.href = `${window.location.origin.replace('5174', '3000')}/nuxt/`
-        return false
-      }
-    } catch { /* ignore parse errors */ }
-  }
-
   if (to.meta.requiresAuth) {
     const auth = useAuthStore()
     if (!auth.isLoggedIn) {

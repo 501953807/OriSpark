@@ -605,6 +605,19 @@ class ContractStateService:
         return timeline
 
     @classmethod
+    def confirm_subscribe(
+        cls,
+        db: Session,
+        contract_id: str,
+        actor_id: Optional[str] = None,
+    ) -> ContractInstance:
+        """创作者确认认购 — 状态流转: subscribed → escrowed."""
+        contract = cls.validate_transition(db, contract_id, "escrowed", actor_id)
+        from app.services.payment_gateway import PaymentGatewayService
+        pgw_result = PaymentGatewayService.initiate_escrow(db, contract_id, actor_id=actor_id)
+        return contract
+
+    @classmethod
     def get_contract_status_summary(
         cls,
         db: Session,

@@ -197,7 +197,8 @@
         </div>
         <div v-if="recommendResult" class="recommend-result">
           <div v-for="r in recommendResult.recommendations" :key="r.class_no" class="rec-class-item">
-            <span class="rec-stars">{{ '★'.repeat(r.priority) }}{{ '☆'.repeat(5 - r.priority) }}</span>
+            <span class="rec-stars">{{ '★'.repeat(Math.round(r.confidence / 20)) }}{{ '☆'.repeat(5 - Math.round(r.confidence / 20)) }}</span>
+            <span class="rec-confidence">{{ r.confidence }}%</span>
             <strong>第{{ r.class_no }}类</strong>
             <span>{{ r.class_name_zh }}</span>
             <span class="rec-reason">{{ r.reason }}</span>
@@ -205,7 +206,7 @@
           </div>
           <div class="rec-summary">
             <strong>预估总费用: ¥{{ recommendResult.estimated_total_fee }}</strong>
-            <p>{{ recommendResult.strategy_note }}</p>
+            <p>{{ recommendResult.disclaimer || recommendResult.strategy_note }}</p>
           </div>
         </div>
       </div>

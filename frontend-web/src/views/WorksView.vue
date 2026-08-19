@@ -181,10 +181,42 @@
           <button class="modal-close-btn" @click="showImportModal = false">×</button>
         </div>
         <FileDropZone @upload="handleUpload" />
+        <RiskWarningPanel
+          v-if="riskWarnings.length > 0"
+          :warnings="riskWarnings"
+          @dismiss="dismissWarning"
+          @dismiss-all="riskWarnings = []"
+        />
         <div class="import-options">
-          <label class="checkbox-label">
+          <div class="import-mode-group">
+            <label class="import-mode-label">导入模式</label>
+            <div class="import-mode-radios">
+              <label class="mode-radio">
+                <input type="radio" v-model="importMode" value="full" />
+                <span class="mode-info">
+                  <span class="mode-name">完整导入</span>
+                  <span class="mode-desc">上传原文件，全功能（存证/预览/元数据提取）</span>
+                </span>
+              </label>
+              <label class="mode-radio">
+                <input type="radio" v-model="importMode" value="lowres" />
+                <span class="mode-info">
+                  <span class="mode-name">低清预览</span>
+                  <span class="mode-desc">只上传缩略图+哈希，不保存原文件</span>
+                </span>
+              </label>
+              <label class="mode-radio">
+                <input type="radio" v-model="importMode" value="hash-only" />
+                <span class="mode-info">
+                  <span class="mode-name">仅哈希</span>
+                  <span class="mode-desc">不上传文件，仅记录哈希值（高价值商业作品）</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <label class="checkbox-label" style="margin-top:8px">
             <input type="checkbox" v-model="allowDuplicate" />
-            允许重复导入（同文件可添加多次，用于二次/三次导入）
+            允许重复导入（同文件可添加多次）
           </label>
         </div>
         <div v-if="uploading" class="uploading-hint">正在导入...</div>
@@ -240,10 +272,13 @@ import StatusBadge from '@/components/common/StatusBadge.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import WorkEditPanel from '@/components/work/WorkEditPanel.vue'
 import BatchEditDialog from '@/components/work/BatchEditDialog.vue'
+import RiskWarningPanel from '@/components/work/RiskWarningPanel.vue'
 import { useWorkStore } from '@/stores/useWorkStore'
 import { worksApi } from '@/api/works'
+import { riskWarningApi } from '@/api/risk_warning'
 import { getStageColor, getAllStages } from '@/composables/useWorkStages'
 import type { Work } from '@/types/work'
+import type { RiskWarning } from '@/types/risk_warning'
 
 const workStore = useWorkStore()
 
@@ -256,6 +291,8 @@ const viewMode = ref<'grid' | 'list'>('grid')
 const showImportModal = ref(false)
 const uploading = ref(false)
 const allowDuplicate = ref(false)
+const importMode = ref<'full' | 'lowres' | 'hash-only'>('full')
+const riskWarnings = ref<RiskWarning[]>([])
 const editingWork = ref<Work | null>(null)
 
 // Batch selection state
@@ -391,17 +428,26 @@ async function loadProjects() {
 async function handleUpload(files: File[]) {
   uploading.value = true
   try {
+    const aiAssisted = (window as any).__workImportAiAssisted || false
+    const aiToolsUsed = (window as any).__workImportAiToolsUsed || null
     for (const file of files) {
       const fd = new FormData()
       fd.append('file', file)
       fd.append('title', file.name.replace(/\.[^/.]+$/, ''))
+      fd.append('import_mode', importMode.value)
+      fd.append('ai_assisted', String(aiAssisted))
+      if (aiToolsUsed) fd.append('ai_tools_used', aiToolsUsed)
       if (allowDuplicate.value) {
         fd.append('allow_duplicate', 'true')
       }
       await workStore.uploadWork(fd)
     }
     showImportModal.value = false
+    riskWarnings.value = []
     allowDuplicate.value = false
+    importMode.value = 'full'
+    delete (window as any).__workImportAiAssisted
+    delete (window as any).__workImportAiToolsUsed
     ;(window as any).$toast?.show(`成功导入 ${files.length} 个文件`, 'success')
   } catch {
     ;(window as any).$toast?.show('导入失败', 'error')
@@ -412,6 +458,10 @@ async function handleUpload(files: File[]) {
 
 function openEdit(work: Work) {
   editingWork.value = work
+}
+
+function dismissWarning(id: string) {
+  riskWarnings.value = riskWarnings.value.filter(w => w.id !== id)
 }
 
 function closeEdit() {
@@ -696,6 +746,16 @@ onUnmounted(() => {
 .modal-close-btn { background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--m-grey-500); }
 .uploading-hint { text-align: center; margin-top: 12px; color: var(--m-primary); font-weight: 600; font-size: 0.88rem; }
 .import-options { padding: 12px 0; }
+.import-mode-group { margin-bottom: 12px; }
+.import-mode-label { display: block; font-size: 0.78rem; color: var(--m-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.import-mode-radios { display: flex; flex-direction: column; gap: 6px; }
+.mode-radio { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border: 1px solid var(--m-border); border-radius: var(--m-radius-sm); cursor: pointer; transition: all 150ms; }
+.mode-radio:hover { border-color: var(--accent); background: var(--accent-fg, rgba(79,70,229,0.04)); }
+.mode-radio input[type="radio"] { margin-top: 3px; width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+.mode-radio input[type="radio"]:checked + .mode-info .mode-name { color: var(--accent); font-weight: 600; }
+.mode-info { display: flex; flex-direction: column; gap: 1px; }
+.mode-name { font-size: 0.85rem; color: var(--m-on-surface); transition: color 150ms; }
+.mode-desc { font-size: 0.75rem; color: var(--m-grey-500); line-height: 1.4; }
 .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--m-grey-500); cursor: pointer; }
 .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
 .modal-footer-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }

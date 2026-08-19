@@ -45,7 +45,7 @@ class TestSplitRuleGet:
     def test_list_platform_fee(self, client):
         """平台费率查询应返回200 (total_amount 为 query param)."""
         # platform-fee 是独立端点，不需要 contract_id
-        resp = client.get("/api/contracts/split_test_contract_001/split-rules/platform-fee?total_amount=1000.0")
+        resp = client.get("/api/contracts/platform-fee?total_amount=1000.0")
         assert resp.status_code == 200
 
 

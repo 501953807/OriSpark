@@ -166,6 +166,20 @@
           <div class="form-group">
             <textarea v-model="form.description" class="form-textarea" rows="3" placeholder="备注信息…" />
           </div>
+
+          <!-- AI-Assisted Creation -->
+          <div class="section-label">AI 辅助创作记录</div>
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" v-model="form.ai_assisted" />
+              AI 辅助生成
+            </label>
+          </div>
+          <div class="form-group" v-if="form.ai_assisted">
+            <label>使用的 AI 工具</label>
+            <textarea v-model="form.ai_tools_used" class="form-textarea" rows="3" placeholder='[{"name":"Midjourney v6","version":"6.0"},{"name":"Stable Diffusion"}]' />
+            <span class="form-hint">JSON 数组，每项含 name/version/usage 字段</span>
+          </div>
         </div>
 
         <div class="panel-footer">
@@ -204,6 +218,8 @@ const props = defineProps<{
     completion_date?: string | null
     current_stage?: string | null
     copyright_year?: number | null
+    ai_assisted?: boolean
+    ai_tools_used?: Array<{ name: string; version?: string }>
   } | null
 }>()
 
@@ -247,6 +263,9 @@ const form = reactive({
   // Illustrator
   illustration_style: '',
   ai_tool: '',
+  // AI-assisted creation
+  ai_assisted: false,
+  ai_tools_used: '[]' as string,
 })
 
 watch(() => props.work, (w) => {
@@ -285,6 +304,8 @@ watch(() => props.work, (w) => {
     form.genre = cm.genre || ''
     form.illustration_style = cm.illustration_style || ''
     form.ai_tool = cm.ai_tool || ''
+    form.ai_assisted = w.ai_assisted || false
+    try { form.ai_tools_used = w.ai_tools_used ? JSON.stringify(w.ai_tools_used) : '[]' } catch { form.ai_tools_used = '[]' }
 
     // Tags
     form.tags = (w.tags || []).map(t => ({ ...t }))
@@ -339,6 +360,11 @@ function handleSave() {
   if (form.genre) metadata.genre = form.genre
   if (form.illustration_style) metadata.illustration_style = form.illustration_style
   if (form.ai_tool) metadata.ai_tool = form.ai_tool
+  if (form.ai_assisted) metadata.ai_assisted = true
+  try {
+    const parsed = JSON.parse(form.ai_tools_used || '[]')
+    if (Array.isArray(parsed) && parsed.length) metadata.ai_tools_used = parsed
+  } catch { /* ignore malformed JSON */ }
 
   emit('save', {
     title: form.title,

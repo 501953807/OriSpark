@@ -3824,3 +3824,90 @@ def _advance_registration_status(
             "material_list": material_list,
         },
     )
+
+
+    # ── 商标查询服务 ──────────────────────────────────────────────────
+
+    def trademark_query(self, text: str, jurisdiction: str = "cn", class_no: Optional[str] = None,
+                        user_id: str = "local", db: Session = None):
+        """执行商标查询，记录历史，返回结果列表."""
+        from app.gateway.trademark import CNIPATrademarkGateway, TrademarkResult
+
+        gateway = CNIPATrademarkGateway()
+        results = gateway.search(text, classes=[class_no] if class_no else None, jurisdiction=jurisdiction)
+
+        # 记录到数据库
+        query_record = None
+        if db is not None:
+            query_record = TrademarkQueryRecord(
+                user_id=user_id,
+                query_text=text,
+                jurisdiction=jurisdiction,
+                class_no=class_no,
+                results=[
+                    {
+                        "name": r.mark_name,
+                        "status": r.status,
+                        "classes": r.classes,
+                        "similarity": r.similarity,
+                        "owner": r.owner,
+                        "url": r.url,
+                    }
+                    for r in results
+                ],
+                source="gateway",
+            )
+            db.add(query_record)
+            try:
+                db.commit()
+            except SQLAlchemyError:
+                db.rollback()
+                query_record = None
+
+        return ApiResponse(data={
+            "results": [
+                {
+                    "name": r.mark_name,
+                    "similarity": r.similarity,
+                    "classes": r.classes,
+                    "status": r.status,
+                    "owner": r.owner,
+                    "url": r.url,
+                }
+                for r in results
+            ],
+            "query_id": query_record.id if query_record else None,
+            "message": f"找到 {len(results)} 条相似商标",
+        })
+
+    def trademark_history(self, user_id: str = "local", jurisdiction: Optional[str] = None,
+                          limit: int = 20):
+        """获取商标查询历史记录."""
+        from sqlalchemy import desc
+        q = self.db.query(TrademarkQueryRecord).filter(
+            TrademarkQueryRecord.user_id == user_id
+        )
+        if jurisdiction:
+            q = q.filter(TrademarkQueryRecord.jurisdiction == jurisdiction)
+        records = q.order_by(desc(TrademarkQueryRecord.created_at)).limit(limit).all()
+        return ApiResponse(data=[
+            {
+                "id": r.id,
+                "query_text": r.query_text,
+                "jurisdiction": r.jurisdiction,
+                "class_no": r.class_no,
+                "result_count": len(r.results) if r.results else 0,
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+            for r in records
+        ])
+
+    def trademark_sources(self):
+        """返回可用的商标数据库源列表."""
+        return ApiResponse(data=[
+            {"source": "gateway", "name": "内置热门品牌库", "jurisdiction": "cn", "status": "active"},
+            {"source": "cnipa", "name": "CNIPA 商标局", "jurisdiction": "cn", "status": "pending"},
+            {"source": "uspto", "name": "USPTO TESS", "jurisdiction": "us", "status": "pending"},
+            {"source": "euiopo", "name": "EUIPO eSearch", "jurisdiction": "eu", "status": "pending"},
+            {"source": "wipo", "name": "WIPO MADRID", "jurisdiction": "global", "status": "pending"},
+        ])

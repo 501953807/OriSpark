@@ -164,6 +164,25 @@ class ApplicationTemplate(Base):
     )
 
 
+class TrademarkQueryRecord(Base):
+    """商标查询历史记录."""
+    __tablename__ = "trademark_queries"
+
+    id = Column(String(32), primary_key=True, default=generate_uuid)
+    user_id = Column(String(32), nullable=False)
+    query_text = Column(String(500), nullable=False)
+    jurisdiction = Column(String(10), nullable=False, default="cn")  # cn/us/eu/wipo
+    class_no = Column(String(10), nullable=True)
+    results = Column(JSON, nullable=True)
+    source = Column(String(50), default="gateway")
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+
+    __table_args__ = (
+        Index("idx_tm_query_user", "user_id"),
+        Index("idx_tm_query_jurisdiction", "jurisdiction"),
+    )
+
+
 class NiceClassification(Base):
     """尼斯分类数据库."""
     __tablename__ = "nice_classification"

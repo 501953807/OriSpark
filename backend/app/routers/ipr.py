@@ -16,6 +16,7 @@ from app.database import get_db
 from app.models.ipr import (
     IPRegistration, TrademarkClass, CopyrightRegistration,
     TrademarkRegistration, NiceClassification, ApplicationTemplate,
+    TrademarkQueryRecord,
 )
 from app.models.work import Work, WorkTag
 from app.models.notary import NotaryRecord
@@ -310,3 +311,47 @@ def advance_registration_status(
     return _advance_registration_status(db, id, data.status, data.note)
 
 
+
+
+# ── 商标查询端点 ───────────────────────────────────────────────────────
+
+class TrademarkQueryRequest(BaseModel):
+    text: str
+    jurisdiction: str = "cn"
+    class_no: Optional[str] = None
+    user_id: Optional[str] = "local"
+
+
+@router.post("/ipr/trademark/query", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+def trademark_query_endpoint(
+    body: TrademarkQueryRequest,
+    db: Session = Depends(get_db),
+):
+    """商标查询 — 对接 Gateway ABC 模式."""
+    svc = IprService(db)
+    return svc.trademark_query(
+        text=body.text,
+        jurisdiction=body.jurisdiction,
+        class_no=body.class_no,
+        user_id=body.user_id or "local",
+        db=db,
+    )
+
+
+@router.get("/ipr/trademark/history", response_model=ApiResponse)
+def trademark_history_endpoint(
+    user_id: Optional[str] = "local",
+    jurisdiction: Optional[str] = None,
+    limit: int = 20,
+    db: Session = Depends(get_db),
+):
+    """获取商标查询历史记录."""
+    svc = IprService(db)
+    return svc.trademark_history(user_id=user_id, jurisdiction=jurisdiction, limit=limit)
+
+
+@router.get("/ipr/trademark/sources", response_model=ApiResponse)
+def trademark_sources_endpoint(db: Session = Depends(get_db)):
+    """返回可用的商标数据库源列表."""
+    svc = IprService(db)
+    return svc.trademark_sources()

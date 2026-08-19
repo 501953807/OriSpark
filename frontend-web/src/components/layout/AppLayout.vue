@@ -16,7 +16,7 @@
     <!-- P3.4.1: Mobile overlay -->
     <div v-if="mobileMenuOpen" class="mobile-overlay" @click="mobileMenuOpen = false" aria-hidden="true"></div>
 
-    <AppSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
+    <DynamicSidebar :class="{ 'mobile-visible': mobileMenuOpen }" />
 
     <div
       :id="'main-content'"
@@ -232,7 +232,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import AppSidebar from './AppSidebar.vue'
+import DynamicSidebar from './DynamicSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
 import BusinessChainBar from './BusinessChainBar.vue'
 import Breadcrumb from '@/components/common/Breadcrumb.vue'

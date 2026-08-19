@@ -95,4 +95,14 @@ export const iprApi = {
 
   advanceStatus: (id: string, data: { status: string; note?: string }) =>
     client.post(`/ipr/registration/${id}/advance`, data),
+
+  // 商标查询
+  trademarkQuery: (data: { text: string; jurisdiction?: string; class_no?: string }) =>
+    client.post('/ipr/trademark/query', data),
+
+  trademarkHistory: (params?: { user_id?: string; jurisdiction?: string; limit?: number }) =>
+    client.get('/ipr/trademark/history', { params }),
+
+  trademarkSources: () =>
+    client.get('/ipr/trademark/sources'),
 }

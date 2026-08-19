@@ -17,6 +17,7 @@ export const IMAGE_STAGES: StageOption[] = [
   { value: 'coloring', label: '上色', color: '#EF4444' },
   { value: 'detail', label: '细节', color: '#10B981' },
   { value: 'final', label: '终稿', color: '#3B82F6' },
+  { value: 'export', label: '导出', color: '#6366F1' },
 ]
 
 /** 视频创作流程 */

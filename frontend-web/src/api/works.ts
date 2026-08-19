@@ -11,6 +11,12 @@ export const worksApi = {
   create: (formData: FormData) =>
     client.post('/works', formData),
 
+  createLowres: (formData: FormData) =>
+    client.post('/works/lowres', formData),
+
+  createHashOnly: (data: { sha256: string; file_name: string; file_size: number; file_type: string; file_extension: string; title?: string; description?: string }) =>
+    client.post('/works/hash-only', data),
+
   update: (id: string, data: Partial<Work>) =>
     client.patch(`/works/${id}`, data),
 

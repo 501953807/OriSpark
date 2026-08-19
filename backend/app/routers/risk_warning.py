@@ -266,3 +266,136 @@ def log_health_metric_endpoint(body: HealthMetricCreate, db: Session = Depends(g
 def get_burnout_risk_endpoint(db: Session = Depends(get_db)):
     """获取 burnout 风险评估."""
     return detect_burnout_risk(db, "local")
+
+
+# ── 2.1 分离检测端点（设计文档 API 契约）────────────────────────────
+
+class PromptCheckRequest(BaseModel):
+    prompt: str
+    work_title: str = ""
+    user_id: Optional[str] = "local"
+    work_id: Optional[str] = None
+
+
+class ReferenceCheckRequest(BaseModel):
+    image_hash: str
+    work_ids: Optional[list[str]] = None
+    user_id: Optional[str] = "local"
+    work_id: Optional[str] = None
+
+
+class TrademarkCheckRequest(BaseModel):
+    text: str
+    jurisdiction: str = "cn"
+    user_id: Optional[str] = "local"
+    work_id: Optional[str] = None
+
+
+class ModelInfoRequest(BaseModel):
+    model_name: str
+    source: str = "civitai"
+
+
+@router.post("/check-prompt", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+async def check_prompt_endpoint(body: PromptCheckRequest, db: Session = Depends(get_db)):
+    """维度 1: 提示词侵权检测."""
+    service = _get_service()
+    results = service.check_prompt(body.prompt, body.work_title)
+    for r in results:
+        get_work_warnings(db, body.work_id)  # touch DB
+    return ApiResponse(
+        message=f"提示词检测完成，发现 {len(results)} 条预警",
+        data=[
+            {
+                "warning_type": r.warning_type,
+                "severity": r.severity,
+                "title": r.title,
+                "description": r.description,
+                "matched_entity": r.matched_entity,
+                "confidence": r.confidence,
+                "suggestion": r.suggestion,
+            }
+            for r in results
+        ],
+    )
+
+
+@router.post("/check-reference", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+async def check_reference_endpoint(body: ReferenceCheckRequest, db: Session = Depends(get_db)):
+    """维度 2: 参考图相似度检测."""
+    from app.models.work import Work
+    service = _get_service()
+    existing_hashes: list[str] = []
+    if db is not None and body.user_id:
+        existing_hashes = [
+            h[0] for h in db.query(Work.sha256)
+            .filter(Work.creator_id == body.user_id, Work.status == "active")
+            .distinct().all()
+            if h[0]
+        ]
+    result = service.check_reference_image(body.image_hash, existing_hashes)
+    similar_works = []
+    external_matches = []
+    if result and result.matched_entity and result.matched_entity.startswith("similarity:"):
+        similar_works = [{"work_id": "", "title": "（命中本地作品库）", "similarity": float(result.matched_entity.split(":")[-1].rstrip("%"))}]
+    return ApiResponse(
+        message="参考图检测完成" if result else "未检测到相似作品",
+        data={
+            "similar_works": similar_works,
+            "external_matches": external_matches,
+            "warning": {
+                "type": result.warning_type,
+                "severity": result.severity,
+                "title": result.title,
+                "confidence": result.confidence,
+                "suggestion": result.suggestion,
+            } if result else None,
+        },
+    )
+
+
+@router.get("/model-info", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+async def model_info_endpoint(body: ModelInfoRequest, db: Session = Depends(get_db)):
+    """维度 3: LoRA/模型权属信息查询."""
+    service = _get_service()
+    info = service.model_gateway.query(body.model_name, body.source)
+    if info:
+        return ApiResponse(data={
+            "name": body.model_name,
+            "author": getattr(info, "author", None),
+            "license": getattr(info, "license_type", None),
+            "commercial_use_allowed": getattr(info, "allows_commercial", None),
+            "source_url": getattr(info, "source_url", None),
+            "requires_attribution": getattr(info, "requires_attribution", False),
+        })
+    return ApiResponse(
+        message="模型来源未知",
+        data={
+            "name": body.model_name,
+            "author": None,
+            "license": None,
+            "commercial_use_allowed": None,
+            "source_url": None,
+            "requires_attribution": False,
+        },
+    )
+
+
+@router.post("/check-trademark", response_model=ApiResponse, dependencies=[Depends(require_auth)])
+async def check_trademark_endpoint(body: TrademarkCheckRequest, db: Session = Depends(get_db)):
+    """维度 4: 商标/Logo 碰撞检测."""
+    service = _get_service()
+    results = await service.check_trademark(body.text, body.jurisdiction)
+    return ApiResponse(
+        message=f"商标检测完成，发现 {len(results)} 条冲突",
+        data=[
+            {
+                "name": r.matched_entity,
+                "class": "",
+                "jurisdiction": body.jurisdiction,
+                "confidence": r.confidence,
+                "action_url": "",
+            }
+            for r in results
+        ],
+    )

@@ -1,12 +1,10 @@
 import apiClient from './client'
 
 export const businessApi = {
-  listRevenues: (params?: Record<string, any>) => apiClient.get('/revenues', { params }),
-  addRevenue: (data: any) => apiClient.post('/revenues', data),
-  updateRevenue: (id: string, data: any) => apiClient.patch(`/revenues/${id}`, data),
-  deleteRevenue: (id: string) => apiClient.delete(`/revenues/${id}`),
+  listRevenues: (params?: Record<string, any>) => apiClient.get('/supply/revenue', { params }),
+  addRevenue: (data: any) => apiClient.post('/supply/revenue', data),
+  revenueSummary: (params?: Record<string, any>) => apiClient.get('/supply/revenue/summary', { params }),
   importRevenueCsv: (formData: FormData) => apiClient.post('/publish/revenue/import', formData),
-  revenueSummary: (params?: Record<string, any>) => apiClient.get('/revenues/summary', { params }),
   listPartners: (params?: Record<string, any>) => apiClient.get('/supply/partners', { params }),
   addPartner: (data: any) => apiClient.post('/supply/partners', data),
   updatePartner: (id: string, data: any) => apiClient.patch(`/supply/partners/${id}`, data),
@@ -18,5 +16,5 @@ export const businessApi = {
   unreadCount: () => apiClient.get('/notifications/unread-count'),
   markRead: (id: string) => apiClient.patch(`/notifications/${id}/read`),
   markAllRead: () => apiClient.post('/notifications/read-all'),
-  getDashboard: () => apiClient.get('/dashboard'),
+  getDashboard: () => apiClient.get('/supply/dashboard'),
 }

@@ -104,7 +104,24 @@
             </div>
           </section>
 
-          <!-- Group 5: Project & Tags -->
+          <!-- Group 5: AI-Assisted Creation Info -->
+          <section class="info-group" v-if="work.ai_assisted || work.ai_tools_used?.length">
+            <h4 class="info-group-title">AI 辅助创作</h4>
+            <div class="info-row">
+              <span class="info-label">AI 辅助</span>
+              <span class="info-value"><StatusBadge :status="work.ai_assisted ? 'confirmed' : 'draft'" :labels="{ confirmed: '是', draft: '否' }" :variants="{ confirmed: 'success', draft: 'info' }" /></span>
+            </div>
+            <div class="info-row" v-if="work.ai_tools_used?.length">
+              <span class="info-label">AI 工具</span>
+              <span class="info-value ai-tools-value">
+                <span v-for="(tool, i) in (work.ai_tools_used as Array<{name:string;version?:string}>)" :key="i" class="tag-pill ai-tool-pill">
+                  {{ tool.name }}<span v-if="tool.version" class="ai-tool-version"> · {{ tool.version }}</span>
+                </span>
+              </span>
+            </div>
+          </section>
+
+          <!-- Group 6: Project & Tags -->
           <section class="info-group" v-if="work.project?.name || work.tags?.length">
             <h4 class="info-group-title">项目与标签</h4>
             <div class="info-row" v-if="work.project?.name">
@@ -124,7 +141,12 @@
             <AIGenerationPanel :work-id="work.id" />
           </section>
 
-          <!-- Group 6: Synopsis -->
+          <!-- Group 5.7: AI Creation Timeline -->
+          <section class="info-group" v-if="work.ai_assisted || work.ai_tools_used?.length">
+            <AiSessionTimeline :work-id="work.id" />
+          </section>
+
+          <!-- Group 7: Synopsis -->
           <section class="info-group" v-if="work.synopsis || work.description">
             <h4 class="info-group-title">简介</h4>
             <p class="synopsis-text">{{ work.synopsis || work.description }}</p>
@@ -299,6 +321,7 @@ import type { Work } from '@/types/work'
 import { getAllStages, getStagesForFileType, getStageColor as getStageColorUtil } from '@/composables/useWorkStages'
 import AIGenerationPanel from '@/components/ai/AIGenerationPanel.vue'
 import EnforcementWizard from '@/components/work/EnforcementWizard.vue'
+import AiSessionTimeline from '@/components/work/AiSessionTimeline.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -1117,4 +1140,9 @@ onUnmounted(() => {
   margin: 0 0 16px;
   font-size: 0.95rem;
 }
+
+/* AI tools display */
+.ai-tools-value { display: flex; flex-wrap: wrap; gap: 4px; }
+.ai-tool-pill { background: rgba(79,70,229,0.1); color: var(--accent); }
+.ai-tool-version { font-weight: 400; opacity: 0.7; }
 </style>

@@ -97,13 +97,20 @@ async def create_work(
     tags: Optional[str] = Form(default=None),
     project_id: Optional[str] = Form(default=None),
     allow_duplicate: bool = Form(default=False),
+    import_mode: str = Form(default="full"),
+    ai_assisted: bool = Form(default=False),
+    ai_tools_used: Optional[str] = Form(default=None),
     file: UploadFile = File(...),
     user_id: str = Depends(require_auth),
     db: Session = Depends(get_db),
 ):
     """上传单个作品文件 (含自动标签 + 尺寸检测 + 可选重复导入)."""
     svc = WorkManagerService(db)
-    return await svc.create_work(title, description, tags, project_id, allow_duplicate, file, user_id)
+    return await svc.create_work(
+        title, description, tags, project_id, allow_duplicate,
+        file, user_id, import_mode=import_mode,
+        ai_assisted=ai_assisted, ai_tools_used=ai_tools_used,
+    )
 
 
 # ============================================================

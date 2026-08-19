@@ -7,8 +7,10 @@ Phase 0: 实现四个检测维度
 4. 商标/Logo 碰撞 (CNIPA 本地库)
 """
 
+import json
 from dataclasses import dataclass, field
 from datetime import date, timedelta
+from pathlib import Path
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -18,6 +20,19 @@ from app.gateway.trademark import TrademarkGateway, MockTrademarkGateway
 from app.gateway.model_source import ModelSourceGateway, MockModelSourceGateway
 
 
+# 从 JSON 文件加载关键词库
+_KEYWORDS_PATH = Path(__file__).parent.parent / "data" / "trademark_keywords.json"
+
+
+def _load_keywords() -> dict:
+    if _KEYWORDS_PATH.exists():
+        return json.loads(_KEYWORDS_PATH.read_text(encoding="utf-8"))
+    return {"trademarks": [], "characters": [], "artists": []}
+
+
+INFRINGEMENT_KEYWORDS = _load_keywords()
+
+
 @dataclass
 class BurnoutRisk:
     """Burnout 风险评估结果."""
@@ -25,23 +40,6 @@ class BurnoutRisk:
     score: float
     factors: list = field(default_factory=list)
     recommendation: str = ""
-
-
-# 内置侵权关键词库 (v1 硬编码，后续可从 dictStore 动态加载)
-INFRINGEMENT_KEYWORDS = {
-    "trademark": [
-        "Hello Kitty", "迪士尼", "Disney", "漫威", "Marvel", "任天堂", "Nintendo",
-        "宝可梦", "Pokemon", "原神", "Genshin", "泡泡玛特", "故宫",
-        "Nike", "Adidas", "Apple", "Louis Vuitton", "Gucci",
-    ],
-    "character": [
-        "米老鼠", "Mickey Mouse", "孙悟空", "哪吒", "葫芦娃", "黑猫警长",
-        "蜘蛛侠", "Batman", "Superman", "皮卡丘",
-    ],
-    "artist_style": [
-        "毕加索风格", "Van Gogh style", "莫奈风格", "草间弥生风格",
-    ],
-}
 
 
 @dataclass

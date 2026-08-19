@@ -139,6 +139,24 @@
       @calculate="handleFeeCalc"
     />
 
+    <!-- Trademark Query Tab -->
+    <div v-if="activeTab === 'trademark'" class="tm-tab-content animate-fade-in">
+      <div class="tm-layout">
+        <div class="tm-left">
+          <TrademarkQueryPanel
+            :jurisdiction="trademarkJurisdiction"
+            :query-text="trademarkQueryText"
+            @query="handleTrademarkQuery"
+          />
+        </div>
+        <div class="tm-right">
+          <TrademarkHistoryPanel
+            @rerun="handleRerunQuery"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- ==================== Detail Modal ==================== -->
     <div v-if="showDetailModal" class="modal-overlay" @click.self="showDetailModal = false">
       <div class="modal-card animate-scale-in" style="max-width:640px">
@@ -281,6 +299,8 @@ import WizardTab from '@/components/ipr/WizardTab.vue'
 import RegistrationsTab from '@/components/ipr/RegistrationsTab.vue'
 import DashboardTab from '@/components/ipr/DashboardTab.vue'
 import CalculatorTab from '@/components/ipr/CalculatorTab.vue'
+import TrademarkQueryPanel from '@/components/ipr/TrademarkQueryPanel.vue'
+import TrademarkHistoryPanel from '@/components/ipr/TrademarkHistoryPanel.vue'
 import StatusBadge from '@/components/common/StatusBadge.vue'
 import client from '@/api/client'
 
@@ -292,7 +312,12 @@ const tabs = [
   { key: 'registrations', label: '📋 登记记录' },
   { key: 'dashboard', label: '📊 IP资产' },
   { key: 'calculator', label: '💰 费用计算' },
+  { key: 'trademark', label: '🔍 商标查询' },
 ]
+
+// ─── Trademark query state ─────────────────────
+const trademarkJurisdiction = ref('cn')
+const trademarkQueryText = ref('')
 
 // ─── Wizard state ────────────────────────────
 const wizardSteps = ['选择IP类型', '选择辖区', '自动预填', '校验', '律师审核确认', '导出']
@@ -310,6 +335,10 @@ const canProceedWithLawyerConfirm = computed(() => {
   if (wizardData.value.lawyer_consulted === 'B') return allRiskConfirmed.value
   return true
 })
+
+// ─── Trademark query state ─────────────────────
+const trademarkQueryResults = ref<any[]>([])
+const trademarkQueryMessage = ref('')
 const riskConfirmationLabels = {
   not_law_firm: '我理解 OriStudio 不构成律师事务所',
   not_legal_advice: '我理解系统信息仅供参考，不构成法律建议',
@@ -720,6 +749,25 @@ async function handleFeeCalc() {
   }
 }
 
+async function handleTrademarkQuery(jurisdiction: string, text: string, classes: string[]) {
+  trademarkJurisdiction.value = jurisdiction
+  trademarkQueryText.value = text
+  try {
+    const { iprApi } = await import('@/api/ipr')
+    const res = await iprApi.trademarkQuery({ text, jurisdiction, class_no: classes[0] || undefined })
+    trademarkQueryResults.value = res.data?.data?.results || []
+    trademarkQueryMessage.value = res.data?.data?.message || ''
+  } catch (e: any) {
+    ;(window as any).$toast?.show('查询失败: ' + (e.response?.data?.detail || e.message), 'error')
+  }
+}
+
+async function handleRerunQuery(record: any) {
+  trademarkJurisdiction.value = record.jurisdiction || 'cn'
+  trademarkQueryText.value = record.query_text || ''
+  await handleTrademarkQuery(trademarkJurisdiction.value, trademarkQueryText.value, [])
+}
+
 onMounted(() => {
   loadGuidelines()
   loadRecords()
@@ -840,5 +888,15 @@ onMounted(() => {
   .category-grid { grid-template-columns:1fr; }
   .actions-bar { flex-direction:column; align-items:stretch; }
   .filter-group { flex-wrap:wrap; }
+}
+
+/* ── Trademark query tab ─────────────────────── */
+.tm-tab-content { width: 100%; }
+.tm-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+.tm-left  { min-width: 0; }
+.tm-right { min-width: 0; }
+
+@media (max-width: 900px) {
+  .tm-layout { grid-template-columns: 1fr; }
 }
 </style>

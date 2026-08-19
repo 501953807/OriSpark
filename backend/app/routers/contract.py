@@ -75,6 +75,14 @@ def get_valid_transitions():
     return {"valid_transitions": ContractStateService.get_valid_transitions(), "labels": ContractStateService.get_status_labels()}
 
 
+@router.get("/platform-fee")
+def get_platform_fee(total_amount: float, db: Session = Depends(get_db)):
+    """计算平台 3‰ 固定费用."""
+    from app.services.split_rule_service import SplitRuleService
+    fee = SplitRuleService.calculate_platform_fee(total_amount)
+    return {"total_amount": total_amount, "platform_fee": fee}
+
+
 @router.get("/{contract_id}", response_model=dict)
 def get_contract(contract_id: str, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
     """获取合约详情."""
@@ -296,4 +304,36 @@ def get_status(contract_id: str, actor_id: str = Depends(get_current_user_id), d
     AuditLog.log(db, "view_status", f"Viewed status for contract {contract_id} by {actor_id}", actor_id)
     summary = ContractStateService.get_contract_status_summary(db, contract_id)
     return summary
+
+
+@router.delete("/{contract_id}")
+def delete_contract(contract_id: str, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """删除合约（仅草稿状态）."""
+    contract = db.query(ContractInstance).filter(ContractInstance.id == contract_id).first()
+    if not contract:
+        raise HTTPException(404, "Contract not found")
+    if contract.creator_id != actor_id:
+        raise HTTPException(403, "Forbidden: Only the creator can delete a contract")
+    if contract.status != "draft":
+        raise HTTPException(400, "Only draft contracts can be deleted")
+    db.delete(contract)
+    db.commit()
+    AuditLog.log(db, "delete_contract", f"Deleted contract {contract_id} by {actor_id}", actor_id)
+    return {"id": contract_id, "deleted": True}
+
+
+@router.post("/{contract_id}/confirm-subscribe")
+def post_confirm_subscribe(contract_id: str, actor_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    """创作者确认认购 — 由 creator 在 subscribe 后确认，进入托管阶段."""
+    contract = db.query(ContractInstance).filter(ContractInstance.id == contract_id).first()
+    if not contract:
+        raise HTTPException(404, "Contract not found")
+    if contract.creator_id != actor_id:
+        raise HTTPException(403, "Forbidden: Only the creator can confirm subscription")
+    if contract.status != "subscribed":
+        raise HTTPException(400, f"Contract is not in subscribed state, current status: {contract.status}")
+    from app.services.contract_state_service import ContractStateService
+    contract = ContractStateService.confirm_subscribe(db, contract_id, actor_id)
+    AuditLog.log(db, "confirm_subscribe", f"Creator confirmed subscribe for contract {contract_id} by {actor_id}", actor_id)
+    return {"id": contract.id, "status": contract.status}
 

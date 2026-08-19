@@ -57,11 +57,10 @@ def _cid():
 
 
 class TestPlatformFeeEndpoint:
-    """GET /contracts/{id}/split-rules/platform-fee"""
+    """GET /contracts/platform-fee"""
 
     def test_returns_fee(self, client, escrowed_contract_with_rules):
-        cid = escrowed_contract_with_rules.id
-        resp = client.get(f"{_cid()}/{cid}/split-rules/platform-fee", params={"total_amount": 10000.0})
+        resp = client.get("/api/contracts/platform-fee", params={"total_amount": 10000.0})
         assert resp.status_code == 200
         data = resp.json()
         assert data["total_amount"] == 10000.0
