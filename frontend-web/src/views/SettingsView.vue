@@ -14,6 +14,7 @@
     </div>
 
     <div class="settings-content">
+      <router-view v-if="$route.path.startsWith('/app/settings/') && $route.path !== '/app/settings'" />
       <!-- Profile -->
       <div v-if="activeSection === 'profile'" class="settings-section card animate-fade-in">
         <h2>个人资料</h2>
@@ -612,6 +613,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/useAppStore'
 import { useSettingsStore } from '@/stores/useSettingsStore'
 import { useAuthStore } from '@/stores/useAuthStore'
