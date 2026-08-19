@@ -158,6 +158,21 @@
             <span v-if="loading">处理中...</span>
             <span v-else>{{ mode === 'login' ? '登录' : '注册' }}</span>
           </button>
+
+          <!-- 快速选择账号 -->
+          <div class="quick-accounts">
+            <button class="btn-quick-toggle" @click="showAccounts = !showAccounts">
+              🎯 快速选择账号
+              <svg width="12" height="12" viewBox="0 0 12 12" :class="{ open: showAccounts }"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            <div v-if="showAccounts" class="quick-accounts-list">
+              <button v-for="acc in ACCOUNTS" :key="acc.email" class="quick-account-btn" @click="quickLogin(acc)">
+                <span class="qa-label">{{ acc.label }}</span>
+                <span class="qa-email">{{ acc.email }}</span>
+                <span class="qa-pwd">{{ acc.password }}</span>
+              </button>
+            </div>
+          </div>
         </form>
 
         <div class="auth-footer">
@@ -181,7 +196,27 @@ const mode = ref<'login' | 'register'>('login')
 const loading = ref(false)
 const errorMsg = ref('')
 const showPassword = ref(false)
+const showAccounts = ref(false)
 const form = ref({ username: '', email: '', password: '' })
+
+// 演示账号
+const ACCOUNTS = [
+  { label: '🎨 创作者 (OriStudio)', email: 'local@oristudio', password: 'local' },
+  { label: '📊 运营方', email: 'operator@test.oristudio.com', password: 'Test1234!' },
+  { label: '📸 采购方 (trader)', email: 'trader@test.oristudio.com', password: 'Test1234!' },
+  { label: '⚖️ 法务代表', email: 'legal_rep@test.oristudio.com', password: 'Test1234!' },
+  { label: '💱 税务代理', email: 'tax_agent@test.oristudio.com', password: 'Test1234!' },
+  { label: '🚚 物流方', email: 'logistics@test.oristudio.com', password: 'Test1234!' },
+  { label: '🛡️ 保险方', email: 'insurer@test.oristudio.com', password: 'Test1234!' },
+  { label: '💳 支付托管', email: 'payment_provider@test.oristudio.com', password: 'Test1234!' },
+  { label: '🏢 平台方', email: 'platform@test.oristudio.com', password: 'Test1234!' },
+]
+
+function quickLogin(account: typeof ACCOUNTS[0]) {
+  form.value.email = account.email
+  form.value.password = account.password
+  errorMsg.value = ''
+}
 
 async function handleSubmit() {
   errorMsg.value = ''
@@ -450,6 +485,31 @@ function togglePassword() {
   box-shadow: 0 6px 24px rgba(79,70,229,0.38); transform: translateY(-1px);
 }
 .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* ── Quick Account Picker ── */
+.quick-accounts { margin-top: 1.25rem; }
+.btn-quick-toggle {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 16px; border: 1.5px dashed rgba(79,70,229,0.25); border-radius: 10px;
+  background: rgba(79,70,229,0.03); color: #4F46E5; font-size: 0.8125rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit;
+}
+.btn-quick-toggle:hover { background: rgba(79,70,229,0.07); border-color: #4F46E5; }
+.btn-quick-toggle svg { transition: transform 0.2s; }
+.btn-quick-toggle svg.open { transform: rotate(180deg); }
+.quick-accounts-list {
+  margin-top: 8px; display: flex; flex-direction: column; gap: 6px;
+  max-height: 260px; overflow-y: auto;
+}
+.quick-account-btn {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 8px 12px; border: 1px solid #E5E7EB; border-radius: 8px;
+  background: #F9FAFB; cursor: pointer; transition: all 0.15s; text-align: left;
+}
+.quick-account-btn:hover { border-color: #4F46E5; background: rgba(79,70,229,0.04); }
+.qa-label { font-size: 0.8125rem; font-weight: 600; color: #1F2937; }
+.qa-email { font-size: 0.6875rem; color: #6B7280; font-family: monospace; }
+.qa-pwd { font-size: 0.6875rem; color: #9CA3AF; font-family: monospace; }
 
 /* ── Footer ── */
 .auth-footer { margin-top: 1.5rem; text-align: center; }
