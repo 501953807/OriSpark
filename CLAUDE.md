@@ -47,6 +47,7 @@ OriSpark/
 ├── frontend-nuxt/            # OriSpark 交易后台 (Nuxt 3 SSR, :3000) — 清透极简商务风 + Hero Page
 ├── frontend-miniprogram/     # 微信小程序（Phase 3 远期）— frontend-nuxt 微信端映射
 ├── design/                   # UI 高保真原型 (HTML)
+├── screenshot/               # 项目截图（按日期子目录存放，如 screenshot/2026-08-19/）
 ├── docs/                     # 设计文档（不纳入 Git）
 ├── .archive/                 # 过期文档归档 (历史参考)
 ├── scripts/                  # 辅助脚本
@@ -57,7 +58,73 @@ OriSpark/
 └── README.md                 # 项目概览 + 快速启动指引
 ```
 
-> **注意**：根目录下的 `*.png` / `*.jpg` 截图、`.playwright-mcp/`、`.scratch/`、`test-results/` 等为开发过程中的临时文件，已被 `.gitignore` 排除。`docs/` 目录不纳入 Git 版本控制。
+> **注意**：根目录下的 `*.png` / `*.jpg` 截图请放入 `screenshot/` 子目录并按日期命名。`.playwright-mcp/`、`.scratch/`、`test-results/`、`*.bak` 等均为临时文件，已被 `.gitignore` 排除。`docs/` 目录不纳入 Git 版本控制。
+
+---
+
+## 🎯 核心使命
+
+严格依据【已提供的全套项目设计文档】，对现有存量代码库执行以下四步闭环：
+
+### 一、代码走查
+
+对比设计文档，逐条核对每一个功能点，输出：设计原文引用 → 当前代码现状判定 → 修改动作 → 验证方法。
+
+### 二、问题分类
+
+| 分类 | 定义 | 处理方式 |
+|------|------|---------|
+| **A类** | 已开发，但逻辑错误、运行不可用、不符合设计 | 修复代码，输出修复点 |
+| **B类** | 设计文档存在，但代码完全未实现 | 完整开发该模块功能 |
+| **C类** | 原始设计文档描述模糊、颗粒度过细缺失业务细节 | 先补全细化设计，再编码实现，不能猜业务 |
+| **D类** | 代码存在，但设计文档没有定义 | 标记冗余代码，给出处理建议 |
+
+### 三、分批执行原则
+
+严格分批执行，单批次只处理**一个业务模块**，完成闭环之后，再申请进入下一个模块，禁止跨模块一次性处理全部项目。
+
+### 四、硬性强制约束（违反直接判定任务失败）
+
+1. ❌ 严禁虚假汇报"完成、成功"。**每一个功能点必须输出可验证校验项**，不能口头说完成。每批次结束输出：变更文件清单、修改摘要、测试验证步骤。
+2. ❌ 禁止上下文过载：单轮不要处理过大范围，一个模块处理完毕，输出完整总结，清理本轮临时推理，再开启下一个模块；不要一次性扫描整个庞大代码库。
+3. ❌ 禁止任务中途无理由停止。如果遇到卡点：明确写出阻塞点、需要确认的业务点，不要自行停止任务。
+4. ✅ 使用 grilling 插件能力做长周期迭代、断点续执行。当上下文接近上限，主动做阶段性归档总结，输出 markdown 报告，然后继续后续步骤。
+5. ✅ 遇到原始设计模糊、缺少细节，**不许自行脑补业务逻辑**。先输出【待细化设计清单】列出缺失细节，明确之后再写代码。
+6. ✅ 所有修改尽量最小改动原有正确代码；优先修复，不盲目全盘重写。
+7. ✅ 每一个功能点，必须做到：设计原文引用 → 当前代码现状判定 → 修改动作 → 验证方法。
+8. ✅ 不要频繁无意义的大段闲聊汇报，聚焦问题、代码、验证清单；只输出关键结论，不要啰嗦。
+
+### 五、批次输出格式规范
+
+每个模块处理完毕，强制输出以下结构：
+
+```
+## 模块：[模块名]
+
+### 设计原文
+[引用 DESIGN.md / modules-v5 中的对应描述]
+
+### 走查结果
+| 功能点 | 分类 | 当前状态 | 处理动作 | 验证方法 |
+|--------|------|---------|---------|---------|
+| xxx    | A/B/C/D | 正常/异常/缺失 | 修复/开发/补设计 | 测试命令 |
+
+### 变更文件清单
+- [文件路径]：[修改说明]
+
+### 测试验证步骤
+1. [具体操作步骤]
+2. [预期结果]
+```
+
+### 六、截图存放规范
+
+- 项目截图统一存放在 `screenshot/<YYYY-MM-DD>/` 目录下
+- 以日期为标准新建子目录
+- 根目录禁止直接存放截图文件
+- 已在 `.gitignore` 中排除 `*.png` / `*.jpg` 根目录文件
+
+---
 
 ## 🔑 交互规范（Claude 必须遵守）
 
@@ -101,7 +168,32 @@ cd backend && pytest tests/test_*.py -v --tb=short
 cd backend && alembic diff --sql  # 生成迁移脚本需人工审查
 ```
 
-### 4. 五任务自检框架（交付前强制执行）
+### 4. 测试运行指南
+
+| 环境 | 命令 | 说明 |
+|------|------|------|
+| 前端单文件测试 | `cd frontend-web && npx vitest run src/xxx.test.ts` | 快速验证单个模块 |
+| 前端全量测试 | `cd frontend-web && npx vitest run` | 跑完所有测试，确认无回归 |
+| 前端 watch 模式 | `cd frontend-web && npx vitest` | 开发时实时监听 |
+| 后端单元测试 | `cd backend && pytest tests/ -v` | 全量后端测试 |
+| 后端单文件测试 | `cd backend && pytest tests/test_xxx.py -v` | 快速验证单个模块 |
+| TypeScript 类型检查 | `cd frontend-web && npx vue-tsc --noEmit` | 确认类型安全 |
+
+**覆盖率目标**：≥80%，关键路径（认证/支付/权益保护）必须 100%。
+
+### 5. 构建验证清单
+
+完成前端改动后必须执行：
+```bash
+# frontend-web
+cd frontend-web && npx vue-tsc --noEmit && npm run build
+
+# frontend-nuxt
+cd frontend-nuxt && npm run build
+```
+构建必须通过，否则不视为完成。
+
+### 6. 五任务自检框架（交付前强制执行）
 
 每次完整迭代发布前，按以下顺序完成五个任务：
 
@@ -113,7 +205,33 @@ cd backend && alembic diff --sql  # 生成迁移脚本需人工审查
 | T4 | **文档完备性** - README/依赖/环境变量/DB Schema/API 端点 | `docs/API_Endpoints_List.md` 最新 |
 | T5 | **闭环确认** - 签署交付验收声明 | `docs/test-reports/Audit_Report_<version>.md` 签字栏已填写 |
 
-### 5. 文件修改工作流
+### 7. Commit 规范
+
+遵循 Conventional Commits 格式：
+
+```
+<type>(<scope>): <description>
+
+<optional body>
+```
+
+| Type | 场景 | 示例 |
+|------|------|------|
+| `feat` | 新功能 | `feat(negotiation): 新增谈判报价接口` |
+| `fix` | Bug修复 | `fix(auth): 修复Cookie认证SSR兼容问题` |
+| `refactor` | 代码重构 | `refactor(router): 简化路由守卫逻辑` |
+| `test` | 测试相关 | `test(stat-card): 更新测试断言匹配纯色实现` |
+| `docs` | 文档变更 | `docs: 更新模块设计文档 v5.2` |
+| `chore` | 构建/工具/配置 | `chore: 清理临时文件释放384MB` |
+| `perf` | 性能优化 | `perf(api): 优化列表接口分页查询` |
+| `ci` | CI/CD 变更 | `ci: 更新GitHub Actions工作流` |
+
+**Commit Message 要求**：
+- description 使用中文，简洁明确（不超过 72 字符）
+- 涉及多个模块时，scope 列出所有涉及的模块
+- 如果有 breaking change，必须在 body 中说明并标注 `[BREAKING CHANGE]`
+
+### 8. 文件修改工作流
 
 ```mermaid
 graph LR
@@ -130,7 +248,25 @@ graph LR
     J -- 否 --> L[回退调试]
 ```
 
-### 6. 重要约定（禁止违反）
+### 9. 开发环境常见问题 FAQ
+
+| 问题 | 原因 | 解决方案 |
+|------|------|---------|
+| `ERR_MODULE_NOT_FOUND '@/composables/xxx'` | 从项目根目录而非组件目录运行 vitest | 切换到 `frontend-web/` 目录执行 |
+| Nuxt 代理 403/404 | API 代理被认证中间件拦截 | 确认 `auth.global.ts` 中对 `/api/**` 已放行 |
+| 数据库迁移冲突 | 多人分支各自改了迁移文件 | 在新分支上 rebase 到最新 main，重新 apply |
+| Vite HMR 不刷新 | node_modules 缓存不一致 | `rm -rf node_modules/.vite && npm run dev` |
+| 后端端口被占用 | 上次未正常退出 | `lsof -ti:8001 | xargs kill` 后重启 |
+
+### 10. 前后端联调规范
+
+- 后端 API 基地址：`http://localhost:8001`
+- Vite 代理：`/api` → `http://localhost:8001`，`/ws` → `ws://localhost:8001`
+- Nuxt Nitro 代理：`/api/**` → `http://localhost:8001/api/**`
+- 联调前确认：`curl http://localhost:8001/docs` 能访问 Swagger 文档
+- 前端调用 API 时使用相对路径 `/api/xxx`，不要硬编码完整 URL
+
+### 11. 重要约定（禁止违反）
 
 | 禁忌 | 正确做法 |
 |------|---------|
@@ -140,6 +276,10 @@ graph LR
 | ❌ 忽略 `sqlite3-shm/wal` 文件 | ✅ 这些是 SQLite 临时状态文件，不跟踪 |
 | ❌ 随意改动 `alembic/versions/` 已提交迁移 | ✅ 新增分支改迁移，原分支保持历史不变 |
 | ❌ 忘记更新 `README.md` | ✅ 任何重大变更后同步更新 Readme |
+| ❌ 截图存放于根目录 | ✅ 统一放入 `screenshot/<YYYY-MM-DD>/` |
+| ❌ 保留大量历史 .bak / pre_restore DB | ✅ 定期清理，gitignore 已排除 |
+
+---
 
 ## 🧩 核心技术栈与模式识别
 
@@ -178,6 +318,8 @@ def create_contract(data: CreateContractRequest, db: Session = Depends(get_db)):
     ...
 ```
 
+---
+
 ## 🛡️ 安全与合规红线
 
 1. **UPL 合规** - 7项免责声明必须在相关流程页面上嵌入（特别是 IP登记、维权、合同签署场景）
@@ -185,37 +327,22 @@ def create_contract(data: CreateContractRequest, db: Session = Depends(get_db)):
 3. **数据主权** - 原始创作文件绝不上传，仅本地存储哈希值
 4. **鉴权要求** - 所有 `/api/*` 端点必须携带 `Authorization: Bearer <token>` header
 
+---
+
 ## 🤝 与 Claude 交互的期望
 
 当你看到我在本仓库中提问或执行命令时，请注意：
 
-1. **上下文感知** - 我知道你正在处理 OriStudio 的代码，请直接告诉我问题，无需重复项目背景说明。我已经理解了项目的完整上下文（从初始的五任务自检审计到当前的开发状态）。
+1. **上下文感知** - 我知道你正在处理 OriStudio 的代码，请直接告诉我问题，无需重复项目背景说明。我已经理解了项目的完整上下文。
 
-2. **遵循上述规范** - 当你对文件进行修改时，请先确认你已查阅了 `DESIGN.md` 和相关模块设计，并在 commit 消息中使用规范的格式（feat/review/fix/etc.）。
+2. **遵循上述规范** - 当你对文件进行修改时，请先确认你已查阅了 `DESIGN.md` 和相关模块设计，并在 commit 消息中使用规范的格式。
 
-3. **测试驱动** - 在进行任何改动前，我建议你先运行相关测试以确保你的修改不会破坏现有功能。
+3. **测试驱动** - 在进行任何改动前，先运行相关测试以确保你的修改不会破坏现有功能。
 
 4. **代码审查** - 当你提交了重要的修改后，我可能会要求进行额外的审查，或者建议你使用 `git diff` 来查看具体的更改内容。
 
 5. **环境一致性** - 请确保你在本地环境中能够成功构建和运行项目，特别是在涉及后端 API 和前端集成的修改方面。
 
----
-
-*本规范于 2026-07-27 更新，与 OriStudio v5.0 项目交付审计保持一致。*
-
-## Agent skills
-
-### Issue tracker
-
-Issues 追踪在 GitHub（501953807/OriSpark），通过 `gh` CLI 操作。详见 `docs/agents/issue-tracker.md`。
-
-### Triage labels
-
-使用默认五标签：`needs-triage`、`needs-info`、`ready-for-agent`、`ready-for-human`、`wontfix`。详见 `docs/agents/triage-labels.md`。
-
-### Domain docs
-
-单上下文布局：根目录 `CONTEXT.md` + `docs/adr/` 存放架构决策。详见 `docs/agents/domain.md`。
 ---
 
 ## 🎯 双平台定位（v6.0 核心架构）
@@ -275,3 +402,21 @@ npm run dev  # :3000
 |------|------|------|------|
 | OriStudio | http://localhost:5174/login | local@oristudio | local |
 | OriSpark | http://localhost:3000/auth/login | local@oristudio | local |
+
+---
+
+*本规范于 2026-08-19 更新，与 OriStudio v6.0 双平台架构及核心使命规范保持一致。*
+
+## Agent skills
+
+### Issue tracker
+
+Issues 追踪在 GitHub（501953807/OriSpark），通过 `gh` CLI 操作。详见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+使用默认五标签：`needs-triage`、`needs-info`、`ready-for-agent`、`ready-for-human`、`wontfix`。详见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+单上下文布局：根目录 `CONTEXT.md` + `docs/adr/` 存放架构决策。详见 `docs/agents/domain.md`。
