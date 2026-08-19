@@ -286,7 +286,7 @@ const navGroups: NavGroup[] = [
     key: 'dashboards', label: '概览',
     items: [
       { label: '首页', path: '/app', icon: 'home', badge: '' },
-      { label: '数据看板', path: '/app/dashboard', icon: 'bar_chart', badge: '' },
+      { label: '数据看板', path: '/app', icon: 'bar_chart', badge: '' },
     ]
   },
   {
