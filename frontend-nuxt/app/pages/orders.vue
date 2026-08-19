@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 
-definePageMeta({ layout: 'default' })
+definePageMeta({ layout: 'materio-topnav' })
 
 const loading = ref(false)
 const activeTab = ref('all')
