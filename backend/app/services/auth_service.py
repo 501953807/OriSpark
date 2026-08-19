@@ -110,7 +110,7 @@ def _user_to_dict(user: User) -> dict:
         "id": user.id,
         "username": user.username,
         "email": user.email,
-        "role": "管理员" if user.role == "admin" else ("本地用户" if user.role == "local" else "注册用户"),
+        "role": "管理员" if user.role == "admin" else ("本地用户" if user.role == "local" else "创作者" if user.role == "creator" else "运营方" if user.role == "operator" else "注册用户"),
         "participant_roles": roles,
         "participant_role_names": [role_name_map.get(r, r) for r in roles],
         "avatar_url": user.avatar_url,
@@ -141,14 +141,22 @@ def get_or_create_local_user(db: Session) -> tuple[dict, str]:
     """获取或创建本地演示用户，用于开发/演示模式免登录."""
     _migrate_json_users(db)
 
+    # 先按 id='local' 查找（老格式），再按邮箱查找（种子数据格式）
+    # 优先匹配 local@oristudio（OriStudio创作者本地账号）
     local_user = db.query(User).filter(User.id == "local").first()
+    if not local_user:
+        local_user = db.query(User).filter(User.email == "local@oristudio").first()
+    if not local_user:
+        local_user = db.query(User).filter(
+            User.email.in_(["demo@orispark", "operator@oristudio"])
+        ).first()
     if local_user:
         local_user.last_login_at = datetime.now(timezone.utc)
         local_user.last_login_provider = "local"
         local_user.login_count = (local_user.login_count or 0) + 1
         db.add(UserLoginHistory(
             id=hashlib.md5(f"login_local_{time.time()}".encode()).hexdigest()[:16],
-            user_id="local",
+            user_id=local_user.id,
             provider="local",
             success=True,
         ))
@@ -159,7 +167,7 @@ def get_or_create_local_user(db: Session) -> tuple[dict, str]:
             raise
         # 重新查询以确保获取最新数据
         db.refresh(local_user)
-        token = _create_token("local")
+        token = _create_token(local_user.id)
         return _user_to_dict(local_user), token
 
     user = User(

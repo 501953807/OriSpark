@@ -31,7 +31,7 @@ from app.services.auth_service import (
     get_user_by_openid, create_user_from_openid, unbind_provider,
     list_user_sessions, change_user_password, complete_onboarding,
     VALID_CREATOR_TYPES, _create_token, get_or_create_local_user,
-    register_creator, register_operator,
+    register_creator, register_operator, _user_to_dict,
 )
 
 router = APIRouter()
@@ -153,7 +153,7 @@ def get_current_user_endpoint(
 
     user = get_user_by_id(db, user_id)
     if user:
-        return ApiResponse(data=user)
+        return ApiResponse(data=_user_to_dict(user))
 
     # 向后兼容: JSON 文件 (for legacy users in users.json)
     try:
