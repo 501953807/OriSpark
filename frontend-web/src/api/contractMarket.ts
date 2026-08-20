@@ -35,6 +35,10 @@ export function subscribeContract(id: string, subscriberId: string) {
   return client.post(`/contracts/${id}/subscribe`, null, { params: { subscriber_id: subscriberId } }).then(res => res.data)
 }
 
+export function confirmSubscribe(id: string) {
+  return client.post(`/contracts/${id}/confirm-subscribe`).then(res => res.data)
+}
+
 export function initiateEscrow(id: string, provider: string) {
   return client.post(`/contracts/${id}/escrow/initiate`, null, { params: { provider } }).then(res => res.data)
 }

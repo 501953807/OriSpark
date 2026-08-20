@@ -55,6 +55,7 @@ export const useContractMarketStore = defineStore('contractMarket', () => {
       publish: () => api.publishContract(id),
       activate: () => api.activateContract(id),
       subscribe: () => api.subscribeContract(id, (extra?.subscriber_id as string) ?? ''),
+      confirmSubscribe: () => api.confirmSubscribe(id),
       escrow: () => api.initiateEscrow(id, (extra?.provider as string) ?? 'stripe'),
       confirmEscrow: () => api.confirmEscrow(id, (extra?.transaction_id as string) ?? ''),
       insurance: () => api.activateInsurance(id, extra as Record<string, unknown> | undefined),

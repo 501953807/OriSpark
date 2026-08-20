@@ -263,6 +263,7 @@ function actionLabel(s: string): string {
     listed: '挂牌发布',
     active: '生效确认',
     subscribed: '认购',
+    confirmed: '确认认购',
     escrowed: '发起托管',
     insured: '激活保险',
     executing: '开始履约',
