@@ -15,6 +15,7 @@ import csv
 import io
 import json
 import hashlib
+import os
 import time
 import threading
 from datetime import date, datetime, timezone
@@ -27,6 +28,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.publish import Product, ProductPublishing, RevenueRecord, VerifiedMark
 from app.schemas.common import ApiResponse
+from app.config import settings
 
 router = APIRouter()
 
@@ -34,10 +36,22 @@ router = APIRouter()
 # P2.6.6: MCP API Key Auth + Rate Limiting
 # ─────────────────────────────────────────────────────────────
 
-MCP_API_KEYS = {
-    "mcp-dev-key-001": {"name": "Development", "rate_limit": 100},
-    "mcp-local-default": {"name": "Local Default", "rate_limit": 60},
-}
+# MCP密钥从环境变量加载，避免硬编码
+def _load_mcp_keys() -> dict:
+    """从环境变量加载MCP密钥配置."""
+    raw = os.environ.get("MCP_API_KEYS", "")
+    if not raw:
+        # 开发默认密钥
+        return {
+            "mcp-dev-key-001": {"name": "Development", "rate_limit": 100},
+            "mcp-local-default": {"name": "Local Default", "rate_limit": 60},
+        }
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return {}
+
+MCP_API_KEYS = _load_mcp_keys()
 
 _rate_limit_store: dict[str, list[float]] = {}
 _rate_limit_lock = threading.Lock()
