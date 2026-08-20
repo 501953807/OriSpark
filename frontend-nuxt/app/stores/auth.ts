@@ -87,5 +87,41 @@ export const useAuthStore = defineStore('nuxt-auth', () => {
     deleteCookie('orispark-user')
   }
 
-  return { token, user, loading, error, isLoggedIn, displayName, participantRoles, isOperator, login, logout }
+  async function forgotPassword(email: string): Promise<boolean> {
+    loading.value = true
+    error.value = ''
+    try {
+      const apiBase = useRuntimeConfig().public.apiBase
+      await $fetch(`${apiBase}/system/password/reset/request`, {
+        method: 'POST',
+        body: { email },
+      })
+      return true
+    } catch (e: unknown) {
+      error.value = e instanceof Error ? e.message : '发送失败'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function resetPassword(token: string, password: string): Promise<boolean> {
+    loading.value = true
+    error.value = ''
+    try {
+      const apiBase = useRuntimeConfig().public.apiBase
+      await $fetch(`${apiBase}/system/password/reset/confirm`, {
+        method: 'POST',
+        body: { token, new_password: password },
+      })
+      return true
+    } catch (e: unknown) {
+      error.value = e instanceof Error ? e.message : '重置失败'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return { token, user, loading, error, isLoggedIn, displayName, participantRoles, isOperator, login, logout, forgotPassword, resetPassword }
 })

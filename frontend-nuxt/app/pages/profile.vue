@@ -36,15 +36,15 @@ const unreadCount = computed(() => notifications.value.filter(n => !n.read).leng
 async function loadProfile() {
   loading.value = true
   try {
-    // TODO: 对接后端 API
+    // 使用auth store的当前用户数据，补充必要字段
     basicInfo.value = {
-      name: auth.user?.name || '张三',
-      email: auth.user?.email || 'zhangsan@orispark.com',
-      phone: '138****8888',
-      company: '某某文化有限公司',
-      role: auth.user?.role || 'trader',
-      credit_score: 780,
-      join_date: '2025-06-01',
+      name: auth.user?.username || auth.user?.email || '用户',
+      email: auth.user?.email || '',
+      phone: '',
+      company: '',
+      role: auth.user?.role || 'operator',
+      credit_score: 0,
+      join_date: '',
     }
   } finally {
     loading.value = false

@@ -18,6 +18,13 @@ export function fetchPublicContracts(params?: Record<string, string>): Promise<C
   return $fetch(`${getApiBase()}/public/contracts${query ? '?' + query : ''}`)
 }
 
+export function fetchPublicContract(id: string): Promise<Contract | null> {
+  // 列表接口支持按id过滤
+  return fetchPublicContracts({ id }).then(
+    (res) => (res as any[]).find((c) => c.id === id) ?? null
+  ).catch(() => null)
+}
+
 export function fetchDashboardStats(): Promise<DashboardStats> {
   return $fetch(`${getApiBase()}/public/dashboard-stats`)
 }

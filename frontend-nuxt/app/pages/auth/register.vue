@@ -60,10 +60,18 @@ async function handleRegister() {
       },
     })
     const data = resp.data as { token: string; user: Record<string, unknown> }
+    // 使用auth store的cookie机制存储token（与login保持一致）
     auth.token = data.token
-    auth.user = data.user
-    localStorage.setItem('orispark-token', data.token)
-    localStorage.setItem('orispark-user', JSON.stringify(data.user))
+    auth.user = data.user as any
+    // SSR-safe cookie write
+    if (import.meta.client) {
+      document.cookie = `orispark-token=${data.token}; path=/; max-age=${60*60*24*7}`
+      document.cookie = `orispark-user=${encodeURIComponent(JSON.stringify(data.user))}; path=/; max-age=${60*60*24*7}`
+    } else {
+      const { useCookie } = await import('#app')
+      useCookie('orispark-token').value = data.token
+      useCookie('orispark-user').value = JSON.stringify(data.user)
+    }
     navigateTo('/market')
   } catch (e: unknown) {
     errorMsg.value = e instanceof Error ? e.message : '注册失败'

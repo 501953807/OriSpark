@@ -256,9 +256,8 @@ async function loadContract() {
   loading.value = true
   error.value = null
   try {
-    const res = await fetchPublicContracts()
-    const found = (res ?? []).find((c: Contract) => c.id === id)
-    contract.value = found ?? null
+    const res = await fetchPublicContract(id)
+    contract.value = res
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Failed to load contract'
   } finally {
