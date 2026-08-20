@@ -162,18 +162,18 @@ def seed_dictionary_data(db):
         return
 
     groups = [
-        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="creator_type", name="创作者类型"),
-        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="contract_status", name="合约状态"),
-        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="work_type", name="作品类型"),
+        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="creator_type", group_name="创作者类型", module="system"),
+        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="contract_status", group_name="合约状态", module="contract"),
+        DictionaryGroup(id=str(uuid.uuid4().hex[:32]), group_key="work_type", group_name="作品类型", module="work"),
     ]
 
     items = [
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[0].id, item_key="illustrator", item_value="插画师"),
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[0].id, item_key="photographer", item_value="摄影师"),
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[1].id, item_key="draft", item_value="草稿"),
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[1].id, item_key="listed", item_value="已挂牌"),
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[2].id, item_key="image", item_value="图片"),
-        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_id=groups[2].id, item_key="video", item_value="视频"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="creator_type", item_key="illustrator", item_value="插画师"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="creator_type", item_key="photographer", item_value="摄影师"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="contract_status", item_key="draft", item_value="草稿"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="contract_status", item_key="listed", item_value="已挂牌"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="work_type", item_key="image", item_value="图片"),
+        DictionaryItem(id=str(uuid.uuid4().hex[:32]), group_key="work_type", item_key="video", item_value="视频"),
     ]
 
     for obj in groups + items:
