@@ -174,18 +174,19 @@
 .data-table tbody tr.selected, .table tbody tr.selected { background: var(--m-primary-tint-2, rgba(79,70,229,0.14)); }
 
 /* ── Modal (large radius + soft shadow) ── */
+/* v-if controls visibility; .open/.show added for JS-driven transitions */
 .modal-overlay {
   position: fixed; inset: 0; z-index: var(--m-z-modal, 400);
   background: rgba(15, 23, 42, 0.3);
   backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center;
   padding: var(--space-2);
-  opacity: 0; visibility: hidden;
+  opacity: 1; visibility: visible;
   transition: opacity var(--m-transition-fast), visibility var(--m-transition-fast);
 }
-.modal-overlay.open,
-.modal-overlay.show {
-  opacity: 1; visibility: visible;
+.modal-overlay.hidden,
+.modal-overlay.hide {
+  opacity: 0; visibility: hidden;
 }
 .modal-card,
 .modal {
