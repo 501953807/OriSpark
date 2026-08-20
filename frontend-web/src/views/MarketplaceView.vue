@@ -8,7 +8,10 @@
     <div v-if="loading" class="page-loading">
       <LoadingSpinner text="加载中..." />
     </div>
-
+    <div v-else-if="error" class="empty-state">
+      {{ error }}
+      <button class="btn-primary" style="margin-top:1rem" @click="loadData">重新加载</button>
+    </div>
     <template v-else>
       <!-- Stats row -->
       <div class="stats-row">
@@ -97,8 +100,10 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import StatCard from '@/components/common/StatCard.vue'
 import MCard from '@/components/ui/MCard.vue'
+import client from '@/api/client'
 
 const loading = ref(true)
+const error = ref<string | null>(null)
 const tab = ref('discover')
 const subscribeLoading = ref<string | null>(null)
 const stats = ref({ available: 0, my_orders: 0, pending: 0, completed: 0 })
@@ -106,11 +111,21 @@ const contracts = ref<any[]>([])
 const myDeals = ref<any[]>([])
 const escrows = ref<any[]>([])
 
+const statusMap: Record<string, string> = {
+  listed: '挂牌中', active: '进行中', subscribed: '待签约',
+  escrowed: '托管中', executing: '执行中', completed: '已完成',
+  dispute: '争议中', cancelled: '已取消',
+}
 const statusClassMap: Record<string, string> = {
-  进行中: 'status-active',
-  待签约: 'status-pending',
-  已完成: 'status-completed',
-  已取消: 'status-cancelled',
+  进行中: 'status-active', 待签约: 'status-pending',
+  已完成: 'status-completed', 已取消: 'status-cancelled',
+  挂牌中: 'status-active', 托管中: 'status-pending',
+  执行中: 'status-active', 争议中: 'status-cancelled',
+}
+const typeLabelMap: Record<string, string> = {
+  exclusive_license: '独占许可', non_exclusive_license: '非独占许可',
+  copyright_transfer: '著作权转让', product_license: '产品许可',
+  commission: '委托创作',
 }
 
 async function handleSubscribe(contract: any) {
@@ -136,25 +151,88 @@ async function handleSubscribe(contract: any) {
   }
 }
 
-onMounted(async () => {
+async function loadData() {
+  error.value = null
   try {
-    // TODO: 对接真实后端 API
-    stats.value = { available: 24, my_orders: 5, pending: 2, completed: 18 }
-    contracts.value = [
-      { id: '1', type_label: '插画授权', status: '进行中', status_class: 'status-active', title: '城市风光系列插画授权', description: '高清城市风光插画，支持多平台授权', amount: '15,000', deadline: '2026-09-15' },
-      { id: '2', type_label: '摄影采购', status: '待签约', status_class: 'status-pending', title: '自然风光摄影图库采购', description: '需采购 500+ 张自然风光类摄影作品', amount: '28,000', deadline: '2026-09-01' },
-    ]
-    myDeals.value = [
-      { id: '1', title: '插画授权合约 #003', status: '进行中', amount: '12,000' },
-      { id: '2', title: '摄影采购合约 #007', status: '待签约', amount: '28,000' },
-    ]
-    escrows.value = [
-      { id: '1', contract_title: '插画授权合约 #003', amount: '12,000', status: '托管中', status_class: 'status-active', updated_at: '2026-08-10' },
-    ]
+    // 加载公开合约列表（挂牌中 / 活跃状态）
+    const [publicRes, statsRes] = await Promise.all([
+      client.get('/public/contracts', { params: { status: 'listed' }, timeout: 10000 }),
+      client.get('/public/dashboard-stats', { timeout: 10000 }),
+    ])
+
+    // 转换公开合约为 UI 格式
+    const publicContracts = (publicRes.data || []) as Array<{
+      id: string; title: string; description: string; contract_type: string
+      total_amount: number; status: string; created_at?: string
+    }>
+    contracts.value = publicContracts.map(c => ({
+      id: c.id,
+      type_label: typeLabelMap[c.contract_type] ?? c.contract_type,
+      status: statusMap[c.status] ?? c.status,
+      status_class: statusClassMap[statusMap[c.status] ?? c.status] ?? '',
+      title: c.title,
+      description: c.description,
+      amount: c.total_amount?.toLocaleString('zh-CN') ?? '',
+      deadline: c.created_at
+        ? new Date(c.created_at).toLocaleDateString('zh-CN')
+        : '',
+    }))
+
+    // 更新统计卡片
+    const ds = statsRes.data
+    if (ds) {
+      stats.value = {
+        available: ds.active_contracts ?? 0,
+        my_orders: ds.total_contracts_ever ?? 0,
+        pending: 0,
+        completed: 0,
+      }
+    }
+
+    // 加载当前用户的合约列表（需认证）
+    const authStore = useAuthStore()
+    if (authStore.user?.id) {
+      try {
+        const userRes = await client.get('/contracts', { params: { limit: 20 }, timeout: 10000 })
+        const userContracts = (userRes.data || []) as Array<{
+          id: string; title: string; status: string; total_amount: number;
+          contract_type: string; creator_id?: string
+        }>
+        // 我的交易记录
+        myDeals.value = userContracts
+          .filter(c => !['draft', 'cancelled'].includes(c.status))
+          .map(c => ({
+            id: c.id,
+            title: c.title,
+            status: statusMap[c.status] ?? c.status,
+            amount: c.total_amount?.toLocaleString('zh-CN') ?? '',
+          }))
+          .slice(0, 10)
+
+        // 资金托管记录（escrowed 状态）
+        escrows.value = userContracts
+          .filter(c => c.status === 'escrowed')
+          .map(c => ({
+            id: c.id,
+            contract_title: c.title,
+            amount: c.total_amount?.toLocaleString('zh-CN') ?? '',
+            status: '托管中',
+            status_class: 'status-pending',
+            updated_at: '',
+          }))
+      } catch {
+        // 用户合约加载失败不影响主流程
+      }
+    }
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : '加载失败'
+    console.error('[Marketplace] 数据加载失败:', e)
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(loadData)
 </script>
 
 <style scoped>
