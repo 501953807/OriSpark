@@ -11,12 +11,14 @@
 
     <template v-else>
       <!-- Stats row -->
-      <div class="stats-row">
-        <StatCard icon="🎨" label="关联合约" :value="stats.total_contracts ?? 0" to="/app/contract-market" color="blue" />
-        <StatCard icon="🤝" label="进行中交易" :value="stats.active_deals ?? 0" to="/app/multimarket" color="green" />
-        <StatCard icon="⚠️" label="风险预警" :value="stats.risk_alerts ?? 0" to="/app/risk-center" color="orange" />
-        <StatCard icon="💰" label="本月收益" :value="`¥${fmtMoney(stats.monthly_revenue ?? 0)}`" color="purple" />
+      <div v-if="!loading && !error" class="stats-row">
+        <StatCard icon="🎨" label="关联合约" :value="dashboardStore.stats?.active_contracts ?? 0" to="/app/contract-market" color="blue" />
+        <StatCard icon="🤝" label="进行中交易" :value="dashboardStore.stats?.split_executions_30d ?? 0" to="/app/multimarket" color="green" />
+        <StatCard icon="⚠️" label="风险预警" :value="dashboardStore.stats?.infringement_alerts ?? 0" to="/app/risk-center" color="orange" />
+        <StatCard icon="💰" label="本月收益" :value="`¥${fmtMoney(dashboardStore.stats?.monthly_revenue ?? 0)}`" color="purple" />
       </div>
+
+      <div v-if="error" class="error-state">{{ error }}</div>
 
       <!-- Quick actions -->
       <MCard title="快捷操作">
@@ -66,9 +68,12 @@ import { ref, onMounted } from 'vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import StatCard from '@/components/common/StatCard.vue'
 import MCard from '@/components/ui/MCard.vue'
+import { useDashboardStore } from '@/stores/useDashboardStore'
+import { listContracts } from '@/api/contractMarket'
 
+const dashboardStore = useDashboardStore()
 const loading = ref(true)
-const stats = ref({ total_contracts: 0, active_deals: 0, risk_alerts: 0, monthly_revenue: 0 })
+const error = ref<string | null>(null)
 const recentContracts = ref<any[]>([])
 
 function fmtMoney(n: number): string {
@@ -76,13 +81,19 @@ function fmtMoney(n: number): string {
 }
 
 onMounted(async () => {
+  loading.value = true
+  error.value = null
   try {
-    // TODO: 对接真实后端 API
-    stats.value = { total_contracts: 12, active_deals: 5, risk_alerts: 2, monthly_revenue: 85600 }
-    recentContracts.value = [
-      { id: '1', title: '插画授权合约 #001', status: '进行中', amount: '12,000' },
-      { id: '2', title: '摄影图库采购', status: '待签约', amount: '8,500' },
-    ]
+    await dashboardStore.refreshAll()
+    const contracts = await listContracts({ limit: 5 })
+    recentContracts.value = (contracts || []).map((c: any) => ({
+      id: c.id,
+      title: c.title,
+      status: c.status,
+      amount: c.total_amount?.toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) ?? '0',
+    }))
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : '加载失败，请稍后重试'
   } finally {
     loading.value = false
   }
@@ -104,5 +115,6 @@ onMounted(async () => {
 .contract-link { font-size: 0.82rem; color: #7c3aed; text-decoration: none; font-weight: 500; }
 .contract-link:hover { text-decoration: underline; }
 .empty-state { color: #9ca3af; text-align: center; padding: 2rem; }
+.error-state { color: #ef4444; text-align: center; padding: 1rem; font-size: 0.875rem; }
 .page-loading { display: flex; justify-content: center; padding: 3rem; }
 </style>

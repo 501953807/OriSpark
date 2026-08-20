@@ -40,7 +40,9 @@
               <span>金额: ¥{{ c.amount }}</span>
               <span>截止: {{ c.deadline }}</span>
             </div>
-            <button class="btn-primary full-width" @click="handleSubscribe(c)">立即认购</button>
+            <button class="btn-primary full-width" :disabled="subscribeLoading === c.id" @click="handleSubscribe(c)">
+              {{ subscribeLoading === c.id ? '认购中...' : '立即认购' }}
+            </button>
           </div>
         </div>
       </div>
@@ -91,12 +93,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/useAuthStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import StatCard from '@/components/common/StatCard.vue'
 import MCard from '@/components/ui/MCard.vue'
 
 const loading = ref(true)
 const tab = ref('discover')
+const subscribeLoading = ref<string | null>(null)
 const stats = ref({ available: 0, my_orders: 0, pending: 0, completed: 0 })
 const contracts = ref<any[]>([])
 const myDeals = ref<any[]>([])
@@ -109,9 +113,27 @@ const statusClassMap: Record<string, string> = {
   已取消: 'status-cancelled',
 }
 
-function handleSubscribe(contract: any) {
-  // TODO: 对接认购接口
-  alert(`认购合约: ${contract.title}`)
+async function handleSubscribe(contract: any) {
+  if (subscribeLoading.value) return
+  const authStore = useAuthStore()
+  if (!authStore.user?.id) {
+    ;(window as any).$toast?.show('请先登录', 'error')
+    return
+  }
+  subscribeLoading.value = contract.id
+  try {
+    const { subscribeContract } = await import('@/api/contractMarket')
+    await subscribeContract(contract.id, authStore.user.id)
+    contracts.value = contracts.value.map(c =>
+      c.id === contract.id ? { ...c, status: '待签约', status_class: 'status-pending' } : c
+    )
+    stats.value = { ...stats.value, available: Math.max(0, (stats.value.available ?? 0) - 1) }
+    ;(window as any).$toast?.show('认购成功，等待创作者确认', 'success')
+  } catch {
+    ;(window as any).$toast?.show('认购失败，请稍后重试', 'error')
+  } finally {
+    subscribeLoading.value = null
+  }
 }
 
 onMounted(async () => {

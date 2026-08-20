@@ -40,6 +40,11 @@ export interface DashboardStats {
     matched_title?: string
     found_at?: string
   }>
+  // 合约市场指标 (G-08)
+  active_contracts?: number
+  contract_revenue_30d?: number
+  split_executions_30d?: number
+  total_contracts_ever?: number
 }
 
 export interface RecentWork {
