@@ -54,8 +54,11 @@ def generate_payment_qr(
 def generate_verification_qr(
     cert_id: str,
     output_dir: str,
+    base_url: Optional[str] = None,
 ) -> str:
     """生成验证二维码 (指向证书验证页面)."""
-    data = f"https://oristudio.local/verify/{cert_id}"
+    from app.config import settings
+    url_base = base_url or settings.APP_URL
+    data = f"{url_base}/verify/{cert_id}"
     output_path = str(Path(output_dir) / f"verify_{cert_id}.png")
     return generate_qr(data, output_path)

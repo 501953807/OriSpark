@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     # 应用
     APP_NAME: str = "OriStudio"
     APP_VERSION: str = "0.1.0"
+    APP_URL: str = "https://oristudio.local"
     DEBUG: bool = os.environ.get("DEBUG", "false").lower() == "true"
     SECRET_KEY: str = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 

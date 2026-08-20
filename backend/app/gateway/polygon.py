@@ -25,9 +25,13 @@ class PolygonNotaryGateway:
     """Polygon 公链存证网关 (v1: 模拟).
 
     实际实现需要部署 ERC-725/ERC-721 合约到 Polygon 测试网.
+    当前使用模拟地址用于开发测试, 生产环境需替换为真实合约地址.
     """
 
-    CONTRACT_ADDRESS = "0x000000000000000000000000000000000000dead"
+    CONTRACT_ADDRESS: str = os.environ.get(
+        "POLYGON_CONTRACT_ADDRESS",
+        "0x000000000000000000000000000000000000dead",  # Mock address for v1
+    )
     RPC_URL = "https://polygon-mainnet.g.alchemy.com/v2/demo"
 
     async def anchor(self, data_hash: str) -> Optional[BlockchainAnchor]:
